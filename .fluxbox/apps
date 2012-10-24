@@ -1,0 +1,45 @@
+[app] (name=fbrun)
+  [Position]	(CENTER)	{0 0}
+  [Layer]	{2}
+[end]
+[app] (name=Mail) (class=Thunderbird) (role=3pane)
+  [Workspace]	{2}
+  [Dimensions]	{1024 762}
+  [Position]	(UPPERLEFT)	{0 0}
+  [Deco]	{NONE}
+[end]
+[app] (name=roxterm) (class=Roxterm)
+  [Dimensions]	{610 488}
+  [Position]	(UPPERLEFT)	{0 254}
+  [Deco]	{NONE}
+  [Alpha]	{155}
+[end]
+[app] (name=Qt Jambi application) (class=Qt Jambi application)
+  [Workspace]	{2}
+  [Dimensions]	{1364 736}
+  [Position]	(UPPERLEFT)	{0 0}
+[end]
+[app] (name=Qt-subapplication) (class=VirtualBox)
+  [Workspace]	{1}
+[end]
+[app] (name=chrome) (class=Chrome)
+  [Alpha]	{157 155}
+[end]
+[app] (name=evince) (class=Evince)
+  [Dimensions]	{1366 768}
+  [Position]	(UPPERLEFT)	{0 0}
+  [Deco]	{NONE}
+  [Alpha]	{213 155}
+[end]
+[app] (name=xv) (class=MPlayer)
+  [Deco]	{NONE}
+[end]
+[app] (name=VCLSalFrame.DocumentWindow) (class=LibreOffice 3.5)
+  [Deco]	{NONE}
+[end]
+[app] (name=geeqie) (class=Geeqie) (role=geeqie)
+  [Deco]	{NONE}
+[end]
+[app] (name=gnome-control-center) (class=Gnome-control-center) (role=network)
+  [Deco]	{NONE}
+[end]

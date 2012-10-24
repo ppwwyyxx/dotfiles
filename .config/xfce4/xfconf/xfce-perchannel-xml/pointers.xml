@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="pointers" version="1.0">
+  <property name="SynPS2_Synaptics_TouchPad" type="empty">
+    <property name="Properties" type="empty">
+      <property name="Synaptics_Edge_Scrolling" type="array">
+        <value type="int" value="1"/>
+        <value type="int" value="0"/>
+        <value type="int" value="0"/>
+      </property>
+      <property name="Synaptics_Two-Finger_Scrolling" type="array">
+        <value type="int" value="0"/>
+        <value type="int" value="0"/>
+      </property>
+    </property>
+  </property>
+</channel>

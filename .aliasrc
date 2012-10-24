@@ -1,0 +1,146 @@
+# Editor
+export EDITOR="vim"
+export XMODIFIERS="@im=ibus"
+export QT_MODULE=ibus
+export GTK_MODULE=ibus
+# Pager
+export PAGER="/usr/bin/less -s"
+export BROWSER="$PAGER"
+export LESS_TERMCAP_mb=$YELLOW
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
+export SDCV_PAGER="sed 's/\ \ \([1-9]\)/\n\n◆\1/g' |less"
+
+export PYTHONDOCS=/usr/share/doc/python2/html
+export MAKEFLAGS="-j 4"
+export LD_LIBRARY_PATH=/lib/
+export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[33;1m%p\e[m: '
+
+# load colors
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias grep='egrep -In'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+	alias l='ls -F --color=auto'
+	alias ls='ls -F --color=auto'
+	alias lss='ls -F --color=auto'
+fi
+
+in_array() {
+    local hay needle=$1
+    shift
+    for hay; do
+        [[ $hay == $needle ]] && return 0
+    done
+    return 1
+}
+
+# function improvments for common command
+alias cdl='cd'
+alias grep='egrep'
+alias v='vim -X'
+alias vi='vim -X'
+alias vim='vim -X'
+alias iv='vim -X'
+alias indent='indent -linux -l80'
+alias gs='gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite'
+alias sl='sl -alF'
+alias LS='LS -eaF'
+alias which='which -a'
+alias zh-CN="LC_ALL='zh_CN.UTF-8'"
+alias free='free -m'
+alias df='df -Th'
+alias dot='dot -Tpng -O -v'
+alias dstat='dstat -dnmcl --socket --top-io -N eth0,wlan0'
+alias ctags='ctags -R -f .tags --c++-kinds=+p --fields=+iaS --extra=+q'
+alias toilet='toilet --filter gay'
+alias valgrind='valgrind --leak-check=full --track-origins=yes --show-reachable=no --show-possibly-lost=no'
+alias convmv='convmv -f GBK -t UTF-8 --notest -r'
+#alias rm='mv --target-directory ~/tmp/.Trash --backup=numbered'
+alias cp='cp -rvi'
+
+function ll(){
+	ls -AhlF --color=auto $1
+	echo -e " $GREEN  --[$LIGHTBLUE  Dir:    $CYAN`ls -Al $1 | grep '^drw' | wc -l`$LIGHTGREEN|$YELLOW \
+	 File: $GREEN`ls -Al $1 | grep -v '^drw' | grep -v total | wc -l` ]-- $WHITE"
+}
+
+function acpi(){
+	/usr/bin/acpi -V |head -n2
+	sensors |/usr/bin/grep Physical |sed 's/(.*//g' |sed 's/\+//g'
+	#echo "Graphic Card:  `nvidia-settings -q gpucoretemp |grep "Keep" |grep -o "\ [0-9]+" `  °C "
+	for ((i=0;i<1;i++)); do
+		echo -n "cpu$i : "
+		cat "/sys/devices/system/cpu/cpu$i/cpufreq/scaling_governor"
+	done
+}
+
+# customed command
+alias L='less'
+alias C='cat'
+alias G='grep --color=auto'
+alias psg='ps aux |grep --color=auto'
+alias cls='clear'
+alias mk='make'
+alias mr='make run'
+alias gdb='gdb -q'
+alias pdf='evince'
+alias word='/opt/wps/wps'
+alias diff='colordiff'
+alias srcline='wc -l `find -regex ".*\.[ch]+.*" ` '
+
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias clean_trash='sudo rm ~/tmp/.Trash/* -r; sudo rm ~/.Trash/* -r'
+alias mirror='mplayer -tv driver=v4l2:device=/dev/video0 tv:// -vf-add mirror'
+alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_region 1 -qscale 2 -i :0.0 ~/Videos/out.mpg'
+
+alias math='/home/opt/Mathematica/Executables/Mathematica &'
+alias matlab='/home/opt/Matlab/bin/matlab'
+alias maple='/home/opt/Maple/bin/xmaple'
+alias learn=". ~/bin/learn"
+
+alias samba_thu='sudo mount -t cifs -o username=tuna,password=Tunahallelujah2012  //166.111.9.155/movie /mnt'
+alias net9='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.net9.org'
+alias smth='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.smth.org'
+alias hotspot='sudo nmcli con up id Seattle'
+alias port='netstat -ntlp'
+alias rsync='rsync --progress --partial'
+alias wgetpaste='wgetpaste -C'
+
+alias vmware_rc='sudo rc.d start vmware-USBArbitrator; sudo rc.d start vmware'
+alias win='virtualbox --startvm win7 & ; exit; exit'
+alias restart_wm='killall fusion-icon; DISPLAY=:0.0 fusion-icon'
+
+# automatic use sudo
+alias please='sudo'
+alias meow='ping'
+if [[ $HOST == "KeepMoving" ]]; then
+	alias poweroff='vboxmanage controlvm win7 savestate; sudo shutdown -h now'
+	alias reboot='vboxmanage controlvm win7 savestate; sudo reboot'
+fi
+alias logout='xfce4-session-logout --logout'
+alias apt-get='sudo apt-get'
+alias ai='sudo pacman -S'
+alias umount='sudo umount'
+alias mount='sudo mount'
+alias iotop='sudo iotop'
+alias iftop='sudo iftop'
+alias powertop='sudo powertop'
+alias sv='sudo vim'
+
+# customed variables
+hw=/home/wyx/Documents/work_thu/original/12_aut/
+pydoc=/usr/share/doc/python2/html
+
+x264_param="-x264encopts threads=2:subq=5:8x8dct:frameref=2:bframes=3:weight_b"
+sub_param="-utf8 -subfont-text-scale 2.5 -nofontconfig"
+lame_param="-lameopts fast:preset=medium"
+avc_param="-oac mp3lame $lame_param -ovc x264 $x264_param"
+mx="/home/wyx/install/files/config/pics/pic7"
+
+#  vim:ft=zsh

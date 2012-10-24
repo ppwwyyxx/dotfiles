@@ -1,0 +1,5 @@
+$full $full|/home/wyx/install/files/DarkWall.jpg||localhost:0
+$full $full|/home/wyx/install/files/DarkWall.jpg||:1
+fbsetroot|-foreground #D5D6DB -solid #D5D6DB|style|localhost:0.0
+$full $full|/home/wyx/install/files/DarkWall.jpg||:0.0
+fbsetroot|-foreground #D5D6DB -solid #D5D6DB|style|:1.0

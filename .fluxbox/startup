@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# fluxbox startup-script:
+#
+# Lines starting with a '#' are ignored.
+
+# Applications you want to run with fluxbox.
+# MAKE SURE THAT APPS THAT KEEP RUNNING HAVE AN ''&'' AT THE END.
+#
+# unclutter -idle 2 &
+# wmnd &
+# wmsmixer -w &
+# idesk &
+
+xmodmap -e "keycode 167 = 0xff56"
+xmodmap -e "keycode 166 = 0xff55"
+xmodmap -e 'keycode 66 = Control_L'
+xmodmap -e 'clear Lock'
+xmodmap -e 'add Control = Control_L'
+xmodmap -e "keycode 107 = Caps_Lock"
+xscreensaver -no-splash &
+mmserver &
+thunderbird &
+ibus-daemon &
+fbsetbg -l &
+/home/wyx/bin/background/battery &
+/home/wyx/bin/background/battery_protect &
+sudo /home/wyx/bin/background/auto_net &
+roxterm &
+
+# And last but not least we start fluxbox.
+# Because it is the last app you have to run it with ''exec'' before it.
+exec fluxbox
+# or if you want to keep a log:
+# exec fluxbox -log "/home/wyx/.fluxbox/log"

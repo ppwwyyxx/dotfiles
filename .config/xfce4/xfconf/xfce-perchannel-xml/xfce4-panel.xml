@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfce4-panel" version="1.0">
+  <property name="panels" type="array">
+    <value type="int" value="0"/>
+    <property name="panel-0" type="empty">
+      <property name="position" type="string" value="p=8;x=640;y=783"/>
+      <property name="plugin-ids" type="array">
+        <value type="int" value="1"/>
+        <value type="int" value="7"/>
+        <value type="int" value="5"/>
+        <value type="int" value="6"/>
+        <value type="int" value="8"/>
+        <value type="int" value="3"/>
+        <value type="int" value="9"/>
+        <value type="int" value="2"/>
+        <value type="int" value="4"/>
+      </property>
+      <property name="autohide" type="bool" value="true"/>
+      <property name="length-adjust" type="bool" value="true"/>
+      <property name="length" type="uint" value="100"/>
+      <property name="position-locked" type="bool" value="true"/>
+      <property name="size" type="uint" value="20"/>
+      <property name="mode" type="uint" value="0"/>
+      <property name="background-style" type="uint" value="0"/>
+      <property name="background-image" type="string" value="/home/wyx/install/files/DarkWall.jpg"/>
+      <property name="background-alpha" type="uint" value="38"/>
+      <property name="leave-opacity" type="uint" value="0"/>
+    </property>
+  </property>
+  <property name="plugins" type="empty">
+    <property name="plugin-1" type="string" value="applicationsmenu"/>
+    <property name="plugin-2" type="string" value="clock">
+      <property name="digital-format" type="string" value="%T - %a,%e %B, %Y"/>
+    </property>
+    <property name="plugin-3" type="string" value="systray">
+      <property name="names-visible" type="array">
+        <value type="string" value="main.py"/>
+        <value type="string" value="networkmanager applet"/>
+        <value type="string" value="task manager"/>
+        <value type="string" value="mmserver"/>
+        <value type="string" value="skype"/>
+        <value type="string" value="ibus panel"/>
+        <value type="string" value="orage"/>
+        <value type="string" value="chromium"/>
+        <value type="string" value="bluetooth"/>
+        <value type="string" value="fusion-icon"/>
+        <value type="string" value="xfce4-power-manager"/>
+        <value type="string" value="ktorrent"/>
+        <value type="string" value="osd lyrics"/>
+        <value type="string" value="banshee"/>
+      </property>
+    </property>
+    <property name="plugin-4" type="string" value="showdesktop"/>
+    <property name="plugin-5" type="string" value="pager">
+      <property name="rows" type="uint" value="1"/>
+    </property>
+    <property name="plugin-6" type="string" value="tasklist"/>
+    <property name="plugin-7" type="string" value="separator">
+      <property name="style" type="uint" value="1"/>
+    </property>
+    <property name="plugin-8" type="string" value="separator">
+      <property name="style" type="uint" value="0"/>
+      <property name="expand" type="bool" value="true"/>
+    </property>
+    <property name="plugin-9" type="string" value="xfce4-mixer-plugin"/>
+    <property name="plugin-15" type="string" value="xfce4-mount-plugin"/>
+    <property name="plugin-20" type="string" value="battmon"/>
+  </property>
+  <property name="configver" type="int" value="2"/>
+</channel>

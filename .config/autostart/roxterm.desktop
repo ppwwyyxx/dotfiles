@@ -1,0 +1,11 @@
+
+[Desktop Entry]
+Type=Application
+Exec=roxterm
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=terminal
+Name=terminal
+Comment[en_US]=
+Comment=

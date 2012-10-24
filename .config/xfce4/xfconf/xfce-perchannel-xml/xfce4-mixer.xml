@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfce4-mixer" version="1.0">
+  <property name="sound-card" type="string" value="HDAIntelAlsamixer"/>
+  <property name="sound-cards" type="empty">
+    <property name="HDAIntelAlsamixer" type="array">
+      <value type="string" value="Master"/>
+      <value type="string" value="Headphone"/>
+      <value type="string" value="Speaker"/>
+      <value type="string" value="PCM"/>
+      <value type="string" value="Beep"/>
+      <value type="string" value="Capture"/>
+      <value type="string" value="Auto-Mute Mode"/>
+      <value type="string" value="Digital"/>
+    </property>
+  </property>
+  <property name="window-height" type="int" value="400"/>
+  <property name="window-width" type="int" value="600"/>
+</channel>

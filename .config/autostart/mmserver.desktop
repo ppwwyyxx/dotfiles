@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/usr/sbin/mmserver
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Mobile Mouse Linux Server
+Comment=An unofficial Mobile Mouse Server for Linux
+Categories=GNOME;GTK;Utility
+Icon=/usr/share/mmserver/icons/mm-idle.svg

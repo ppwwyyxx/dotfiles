@@ -1,0 +1,106 @@
+# click on the desktop to get menus
+OnDesktop Mouse1 :HideMenus
+#OnDesktop Mouse2 :WorkspaceMenu
+OnDesktop Mouse2 :RootMenu
+OnDesktop Mouse3 :Exec notify-send 不要点我!
+# scroll on the desktop to change workspaces
+#OnDesktop Mouse4 :PrevWorkspace
+#OnDesktop Mouse5 :NextWorkspace
+# scroll on the toolbar to change current window
+OnToolbar Mouse4 :PrevWindow {static groups} (iconhidden=no)
+OnToolbar Mouse5 :NextWindow {static groups} (iconhidden=no)
+#OnWindow Mod1 Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
+#OnWindow Mod1 Mouse2 :Lower
+#OnWindow Mod1 Mouse3 :MacroCmd {Raise} {Focus} {StartResizing NearestCorner}
+#OnTitlebar Control Mouse1 :StartTabbing
+OnWindowBorder Move1 :StartMoving
+OnLeftGrip Move1 :StartResizing bottomleft
+OnRightGrip Move1 :StartResizing bottomright
+
+OnTitlebar Double Mouse1 :Maximize
+OnTitlebar Mouse1 :MacroCmd {Raise} {Focus} {ActivateTab}
+OnTitlebar Move1  :StartMoving
+OnTitlebar Mouse2 :Lower
+OnTitlebar Mouse3 :WindowMenu
+## go to a specific tab in the current window
+#Mod4 1 :Tab 1
+#Mod4 2 :Tab 2
+#Mod4 3 :Tab 3
+#Mod4 4 :Tab 4
+#Mod4 5 :Tab 5
+#Mod4 6 :Tab 6
+
+# volume settings, keycode may be machine-dependent
+123 :Exec amixer sset Master,0 5+
+122 :Exec amixer sset Master,0 5-
+121 :Exec amixer sset Master,0 toggle
+
+# current window commands
+Mod4 q   :Close
+Mod1 F9  :Minimize
+Mod1 F10 :Maximize
+Mod1 F11 :Fullscreen
+Mod1 space :WindowMenu
+
+# window
+Mod4 Right  :MoveRight 15
+Mod4 Left   :MoveLeft 15
+Mod4 Up     :MoveUp 15
+Mod4 Down   :MoveDown 15
+Mod4 period :MoveRight 750
+Mod4 comma  :MoveLeft 750
+Mod4 Prior  :MoveUp 250
+Mod4 Next   :MoveDown 250
+Control Mod4 Up :MacroCmd { Resize 0 1 } { Move 0 -17}
+Control Mod4 Down :Resize 0 -1
+Control Mod4 Left :Resize -3 0
+Control Mod4 Right :Resize 3 0
+
+# alt-tab
+Mod1 Tab :NextWindow {groups} (workspace=[current])
+Mod1 Shift Tab :PrevWindow {groups} (workspace=[current])
+Mod4 Tab :NextWindow {groups} (workspace=[013])
+Mod4 Shift Tab :PrevWindow {groups} (workspace=[013])
+
+# workspace
+#Control Mod1 Left :PrevWorkspace
+#Control Mod1 Right :NextWorkspace
+Control Mod1 Left :ExecCommand 3ddesk --gotoleft --nozoom --changespeed=7 --mode=carousel
+Control Mod1 Right :ExecCommand 3ddesk --gotoright --nozoom --changespeed=7
+Control Mod1 Shift Left :SendToPrevWorkspace
+Control Mod1 Shift Right :SendToNextWorkspace
+#Control 1 :Workspace 1
+#Control 2 :Workspace 2
+#Control 3 :Workspace 3
+#Control 4 :Workspace 4
+Mod4 1 :ExecCommand 3ddesk --gotocolumn=1 --changespeed=10 --nozoom
+Mod4 2 :ExecCommand 3ddesk --gotocolumn=2 --changespeed=10 --nozoom
+Mod4 3 :ExecCommand 3ddesk --gotocolumn=3 --changespeed=10 --nozoom
+Mod4 4 :ExecCommand 3ddesk --gotocolumn=4 --changespeed=10 --nozoom
+Mod4 Shift 1 :SendToWorkspace 1
+Mod4 Shift 2 :SendToWorkspace 2
+Mod4 Shift 3 :SendToWorkspace 3
+Mod4 Shift 4 :SendToWorkspace 4
+
+# open programs
+Mod4 t :Exec roxterm
+Mod4 c :Exec /opt/chrome-linux/chrome --purge-memory-button
+Mod4 f :Exec firefox
+Mod4 l :Exec xscreensaver-command -lock
+Mod4 d :ShowDesktop
+Mod4 a :Exec /home/wyx/bin/background/screenshot
+Mod4 v :Exec wmctrl -a Chromium || chrome
+Mod4 g :Exec gnome-control-center
+Mod4 k :Exec xkill
+Mod4 F12 :Mouse1
+
+# for some keyboard
+#XF86HomePage :ExecCommand 3ddesk --gotocolumn=1 --changespeed=7
+XF86HomePage :Exec notifier
+XF86Search   :Exec xdotool click 1
+XF86Mail     :Exec roxterm
+
+XF86Launch1	 :Exec notifier			# thinkvantage
+NoSymbol	 :Exec /home/wyx/bin/camera
+Menu		 :Exec thunderbird
+#Scroll_Lock

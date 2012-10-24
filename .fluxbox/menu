@@ -1,0 +1,93 @@
+[begin] (fluxbox)
+/*
+ *   [submenu] (System) {}
+ *      [exec] (Aptitude (terminal\)) { x-terminal-emulator -T "Aptitude (terminal)" -e /usr/bin/aptitude-curses} <>
+ *      [exec] (DSL/PPPoE configuration tool) { x-terminal-emulator -T "DSL/PPPoE configuration tool" -e /usr/sbin/pppoeconf} </usr/share/pixmaps/pppoeconf.xpm>
+ *      [exec] (Editres) {editres} <>
+ *      [exec] (Gnome Control Center) {/usr/bin/gnome-control-center} </usr/share/pixmaps/control-center2.xpm>
+ *      [exec] (GNOME Network Tool) {/usr/bin/gnome-nettool} </usr/share/pixmaps/gnome-nettool.xpm>
+ *      [exec] (GNOME partition editor) {su-to-root -X -c /usr/sbin/gparted} </usr/share/pixmaps/gparted.xpm>
+ *      [exec] (OpenJDK Java 6 Policy Tool) {/usr/lib/jvm/java-6-openjdk/bin/policytool} </usr/share/pixmaps/openjdk-6.xpm>
+ *      [exec] (pppconfig) { x-terminal-emulator -T "pppconfig" -e su-to-root -p root -c /usr/sbin/pppconfig} <>
+ *      [exec] (TeXconfig) { x-terminal-emulator -T "TeXconfig" -e /usr/bin/texconfig} <>
+ *      [exec] (Xclipboard) {xclipboard} <>
+ *      [exec] (Xfontsel) {xfontsel} <>
+ *      [exec] (Xkill) {xkill} <>
+ *      [exec] (Xrefresh) {xrefresh} <>
+ *   [end]
+ *   [submenu] (Games) {}
+ *      [submenu] (Action) {}
+ *         [exec] (Robots) { x-terminal-emulator -T "Robots" -e robots} <>
+ *         [exec] (Snake) { x-terminal-emulator -T "Snake" -e sh -c 'snake;echo PRESS ENTER;read line'} <>
+ *         [exec] (Star Trek) { x-terminal-emulator -T "Star Trek" -e trek} <>
+ *         [exec] (Worm) { x-terminal-emulator -T "Worm" -e sh -c 'worm;echo PRESS ENTER;read line'} <>
+ *      [end]
+ *      [submenu] (Adventure) {}
+ *         [exec] (Adventure) { x-terminal-emulator -T "Adventure" -e adventure} <>
+ *         [exec] (Battlestar) { x-terminal-emulator -T "Battlestar" -e sh -c 'battlestar;echo PRESS ENTER;read line'} <>
+ *         [exec] (Hack) { x-terminal-emulator -T "Hack" -e hack} <>
+ *         [exec] (Hunt the Wumpus) { x-terminal-emulator -T "Hunt the Wumpus" -e wump} <>
+ *         [exec] (Phantasia) { x-terminal-emulator -T "Phantasia" -e phantasia} <>
+ *      [end]
+ *      [submenu] (Blocks) {}
+ *         [exec] (Bsd Tetris) { x-terminal-emulator -T "Bsd Tetris" -e sh -c 'tetris-bsd;echo;echo PRESS ENTER;read line'} <>
+ *      [end]
+ *      [submenu] (Board) {}
+ *         [exec] (Backgammon) { x-terminal-emulator -T "Backgammon" -e backgammon -pb} <>
+ *         [exec] (Gomoku) { x-terminal-emulator -T "Gomoku" -e gomoku} <>
+ *         [exec] (Monopoly) { x-terminal-emulator -T "Monopoly" -e monop} <>
+ *      [end]
+ *      [submenu] (Card) {}
+ *         [exec] (Canfield) { x-terminal-emulator -T "Canfield" -e canfield} <>
+ *         [exec] (Cribbage) { x-terminal-emulator -T "Cribbage" -e cribbage} <>
+ *         [exec] (Gnome FreeCell) {/usr/games/sol --variation freecell} </usr/share/pixmaps/freecell.xpm>
+ *         [exec] (Gnome Solitaire Games) {/usr/games/sol} </usr/share/pixmaps/aisleriot.xpm>
+ *         [exec] (Go Fish) { x-terminal-emulator -T "Go Fish" -e sh -c 'go-fish;echo;echo PRESS ENTER;read line'} <>
+ *         [exec] (Mille Bornes) { x-terminal-emulator -T "Mille Bornes" -e mille} <>
+ *      [end]
+ *      [submenu] (Puzzles) {}
+ *         [exec] (Boggle) { x-terminal-emulator -T "Boggle" -e boggle} <>
+ *         [exec] (gbrainy) {/usr/games/gbrainy} </usr/share/pixmaps/gbrainy.xpm>
+ *         [exec] (Hangman) { x-terminal-emulator -T "Hangman" -e hangman} <>
+ *      [end]
+ *      [submenu] (Strategy) {}
+ *         [exec] (Air Traffic Controller) { x-terminal-emulator -T "Air Traffic Controller" -e sh -c 'atc ; echo;echo PRESS ENTER;read line'} <>
+ *         [exec] (Sail) { x-terminal-emulator -T "Sail" -e sail} <>
+ *      [end]
+ *      [submenu] (Toys) {}
+ *         [exec] (Oclock) {oclock} <>
+ *         [exec] (Rain) { x-terminal-emulator -T "Rain" -e rain} <>
+ *         [exec] (Worms) { x-terminal-emulator -T "Worms" -e worms} <>
+ *         [exec] (Xclock (analog\)) {xclock -analog} <>
+ *         [exec] (Xclock (digital\)) {xclock -digital -update 1} <>
+ *         [exec] (Xeyes) {xeyes} <>
+ *         [exec] (Xlogo) {xlogo} <>
+ *      [end]
+ *   [end]
+ *   [submenu] (Screen) {}
+ *      [submenu] (Locking) {}
+ *         [exec] (Lock Screen (XScreenSaver\)) {/usr/bin/xscreensaver-command -lock} <>
+ *      [end]
+ *      [submenu] (Saving) {}
+ *         [exec] (Activate ScreenSaver (Previous\)) {/usr/bin/xscreensaver-command -prev} <>
+ *         [exec] (Activate ScreenSaver (Random\)) {/usr/bin/xscreensaver-command -activate} <>
+ *         [exec] (Disable XScreenSaver) {/usr/bin/xscreensaver-command -exit} <>
+ *         [exec] (Reinitialize XScreenSaver) {/usr/bin/xscreensaver-command -restart} <>
+ *         [exec] (ScreenSaver Preferences) {/usr/bin/xscreensaver-command -prefs} <>
+ *      [end]
+ *   [end]
+ *   [submenu] (Window Managers) {}
+ *      [restart] (FluxBox)  {/usr/bin/startfluxbox}
+ *   [end]
+ *
+ *   [config] (Configuration)
+ *   [submenu] (Styles) {}
+ *      [stylesdir] (/usr/share/fluxbox/styles)
+ *      [stylesdir] (~/.fluxbox/styles)
+ *   [end]
+ */
+   [workspaces] (Workspaces)
+   [reconfig] (Reconfigure)
+   [restart] (Restart)
+   [exit] (Exit)
+[end]
