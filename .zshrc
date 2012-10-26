@@ -4,6 +4,7 @@ fpath=($HOME/.zsh/Completion $fpath)
 [ -d $HOME/.local/bin ] && export PATH=$HOME/.local/bin:$PATH
 [ -d $HOME/.cw/def ] && export PATH=$HOME/.cw/def:$PATH
 [ -d /usr/lib/colorgcc/bin ] && export PATH=/usr/lib/colorgcc/bin:$PATH
+[ -d $HOME/.cabal/bin ] && export PATH=$HOME/.cabal/bin:$PATH
 
 # colors
 autoload colors
@@ -19,9 +20,9 @@ FINISH="%{$terminfo[sgr0]%}"
 function rm(){
 	if [ "`pwd -P`" =~ "^/home/$USER" ]; then
 		mkdir -p $HOME/.Trash
-		mv $@ $HOME/.Trash --backup=numbered -f
+		mv "$@" $HOME/.Trash --backup=numbered -f
 	else
-		mv $@ /ssd_home/wyx/tmp/.Trash --backup=numbered -f
+		mv "$@" /ssd_home/wyx/tmp/.Trash --backup=numbered -f
 	fi
 }
 
@@ -229,7 +230,6 @@ user-complete(){
 	if [[ -z $BUFFER ]]; then
 		BUFFER="cd "
 		zle end-of-line
-		user-complete
 		return
 	fi
 	if [[ $BUFFER =~ "^\.\.\.*$" ]]; then
@@ -272,8 +272,8 @@ path_parse(){
 special_command(){
 	cmd=`echo $BUFFER | sed 's/^\ *//g' | sed 's/\ .*//g'`
 	# command running in background
-	bg_list=(pdf gqview libreoffice word)
-	in_array $cmd "${bg_list[@]}" && BUFFER=`echo $BUFFER |sed 's/&\s*$/\ 2>\/dev\/null\ \&/g'`
+	bg_list=(pdf gqview libreoffice word evince)
+	in_array $cmd "${bg_list[@]}" && BUFFER=`echo $BUFFER |sed 's/[&]*\s*$/\ 2>\/dev\/null\ \&/g'`
 
 	# command ending with alert
 	alert_list=(mencoder aria2c axel notify-send)

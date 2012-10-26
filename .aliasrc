@@ -18,7 +18,7 @@ export SDCV_PAGER="sed 's/\ \ \([1-9]\)/\n\n◆\1/g' |less"
 export PYTHONDOCS=/usr/share/doc/python2/html
 export MAKEFLAGS="-j 4"
 export LD_LIBRARY_PATH=/lib/
-export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[33;1m%p\e[m: '
+export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: '
 
 # load colors
 if [ -x /usr/bin/dircolors ]; then
@@ -27,6 +27,7 @@ if [ -x /usr/bin/dircolors ]; then
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 	alias l='ls -F --color=auto'
+	alias sl='ls -F --color=auto'
 	alias ls='ls -F --color=auto'
 	alias lss='ls -F --color=auto'
 fi
@@ -43,13 +44,13 @@ in_array() {
 # function improvments for common command
 alias cdl='cd'
 alias grep='egrep'
+alias p='ping'
 alias v='vim -X'
 alias vi='vim -X'
 alias vim='vim -X'
 alias iv='vim -X'
 alias indent='indent -linux -l80'
 alias gs='gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite'
-alias sl='sl -alF'
 alias LS='LS -eaF'
 alias which='which -a'
 alias zh-CN="LC_ALL='zh_CN.UTF-8'"
