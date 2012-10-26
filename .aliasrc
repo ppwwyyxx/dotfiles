@@ -112,6 +112,7 @@ alias hotspot='sudo nmcli con up id Seattle'
 alias port='netstat -ntlp'
 alias rsync='rsync --progress --partial'
 alias wgetpaste='wgetpaste -C'
+alias chromium_proxy='chromium --proxy-server=socks5://localhost:8080'
 
 alias vmware_rc='sudo rc.d start vmware-USBArbitrator; sudo rc.d start vmware'
 alias win='virtualbox --startvm win7 & ; exit; exit'

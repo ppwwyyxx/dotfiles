@@ -40,7 +40,7 @@
 : ${ZSH_HIGHLIGHT_STYLES[precommand]:=fg=green,underline}
 : ${ZSH_HIGHLIGHT_STYLES[commandseparator]:=none}
 : ${ZSH_HIGHLIGHT_STYLES[hashed-command]:=fg=green}
-: ${ZSH_HIGHLIGHT_STYLES[path]:=underline}
+: ${ZSH_HIGHLIGHT_STYLES[path]:=fg=cyan}			# modified by wyx
 : ${ZSH_HIGHLIGHT_STYLES[globbing]:=fg=blue}
 : ${ZSH_HIGHLIGHT_STYLES[history-expansion]:=fg=blue}
 : ${ZSH_HIGHLIGHT_STYLES[single-hyphen-option]:=none}
@@ -61,7 +61,7 @@ _zsh_highlight_main_highlighter_predicate()
 # Main syntax highlighting function.
 _zsh_highlight_main_highlighter()
 {
-  emulate -L zsh 
+  emulate -L zsh
   setopt localoptions extendedglob bareglobqual
   local start_pos=0 end_pos highlight_glob=true new_expression=true arg style
   typeset -a ZSH_HIGHLIGHT_TOKENS_COMMANDSEPARATOR
