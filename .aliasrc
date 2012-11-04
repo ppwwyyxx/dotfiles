@@ -20,17 +20,6 @@ export MAKEFLAGS="-j 4"
 export LD_LIBRARY_PATH=/lib/
 export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: '
 
-# load colors
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias grep='egrep -In'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-	alias l='ls -F --color=auto'
-	alias sl='ls -F --color=auto'
-	alias ls='ls -F --color=auto'
-	alias lss='ls -F --color=auto'
-fi
 
 in_array() {
     local hay needle=$1
@@ -43,12 +32,14 @@ in_array() {
 
 # function improvments for common command
 alias cdl='cd'
-alias grep='egrep'
 alias p='ping'
-alias v='vim -X'
-alias vi='vim -X'
-alias vim='vim -X'
-alias iv='vim -X'
+#alias v='vim -X'
+#alias vi='vim -X'
+#alias vim='vim -X'
+#alias iv='vim -X'
+alias v='vim '
+alias vi='vim '
+alias iv='vim '
 alias indent='indent -linux -l80'
 alias gs='gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite'
 alias LS='LS -eaF'
@@ -82,10 +73,17 @@ function acpi(){
 }
 
 # customed command
-alias L='less'
-alias C='cat'
 alias G='grep --color=auto'
 alias psg='ps aux |grep --color=auto'
+alias grep='egrep -I'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias l='ls -F --color=auto'
+alias sl='ls -F --color=auto'
+alias ls='ls -F --color=auto'
+alias lss='ls -F --color=auto'
+alias L='less'
+alias C='cat'
 alias cls='clear'
 alias mk='make'
 alias mr='make run'
@@ -122,7 +120,7 @@ alias restart_wm='killall fusion-icon; DISPLAY=:0.0 fusion-icon'
 alias please='sudo'
 alias meow='ping'
 if [[ $HOST == "KeepMoving" ]]; then
-	alias poweroff='vboxmanage controlvm win7 savestate; sudo shutdown -h now'
+	alias poweroff='vboxmanage controlvm win7 savestate; sudo poweroff'
 	alias reboot='vboxmanage controlvm win7 savestate; sudo reboot'
 fi
 alias logout='xfce4-session-logout --logout'

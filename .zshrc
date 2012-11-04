@@ -35,9 +35,9 @@ PROMPT=$(echo '$CYAN┌─$MAGENTA%D %T $CYAN%n@$YELLOW%M:$GREEN%~$(git_super_st
 local return_code="%(?..%{$fg[RED]%}%?)%{$reset_color%}"
 export RPS1="${return_code}"
 case $TERM in (*xterm*|*rxvt*|(dt|k|E)term)
-precmd () { print -Pn "\e]0;%~\a" }
-preexec () { print -Pn "\e]0;%n@%M//%/\ $1\a" }
-;;
+	precmd () { print -Pn "\e]0;%~\a" }
+	preexec () { print -Pn "\e]0;%n@%M//%/\ $1\a" }
+	;;
 esac
 
 # alias
@@ -82,7 +82,7 @@ autoload edit-command-line
 zle -N edit-command-line
 bindkey -M viins '^x^e' edit-command-line
 bindkey '^e' end-of-line
-bindkey '^d' beginning-of-line
+#bindkey '^d' beginning-of-line
 bindkey '^h' backward-char
 bindkey '^l' forward-char
 bindkey '^b' backward-word
@@ -115,7 +115,7 @@ sudo-command-line() {
 	#recolor-cmd
 }
 zle -N sudo-command-line
-bindkey "\e\e" sudo-command-line
+bindkey "${key[F2]}" sudo-command-line
 
 # Complete
 autoload -U compinit
