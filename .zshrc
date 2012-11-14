@@ -250,7 +250,7 @@ zle -N user-complete
 bindkey "\t" user-complete
 autoload compinstall
 
-# Return
+# Custom Return
 path_parse(){
 	if [[ $BUFFER = "" ]] ;then
 		BUFFER="ls"
@@ -314,7 +314,7 @@ function command_not_found_handler() {
 if [[ -d $HOME/.zsh ]]; then
 	source $HOME/.zsh/extract.zsh
 	source $HOME/.zsh/syntax-highlighting/zsh-syntax-highlighting.zsh
-	source $HOME/.zsh/history-substring-search.zsh
+	#source $HOME/.zsh/history-substring-search.zsh
 	source $HOME/.zsh/etc/profile.d/autojump.zsh
 fi
 if [ $commands[fasd] ]; then
