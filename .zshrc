@@ -73,7 +73,7 @@ setopt hist_ignore_space
 setopt hist_no_functions
 setopt share_history
 export histsize=1000000
-export histfile=/home/wyx/.bash_history
+export histfile=/home/wyx/.zsh_history
 export savehist=$histsize
 
 # key binding
@@ -224,6 +224,9 @@ zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(o|avi|mkv|rmvb|pyc|sq
 
 # npm completion
 eval "$(npm completion 2 > /dev/null)"
+
+# hub completion
+eval "$(hub alias -s)"
 
 # ... complete
 user-complete(){
