@@ -30,7 +30,7 @@ function rm(){
 autoload -U promptinit
 promptinit
 source $HOME/.zsh/git-prompt/zshrc.sh
-PROMPT=$(echo '$CYAN┌─$MAGENTA%D %T $CYAN%n@$YELLOW%M:$GREEN%~$(git_super_status)$CYAN\n└─\$')
+PROMPT=$(echo '$CYAN┌─$GREEN [%n@$YELLOW%M]$MAGENTA [%T] $GREEN%~$(git_super_status)$CYAN\n└─\$')
 #PROMPT=$'$CYAN┌─$MAGENTA%D %T $CYAN%n@$YELLOW%M:$GREEN%~$CYAN\n└─\$'
 local return_code="%(?..%{$fg[RED]%}%?)%{$reset_color%}"
 export RPS1="${return_code}"
@@ -65,16 +65,16 @@ zmodload zsh/mathfunc
 autoload -U zsh-mime-setup
 zsh-mime-setup
 
-# history
-setopt inc_append_history
-setopt extended_history
-setopt hist_ignore_all_dups
-setopt hist_ignore_space
-setopt hist_no_functions
-setopt share_history
-export histsize=1000000
-export histfile=/home/wyx/.zsh_history
-export savehist=$histsize
+# History
+setopt INC_APPEND_HISTORY
+setopt EXTENDED_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_NO_FUNCTIONS
+setopt SHARE_HISTORY
+export HISTFILE=/home/wyx/.zsh_history
+export HISTSIZE=1000000
+export SAVEHIST=$HISTSIZE
 
 # key binding
 bindkey -v
@@ -98,13 +98,15 @@ source ${ZDOTDIR:-$HOME}/.zsh/zkbd/$TERM
 [[ -n ${key[Backspace]} ]] && bindkey "${key[Backspace]}" backward-delete-char
 [[ -n ${key[Insert]} ]] && bindkey "${key[Insert]}" overwrite-mode
 [[ -n ${key[Home]} ]] && bindkey "${key[Home]}" beginning-of-line
-[[ -n ${key[PageUp]} ]] && bindkey "${key[PageUp]}" up-line-or-history
+#[[ -n ${key[PageUp]} ]] && bindkey "${key[PageUp]}" up-line-or-history
+#[[ -n ${key[PageDown]} ]] && bindkey "${key[PageDown]}" down-line-or-history
+[[ -n ${key[PageUp]} ]] && bindkey "${key[PageUp]}" history-substring-search-up
+[[ -n ${key[PageDown]} ]] && bindkey "${key[PageDown]}" history-substring-search-down
 [[ -n ${key[Delete]} ]] && bindkey "${key[Delete]}" delete-char
 [[ -n ${key[End]} ]] && bindkey "${key[End]}" end-of-line
-[[ -n ${key[PageDown]} ]] && bindkey "${key[PageDown]}" down-line-or-history
 [[ -n ${key[Up]} ]] && bindkey "${key[Up]}" up-line-or-search
-[[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
 [[ -n ${key[Down]} ]] && bindkey "${key[Down]}" down-line-or-search
+[[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
 [[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
 
 # add sudo
@@ -222,7 +224,7 @@ zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(o|avi|mkv|rmvb|pyc|sq
 # pinyin completion
 [[ -d $HOME/.zsh/Pinyin-Completion ]] && source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
 
-# npm completion
+# npm c	ompletion
 eval "$(npm completion 2 > /dev/null)"
 
 # hub completion
@@ -258,6 +260,9 @@ path_parse(){
 	if [[ $BUFFER = "" ]] ;then
 		BUFFER="ls"
 		zle end-of-line
+	elif [[ $BUFFER = "." ]]; then
+		BUFFER=".."
+		path_parse
 	elif [[ $BUFFER =~ ".*\.\.\..*" ]] ;then
 		BUFFER=`echo "$BUFFER" |sed 's/\.\.\./\.\.\/\.\./g'`
 		path_parse
@@ -317,7 +322,7 @@ function command_not_found_handler() {
 if [[ -d $HOME/.zsh ]]; then
 	source $HOME/.zsh/extract.zsh
 	source $HOME/.zsh/syntax-highlighting/zsh-syntax-highlighting.zsh
-	#source $HOME/.zsh/history-substring-search.zsh
+	source $HOME/.zsh/history-substring-search.zsh
 	source $HOME/.zsh/etc/profile.d/autojump.zsh
 fi
 if [ $commands[fasd] ]; then
