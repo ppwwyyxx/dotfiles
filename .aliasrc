@@ -22,6 +22,8 @@ export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: '
 
 
 in_array() {
+	# usage:  list=(a b c)
+	# in_array a && echo 1
     local hay needle=$1
     shift
     for hay; do
@@ -115,7 +117,7 @@ alias wgetpaste='wgetpaste -C'
 alias chromium_proxy='chromium --proxy-server=socks5://localhost:8080'
 
 alias vmware_rc='sudo rc.d start vmware-USBArbitrator; sudo rc.d start vmware'
-alias win='virtualbox --startvm win7 & ; exit; exit'
+alias win='cd; virtualbox --startvm win7 & ; exit; cd -'
 alias restart_wm='killall fusion-icon; DISPLAY=:0.0 fusion-icon'
 
 # automatic use sudo
@@ -128,6 +130,7 @@ fi
 alias logout='xfce4-session-logout --logout'
 alias apt-get='sudo apt-get'
 alias ai='sudo pacman -S'
+alias pacmanup='yaourt -Syua --ignore ibus'
 alias umount='sudo umount'
 alias mount='sudo mount'
 alias iotop='sudo iotop'

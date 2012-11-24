@@ -219,7 +219,7 @@ zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' ignore-line current
 zstyle ':completion:tmux-pane-words-anywhere:*' matcher-list 'b:=* m:{A-Za-z}={a-zA-Z}'
 
 # vim ignore
-zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(o|avi|mkv|rmvb|pyc|sqlite3|png|jpg|gif)'
+zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(o|avi|mkv|rmvb|pyc|sqlite3|png|jpg|gif|aux|toc|pyg|mp3|wmv)'
 
 # pinyin completion
 [[ -d $HOME/.zsh/Pinyin-Completion ]] && source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
