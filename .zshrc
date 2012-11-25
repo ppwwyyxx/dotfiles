@@ -30,7 +30,7 @@ function rm(){
 autoload -U promptinit
 promptinit
 source $HOME/.zsh/git-prompt/zshrc.sh
-PROMPT=$(echo '$CYAN┌─$GREEN [%n@$YELLOW%M]$MAGENTA [%T] $GREEN%~$(git_super_status)$CYAN\n└─\$')
+PROMPT=$(echo '$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%T] $GREEN%~$(git_super_status)$CYAN\n╰─\$')
 #PROMPT=$'$CYAN┌─$MAGENTA%D %T $CYAN%n@$YELLOW%M:$GREEN%~$CYAN\n└─\$'
 local return_code="%(?..%{$fg[RED]%}%?)%{$reset_color%}"
 export RPS1="${return_code}"

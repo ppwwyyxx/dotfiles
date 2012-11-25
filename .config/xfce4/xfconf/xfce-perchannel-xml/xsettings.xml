@@ -2,7 +2,7 @@
 
 <channel name="xsettings" version="1.0">
   <property name="Net" type="empty">
-    <property name="ThemeName" type="string" value="GTK Leopard"/>
+    <property name="ThemeName" type="string" value="Industrial"/>
     <property name="IconThemeName" type="string" value="oxygen"/>
     <property name="DoubleClickTime" type="int" value="250"/>
     <property name="DoubleClickDistance" type="int" value="5"/>

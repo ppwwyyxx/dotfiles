@@ -146,6 +146,6 @@ x264_param="-x264encopts threads=2:subq=5:8x8dct:frameref=2:bframes=3:weight_b"
 sub_param="-utf8 -subfont-text-scale 2.5 -nofontconfig"
 lame_param="-lameopts fast:preset=medium"
 avc_param="-oac mp3lame $lame_param -ovc x264 $x264_param"
-mx="/home/wyx/install/files/config/pics/pic7"
+mx="/home/wyx/install/files/pics/pic7"
 
 #  vim:ft=zsh
