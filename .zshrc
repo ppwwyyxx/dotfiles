@@ -77,21 +77,20 @@ export HISTSIZE=1000000
 export SAVEHIST=$HISTSIZE
 
 # key binding
-bindkey -v
+bindkey -e
 autoload edit-command-line
 zle -N edit-command-line
 bindkey -M viins '^x^e' edit-command-line
-bindkey '^e' end-of-line
+#bindkey '^e' end-of-line
 #bindkey '^d' beginning-of-line
 bindkey '^h' backward-char
 bindkey '^l' forward-char
 bindkey '^b' backward-word
 bindkey '^w' forward-word
 bindkey '^u' backward-delete-word
-bindkey -M viins 'jj' vi-cmd-mode
-bindkey -M viins ' ' magic-space
-bindkey -M vicmd 'u' undo
-bindkey -M vicmd "q" push-line
+#bindkey -M viins ' ' magic-space
+#bindkey -M vicmd 'u' undo
+#bindkey -M vicmd "q" push-line
 autoload zkbd
 [[ ! -f ${ZDOTDIR:-$HOME}/.zsh/zkbd/$TERM ]] && zkbd
 source ${ZDOTDIR:-$HOME}/.zsh/zkbd/$TERM
@@ -191,7 +190,15 @@ zstyle ':completion:*:*:*:*:processes' force-list always
 zstyle ':completion:*:processes' command 'ps -au$USER '
 
 # host and ip completion
-host_completion=(root@10.42.0.89 wyx@59.66.132.22 ppwwyyxx@server3.net9.org ppwwyyxx@server4.net9.org ppwwyyxx@59.66.131.63 wyx@166.111.143.198 wyx@omni.tuna.tsinghua.edu.cn wyx@59.66.16.35)
+host_completion=(root@10.42.0.89
+wyx@59.66.132.22
+ppwwyyxx@server3.net9.org
+ppwwyyxx@server4.net9.org
+ppwwyyxx@59.66.131.63
+wyx@omni.tuna.tsinghua.edu.cn
+wyx@59.66.16.35
+yuxin.wu@10.20.0.204
+)
 zstyle -e ':completion:*' hosts 'reply=($host_completion)'
 zstyle ':completion:*:ping:*' www.google.com 59.66.132.1 166.111.8.28
 
