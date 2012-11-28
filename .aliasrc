@@ -108,13 +108,14 @@ alias evernote='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/Evernote/Evernote/E
 alias learn=". ~/bin/learn"
 
 alias samba_thu='sudo mount -t cifs -o username=tuna,password=Tunahallelujah2012  //166.111.9.155/movie /mnt'
-alias net9='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.net9.org'
-alias smth='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.smth.org'
 alias hotspot='sudo nmcli con up id Seattle'
 alias port='netstat -ntlp'
 alias rsync='rsync --progress --partial'
 alias wgetpaste='wgetpaste -C'
 alias chromium_proxy='chromium --proxy-server=socks5://localhost:8080'
+alias net9='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.net9.org'
+alias smth='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.smth.org'
+alias gtalk='weechat-curses -r "/connect localhost"'
 
 alias vmware_rc='sudo rc.d start vmware-USBArbitrator; sudo rc.d start vmware'
 alias win='cd; virtualbox --startvm win7 & ; exit; cd -'
