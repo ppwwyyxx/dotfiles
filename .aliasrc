@@ -17,6 +17,7 @@ export SDCV_PAGER="sed 's/\ \ \([1-9]\)/\n\n◆\1/g' |less"
 
 export PYTHONDOCS=/usr/share/doc/python2/html
 export MAKEFLAGS="-j 4"
+export JDK_HOME=/usr/lib/jvm/java-7-openjdk
 export LD_LIBRARY_PATH=/lib/
 export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: '
 
@@ -109,13 +110,14 @@ alias learn=". ~/bin/learn"
 
 alias samba_thu='sudo mount -t cifs -o username=tuna,password=Tunahallelujah2012  //166.111.9.155/movie /mnt'
 alias hotspot='sudo nmcli con up id Seattle'
+alias iwc='iwconfig'
 alias port='netstat -ntlp'
 alias rsync='rsync --progress --partial'
 alias wgetpaste='wgetpaste -C'
 alias chromium_proxy='chromium --proxy-server=socks5://localhost:8080'
 alias net9='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.net9.org'
 alias smth='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.smth.org'
-alias gtalk='weechat-curses -r "/connect localhost"'
+alias gtalk='weechat-curses -r "/connect localhost; /msg &bitlbee identify 1"'
 
 alias vmware_rc='sudo rc.d start vmware-USBArbitrator; sudo rc.d start vmware'
 alias win='cd; virtualbox --startvm win7 & ; exit; cd -'

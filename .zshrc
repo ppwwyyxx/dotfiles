@@ -41,8 +41,8 @@ function rm(){
 autoload -U promptinit
 promptinit
 source $HOME/.zsh/git-prompt/zshrc.sh
-PROMPT=$(echo '$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M:%S}] $GREEN%4~$(git_super_status)$CYAN\n╰─\$')
-#PROMPT=$'$CYAN┌─$MAGENTA%D %T $CYAN%n@$YELLOW%M:$GREEN%~$CYAN\n└─\$'
+PROMPT=$(echo '$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M:%S}] $GREEN%4~$CYAN\n╰─\$')
+#PROMPT=$(echo '$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M:%S}] $GREEN%4~$(git_super_status)$CYAN\n╰─\$')
 local return_code="%(?..%{$fg[RED]%}%?)%{$reset_color%}"
 export RPS1="${return_code}"
 case $TERM in (*xterm*|*rxvt*|(dt|k|E)term)
@@ -63,10 +63,8 @@ for i in xls xlsx doc docx ppt pptx; alias -s $i=libreoffice
 
 # Basic
 unsetopt hup				# don't close background program when exiting shell
-setopt AUTO_PUSHD			# cd to auto pushd
-setopt pushdignoredups
 setopt NO_FLOW_CONTROL		# disable Ctrl+s
-setopt notify				# show bg jobs status immediately
+setopt NOTIFY				# show bg jobs status immediately
 limit coredumpsize 0		# disable core dumps
 WORDCHARS='*?[]~=&;!#$%^(){}<>'
 setopt EXTENDED_GLOB
@@ -275,17 +273,14 @@ autoload compinstall
 
 # Custom Return
 path_parse(){
-	if [[ $BUFFER = "" ]] ;then
-		BUFFER="ls"
-		zle end-of-line
-	elif [[ $BUFFER = "." ]]; then
-		BUFFER=".."
-		path_parse
+	if [[ $BUFFER = "." ]]; then
+		BUFFER="cd ../"
+		return
 	elif [[ $BUFFER =~ ".*\.\.\..*" ]] ;then
 		BUFFER=`echo "$BUFFER" |sed 's/\.\.\./\.\.\/\.\./g'`
 		path_parse
 	elif [[ $BUFFER =~ "^\.\..*" ]]; then
-		if [[ -d `echo "$BUFFER" |sed 's/\\\ /\ /g'|sed 's/l$//g' |sed 's/ls$//g'` ]]; then
+		if [[ -d `echo "$BUFFER" |sed 's/\\\ /\ /g; s/l$//g; s/ls$//g'` ]]; then
 			BUFFER=`echo "$BUFFER" |sed 's/^/cd\ /g'`
 			path_parse
 		fi
@@ -295,15 +290,15 @@ path_parse(){
 		zle end-of-line
 	fi
 }
+bg_list=(pdf gqview libreoffice word evince)
 special_command(){
 	cmd=`echo $BUFFER | sed 's/^\ *//g' | sed 's/\ .*//g'`
 	# command running in background
-	bg_list=(pdf gqview libreoffice word evince)
 	in_array $cmd "${bg_list[@]}" && BUFFER=`echo $BUFFER |sed 's/[&]*\s*$/\ 2>\/dev\/null\ \&/g'`
 
-	# command ending with alert
-	alert_list=(mencoder aria2c axel notify-send)
-	in_array $cmd "${alert_list[@]}" && BUFFER=`echo $BUFFER |sed 's/$/\ ;disp finished/g'`
+	## command ending with alert
+	#alert_list=(mencoder aria2c axel notify-send)
+	#in_array $cmd "${alert_list[@]}" && BUFFER=`echo $BUFFER |sed 's/$/\ ;disp finished/g'`
 
 	#pacman color
 	BUFFER=`echo "$BUFFER" |sed 's/pacman\ /pacman-color\ /g'`
@@ -344,9 +339,10 @@ if [[ -d $HOME/.zsh ]]; then
 	source $HOME/.zsh/etc/profile.d/autojump.zsh
 fi
 if [ $commands[fasd] ]; then
-	eval "$(fasd --init auto zsh-wcomp zsh-wcomp-install)"
-	eval "$(fasd --init zsh-wcomp zsh-wcomp-install)"
+	eval "$(fasd --init posix-alias zsh-hook zsh-wcomp zsh-wcomp-install)"
+	#eval "$(fasd --init auto zsh-wcomp zsh-wcomp-install)"
+	#eval "$(fasd --init zsh-wcomp zsh-wcomp-install)"
 	alias o='f -e xdg-open'
 	alias fv='f -e vim'
-	bindkey '^X^A' fasd-complete
+	bindkey '^X^O' fasd-complete
 fi
