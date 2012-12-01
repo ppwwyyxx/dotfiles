@@ -327,9 +327,6 @@ function command_not_found_handler() {
 
 # for mathmu
 #export LD_LIBRARY_PATH+=/usr/local/bin
-# for ubuntu include
-#export LIBRARY_PATH=/lib/
-#export CPLUS_INCLUDE_PATH=/usr/include/x86_64-linux-gnu
 
 # plugins
 if [[ -d $HOME/.zsh ]]; then
@@ -339,9 +336,8 @@ if [[ -d $HOME/.zsh ]]; then
 	source $HOME/.zsh/etc/profile.d/autojump.zsh
 fi
 if [ $commands[fasd] ]; then
-	eval "$(fasd --init posix-alias zsh-hook zsh-wcomp zsh-wcomp-install)"
-	#eval "$(fasd --init auto zsh-wcomp zsh-wcomp-install)"
-	#eval "$(fasd --init zsh-wcomp zsh-wcomp-install)"
+	#eval "$(fasd --init zsh-hook zsh-wcomp zsh-wcomp-install)"
+	eval "$(fasd --init zsh-wcomp zsh-wcomp-install)"	 # this should be enabled periodically
 	alias o='f -e xdg-open'
 	alias fv='f -e vim'
 	bindkey '^X^O' fasd-complete
