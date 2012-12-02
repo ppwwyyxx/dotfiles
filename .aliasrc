@@ -18,7 +18,7 @@ export SDCV_PAGER="sed 's/\ \ \([1-9]\)/\n\n◆\1/g' |less"
 export PYTHONDOCS=/usr/share/doc/python2/html
 export MAKEFLAGS="-j4"
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
-export LD_LIBRARY_PATH=/lib/
+export LD_LIBRARY_PATH=/lib/:/home/wyx/.local/lib/wkhtmltox/
 export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: '
 
 
@@ -93,6 +93,7 @@ alias mr='make run'
 alias gdb='gdb -q'
 alias pdf='evince'
 alias word='/opt/wps/wps'
+alias powerpoint='/opt/wps/wpp'
 alias diff='colordiff'
 alias srcline='wc -l `find -regex ".*\.[ch]+.*" ` '
 

@@ -26,7 +26,7 @@ function rm(){
 	fi
 }
 
-# prompt
+#prompt
 #PR_FILLBAR=""
 #PR_PWDLEN=""
 
