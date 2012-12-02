@@ -16,7 +16,7 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 export SDCV_PAGER="sed 's/\ \ \([1-9]\)/\n\n◆\1/g' |less"
 
 export PYTHONDOCS=/usr/share/doc/python2/html
-export MAKEFLAGS="-j 4"
+export MAKEFLAGS="-j4"
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
 export LD_LIBRARY_PATH=/lib/
 export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: '
