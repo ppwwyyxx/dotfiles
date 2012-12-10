@@ -48,6 +48,7 @@
         <value type="string" value="ktorrent"/>
         <value type="string" value="osd lyrics"/>
         <value type="string" value="banshee"/>
+        <value type="string" value="exe"/>
       </property>
     </property>
     <property name="plugin-4" type="string" value="showdesktop"/>
