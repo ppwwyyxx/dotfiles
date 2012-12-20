@@ -15,6 +15,7 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 export SDCV_PAGER="sed 's/\ \ \([1-9]\)/\n\n◆\1/g' |less"
 
+export NODE_PATH=/home/wyx/.local/lib/node_modules/
 export PYTHONDOCS=/usr/share/doc/python2/html
 export MAKEFLAGS="-j4"
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
@@ -104,8 +105,8 @@ alias clean_trash='sudo rm ~/tmp/.Trash/* -r; sudo rm ~/.Trash/* -r'
 alias mirror='mplayer -tv driver=v4l2:device=/dev/video0 tv:// -vf-add mirror'
 alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_region 1 -qscale 2 -i :0.0 ~/Videos/out.mpg'
 
-alias math='/home/opt/Mathematica9/Executables/Mathematica &'
-alias mathematica='/home/opt/Mathematica9/Executables/Mathematica'
+alias math='/home/opt/Mathematica/Executables/Mathematica -nosplash&'
+alias mathematica='/home/opt/Mathematica/Executables/Mathematica -nosplash'
 alias matlab='/home/opt/Matlab/bin/matlab'
 alias maple='/home/opt/Maple/bin/xmaple'
 alias evernote='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/Evernote/Evernote/Evernote.exe'
@@ -126,7 +127,7 @@ alias gtalk='weechat-curses -r "/connect localhost; /msg &bitlbee identify 1"'
 
 alias vmware_rc='sudo rc.d start vmware-USBArbitrator; sudo rc.d start vmware'
 alias win='cd; virtualbox --startvm win7 & ; exit; cd -'
-alias restart_wm='killall fusion-icon; DISPLAY=:0.0 fusion-icon'
+alias restart_wm='killall fusion-icon; DISPLAY=:0.0 fusion-icon &'
 
 # automatic use sudo
 alias please='sudo'
@@ -138,7 +139,7 @@ fi
 alias logout='xfce4-session-logout --logout'
 alias apt-get='sudo apt-get'
 alias ai='sudo pacman -S'
-alias pacmanup='yaourt -Syua --ignore ibus'
+alias pacmanup='yaourt -Syua '
 alias umount='sudo umount'
 alias mount='sudo mount'
 alias iotop='sudo iotop'

@@ -95,8 +95,8 @@ bindkey -M viins '^x^e' edit-command-line
 bindkey '^h' backward-char
 bindkey '^l' forward-char
 bindkey '^b' backward-word
-bindkey '^w' forward-word
-bindkey '^u' backward-delete-word
+bindkey '^f' forward-word
+bindkey '^w' backward-delete-word
 #bindkey -M viins ' ' magic-space
 #bindkey -M vicmd 'u' undo
 #bindkey -M vicmd "q" push-line
@@ -235,18 +235,18 @@ zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' ignore-line current
 zstyle ':completion:tmux-pane-words-anywhere:*' matcher-list 'b:=* m:{A-Za-z}={a-zA-Z}'
 
 # vim ignore
-zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(o|avi|mkv|rmvb|pyc|sqlite3|png|jpg|gif|aux|toc|pyg|mp3|wmv)'
+zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|aux|toc|pyg|wmv)'
 
 # pinyin completion
 [[ -d $HOME/.zsh/Pinyin-Completion ]] && source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
 
-# npm c	ompletion
-eval "$(npm completion 2 > /dev/null)"
+# npm completion
+which npm > /dev/null && eval "$(npm completion 2 > /dev/null)"
 
 # hub completion
-eval "$(hub alias -s)"
+which hub > /dev/null && eval "$(hub alias -s)"
 
-# ... complete
+# ... completion
 user-complete(){
 	if [[ -z $BUFFER ]]; then
 		BUFFER="cd "
@@ -297,8 +297,8 @@ special_command(){
 	in_array $cmd "${bg_list[@]}" && BUFFER=`echo $BUFFER |sed 's/[&]*\s*$/\ 2>\/dev\/null\ \&/g'`
 
 	## command ending with alert
-	#alert_list=(mencoder aria2c axel notify-send)
-	#in_array $cmd "${alert_list[@]}" && BUFFER=`echo $BUFFER |sed 's/$/\ ;disp finished/g'`
+	alert_list=(mencoder aria2c axel notify-send)
+	in_array $cmd "${alert_list[@]}" && BUFFER=`echo $BUFFER |sed 's/$/\ ;disp finished/g'`
 
 	#pacman color
 	BUFFER=`echo "$BUFFER" |sed 's/pacman\ /pacman-color\ /g'`
@@ -324,9 +324,6 @@ function command_not_found_handler() {
 	}
 	return 1
 }
-
-# for mathmu
-#export LD_LIBRARY_PATH+=/usr/local/bin
 
 # plugins
 if [[ -d $HOME/.zsh ]]; then
