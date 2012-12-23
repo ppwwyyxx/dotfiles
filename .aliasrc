@@ -67,10 +67,12 @@ function ll(){
 }
 
 function acpi(){
-	/usr/bin/acpi -V |head -n2
+	/usr/bin/acpi -V |head -n1
 	sensors |/usr/bin/grep Physical |sed 's/(.*//g' |sed 's/\+//g'
+	sensors |/usr/bin/grep RPM
+	cat /proc/acpi/ibm/fan | head -n3 |tail -n1
 	#echo "Graphic Card:  `nvidia-settings -q gpucoretemp |grep "Keep" |grep -o "\ [0-9]+" `  °C "
-	for ((i=0;i<1;i++)); do
+	for ((i=0; i<1; i++)); do
 		echo -n "cpu$i : "
 		cat "/sys/devices/system/cpu/cpu$i/cpufreq/scaling_governor"
 	done

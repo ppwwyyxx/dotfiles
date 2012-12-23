@@ -5,6 +5,7 @@ fpath=($HOME/.zsh/Completion $fpath)
 [ -d $HOME/.cw/def ] && export PATH=$HOME/.cw/def:$PATH
 [ -d /usr/lib/colorgcc/bin ] && export PATH=/usr/lib/colorgcc/bin:$PATH
 [ -d $HOME/.cabal/bin ] && export PATH=$HOME/.cabal/bin:$PATH
+[ -d /home/opt/texlive/2012/ ] && export PATH=/home/opt/texlive/2012/bin/x86_64-linux:$PATH
 
 # colors
 autoload colors
