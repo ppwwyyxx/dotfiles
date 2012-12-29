@@ -82,7 +82,7 @@ setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_SPACE
 setopt HIST_NO_FUNCTIONS
 setopt SHARE_HISTORY
-export HISTFILE=/home/wyx/.zsh_history
+export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=1000000
 export SAVEHIST=$HISTSIZE
 
