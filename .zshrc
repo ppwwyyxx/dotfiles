@@ -42,8 +42,10 @@ function rm(){
 autoload -U promptinit
 promptinit
 source $HOME/.zsh/git-prompt/zshrc.sh
-#PROMPT=$(echo '$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M:%S}] $GREEN%4~$CYAN\n╰─\$')
-PROMPT=$(echo '$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M:%S}] $GREEN%4~$(git_super_status)$CYAN\n╰─\$')
+#PROMPT="$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M:%S}] $GREEN%4~$CYAN
+#╰─\$"
+PROMPT="$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M:%S}] $GREEN%4~$(git_super_status)$CYAN
+╰─\$"
 local return_code="%(?..%{$fg[RED]%}%?)%{$reset_color%}"
 export RPS1="${return_code}"
 case $TERM in (*xterm*|*rxvt*|(dt|k|E)term)
@@ -90,7 +92,7 @@ export SAVEHIST=$HISTSIZE
 bindkey -e
 autoload edit-command-line
 zle -N edit-command-line
-bindkey -M viins '^x^e' edit-command-line
+bindkey -M viins '^v' edit-command-line
 #bindkey '^e' end-of-line
 #bindkey '^d' beginning-of-line
 bindkey '^h' backward-char
@@ -98,6 +100,7 @@ bindkey '^l' forward-char
 bindkey '^b' backward-word
 bindkey '^f' forward-word
 bindkey '^w' backward-delete-word
+bindkey '^c' kill-buffer
 #bindkey -M viins ' ' magic-space
 #bindkey -M vicmd 'u' undo
 #bindkey -M vicmd "q" push-line
@@ -291,7 +294,7 @@ path_parse(){
 		zle end-of-line
 	fi
 }
-bg_list=(pdf gqview libreoffice word evince)
+bg_list=(pdf geeqie libreoffice word evince)
 special_command(){
 	cmd=`echo $BUFFER | sed 's/^\ *//g' | sed 's/\ .*//g'`
 	# command running in background
