@@ -7,6 +7,8 @@ fpath=($HOME/.zsh/Completion $fpath)
 [ -d $HOME/.cabal/bin ] && export PATH=$HOME/.cabal/bin:$PATH
 [ -d /home/opt/texlive/2012/ ] && export PATH=/home/opt/texlive/2012/bin/x86_64-linux:$PATH
 
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
+
 # colors
 autoload colors
 colors
@@ -242,7 +244,7 @@ zstyle ':completion:tmux-pane-words-anywhere:*' matcher-list 'b:=* m:{A-Za-z}={a
 zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|aux|toc|pyg|wmv)'
 
 # pinyin completion
-[[ -d $HOME/.zsh/Pinyin-Completion ]] && source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
+[[ -d $HOME/.zsh/Pinyin-Completion ]] && source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh && export PATH=$PATH:$HOME/.zsh/Pinyin-Completion/bin
 
 # npm completion
 which npm > /dev/null && eval "$(npm completion 2 > /dev/null)"
@@ -332,13 +334,15 @@ function command_not_found_handler() {
 # plugins
 if [[ -d $HOME/.zsh ]]; then
 	source $HOME/.zsh/extract.zsh
+	# the next two have to be this order
 	source $HOME/.zsh/syntax-highlighting/zsh-syntax-highlighting.zsh
 	source $HOME/.zsh/history-substring-search.zsh
+	HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS="I"			# sensitive search
 	source $HOME/.zsh/etc/profile.d/autojump.zsh
 fi
 if [ $commands[fasd] ]; then
-	#eval "$(fasd --init zsh-hook zsh-wcomp zsh-wcomp-install)"
-	eval "$(fasd --init zsh-wcomp zsh-wcomp-install)"	 # this should be enabled periodically
+	eval "$(fasd --init zsh-hook zsh-wcomp zsh-wcomp-install)"
+	#eval "$(fasd --init zsh-wcomp zsh-wcomp-install)"	 # this should be enabled periodically
 	alias o='f -e xdg-open'
 	alias fv='f -e vim'
 	bindkey '^X^O' fasd-complete

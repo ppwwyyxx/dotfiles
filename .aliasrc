@@ -21,6 +21,7 @@ export MAKEFLAGS="-j4"
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
 export LD_LIBRARY_PATH=/lib/:/home/wyx/.local/lib/wkhtmltox/
 export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: '
+export LESS='-M'
 
 
 in_array() {
@@ -108,6 +109,7 @@ alias mirror='mplayer -tv driver=v4l2:device=/dev/video0 tv:// -vf-add mirror'
 alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_region 1 -qscale 2 -i :0.0 ~/Videos/out.mpg'
 
 alias math='/home/opt/Mathematica/Executables/Mathematica -nosplash&'
+alias mathc='/home/opt/Mathematica/Executables/math'
 alias mathematica='/home/opt/Mathematica/Executables/Mathematica -nosplash'
 alias matlab='/home/opt/Matlab/bin/matlab'
 alias maple='/home/opt/Maple/bin/xmaple'
@@ -122,13 +124,13 @@ alias rsync='rsync --progress --partial'
 alias m_rsync='rsync --progress --partial --delete --size-only -rlv'
 # rsync ./book/ /mnt/books -rlv --delete --size-only
 alias wgetpaste='wgetpaste -C'
-alias chromium_proxy='chromium --proxy-server=socks5://localhost:8080'
+alias chromium_proxy='/opt/chrome-linux/chrome --proxy-server=socks5://localhost:8080'
 alias net9='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.net9.org'
 alias smth='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.smth.org'
 alias gtalk='weechat-curses -r "/connect localhost; /msg &bitlbee identify 1"'
 
 alias vmware_rc='sudo rc.d start vmware-USBArbitrator; sudo rc.d start vmware'
-alias win='cd; virtualbox --startvm win7 & ; exit; cd -'
+alias win='cd; virtualbox --startvm win7 & ; cd -'
 alias restart_wm='killall fusion-icon; DISPLAY=:0.0 fusion-icon &'
 alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip2 install -U"
 
