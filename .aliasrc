@@ -3,6 +3,7 @@ export EDITOR="vim"
 export XMODIFIERS="@im=ibus"
 export QT_MODULE=ibus
 export GTK_MODULE=ibus
+export LESS='-M'
 # Pager
 export PAGER="/usr/bin/less -s"
 export BROWSER="$PAGER"
@@ -21,7 +22,6 @@ export MAKEFLAGS="-j4"
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
 export LD_LIBRARY_PATH=/lib/:/home/wyx/.local/lib/wkhtmltox/
 export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: '
-export LESS='-M'
 
 
 in_array() {

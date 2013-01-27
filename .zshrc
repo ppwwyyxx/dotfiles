@@ -61,10 +61,11 @@ source $HOME/.aliasrc
 alias mv='nocorrect mv -i'
 alias mkdir='nocorrect mkdir'
 alias cp='nocorrect cp -rvi'
-alias -s pdf=evince
+alias -s pdf=mupdf
 for i in wmv mkv mp4 mp3 avi rm rmvb flv; alias -s $i=mplayer
 for i in jpg png gif; alias -s $i=feh
 for i in xls xlsx doc docx ppt pptx; alias -s $i=libreoffice
+for i in html,mhtml; alias -s $i=chromium
 
 # Basic
 unsetopt hup				# don't close background program when exiting shell
@@ -95,8 +96,8 @@ bindkey -e
 autoload edit-command-line
 zle -N edit-command-line
 bindkey -M viins '^v' edit-command-line
-#bindkey '^e' end-of-line
-#bindkey '^d' beginning-of-line
+bindkey '^e' end-of-line
+bindkey '^d' beginning-of-line
 bindkey '^h' backward-char
 bindkey '^l' forward-char
 bindkey '^b' backward-word
@@ -241,16 +242,16 @@ zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' ignore-line current
 zstyle ':completion:tmux-pane-words-anywhere:*' matcher-list 'b:=* m:{A-Za-z}={a-zA-Z}'
 
 # vim ignore
-zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|aux|toc|pyg|wmv)'
+zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv)'
 
 # pinyin completion
 [[ -d $HOME/.zsh/Pinyin-Completion ]] && source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh && export PATH=$PATH:$HOME/.zsh/Pinyin-Completion/bin
 
 # npm completion
-which npm > /dev/null && eval "$(npm completion 2 > /dev/null)"
+which npm > /dev/null 2>&1 && eval "$(npm completion 2 > /dev/null)"
 
 # hub completion
-which hub > /dev/null && eval "$(hub alias -s)"
+which hub > /dev/null 2>&1 && eval "$(hub alias -s)"
 
 # ... completion
 user-complete(){
@@ -312,7 +313,9 @@ special_command(){
 
 user-ret(){
 	path_parse
-	special_command
+	if [[ $HOST == "KeepMoving" ]]; then
+		special_command
+	fi
 	zle accept-line
 }
 zle -N user-ret
@@ -341,8 +344,8 @@ if [[ -d $HOME/.zsh ]]; then
 	source $HOME/.zsh/etc/profile.d/autojump.zsh
 fi
 if [ $commands[fasd] ]; then
-	eval "$(fasd --init zsh-hook zsh-wcomp zsh-wcomp-install)"
-	#eval "$(fasd --init zsh-wcomp zsh-wcomp-install)"	 # this should be enabled periodically
+	#eval "$(fasd --init zsh-hook zsh-wcomp zsh-wcomp-install)"
+	eval "$(fasd --init zsh-wcomp zsh-wcomp-install)"	 # this should be enabled periodically
 	alias o='f -e xdg-open'
 	alias fv='f -e vim'
 	bindkey '^X^O' fasd-complete
