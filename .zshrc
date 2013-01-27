@@ -344,8 +344,8 @@ if [[ -d $HOME/.zsh ]]; then
 	source $HOME/.zsh/etc/profile.d/autojump.zsh
 fi
 if [ $commands[fasd] ]; then
-	#eval "$(fasd --init zsh-hook zsh-wcomp zsh-wcomp-install)"
-	eval "$(fasd --init zsh-wcomp zsh-wcomp-install)"	 # this should be enabled periodically
+	eval "$(fasd --init zsh-hook zsh-wcomp zsh-wcomp-install)"
+	#eval "$(fasd --init zsh-wcomp zsh-wcomp-install)"	 # this should be enabled periodically
 	alias o='f -e xdg-open'
 	alias fv='f -e vim'
 	bindkey '^X^O' fasd-complete

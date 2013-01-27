@@ -48,6 +48,7 @@ alias indent='indent -linux -l80'
 alias gs='gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite'
 alias LS='LS -eaF'
 alias which='which -a'
+alias ibus-daemon='ibus-daemon --xim'
 alias zh-CN="LC_ALL='zh_CN.UTF-8'"
 alias free='free -m'
 alias df='df -Th'
@@ -60,6 +61,7 @@ alias convmv='convmv -f GBK -t UTF-8 --notest -r'
 #alias rm='mv --target-directory ~/tmp/.Trash --backup=numbered'
 alias cp='cp -rvi'
 alias b='acpi'
+alias km='xmodmap ~/.Xmodmap'
 
 function ll(){
 	ls -AhlF --color=auto $1
@@ -104,7 +106,7 @@ alias diff='colordiff'
 alias srcline='wc -l `find -regex ".*\.[ch]+.*" ` '
 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias clean_trash='sudo rm ~/tmp/.Trash/* -r; sudo rm ~/.Trash/* -r'
+alias clean_trash='sudo rm ~/tmp/.Trash/* -r; sudo rm ~/.Trash/* -r; sudo rm ~/.Trash/.* -r; sudo rm ~/tmp/.Trash/.* -r'
 alias mirror='mplayer -tv driver=v4l2:device=/dev/video0 tv:// -vf-add mirror'
 alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_region 1 -qscale 2 -i :0.0 ~/Videos/out.mpg'
 
