@@ -5,15 +5,15 @@ export QT_MODULE=ibus
 export GTK_MODULE=ibus
 export LESS='-M'
 # Pager
-export PAGER="/usr/bin/less -s"
-export BROWSER="$PAGER"
-export LESS_TERMCAP_mb=$YELLOW
-export LESS_TERMCAP_md=$'\E[01;31m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[01;44;33m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[01;32m'
+#export PAGER="/usr/bin/less -s"
+#export BROWSER="$PAGER"
+#export LESS_TERMCAP_mb=$YELLOW
+#export LESS_TERMCAP_md=$'\E[01;31m'
+#export LESS_TERMCAP_me=$'\E[0m'
+#export LESS_TERMCAP_se=$'\E[0m'
+#export LESS_TERMCAP_so=$'\E[01;44;33m'
+#export LESS_TERMCAP_ue=$'\E[0m'
+#export LESS_TERMCAP_us=$'\E[01;32m'
 export SDCV_PAGER="sed 's/\ \ \([1-9]\)/\n\n◆\1/g' |less"
 
 export NODE_PATH=/home/wyx/.local/lib/node_modules/

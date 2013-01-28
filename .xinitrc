@@ -10,8 +10,24 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
   done
   unset f
 fi
-xset -b
+
+export EDITOR="vim"
+export XMODIFIERS="@im=ibus"
+export QT_MODULE=ibus
+export GTK_MODULE=ibus
+export PAGER="/usr/bin/less -s"
+export BROWSER="$PAGER"
+export LESS_TERMCAP_mb=$YELLOW
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
+
 xrandr --output VGA1 --right-of LVDS1
+xset -b
+xset r rate 170 50
 
 DEFAULT_SESSION=startxfce4
 
@@ -24,6 +40,9 @@ fluxbox)
 	;;
 gnome-shell)
 	exec gnome-session
+	;;
+enlightenment)
+	exec enlightenment_start
 	;;
 *)
 	exec $DEFAULT_SESSION

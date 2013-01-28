@@ -25,19 +25,17 @@
       <property name="&lt;Super&gt;a" type="string" value="/home/wyx/bin/background/screenshot"/>
       <property name="&lt;Super&gt;g" type="string" value="sudo gnome-control-center"/>
       <property name="&lt;Super&gt;k" type="string" value="xkill"/>
-      <property name="XF86Mail" type="string" value="sakura -x tmux"/>
       <property name="XF86Search" type="string" value="xdotool click 1"/>
       <property name="XF86AudioMute" type="string" value="/home/wyx/bin/background/sndctl mute"/>
       <property name="XF86AudioRaiseVolume" type="string" value="/home/wyx/bin/background/sndctl up"/>
       <property name="XF86AudioLowerVolume" type="string" value="/home/wyx/bin/background/sndctl down"/>
-      <property name="Menu" type="string" value="/home/wyx/bin/background/wm/thunderbird"/>
       <property name="&lt;Primary&gt;&lt;Alt&gt;Delete" type="string" value="xfce4-session-logout"/>
       <property name="XF86Launch1" type="string" value="notifier"/>
       <property name="XF86HomePage" type="string" value="notifier"/>
       <property name="&lt;Super&gt;m" type="string" value="cam"/>
       <property name="&lt;Primary&gt;F12" type="string" value="notifier"/>
-      <property name="&lt;Super&gt;t" type="string" value="sakura  -x tmux"/>
       <property name="&lt;Super&gt;c" type="string" value="/home/opt/chrome-linux/chrome"/>
+      <property name="&lt;Super&gt;t" type="string" value="urxvt -e tmux"/>
     </property>
   </property>
   <property name="xfwm4" type="empty">

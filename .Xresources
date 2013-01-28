@@ -1,23 +1,26 @@
 ! true transparent
 URxvt.depth: 32
-URxvt.background: rgba:1111/1111/1111/cccc
+!URxvt.background: rgba:0000/5000/5000/cccc
+URxvt.transparent: true
+URxvt.shading: 30
 
 URxvt*geometry: 80x30
 URxvt*borderLess: true
 URxvt.scrollBar: false
 ! Use shift to scroll
-URxvt.secondaryScroll: True
+URxvt.secondaryScroll: true
 
 URxvt*lineSpace: 0
 URxvt*foreground: #FFFFFF
 URxvt*cursorBlink: true
 URxvt*pointerBlank: true
-URxvt*visualBell: false
-URxvt*urgentOnBell: true
+URxvt.visualBell: true
+URxvt.urgentOnBell: false
+URxvt.bell-command: notify-send "Meow~~"
 
 ! Jump when receiving new line
 URxvt*scrollTtyOutput: false
-URxvt*scrollTtyKeyPress: true
+URxvt*scrollTtyKeyPress	: true
 URxvt*scrollWithBuffer: false
 URxvt*jumpScroll: true
 ! refresh once in a while when receiving too many lines
@@ -28,11 +31,13 @@ URxvt*tripleclickwords: true
 URxvt*saveLines: 10000
 URxvt*insecure: true
 
-URxvt.font: xft:WenQuanYi Micro Hei Mono-11x23:antialias=false
+URxvt.font: xft:WenQuanYi Micro Hei Mono-11x23:antialias=true
 URxvt.boldfont: xft:Dejavu Sans Mono-12:bold,xft:WenQuanYi Micro Hei-12:bold
+URxvt.italicfont: xft:Dejavu Sans Mono-12:italic,xft:WenQuanYi Micro Hei-12:italic
 URxvt*buffered: true
+!urxvt have terrible letter space
 URxvt.letterSpace: -2
-! font settings suggested by infinality
+! font settings suggested by infinality {
 Xft.autohint: 0
 Xft.lcdfilter:  lcddefault
 Xft.hintstyle:  hintfull
@@ -40,9 +45,10 @@ Xft.hinting: 1
 Xft.antialias: 1
 Xft.dpi: 96
 Xft.rgba: rgb
+!}
 
 
-! With ibus:
+! With ibus: need ibus to start with `ibus-daemon --xim`
 URxvt.inputMethod: ibus
 Urxvt.preeditType: OverTheSpot
 
@@ -52,8 +58,8 @@ Urxvt.preeditType: OverTheSpot
 #endif
 URxvt.perl-lib: URXVT_PERL_LIB
 !URxvt.perl-ext-common: default,clipboard,url-select,keyboard-select,tabbedex
-URxvt.perl-ext-common: default,clipboard,url-select,keyboard-select
-URxvt.perl-ext:matcher,selection,selection-popup,selection-autotransform,searchable-scrollback,readline,selection-pastebin,-option-popup
+URxvt.perl-ext-common: default,clipboard,url-select,keyboard-select,readline,matcher,selection
+URxvt.perl-ext:selection-popup,selection-autotransform,searchable-scrollback
 
 URxvt.matcher.button: 1
 URxvt.url-select.launcher:  chromium

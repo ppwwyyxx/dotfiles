@@ -34,13 +34,16 @@
     </property>
     <property name="plugin-3" type="string" value="systray">
       <property name="names-visible" type="array">
-        <value type="string" value="main.py"/>
+        <value type="string" value="screencloud"/>
+        <value type="string" value="stardict"/>
         <value type="string" value="networkmanager applet"/>
         <value type="string" value="task manager"/>
-        <value type="string" value="mmserver"/>
+        <value type="string" value="main.py"/>
         <value type="string" value="skype"/>
         <value type="string" value="ibus panel"/>
         <value type="string" value="orage"/>
+        <value type="string" value="simon"/>
+        <value type="string" value="mmserver"/>
         <value type="string" value="chromium"/>
         <value type="string" value="bluetooth"/>
         <value type="string" value="fusion-icon"/>
