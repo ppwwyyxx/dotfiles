@@ -1,42 +1,44 @@
-! true transparent
 URxvt.depth: 32
 !URxvt.background: rgba:0000/5000/5000/cccc
 URxvt.transparent: true
 URxvt.shading: 30
 
-URxvt*geometry: 80x30
-URxvt*borderLess: true
+URxvt.geometry: 80x30
+URxvt.borderLess: true
 URxvt.scrollBar: false
 ! Use shift to scroll
 URxvt.secondaryScroll: true
 
-URxvt*lineSpace: 0
-URxvt*foreground: #FFFFFF
-URxvt*cursorBlink: true
-URxvt*pointerBlank: true
+URxvt.foreground: #FFFFFF
+URxvt.background: #000000
+URxvt.colorUL: #00ff5f
+URxvt.cursorColor: #4a54A3
+URxvt.cursorBlink: true
+URxvt.pointerBlank: true
 URxvt.visualBell: true
 URxvt.urgentOnBell: false
 URxvt.bell-command: notify-send "Meow~~"
 
 ! Jump when receiving new line
-URxvt*scrollTtyOutput: false
-URxvt*scrollTtyKeyPress	: true
-URxvt*scrollWithBuffer: false
-URxvt*jumpScroll: true
+URxvt.scrollTtyOutput: false
+URxvt.scrollTtyKeyPress	: true
+URxvt.scrollWithBuffer: false
+URxvt.jumpScroll: true
 ! refresh once in a while when receiving too many lines
-URxvt*skipScroll: true
+URxvt.skipScroll: true
 
-URxvt*termName: rxvt-256color
-URxvt*tripleclickwords: true
-URxvt*saveLines: 10000
-URxvt*insecure: true
+URxvt.termName: rxvt-256color
+URxvt.tripleclickwords: true
+URxvt.saveLines: 10000
+URxvt.insecure: true
 
 URxvt.font: xft:WenQuanYi Micro Hei Mono-11x23:antialias=true
 URxvt.boldfont: xft:Dejavu Sans Mono-12:bold,xft:WenQuanYi Micro Hei-12:bold
 URxvt.italicfont: xft:Dejavu Sans Mono-12:italic,xft:WenQuanYi Micro Hei-12:italic
-URxvt*buffered: true
+URxvt.buffered: true
 !urxvt have terrible letter space
 URxvt.letterSpace: -2
+URxvt.lineSpace: 0
 ! font settings suggested by infinality {
 Xft.autohint: 0
 Xft.lcdfilter:  lcddefault
@@ -80,23 +82,8 @@ URxvt.tabbed.no-tabbedex-keys: true
 URxvt.keysym.C-C:   perl:clipboard:copy
 URxvt.keysym.C-V:   perl:clipboard:paste
 
-! Color
-URxvt*colorUL: #00ff5f
-URxvt*cursorColor: #4a54A3
-!black
-!*color0, 8
-!red
-!*color1, 9
-!green
-!*color2, 10
-!yellow
-!*color3, 11
+! Fix Color
+! 0 - 7, 8 - 15: black, red, green, yellow, blue, magenta, cyan, white
 !blue, the dark(pure) blue is too dim
 *color4:  #2277cc
 *color12: #2277cc
-!magenta
-!*color5, 13
-!cyan
-!*color6, 14
-!!white
-!*color7, 15

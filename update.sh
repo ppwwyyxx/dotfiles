@@ -1,7 +1,11 @@
 #!/bin/bash
-# File: rm_git.sh
-# Date: Sun Dec 23 17:42:19 2012 +0800
+# File: update.sh
+# Date: Mon Jan 28 22:22:24 2013 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
+if [[ "$HOST" == "KeepMoving" ]]; then
+	echo "Not at KeepMoving! "
+	exit 1
+fi
 rm .vimrc .vim -r
 cp ~/.vimrc ~/.vim ./ -rv
 rm .zshrc .aliasrc .zsh -r
