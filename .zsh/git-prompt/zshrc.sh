@@ -39,7 +39,12 @@ function update_current_git_vars() {
     unset __CURRENT_GIT_STATUS
 
     local gitstatus="$__GIT_PROMPT_DIR/gitstatus.py"
-    _GIT_STATUS=`python ${gitstatus}`
+
+	# force use of python2 (python3 is the default python in some machine)
+	VERSION=`python -V 2>&1 >/dev/null |cut -d ' ' -f 2 |cut -d '.' -f 1`
+	[[ $VERSION == "3" ]] && PYTHON=python2 || PYTHON=python
+
+    _GIT_STATUS=`$PYTHON ${gitstatus}`
     __CURRENT_GIT_STATUS=("${(@f)_GIT_STATUS}")
 	GIT_BRANCH=$__CURRENT_GIT_STATUS[1]
 	GIT_REMOTE=$__CURRENT_GIT_STATUS[2]
@@ -54,7 +59,7 @@ function update_current_git_vars() {
 git_super_status() {
 	precmd_update_git_vars
     if [ -n "$__CURRENT_GIT_STATUS" ]; then
-	  STATUS="($GIT_BRANCH"
+	  #STATUS="($GIT_BRANCH"
 	  STATUS="$ZSH_THEME_GIT_PROMPT_PREFIX$ZSH_THEME_GIT_PROMPT_BRANCH$GIT_BRANCH%{${reset_color}%}"
 	  if [ -n "$GIT_REMOTE" ]; then
 		  STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_REMOTE$GIT_REMOTE%{${reset_color}%}"
@@ -75,21 +80,23 @@ git_super_status() {
 	  if [ "$GIT_CLEAN" -eq "1" ]; then
 		  STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_CLEAN"
 	  fi
+	  # reset prefix color as well as suffix color
 	  STATUS="$STATUS%{${reset_color}%}$ZSH_THEME_GIT_PROMPT_SUFFIX"
+	  STATUS="%{${reset_color}%}$STATUS"
 	  echo "$STATUS"
 	fi
 }
 
 # Default values for the appearance of the prompt. Configure at will.
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[yellow][%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$fg[yellow]]%}"
+ZSH_THEME_GIT_PROMPT_PREFIX="["
+ZSH_THEME_GIT_PROMPT_SUFFIX="]"
 ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
 ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"
 ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[red]%}●"
 ZSH_THEME_GIT_PROMPT_CONFLICTS="%{$fg[red]%}✖"
-ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg[cyan]%}✚"
+ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg[blue]%}✚"
 ZSH_THEME_GIT_PROMPT_REMOTE=""
 ZSH_THEME_GIT_PROMPT_UNTRACKED="…"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%}✔"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔"
 
 

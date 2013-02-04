@@ -5,15 +5,19 @@ fpath=($HOME/.zsh/Completion $fpath)
 [ -d $HOME/.local/bin ] && export PATH=$HOME/.local/bin:$PATH
 [ -d $HOME/.cw/def ] && export PATH=$HOME/.cw/def:$PATH
 [ -d $HOME/.cabal/bin ] && export PATH=$HOME/.cabal/bin:$PATH
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 [ -d /home/opt/texlive/2012/ ] && export PATH=/home/opt/texlive/2012/bin/x86_64-linux:$PATH
 [ -d /usr/lib/colorgcc/bin ] && export PATH=/usr/lib/colorgcc/bin:$PATH
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+[ -d $HOME/.rvm/bin ] && export PATH=$PATH:$HOME/.rvm/bin			# Add RVM to PATH for scripting
 
 export NODE_PATH=/home/wyx/.local/lib/node_modules/
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
 export LD_LIBRARY_PATH=/lib/:/home/wyx/.local/lib/wkhtmltox/
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 export MAKEFLAGS="-j4"
+export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: (meow~~) '
+export LS_COLORS="$LS_COLORS*.f4v=01;35:"
 
 # colors
 autoload colors
@@ -49,11 +53,13 @@ function rm(){
 #fi
 autoload -U promptinit
 promptinit
+
 source $HOME/.zsh/git-prompt/zshrc.sh
-#PROMPT="$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M:%S}] $GREEN%4~$CYAN
+#PROMPT="$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M:%S}] $GREEN%4~ $CYAN
 #╰─\$"
-PROMPT="$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M:%S}] $GREEN%4~$(git_super_status)$CYAN
-╰─\$"
+PROMPT='$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M:%S}] $GREEN%4~ $(git_super_status)$CYAN
+╰─\$'
+
 local return_code="%(?..%{$fg[RED]%}%?)%{$reset_color%}"
 export RPS1="${return_code}"
 case $TERM in (*xterm*|*rxvt*|(dt|k|E)term)
@@ -250,7 +256,7 @@ zstyle ':completion:tmux-pane-words-anywhere:*' matcher-list 'b:=* m:{A-Za-z}={a
 # vim ignore
 zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv)'
 
-# pinyin completion
+# Pinyin Completion
 [[ -d $HOME/.zsh/Pinyin-Completion ]] && source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh && export PATH=$PATH:$HOME/.zsh/Pinyin-Completion/bin
 
 # npm completion
@@ -289,16 +295,21 @@ path_parse(){
 	if [[ $BUFFER = "." ]]; then
 		BUFFER="cd ../"
 		return
-	elif [[ $BUFFER =~ ".*\.\.\..*" ]] ;then
+	elif [[ $BUFFER =~ "^\./.*" ]]; then		# automatic cd to directory when executed
+		if [[ ! -f $BUFFER ]] && [[ -d $BUFFER ]]; then
+			BUFFER="cd $BUFFER"
+			path_parse
+		fi
+	elif [[ $BUFFER =~ ".*\.\.\..*" ]] ;then	# complete ...
 		BUFFER=`echo "$BUFFER" |sed 's/\.\.\./\.\.\/\.\./g'`
 		path_parse
-	elif [[ $BUFFER =~ "^\.\..*" ]]; then
+	elif [[ $BUFFER =~ "^\.\..*" ]]; then		# auto add cd
 		if [[ -d `echo "$BUFFER" |sed 's/\\\ /\ /g; s/l$//g; s/ls$//g'` ]]; then
 			BUFFER=`echo "$BUFFER" |sed 's/^/cd\ /g'`
 			path_parse
 		fi
 		zle accept-line
-	elif [[ $BUFFER =~ "^cd .*/ls*$" ]] ; then
+	elif [[ $BUFFER =~ "^cd .*/ls*$" ]] ; then	# fix ls typo
 		BUFFER=`echo "$BUFFER" |sed 's/l[^\/]*$/;ls/g' `
 		zle end-of-line
 	fi
@@ -350,8 +361,8 @@ if [[ -d $HOME/.zsh ]]; then
 	source $HOME/.zsh/etc/profile.d/autojump.zsh
 fi
 if [ $commands[fasd] ]; then
-	eval "$(fasd --init zsh-hook zsh-wcomp zsh-wcomp-install)"
-	#eval "$(fasd --init zsh-wcomp zsh-wcomp-install)"	 # this should be enabled periodically
+	#eval "$(fasd --init zsh-hook zsh-wcomp zsh-wcomp-install)"
+	eval "$(fasd --init zsh-wcomp zsh-wcomp-install)"	 # this should be enabled periodically
 	alias o='f -e xdg-open'
 	alias fv='f -e vim'
 	bindkey '^X^O' fasd-complete
