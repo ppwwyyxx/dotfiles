@@ -11,6 +11,7 @@ in_array() {
 
 # function improvments for common command
 alias cdl='cd'
+alias dc='cd'
 alias p='ping'
 alias meow='ping'
 alias p6='ping6'
@@ -121,7 +122,7 @@ fi
 alias logout='xfce4-session-logout --logout'
 alias apt-get='sudo apt-get'
 alias ai='sudo pacman -S'
-alias pacmanup='yaourt -Syu --ignore=imagemagick'
+alias pacmanup='sudo yaourt -Syu --ignore=imagemagick'
 alias umount='sudo umount'
 alias mount='sudo mount'
 alias iotop='sudo iotop'

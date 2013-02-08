@@ -1,8 +1,8 @@
 #!/bin/bash
 # File: update.sh
-# Date: Mon Feb 04 09:07:10 2013 +0800
+# Date: Fri Feb 08 13:42:36 2013 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
-if [[ "$HOST" == "KeepMoving" ]]; then
+if [[ ! "$HOST" -eq "KeepMoving" ]]; then
 	echo "Not at KeepMoving! "
 	exit 1
 fi

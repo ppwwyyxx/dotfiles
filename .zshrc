@@ -321,7 +321,7 @@ special_command(){
 	in_array $cmd "${bg_list[@]}" && BUFFER=`echo $BUFFER |sed 's/[&]*\s*$/\ 2>\/dev\/null\ \&/g'`
 
 	## command ending with alert
-	alert_list=(mencoder aria2c axel notify-send)
+	alert_list=(mencoder aria2c axel)
 	in_array $cmd "${alert_list[@]}" && BUFFER=`echo $BUFFER |sed 's/$/\ ;disp finished/g'`
 
 	#pacman color
