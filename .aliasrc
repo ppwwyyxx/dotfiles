@@ -23,6 +23,8 @@ alias vi='vim '
 alias iv='vim '
 alias indent='indent -linux -l80'
 alias gs='gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite'
+alias gdb='gdb -q'
+alias R='R --vanilla'
 alias LS='LS -eaF'
 alias which='which -a'
 alias ibus-daemon='ibus-daemon --xim'
@@ -35,6 +37,7 @@ alias ctags='ctags -R -f .tags --c++-kinds=+p --fields=+iaS --extra=+q'
 alias toilet='toilet --filter gay'
 alias valgrind='valgrind --leak-check=full --track-origins=yes --show-reachable=no --show-possibly-lost=no'
 alias convmv='convmv -f GBK -t UTF-8 --notest -r'
+alias wgetpaste='wgetpaste -C'
 #alias rm='mv --target-directory ~/tmp/.Trash --backup=numbered'
 alias cp='cp -rvi'
 alias b='acpi'
@@ -47,9 +50,9 @@ function ll(){
 }
 
 function acpi(){
-	/usr/bin/acpi -V |head -n1
-	sensors |/usr/bin/grep Physical |sed 's/(.*//g' |sed 's/\+//g'
-	sensors |/usr/bin/grep RPM
+	=acpi -V |head -n1
+	sensors | grep Physical |sed 's/(.*//g' |sed 's/\+//g'
+	sensors | grep RPM
 	cat /proc/acpi/ibm/fan | head -n3 |tail -n1
 	#echo "Graphic Card:  `nvidia-settings -q gpucoretemp |grep "Keep" |grep -o "\ [0-9]+" `  °C "
 	for ((i=0; i<1; i++)); do
@@ -74,8 +77,6 @@ alias cls='clear'
 alias mk='make'
 alias mr='make run'
 alias makec='make clean'
-#alias time='/usr/bin/time'
-alias gdb='gdb -q'
 alias pdf='evince'
 alias word='/opt/wps/wps'
 alias powerpoint='/opt/wps/wpp'
@@ -102,7 +103,6 @@ alias port='netstat -ntlp'
 alias rsync='rsync --progress --partial'
 alias m_rsync='rsync --progress --partial --delete --size-only -rlv'
 # rsync ./book/ /mnt/books -rlv --delete --size-only
-alias wgetpaste='wgetpaste -C'
 alias chromium_proxy='/opt/chrome-linux/chrome --proxy-server=socks5://localhost:8080'
 alias net9='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.net9.org'
 alias smth='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.smth.org'
@@ -126,9 +126,10 @@ alias pacmanup='sudo yaourt -Syu --ignore=imagemagick'
 alias umount='sudo umount'
 alias mount='sudo mount'
 alias iotop='sudo iotop'
-alias iftop='sudo iftop'
+alias iftop='sudo iftop -B'
 alias powertop='sudo powertop'
 alias sv='sudo vim'
+alias gv='gvim'
 
 # customed variables
 hw=/home/wyx/Documents/work_thu/original/12_aut/
