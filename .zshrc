@@ -17,7 +17,6 @@ export LD_LIBRARY_PATH=/lib/:/home/wyx/.local/lib/wkhtmltox/
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 export MAKEFLAGS="-j4"
 export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: (meow~~) '
-export LS_COLORS="$LS_COLORS*.f4v=01;35:"
 
 # colors
 autoload colors
@@ -179,6 +178,7 @@ export ZLSCOLORS="${LS_COLORS}"
 zmodload zsh/complist
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+export LS_COLORS="$LS_COLORS*.f4v=01;35:"		# add custom ls_color
 
 # Fix case and typo
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
