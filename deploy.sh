@@ -1,9 +1,9 @@
 #!/bin/bash
 # File: deploy.sh
-# Date: Fri Feb 08 13:42:36 2013 +0800
+# Date: Mon Feb 18 12:13:16 2013 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
-if [[ "$HOST" -eq "KeepMoving" ]]; then
+if [[ "$HOST" == "KeepMoving" ]]; then
 	echo "at Keepmoving"
 	exit 1
 fi
