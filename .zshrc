@@ -32,9 +32,10 @@ FINISH="%{$terminfo[sgr0]%}"
 function rm(){
 	if [ "`pwd -P`" =~ "^/home/$USER" ]; then
 		mkdir -p $HOME/.Trash
-		mv "$@" $HOME/.Trash --backup=numbered -f
+		mv "$@" $HOME/.Trash/ --backup=numbered -f
 	else
-		mv "$@" /ssd_home/wyx/tmp/.Trash --backup=numbered -f
+		mkdir -p /ssd_home/wyx/tmp/.Trash
+		mv "$@" /ssd_home/wyx/tmp/.Trash/ --backup=numbered -f
 	fi
 }
 
@@ -56,8 +57,15 @@ promptinit
 source $HOME/.zsh/git-prompt/zshrc.sh
 #PROMPT="$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M:%S}] $GREEN%4~ $CYAN
 #╰─\$"
+#if [ "$USER" -eq "wyx" ]; then
+	#PROMPT_PART="%n"
+#else
+	#PROMPT_PART='$GREEN [%n@$YELLOW%M]'
+#fi
 PROMPT='$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M:%S}] $GREEN%4~ $(git_super_status)$CYAN
 ╰─\$'
+#PROMPT='$CYAN╭─$PROMPT_PART$MAGENTA [%D{%H:%M:%S}] $GREEN%4~ $(git_super_status)$CYAN
+#╰─\$'
 
 local return_code="%(?..%{$fg[RED]%}%?)%{$reset_color%}"
 export RPS1="${return_code}"

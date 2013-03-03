@@ -84,7 +84,7 @@ alias diff='colordiff'
 alias srcline='wc -l `find -regex ".*\.[ch]+.*" ` '
 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias clean_trash='sudo rm ~/tmp/.Trash/* -r; sudo rm ~/.Trash/* -r; sudo rm ~/.Trash/.* -r; sudo rm ~/tmp/.Trash/.* -r'
+alias clean_trash='=rm ~/tmp/.Trash/* -rf; =rm ~/.Trash/* -rf; =rm ~/.Trash/.* -rf; =rm ~/tmp/.Trash/.* -rf'
 alias mirror='mplayer -tv driver=v4l2:device=/dev/video0 tv:// -vf-add mirror'
 alias tune_pitch='mplayer -af scaletempo=speed=pitch'
 alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_region 1 -qscale 2 -i :0.0 ~/Videos/out.mpg'
@@ -111,7 +111,7 @@ alias gtalk='weechat-curses -r "/connect localhost; /msg &bitlbee identify 1"'
 
 alias vmware_rc='sudo rc.d start vmware-USBArbitrator; sudo rc.d start vmware'
 alias win='cd; virtualbox --startvm win7 & ; cd -'
-alias restart_wm='killall fusion-icon; DISPLAY=:0.0 fusion-icon &'
+alias restart_wm='killall fusion-icon -9; DISPLAY=:0.0 fusion-icon &'
 alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip2 install -U"
 
 # automatic use sudo
