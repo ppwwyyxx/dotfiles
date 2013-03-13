@@ -17,7 +17,13 @@ add-zsh-hook precmd precmd_update_git_vars
 
 ## Function definitions
 function preexec_update_git_vars() {
-    case "$2" in
+    case "$1" in		# original command
+        git*)
+        __EXECUTED_GIT_COMMAND=1
+        ;;
+    esac
+
+    case "$2" in		# aliased command
         git*)
         __EXECUTED_GIT_COMMAND=1
         ;;
