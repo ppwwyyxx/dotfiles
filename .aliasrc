@@ -41,7 +41,7 @@ alias wgetpaste='wgetpaste -C'
 #alias rm='mv --target-directory ~/tmp/.Trash --backup=numbered'
 alias cp='cp -rvi'
 alias b='acpi'
-alias km='xmodmap ~/.Xmodmap'
+alias km='xmodmap ~/.Xmodmap; xcape -e "Control_L=Escape"'
 
 function ll(){
 	ls -AhlF --color=auto $1
