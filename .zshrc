@@ -12,7 +12,7 @@ fpath=($HOME/.zsh/Completion $fpath)
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 [ -d $HOME/.rvm/bin ] && export PATH=$PATH:$HOME/.rvm/bin			# Add RVM to PATH for scripting
 
-export NODE_PATH=/home/wyx/.local/lib/node_modules/
+export NODE_PATH=$HOME/.local/lib/node_modules/
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
 export LD_LIBRARY_PATH=/lib/:/home/wyx/.local/lib/wkhtmltox/
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
@@ -31,12 +31,12 @@ FINISH="%{$terminfo[sgr0]%}"
 
 # custom rm command
 function rm(){
-	if [ "`pwd -P`" =~ "^/home/$USER" ]; then
-		mkdir -p $HOME/.Trash
-		mv "$@" $HOME/.Trash/ --backup=numbered -f
-	else
+	if [ "`pwd -P`" =~ "/ssd_home/wyx" ] ; then
 		mkdir -p /ssd_home/wyx/tmp/.Trash
-		mv "$@" /ssd_home/wyx/tmp/.Trash/ --backup=numbered -f
+		mv "$@" /ssd_home/wyx/tmp/.Trash/ --backup=numbered -fv
+	else
+		mkdir -p $HOME/.Trash
+		mv "$@" $HOME/.Trash/ --backup=numbered -fv
 	fi
 }
 
