@@ -123,7 +123,7 @@ fi
 alias logout='xfce4-session-logout --logout'
 alias apt-get='sudo apt-get'
 alias ai='sudo pacman -S'
-alias pacmanup='sudo yaourt -Syu --ignore=imagemagick'
+alias pacmanup='sudo yaourt -Syu'
 alias umount='sudo umount'
 alias mount='sudo mount'
 alias iotop='sudo iotop'
