@@ -96,6 +96,7 @@ alias matlab='/home/opt/Matlab/bin/matlab'
 alias maple='/home/opt/Maple/bin/xmaple'
 alias evernote='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/Evernote/Evernote/Evernote.exe'
 alias learn=". ~/bin/learn"
+alias ipython_notebook="ipython2 notebook --pylab inline"
 
 alias samba_thu='sudo mount -t cifs -o username=tuna,password=Tunahallelujah2012  //166.111.9.155/movie /mnt'
 alias hotspot='sudo nmcli con up id Seattle'
