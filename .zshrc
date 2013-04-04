@@ -369,7 +369,7 @@ if [[ -d $HOME/.zsh ]]; then
 	source $HOME/.zsh/syntax-highlighting/zsh-syntax-highlighting.zsh
 	source $HOME/.zsh/history-substring-search.zsh
 	HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS="I"			# sensitive search
-	source $HOME/.zsh/etc/profile.d/autojump.zsh
+	source $HOME/.zsh/autojump/etc/profile.d/autojump.zsh
 fi
 if [ $commands[fasd] ]; then
 	eval "$(fasd --init zsh-hook zsh-wcomp zsh-wcomp-install)"
