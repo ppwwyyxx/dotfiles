@@ -83,7 +83,7 @@ source $HOME/.aliasrc
 alias mv='nocorrect mv -i'
 alias mkdir='nocorrect mkdir'
 alias cp='nocorrect cp -rvi'
-alias -s pdf=mupdf
+alias -s pdf=llpp
 for i in wmv mkv mp4 mp3 avi rm rmvb flv; alias -s $i=mplayer
 for i in jpg png gif; alias -s $i=feh
 for i in xls xlsx doc docx ppt pptx; alias -s $i=libreoffice
