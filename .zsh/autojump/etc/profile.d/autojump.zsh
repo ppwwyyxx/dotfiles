@@ -44,7 +44,8 @@ function j {
 
     local new_path="$(autojump ${@})"
     if [ -d "${new_path}" ]; then
-        echo -e "\\033[31m${new_path}\\033[0m"
+        echo -e "\\033[35m${new_path}\\033[0m"
+		# color modified by wyx
         cd "${new_path}"
     else
         echo "autojump: directory '${@}' not found"
