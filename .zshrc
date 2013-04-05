@@ -65,7 +65,7 @@ source $HOME/.zsh/git-prompt/zshrc.sh
 #else
 	#PROMPT_PART='$GREEN [%n@$YELLOW%M]'
 #fi
-PROMPT='$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M:%S}] $GREEN%4~ $(git_super_status)$CYAN
+PROMPT='$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M}] $GREEN%4~ $(git_super_status)$CYAN
 ╰─\$'
 #PROMPT='$CYAN╭─$PROMPT_PART$MAGENTA [%D{%H:%M:%S}] $GREEN%4~ $(git_super_status)$CYAN
 #╰─\$'
