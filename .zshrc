@@ -334,9 +334,6 @@ special_command(){
 	## command ending with alert
 	alert_list=(mencoder aria2c axel)
 	in_array $cmd "${alert_list[@]}" && BUFFER=`echo $BUFFER |sed 's/$/\ ;disp finished/g'`
-
-	#pacman color
-	BUFFER=`echo "$BUFFER" |sed 's/pacman\ /pacman-color\ /g'`
 }
 
 user-ret(){
