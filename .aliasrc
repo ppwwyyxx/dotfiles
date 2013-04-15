@@ -62,7 +62,7 @@ function acpi(){
 }
 
 # customed command
-alias G='grep --color=auto'
+alias G='| grep --color=auto'
 alias psg='pgrep -a'
 alias grep='egrep -I'
 alias fgrep='fgrep --color=auto'
@@ -124,7 +124,7 @@ fi
 alias logout='xfce4-session-logout --logout'
 alias apt-get='sudo apt-get'
 alias ai='sudo pacman -S'
-alias pacmanup='sudo yaourt -Syu'
+alias pacmanup='pacaur -Syu'
 alias umount='sudo umount'
 alias mount='sudo mount'
 alias iotop='sudo iotop'
@@ -138,7 +138,7 @@ hw=/home/wyx/Documents/work_thu/original/12_aut/
 pydoc=/usr/share/doc/python2/html
 
 x264_param="-x264encopts threads=2:subq=5:8x8dct:frameref=2:bframes=3:weight_b"
-sub_param='-fontconfig -subcp utf-8 -subfont-text-scale 2.5 -subfont "Microsoft\ YaHei"'
+sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "WenQuanYi MicroHei"'
 lame_param="-lameopts fast:preset=medium"
 avc_param="-oac mp3lame $lame_param -ovc x264 $x264_param"
 mx="/home/wyx/install/files/pics/pic7"

@@ -18,6 +18,7 @@ export LD_LIBRARY_PATH=/lib/:/home/wyx/.local/lib/wkhtmltox/
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 export MAKEFLAGS="-j4"
 export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: (meow~~) '
+export DISTCC_POTENTIAL_HOSTS='10.20.0.204/8'
 
 # colors
 autoload colors
@@ -83,7 +84,7 @@ source $HOME/.aliasrc
 alias mv='nocorrect mv -i'
 alias mkdir='nocorrect mkdir'
 alias cp='nocorrect cp -rvi'
-alias -s pdf=llpp
+alias -s pdf=mupdf
 for i in wmv mkv mp4 mp3 avi rm rmvb flv; alias -s $i=mplayer
 for i in jpg png gif; alias -s $i=feh
 for i in xls xlsx doc docx ppt pptx; alias -s $i=libreoffice
