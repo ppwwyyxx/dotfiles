@@ -350,6 +350,7 @@ bindkey "\r" user-ret
 # command not found
 function command_not_found_handler() {
 	local command="$1"
+	fortune -s | cowsay -W 70
 	[ -n "$command" ] && [ -x /usr/bin/pkgfile ] && {
 		echo -e "searching for \"$command\" in repos..."
 		local pkgs="$(pkgfile -b -v -- "$command")"

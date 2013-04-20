@@ -62,7 +62,14 @@ function acpi(){
 }
 
 # customed command
-alias G=' grep --color=auto'
+alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
+alias -g L="|less"
+alias -g X="|xargs"
+alias -g G='|egrep --color=auto'
+alias -g N='>/dev/null'
+alias -g NN='>/dev/null 2>&1'
+alias L=less
+alias C='cat'
 alias psg='pgrep -a'
 alias grep='egrep -I'
 alias fgrep='fgrep --color=auto'
@@ -71,8 +78,6 @@ alias l='ls -F --color=auto'
 alias sl='ls -F --color=auto'
 alias ls='ls -F --color=auto'
 alias lss='ls -F --color=auto'
-alias L='less'
-alias C='cat'
 alias cls='clear'
 alias mk='make'
 alias mr='make run'
@@ -132,6 +137,16 @@ alias iftop='sudo iftop -B'
 alias powertop='sudo powertop'
 alias sv='sudo vim'
 alias gv='gvim'
+
+
+if [[ $(hostname) = KeepMoving ]]; then
+  MYSELF=true
+else
+  alias -g halt=
+  alias -g poweroff=
+  alias -g shutdown=
+  alias -g reboot=
+fi
 
 # customed variables
 hw=/home/wyx/Documents/work_thu/original/12_aut/
