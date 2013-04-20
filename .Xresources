@@ -35,12 +35,12 @@ URxvt.tripleclickwords: true
 URxvt.saveLines: 10000
 URxvt.insecure: true
 
-URxvt.font: xft:WenQuanYi Micro Hei Mono-11x23:antialias=true
-URxvt.boldfont: xft:Dejavu Sans Mono-12:bold,xft:WenQuanYi Micro Hei-12:bold
-URxvt.italicfont: xft:Dejavu Sans Mono-12:italic,xft:WenQuanYi Micro Hei-12:italic
+URxvt.font: xft:WenQuanYi Micro Hei Mono-11x19:antialias=true
+URxvt.boldfont: xft:WenQuanYi Micro Hei Mono-11:bold
+URxvt.italicfont: xft:WenQuanYi Micro Hei Mono-11:italic
 URxvt.buffered: true
 !urxvt have terrible letter space
-URxvt.letterSpace: -2
+URxvt.letterSpace: -1
 URxvt.lineSpace: 0
 ! font settings suggested by infinality {
 Xft.autohint: 0
@@ -54,8 +54,8 @@ Xft.rgba: rgb
 
 
 ! With ibus: need ibus to start with `ibus-daemon --xim`
-URxvt.inputMethod: ibus
-Urxvt.preeditType: OverTheSpot
+!URxvt.inputMethod: ibus
+!Urxvt.preeditType: OverTheSpot
 
 ! Utils:
 #ifndef URXVT_PERL_LIB

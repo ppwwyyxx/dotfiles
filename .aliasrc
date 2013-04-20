@@ -62,7 +62,7 @@ function acpi(){
 }
 
 # customed command
-alias G='| grep --color=auto'
+alias G=' grep --color=auto'
 alias psg='pgrep -a'
 alias grep='egrep -I'
 alias fgrep='fgrep --color=auto'
