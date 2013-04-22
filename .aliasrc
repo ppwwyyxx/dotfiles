@@ -117,15 +117,11 @@ alias gtalk='weechat-curses -r "/connect localhost; /msg &bitlbee identify 1"'
 
 alias vmware_rc='sudo rc.d start vmware-USBArbitrator; sudo rc.d start vmware'
 alias win='cd; virtualbox --startvm win7 & ; cd -'
-alias restart_wm='killall fusion-icon -9; DISPLAY=:0.0 fusion-icon &'
+alias restart_wm='pkill compiz -9; pkill fusion-icon -9; DISPLAY=:0.0 fusion-icon &'
 alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip2 install -U"
 
 # automatic use sudo
 alias please='sudo'
-if [[ $HOST == "KeepMoving" ]]; then
-	alias poweroff='vboxmanage controlvm win7 savestate; sudo poweroff'
-	alias reboot='vboxmanage controlvm win7 savestate; sudo reboot'
-fi
 alias logout='xfce4-session-logout --logout'
 alias apt-get='sudo apt-get'
 alias ai='sudo pacman -S'
@@ -141,6 +137,8 @@ alias gv='gvim'
 
 if [[ $(hostname) = KeepMoving ]]; then
   MYSELF=true
+  alias poweroff='vboxmanage controlvm win7 savestate; sudo poweroff'
+  alias reboot='vboxmanage controlvm win7 savestate; sudo reboot'
 else
   alias -g halt=
   alias -g poweroff=
