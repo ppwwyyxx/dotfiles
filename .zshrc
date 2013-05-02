@@ -16,9 +16,10 @@ export NODE_PATH=$HOME/.local/lib/node_modules/
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
 export LD_LIBRARY_PATH=/lib/:/home/wyx/.local/lib/wkhtmltox/
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
-export MAKEFLAGS="-j4"
 export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: (meow~~) '
 export DISTCC_POTENTIAL_HOSTS='10.20.0.204/8'
+export MAKEFLAGS="-j4"
+export CXXFLAGS="-Wall -Wextra -std=c++11 -g"
 
 # colors
 autoload colors

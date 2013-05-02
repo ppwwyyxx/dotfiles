@@ -41,7 +41,8 @@ alias wgetpaste='wgetpaste -C'
 #alias rm='mv --target-directory ~/tmp/.Trash --backup=numbered'
 alias cp='cp -rvi'
 alias b='acpi'
-alias km='xmodmap ~/.Xmodmap; xcape -e "Control_L=Escape"'
+alias km='xmodmap ~/.Xmodmap; xcape -e "Control_L=Return"'
+alias keyb='xinput set-int-prop $(xinput | grep Touch |grep -o "id=[0-9]*" |grep -o "[0-9]*") "Device Enabled" 8 0'
 
 function ll(){
 	ls -AhlF --color=auto $1
@@ -109,7 +110,7 @@ alias iwc='iwconfig'
 alias port='netstat -ntlp'
 alias rsync='rsync --progress --partial'
 alias m_rsync='rsync --progress --partial --delete --size-only -rlv'
-# rsync ./book/ /mnt/books -rlv --delete --size-only
+# rsync ./book/ /mnt/books/ -rlv --delete --size-only
 alias chromium_proxy='/opt/chrome-linux/chrome --proxy-server=socks5://localhost:8080'
 alias net9='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.net9.org'
 alias smth='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.smth.org'
