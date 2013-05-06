@@ -129,6 +129,7 @@ bindkey '^f' forward-word
 bindkey '^w' backward-delete-word
 bindkey '^c' kill-buffer
 #bindkey -M viins ' ' magic-space
+bindkey ' ' magic-space
 #bindkey -M vicmd 'u' undo
 #bindkey -M vicmd "q" push-line
 autoload zkbd

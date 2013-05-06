@@ -2,7 +2,7 @@ delay=0
 region=3
 action=1
 show_mouse=0
-screenshot_dir=file:/home/wyx/Pictures/screenshots
+screenshot_dir=file:/tmp
 app=none
 last_user=
 

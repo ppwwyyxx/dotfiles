@@ -35,6 +35,7 @@
     <property name="plugin-3" type="string" value="systray">
       <property name="names-visible" type="array">
         <value type="string" value="screencloud"/>
+        <value type="string" value="vlc"/>
         <value type="string" value="stardict"/>
         <value type="string" value="networkmanager applet"/>
         <value type="string" value="task manager"/>
@@ -42,15 +43,20 @@
         <value type="string" value="skype"/>
         <value type="string" value="ibus panel"/>
         <value type="string" value="orage"/>
+        <value type="string" value="hipchat"/>
         <value type="string" value="simon"/>
         <value type="string" value="mmserver"/>
         <value type="string" value="chromium"/>
+        <value type="string" value="vmware-tray"/>
         <value type="string" value="bluetooth"/>
         <value type="string" value="fusion-icon"/>
         <value type="string" value="xfce4-power-manager"/>
         <value type="string" value="ktorrent"/>
         <value type="string" value="osd lyrics"/>
+        <value type="string" value="vidalia"/>
         <value type="string" value="banshee"/>
+        <value type="string" value="noblenote"/>
+        <value type="string" value="opera"/>
         <value type="string" value="exe"/>
       </property>
     </property>

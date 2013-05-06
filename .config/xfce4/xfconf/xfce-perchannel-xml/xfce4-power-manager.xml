@@ -5,5 +5,8 @@
     <property name="brightness-on-ac" type="uint" value="9"/>
     <property name="brightness-level-on-battery" type="uint" value="30"/>
     <property name="critical-power-level" type="uint" value="1"/>
+    <property name="lid-action-on-battery" type="uint" value="0"/>
+    <property name="lid-action-on-ac" type="uint" value="0"/>
+    <property name="brightness-on-battery" type="uint" value="9"/>
   </property>
 </channel>
