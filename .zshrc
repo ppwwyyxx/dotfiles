@@ -12,22 +12,21 @@ fpath=($HOME/.zsh/Completion $fpath)
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 [ -d $HOME/.rvm/bin ] && export PATH=$PATH:$HOME/.rvm/bin			# Add RVM to PATH for scripting
 
+export CDPATH=.:/etc
 export NODE_PATH=$HOME/.local/lib/node_modules/
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
 export LD_LIBRARY_PATH=/lib/:/home/wyx/.local/lib/wkhtmltox/
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
-export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: (meow~~) '
 export DISTCC_POTENTIAL_HOSTS='10.20.0.204/8'
 export MAKEFLAGS="-j4"
 export CXXFLAGS="-Wall -Wextra -std=c++11 -g"
 
 # colors
-autoload colors
+autoload colors zsh/terminfo
 colors
 for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
 eval _$color='%{$terminfo[bold]$fg[${(L)color}]%}'
 eval $color='$fg[${(L)color}]'
-(( count = $count + 1 ))
 done
 FINISH="%{$terminfo[sgr0]%}"
 
@@ -44,36 +43,27 @@ function rm(){
 	fi
 }
 
-#prompt
-#PR_FILLBAR=""
-#PR_PWDLEN=""
-
-#local promptsize=${#${(%):---(%n@%m:%l)---()--}}
-#local pwdsize=${#${(%):-%~}}
-
-#if [[ "$promptsize + $pwdsize" -gt $TERMWIDTH ]]; then
-	#((PR_PWDLEN=$TERMWIDTH - $promptsize))
-#else
-	#PR_FILLBAR="\${(l.(($TERMWIDTH - ($promptsize + $pwdsize)))..${PR_HBAR}.)}"
-#fi
 autoload -U promptinit
 promptinit
+
+export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: (meow~~) '
 
 source $HOME/.zsh/git-prompt/zshrc.sh
 #PROMPT="$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M:%S}] $GREEN%4~ $CYAN
 #╰─\$"
-#if [ "$USER" -eq "wyx" ]; then
-	#PROMPT_PART="%n"
-#else
-	#PROMPT_PART='$GREEN [%n@$YELLOW%M]'
-#fi
-PROMPT='$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M}] $GREEN%4~ $(git_super_status)$CYAN
+if [[ $(whoami) = wyx ]] && [[ $(hostname)  = KeepMoving ]]; then
+	local PROMPT_PART=""
+else
+	local PROMPT_PART='$GREEN [%n@$YELLOW%M]'
+fi
+PS1='$CYAN╭─${PROMPT_PART}$MAGENTA [%D{%H:%M}] $GREEN%4~ $(git_super_status)$CYAN
 ╰─\$'
-#PROMPT='$CYAN╭─$PROMPT_PART$MAGENTA [%D{%H:%M:%S}] $GREEN%4~ $(git_super_status)$CYAN
-#╰─\$'
+PS2='$BLUE($GREEN%_$BLUE)$FINISH'
+PS3='$GREEN Select:'
 
 local return_code="%(?..%{$fg[RED]%}%?)%{$reset_color%}"
 export RPS1="${return_code}"
+
 case $TERM in (*xterm*|*rxvt*|(dt|k|E)term)
 	precmd () { print -Pn "\e]0;%~\a" }
 	preexec () { print -Pn "\e]0;%n@%M//%/\ $1\a" }
@@ -92,6 +82,8 @@ for i in xls xlsx doc docx ppt pptx; alias -s $i=libreoffice
 for i in html,mhtml; alias -s $i=chromium
 
 # Basic
+setopt autocd				# cd without 'cd'
+setopt braceccl				# ls {a-e.1}
 unsetopt hup				# don't close background program when exiting shell
 setopt NO_FLOW_CONTROL		# disable Ctrl+s
 setopt NOTIFY				# show bg jobs status immediately
