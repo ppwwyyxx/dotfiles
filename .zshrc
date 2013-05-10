@@ -25,36 +25,49 @@ export CXXFLAGS="-Wall -Wextra -std=c++11 -g"
 autoload colors zsh/terminfo
 colors
 for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
-eval _$color='%{$terminfo[bold]$fg[${(L)color}]%}'
-eval $color='$fg[${(L)color}]'
+	eval _$color='%{$terminfo[bold]$fg[${(L)color}]%}'
+	eval $color='$fg[${(L)color}]'
 done
 FINISH="%{$terminfo[sgr0]%}"
 
 # custom rm command
 function rm(){
-	if [ "`pwd -P`" =~ "/ssd_home/wyx" ] ; then
+	local PPWD=`pwd -P`
+	if [[ $PPWD == /ssd_home/wyx* ]] ; then
 		mkdir -p /ssd_home/wyx/tmp/.Trash
 		mv "$@" /ssd_home/wyx/tmp/.Trash/ --backup=numbered -fv
-	elif [ "`pwd -P`" =~ "^/tmp" ]; then
-		/bin/rm "$@" -rvf
-	else
+	elif [[ $PPWD == /home/* ]]; then
 		mkdir -p $HOME/.Trash
 		mv "$@" $HOME/.Trash/ --backup=numbered -fv
+	else
+		/bin/rm "$@" -rvf
 	fi
 }
 
 autoload -U promptinit
 promptinit
 
-export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: (meow~~) '
+if [[ $HOST == "KeepMoving" ]]; then
+  alias poweroff='vboxmanage controlvm win7 savestate; sudo poweroff'
+  alias reboot='vboxmanage controlvm win7 savestate; sudo reboot'
+  export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: (meow~~) '
+else
+  alias -g halt=
+  alias -g poweroff=
+  alias -g shutdown=
+  alias -g reboot=
+  export SUDO_PROMPT=$'[\e[31;5mYou\'re on %H!\e[m] password for \e[34;1m%p\e[m on\e[0;31m %H\e[m: '
+fi
 
 source $HOME/.zsh/git-prompt/zshrc.sh
 #PROMPT="$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M:%S}] $GREEN%4~ $CYAN
 #╰─\$"
-if [[ $(whoami) = wyx ]] && [[ $(hostname)  = KeepMoving ]]; then
+if [[ $USER == "wyx" ]] && [[ $HOST == "KeepMoving" ]]; then
 	local PROMPT_PART=""
+elif [[ $HOST == "KeepMoving" ]]; then
+	local PROMPT_PART="$GREEN [%n]"
 else
-	local PROMPT_PART='$GREEN [%n@$YELLOW%M]'
+	local PROMPT_PART="$GREEN [%n@$YELLOW%M]"
 fi
 PS1='$CYAN╭─${PROMPT_PART}$MAGENTA [%D{%H:%M}] $GREEN%4~ $(git_super_status)$CYAN
 ╰─\$'
@@ -269,7 +282,7 @@ zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv)
 which npm > /dev/null 2>&1 && eval "$(npm completion 2 > /dev/null)"
 
 # hub completion
-which hub > /dev/null 2>&1 && eval "$(hub alias -s)"
+#which hub > /dev/null 2>&1 && eval "$(hub alias -s)"
 
 # ... completion
 user-complete(){
