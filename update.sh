@@ -1,6 +1,6 @@
 #!/bin/bash
 # File: update.sh
-# Date: Thu Apr 11 20:38:32 2013 +0800
+# Date: Fri May 10 18:39:05 2013 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 if [[ ! "$HOST" -eq "KeepMoving" ]]; then
 	echo "Not at KeepMoving! "
@@ -13,5 +13,5 @@ cp ~/.zshrc ~/.aliasrc ~/.zsh ./ -rvH
 rm `find .vim |egrep 'git$|svn$'`  -rvf
 rm `find .vim |egrep '\.gitignore$'` -rvf
 rm ../vim.7z
-7z a ../vim.7z ~/.vim -l
+7z a ../vim.7z /ssd_home/wyx/.vim
 
