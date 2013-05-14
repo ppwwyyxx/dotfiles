@@ -115,6 +115,7 @@ alias gtalk='weechat-curses -r "/connect localhost; /msg &bitlbee identify 1"'
 
 alias vmware_rc='sudo rc.d start vmware-USBArbitrator; sudo rc.d start vmware'
 alias win='cd; virtualbox --startvm win7 & ; cd -'
+alias ie8="wine 'C:\Program Files (x86)\\\\Internet Explorer\\\\iexplore'"
 alias restart_wm='pkill compiz -9; pkill fusion-icon -9; DISPLAY=:0.0 fusion-icon &'
 alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip2 install -U"
 
