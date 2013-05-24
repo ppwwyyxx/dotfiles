@@ -12,7 +12,6 @@ fpath=($HOME/.zsh/Completion $fpath)
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 [ -d $HOME/.rvm/bin ] && export PATH=$PATH:$HOME/.rvm/bin			# Add RVM to PATH for scripting
 
-export CDPATH=.:/etc
 export NODE_PATH=$HOME/.local/lib/node_modules/
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
 export LD_LIBRARY_PATH=/lib/:/home/wyx/.local/lib/wkhtmltox/
@@ -357,6 +356,7 @@ bindkey "\r" user-ret
 # command not found
 function command_not_found_handler() {
 	local command="$1"
+	# to avoid infinite recursion
 	[ -x /usr/bin/fortune ] && [ -x /usr/bin/cowsay ] && {
 		fortune -s | cowsay -W 70
 	}

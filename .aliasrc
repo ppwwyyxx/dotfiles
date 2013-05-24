@@ -72,7 +72,7 @@ alias -g NN='>/dev/null 2>&1'
 alias L=less
 alias C='cat'
 alias psg='pgrep -a'
-alias grep='egrep -I'
+alias grep='egrep -I --color=auto'
 alias l='ls -F --color=auto'
 alias sl='ls -F --color=auto'
 alias ls='ls -F --color=auto'

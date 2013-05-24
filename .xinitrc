@@ -12,9 +12,9 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
 fi
 
 export EDITOR="vim"
-export XMODIFIERS="@im=ibus"
-export QT_MODULE=ibus
-export GTK_MODULE=ibus
+export XMODIFIERS="@im=fcitx"
+export QT_IM_MODULE=fcitx
+export GTK_IM_MODULE=fcitx
 
 export PAGER="/usr/bin/less -s"
 export BROWSER="$PAGER"
@@ -27,10 +27,9 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
 export PYTHONDOCS=/usr/share/doc/python2/html
-export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: '
 export SDCV_PAGER="sed 's/\ \ \([1-9]\)/\n\n◆\1/g' |less"
 
-xrandr --output VGA1 --left-of LVDS1
+xrandr --output VGA1 --right-of LVDS1
 xset -b
 xset r rate 170 50
 
