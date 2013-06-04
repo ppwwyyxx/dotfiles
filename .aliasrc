@@ -123,9 +123,6 @@ alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip in
 # automatic use sudo
 alias please='sudo'
 alias logout='xfce4-session-logout --logout'
-alias apt-get='sudo apt-get'
-alias ai='sudo pacman -S'
-alias pacmanup='pacaur -Syu'
 alias umount='sudo umount'
 alias mount='sudo mount'
 alias iotop='sudo iotop'
@@ -133,6 +130,12 @@ alias iftop='sudo iftop -B'
 alias powertop='sudo powertop'
 alias sv='sudo vim'
 alias gv='gvim'
+
+alias pS='sudo pacman -S'
+alias pSs='pacman -Ss'
+alias pSy='sudo pacman -Syy'
+alias pSu='pacaur -Syu'
+
 
 
 # customed variables
