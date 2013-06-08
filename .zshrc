@@ -235,19 +235,6 @@ zstyle ':completion:*:*:kill:*' menu yes select
 zstyle ':completion:*:*:*:*:processes' force-list always
 zstyle ':completion:*:processes' command 'ps -au$USER '
 
-# host and ip completion
-host_completion=(root@10.42.0.89
-wyx@59.66.132.22
-ppwwyyxx@server3.net9.org
-ppwwyyxx@server4.net9.org
-ppwwyyxx@59.66.131.63
-wyx@omni.tuna.tsinghua.edu.cn
-wyx@59.66.16.35
-yuxin.wu@10.20.0.204
-)
-zstyle -e ':completion:*' hosts 'reply=($host_completion)'
-zstyle ':completion:*:ping:*' www.google.com 59.66.132.1 166.111.8.28
-
 # buffer words completion for tmux
 tmux_buffer_completion() {
 	local expl

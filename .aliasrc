@@ -72,6 +72,7 @@ alias -g NN='>/dev/null 2>&1'
 alias L=less
 alias C='cat'
 alias psg='pgrep -a'
+alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -r | head"
 alias grep='egrep -I --color=auto'
 alias l='ls -F --color=auto'
 alias sl='ls -F --color=auto'
@@ -135,6 +136,7 @@ alias pS='sudo pacman -S'
 alias pSs='pacman -Ss'
 alias pSy='sudo pacman -Syy'
 alias pSu='pacaur -Syu'
+alias vnc_quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=ZRLE -FullScreen=1'
 
 
 
