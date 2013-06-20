@@ -83,6 +83,7 @@ alias SugarCpp='mono ~/tmp/SugarCpp/src/SugarCpp.CommandLine/bin/Debug/SugarCpp.
 alias mk='make'
 alias mr='make run'
 alias mc='make clean'
+alias gits='git s'
 
 alias word='/opt/wps/wps'
 alias powerpoint='/opt/wps/wpp'
