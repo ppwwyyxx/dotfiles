@@ -135,6 +135,7 @@ alias gv='gvim'
 
 alias pS='sudo pacman -S'
 alias pSs='pacman -Ss'
+alias pSi='pacman -Si'
 alias pSy='sudo pacman -Syy'
 alias pSu='pacaur -Syu'
 alias vnc_quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=ZRLE -FullScreen=1 -Shared=1'
