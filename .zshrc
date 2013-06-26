@@ -16,7 +16,8 @@ export NODE_PATH=$HOME/.local/lib/node_modules/
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
 export LD_LIBRARY_PATH=/lib/:/home/wyx/.local/lib/wkhtmltox/
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
-export DISTCC_POTENTIAL_HOSTS='10.20.0.204/8'
+#export DISTCC_POTENTIAL_HOSTS='10.20.0.204/8'
+export DISTCC_POTENTIAL_HOSTS='166.111.71.24/8 166.111.71.25/16'
 export MAKEFLAGS="-j4"
 export CXXFLAGS="-Wall -Wextra -std=c++11 -g"
 
