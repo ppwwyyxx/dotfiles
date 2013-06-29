@@ -59,29 +59,29 @@ else
   export SUDO_PROMPT=$'[\e[31;5mYou\'re on %H!\e[m] password for \e[34;1m%p\e[m on\e[0;31m %H\e[m: '
 fi
 
+
 source $HOME/.zsh/git-prompt/zshrc.sh
-#PROMPT="$CYAN╭─$GREEN [%n@$YELLOW%M]$MAGENTA [%D{%H:%M:%S}] $GREEN%4~ $CYAN
-#╰─\$"
-if [[ $USER == "wyx" ]] && [[ $HOST == "KeepMoving" ]]; then
-	local PROMPT_PART=""
-elif [[ $HOST == "KeepMoving" ]]; then
-	local PROMPT_PART="$GREEN [%n]"
-else
-	local PROMPT_PART="$GREEN [%n@$YELLOW%M]"
-fi
-PS1='$CYAN╭─${PROMPT_PART}$MAGENTA [%D{%H:%M}] $GREEN%4~ $(git_super_status)$CYAN
-╰─\$'
-PS2='$BLUE($GREEN%_$BLUE)$FINISH'
-PS3='$GREEN Select:'
 
 local return_code="%(?..%{$fg[RED]%}%?)%{$reset_color%}"
 export RPS1="${return_code}"
 
-case $TERM in (*xterm*|*rxvt*|(dt|k|E)term)
-	precmd () { print -Pn "\e]0;%~\a" }
-	preexec () { print -Pn "\e]0;%n@%M//%/\ $1\a" }
-	;;
-esac
+function precmd () {
+	if [[ $USER == "wyx" ]] && [[ $HOST == "KeepMoving" ]]; then
+		PROMPT_PART=""
+	elif [[ $HOST == "KeepMoving" ]]; then
+		PROMPT_PART="$GREEN [%n]"
+	else
+		PROMPT_PART="$GREEN [%n@$YELLOW%M]"
+	fi
+
+	local promptsize=${#----%D%H-%M--$(git_super_status)}
+	(( PR_PWDLEN=${COLUMNS} - $promptsize - 10 - ${#PROMPT_PART}))
+	PS1='$CYAN╭─${PROMPT_PART}$MAGENTA [%D{%H:%M}] $GREEN%$PR_PWDLEN<...<%~%<< $(git_super_status)$CYAN
+╰─\$'
+	PS2='$BLUE($GREEN%_$BLUE)$FINISH'
+	PS3='$GREEN Select:'
+}
+preexec () { print -Pn "\e]0;%n@%M//%/\ $1\a" }
 
 # alias
 source $HOME/.aliasrc

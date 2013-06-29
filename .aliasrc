@@ -111,7 +111,7 @@ alias port='netstat -ntlp'
 alias rsync='rsync --progress --partial'
 alias m_rsync='rsync --progress --partial --delete --size-only -rlv'
 # rsync ./book/ /mnt/books/ -rlv --delete --size-only
-alias chromium_proxy='/opt/chrome-linux/chrome --proxy-server=socks5://localhost:8080'
+alias chromium_proxy='chromium --proxy-server=socks5://localhost:8080'
 alias net9='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.net9.org'
 alias smth='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.smth.org'
 alias gtalk='weechat-curses -r "/connect localhost; /msg &bitlbee identify 1"'
