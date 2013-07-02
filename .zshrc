@@ -274,8 +274,6 @@ which npm > /dev/null 2>&1 && eval "$(npm completion 2 > /dev/null)"
 # ... completion
 user-complete(){
 	if [[ -z $BUFFER ]]; then
-		BUFFER="cd "
-		zle end-of-line
 		return
 	fi
 	if [[ $BUFFER =~ "^\.\.\.*$" ]]; then
