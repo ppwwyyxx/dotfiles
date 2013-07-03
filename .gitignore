@@ -2,3 +2,5 @@
 *.pyc
 doc/tags
 .tags
+*.so
+*.o
