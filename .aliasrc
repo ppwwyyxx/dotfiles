@@ -84,7 +84,6 @@ alias mk='make'
 alias mr='make run'
 alias mc='make clean'
 alias gits='git s'
-
 alias word='/opt/wps/wps'
 alias powerpoint='/opt/wps/wpp'
 alias diff='colordiff'
@@ -95,14 +94,20 @@ alias clean_trash='=rm ~/tmp/.Trash/* -rf; =rm ~/.Trash/* -rf; =rm ~/.Trash/.* -
 alias mirror='mplayer -tv driver=v4l2:device=/dev/video0 tv:// -vf-add mirror'
 alias tune_pitch='mplayer -af scaletempo=speed=pitch'
 alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_region 1 -qscale 2 -i :0.0 ~/Videos/out.mpg'
+alias learn=". ~/bin/learn"
+alias ipython_notebook="ipython2 notebook --pylab inline"
 
+alias pycharm='/home/opt/pycharm-2.7.3/bin/pycharm.sh'
+alias rubymine='/home/opt/RubyMine-5.4.3.2.1/bin/rubymine.sh'
+alias idea='/home/opt/idea-IC-129.713/bin/idea.sh'
+export PYCHARM_JDK=/home/opt/java-oracle
+export RUBYMINE_JDK=/home/opt/java-oracle
+export IDEA_JDK=/home/opt/java-oracle
 alias mathc='/home/opt/Mathematica/Executables/math'
 alias mathematica='/home/opt/Mathematica/Executables/Mathematica -nosplash'
 alias matlab='/home/opt/Matlab/bin/matlab'
 alias maple='/home/opt/Maple/bin/xmaple'
 alias evernote='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/Evernote/Evernote/Evernote.exe'
-alias learn=". ~/bin/learn"
-alias ipython_notebook="ipython2 notebook --pylab inline"
 
 alias samba_thu='sudo mount -t cifs -o username=tuna,password=Tunahallelujah2012  //166.111.9.155/movie /mnt'
 alias hotspot='sudo nmcli con up id Seattle'

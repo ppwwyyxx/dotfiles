@@ -32,7 +32,7 @@ FINISH="%{$terminfo[sgr0]%}"
 
 # custom rm command
 function rm(){
-	local PPWD=`pwd -P`
+	local PPWD="`pwd -P`"
 	if [[ $PPWD == /ssd_home/wyx* ]] ; then
 		mkdir -p /ssd_home/wyx/tmp/.Trash
 		mv "$@" /ssd_home/wyx/tmp/.Trash/ --backup=numbered -fv
