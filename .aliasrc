@@ -96,6 +96,7 @@ alias tune_pitch='mplayer -af scaletempo=speed=pitch'
 alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_region 1 -qscale 2 -i :0.0 ~/Videos/out.mpg'
 alias learn=". ~/bin/learn"
 alias ipython_notebook="ipython2 notebook --pylab inline"
+alias bp2='bpython2'
 
 alias pycharm='/home/opt/pycharm-2.7.3/bin/pycharm.sh'
 alias rubymine='/home/opt/RubyMine-5.4.3.2.1/bin/rubymine.sh'
@@ -151,10 +152,11 @@ alias vnc_quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=Z
 hw=/home/wyx/Documents/work_thu/original/12_aut/
 pydoc=/usr/share/doc/python2/html
 
-x264_param="-x264encopts threads=2:subq=5:8x8dct:frameref=2:bframes=3:weight_b"
-sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "WenQuanYi MicroHei"'
-lame_param="-lameopts fast:preset=medium"
-avc_param="-oac mp3lame $lame_param -ovc x264 $x264_param"
+m_sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "WenQuanYi MicroHei"'
+m_avc_param="-oac mp3lame -lameopts fast:preset=medium -ovc x264 -x264encopts subq=5:8x8dct:frameref=2:bframes=3:weight_b"
+f_avc_param="-c:v libx264 -preset slow -crf 22 -c:a libmp3lame"
 mx="/home/wyx/install/files/pics/pic7"
+function ffmpeg_compress() { ffmpeg -i $1 `echo $f_avc_param` $1.avi }
+function mencoder_compress() { mencoder $1 -o $1.avi `echo $m_avc_param` }
 
 #  vim:ft=zsh

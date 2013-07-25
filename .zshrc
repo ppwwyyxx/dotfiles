@@ -31,17 +31,20 @@ done
 FINISH="%{$terminfo[sgr0]%}"
 
 # custom rm command
-function rm(){
-	local PPWD="`pwd -P`"
-	if [[ $PPWD == /ssd_home/wyx* ]] ; then
-		mkdir -p /ssd_home/wyx/tmp/.Trash
-		mv "$@" /ssd_home/wyx/tmp/.Trash/ --backup=numbered -fv
-	elif [[ $PPWD == /home/* ]]; then
-		mkdir -p $HOME/.Trash
-		mv "$@" $HOME/.Trash/ --backup=numbered -fv
-	else
-		/bin/rm "$@" -rvf
-	fi
+function rm() {
+	for file in $@; do
+		local FILE_LOC="`readlink -f $file`"
+		echo $FILE_LOC
+		if [[ $FILE_LOC == /ssd_home/wyx* ]] ; then
+			mkdir -p /ssd_home/wyx/tmp/.Trash
+			mv "$file" /ssd_home/wyx/tmp/.Trash/ --backup=numbered -fv
+		elif [[ $FILE_LOC == /home/* ]]; then
+			mkdir -p $HOME/.Trash
+			mv "$file" $HOME/.Trash/ --backup=numbered -fv
+		else
+			/bin/rm "$@" -rvf
+		fi
+	done
 }
 
 autoload -U promptinit
@@ -75,7 +78,7 @@ function precmd () {
 	fi
 
 	local promptsize=${#----%D%H-%M--$(git_super_status)}
-	(( PR_PWDLEN=${COLUMNS} - $promptsize - 10 - ${#PROMPT_PART}))
+	(( PR_PWDLEN=${COLUMNS} - $promptsize - 11 - ${#PROMPT_PART}))
 	PS1='$CYAN╭─${PROMPT_PART}$MAGENTA [%D{%H:%M}] $GREEN%$PR_PWDLEN<...<%~%<< $(git_super_status)$CYAN
 ╰─\$'
 	PS2='$BLUE($GREEN%_$BLUE)$FINISH'
@@ -259,6 +262,29 @@ zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' completer tmux_buffer_c
 zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' ignore-line current
 zstyle ':completion:tmux-pane-words-anywhere:*' matcher-list 'b:=* m:{A-Za-z}={a-zA-Z}'
 
+# vim edit remote file
+function vscp() {
+    if [[ -z $1 ]]; then
+        echo "usage: vscp [[user@]host1:]file1 ... [[user@]host2:]file2"
+        return
+    fi
+    declare -a targs=()
+	echo "Editing Remote Files"
+    for iarg in $@; do
+        targ="scp://$(echo $iarg | sed -e 's@:/@//@' | sed -e 's@:@/@')"
+        targs=("${targs[@]}" $targ)
+    done
+	echo ${targs[@]}
+    vim ${targs[@]}
+}
+compdef vscp=scp
+compdef telnet=scp
+
+# specific filetype
+_pic() { _files -g '*.(jpg|png|bmp|gif|ppm|pbm|jpeg)(-.)' }
+compdef _pic gimp
+compdef _pic feh
+
 # vim ignore
 zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv)'
 
@@ -272,26 +298,26 @@ which npm > /dev/null 2>&1 && eval "$(npm completion 2 > /dev/null)"
 #which hub > /dev/null 2>&1 && eval "$(hub alias -s)"
 
 # ... completion
-user-complete(){
+user_complete(){
 	if [[ -z $BUFFER ]]; then
 		return
 	fi
 	if [[ $BUFFER =~ "^\.\.\.*$" ]]; then
 		BUFFER=`echo "$BUFFER" |sed 's/^/cd\ /g'`
 		zle end-of-line
-		user-complete
+		user_complete
 		return
 	elif [[ $BUFFER =~ ".*\.\.\..*$" ]] ;then
 		BUFFER=`echo "$BUFFER" |sed 's/\.\.\./\.\.\/\.\./g'`
 		zle end-of-line
-		user-complete
+		user_complete
 		return
 	fi
 	zle expand-or-complete
 	#recolor-cmd
 }
-zle -N user-complete
-bindkey "\t" user-complete
+zle -N user_complete
+bindkey "\t" user_complete
 autoload compinstall
 
 # Custom Return
@@ -372,3 +398,4 @@ if [ $commands[fasd] ]; then
 	alias fv='f -e vim'
 	bindkey '^X^O' fasd-complete
 fi
+
