@@ -1,4 +1,4 @@
-WebBrowser=custom-WebBrowser
 FileManager=Thunar
-TerminalEmulator=custom-TerminalEmulator
+TerminalEmulator=urxvt
+WebBrowser=chromium
 

@@ -1,6 +1,6 @@
 fpath=($HOME/.zsh/Completion $fpath)
 
-[ -d $HOME/bin ] && export PATH=$HOME/bin:$PATH
+export PATH=$HOME/bin:$PATH
 [ -d $HOME/.zsh/bin ] && export PATH=$HOME/.zsh/bin:$PATH
 [ -d $HOME/.local/bin ] && export PATH=$HOME/.local/bin:$PATH
 [ -d $HOME/.cw/def ] && export PATH=$HOME/.cw/def:$PATH
@@ -10,8 +10,8 @@ fpath=($HOME/.zsh/Completion $fpath)
 [ -d /home/opt/quartus/quartus/bin ] && export PATH=/home/opt/quartus/quartus/bin:$PATH
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-[ -d $HOME/.rvm/bin ] && export PATH=$PATH:$HOME/.rvm/bin			# Add RVM to PATH for scripting
 
+export EDITOR=vim
 export NODE_PATH=$HOME/.local/lib/node_modules/
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
 export LD_LIBRARY_PATH=/lib/:/home/wyx/.local/lib/wkhtmltox/
@@ -279,6 +279,8 @@ function vscp() {
 }
 compdef vscp=scp
 compdef telnet=scp
+
+compdef pacaur=pacman
 
 # specific filetype
 _pic() { _files -g '*.(jpg|png|bmp|gif|ppm|pbm|jpeg)(-.)' }

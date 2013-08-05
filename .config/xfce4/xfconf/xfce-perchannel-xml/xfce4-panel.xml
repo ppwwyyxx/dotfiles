@@ -44,6 +44,7 @@
         <value type="string" value="ibus panel"/>
         <value type="string" value="orage"/>
         <value type="string" value="hipchat"/>
+        <value type="string" value="ninja-ide"/>
         <value type="string" value="simon"/>
         <value type="string" value="mmserver"/>
         <value type="string" value="chromium"/>

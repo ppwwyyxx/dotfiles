@@ -20,8 +20,6 @@
     <property name="custom" type="empty">
       <property name="override" type="bool" value="true"/>
       <property name="&lt;Super&gt;f" type="string" value="firefox"/>
-      <property name="&lt;Super&gt;r" type="string" value="xfrun4"/>
-      <property name="&lt;Super&gt;l" type="string" value="xscreensaver-command -lock"/>
       <property name="&lt;Super&gt;a" type="string" value="/home/wyx/bin/background/screenshot"/>
       <property name="&lt;Super&gt;g" type="string" value="sudo gnome-control-center"/>
       <property name="&lt;Super&gt;k" type="string" value="xkill"/>
@@ -34,8 +32,9 @@
       <property name="XF86HomePage" type="string" value="notifier"/>
       <property name="&lt;Super&gt;m" type="string" value="cam"/>
       <property name="&lt;Primary&gt;F12" type="string" value="notifier"/>
-      <property name="&lt;Super&gt;c" type="string" value="/home/opt/chrome-linux/chrome"/>
       <property name="&lt;Super&gt;t" type="string" value="urxvt -e tmux"/>
+      <property name="&lt;Super&gt;c" type="string" value="chromium"/>
+      <property name="&lt;Super&gt;r" type="string" value="xfrun4"/>
     </property>
   </property>
   <property name="xfwm4" type="empty">

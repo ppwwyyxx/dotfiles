@@ -13,6 +13,7 @@ subfont-text-scale=2.5
 af-add=scaletempo
 vf-add=screenshot
 volume=100
+nojoystick=yes
 #ao=pulse		# under arch # audio output device
 #vo=xv
 #vc=ffmpeg12vdpau,ffwmv3vdpau,ffvc1vdpau,ffh264vdpau,ffodivxvdpau

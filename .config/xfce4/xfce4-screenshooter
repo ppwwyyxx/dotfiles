@@ -3,6 +3,6 @@ region=3
 action=1
 show_mouse=0
 screenshot_dir=file:/tmp
-app=none
+app=env
 last_user=
 
