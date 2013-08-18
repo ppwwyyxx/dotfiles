@@ -5,7 +5,7 @@ export PATH=$HOME/bin:$PATH
 [ -d $HOME/.local/bin ] && export PATH=$HOME/.local/bin:$PATH
 [ -d $HOME/.cw/def ] && export PATH=$HOME/.cw/def:$PATH
 [ -d $HOME/.cabal/bin ] && export PATH=$HOME/.cabal/bin:$PATH
-[ -d /home/opt/texlive/2012/ ] && export PATH=/home/opt/texlive/2012/bin/x86_64-linux:$PATH
+[ -d /opt/texlive/2013/ ] && export PATH=/opt/texlive/2013/bin/x86_64-linux:$PATH
 [ -d /usr/lib/colorgcc/bin ] && export PATH=/usr/lib/colorgcc/bin:$PATH
 [ -d /home/opt/quartus/quartus/bin ] && export PATH=/home/opt/quartus/quartus/bin:$PATH
 
@@ -34,7 +34,6 @@ FINISH="%{$terminfo[sgr0]%}"
 function rm() {
 	for file in $@; do
 		local FILE_LOC="`readlink -f $file`"
-		echo $FILE_LOC
 		if [[ $FILE_LOC == /ssd_home/wyx* ]] ; then
 			mkdir -p /ssd_home/wyx/tmp/.Trash
 			mv "$file" /ssd_home/wyx/tmp/.Trash/ --backup=numbered -fv
@@ -91,7 +90,7 @@ source $HOME/.aliasrc
 alias mv='nocorrect mv -i'
 alias mkdir='nocorrect mkdir'
 alias cp='nocorrect cp -rvi'
-alias -s pdf=mupdf
+alias -s pdf=mupdf-x11
 for i in wmv mkv mp4 mp3 avi rm rmvb flv; alias -s $i=mplayer
 for i in jpg png gif; alias -s $i=feh
 for i in xls xlsx doc docx ppt pptx; alias -s $i=libreoffice

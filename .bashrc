@@ -77,6 +77,9 @@ fi
 # customed settings
 #     this is title | this is the line in terminal
 PS1='\[\e]0;\w\007\]\[\033[32m\]\D{%Y-%m-%d %H:%M:%S}\[\033[01;32m\] \u@\h \[\033[01;34m\]\W\[\033[00m\]\n\$ '
+export PATH=
+source /etc/environment
+export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin/core_perl
 [ -d $HOME/bin ] && PATH=$HOME/bin:$PATH
 [ -d $HOME/.local/bin ] && PATH=$HOME/.local/bin:$PATH
 

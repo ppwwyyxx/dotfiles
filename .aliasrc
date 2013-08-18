@@ -15,12 +15,14 @@ alias dc='cd'
 alias p='ping'
 alias meow='ping'
 alias p6='ping6'
-#alias v='vim -X'
-#alias vi='vim -X'
-#alias vim='vim -X'
+
 alias v='vim '
 alias vi='vim '
 alias iv='vim '
+alias sv='sudo vim'
+alias gv='gvim'
+alias eclimd='/usr/share/eclipse/eclimd'
+
 alias indent='indent -linux -l80'
 alias gs='gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite'
 alias gdb='gdb -q'
@@ -125,9 +127,11 @@ alias gtalk='weechat-curses -r "/connect localhost; /msg &bitlbee identify 1"'
 
 alias vmware_rc='sudo rc.d start vmware-USBArbitrator; sudo rc.d start vmware'
 alias win='cd; virtualbox --startvm win7 & ; cd -'
+alias osx='cd; virtualbox --startvm osx & ; cd -'
 alias ie8="wine 'C:\Program Files (x86)\\\\Internet Explorer\\\\iexplore'"
 alias restart_wm='pkill compiz -9; pkill fusion-icon -9; DISPLAY=:0.0 fusion-icon &'
-alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip2 install -U"
+alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install --user -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip2 install --user -U"
+alias vjavadoc="chromium /usr/share/doc/openjdk7-doc/api/index.html"
 
 # automatic use sudo
 alias please='sudo'
@@ -137,9 +141,6 @@ alias mount='sudo mount'
 alias iotop='sudo iotop'
 alias iftop='sudo iftop -B'
 alias powertop='sudo powertop'
-alias sv='sudo vim'
-alias gv='gvim'
-alias eclimd='/usr/share/eclipse/eclimd'
 
 alias pS='sudo pacman -S'
 alias pSs='pacman -Ss'
