@@ -34,7 +34,7 @@ alias zh-CN="LC_ALL='zh_CN.UTF-8'"
 alias free='free -m'
 alias df='df -Th'
 alias dot='dot -Tpng -O -v'
-alias dstat='dstat -dnmcl --socket --top-io -N eth0,eth1,wlan0'
+alias dstat='dstat -dnmcl --socket --top-io -N eth0,eth1,wlan0,eno1'
 alias ctags='ctags -R -f .tags --c++-kinds=+p --fields=+iaS --extra=+q'
 alias toilet='toilet --filter gay'
 alias valgrind='valgrind --leak-check=full --track-origins=yes --show-reachable=yes --show-possibly-lost=yes'
@@ -124,6 +124,7 @@ alias chromium_proxy='chromium --proxy-server=socks5://localhost:8080'
 alias net9='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.net9.org'
 alias smth='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.smth.org'
 alias gtalk='weechat-curses -r "/connect localhost; /msg &bitlbee identify 1"'
+alias window='wmctrl -a '
 
 alias vmware_rc='sudo rc.d start vmware-USBArbitrator; sudo rc.d start vmware'
 alias win='cd; virtualbox --startvm win7 & ; cd -'
@@ -148,6 +149,7 @@ alias pSi='pacman -Si'
 alias pSy='sudo pacman -Syy'
 alias pSu='pacaur -Syu'
 alias vnc_quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=ZRLE -FullScreen=1 -Shared=1'
+alias rdesktop-lab='rdesktop-vrdp -u wyx -p - 166.111.71.37:3389'
 
 
 

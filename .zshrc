@@ -90,7 +90,7 @@ source $HOME/.aliasrc
 alias mv='nocorrect mv -i'
 alias mkdir='nocorrect mkdir'
 alias cp='nocorrect cp -rvi'
-alias -s pdf=mupdf-x11
+alias -s pdf=mupdf
 for i in wmv mkv mp4 mp3 avi rm rmvb flv; alias -s $i=mplayer
 for i in jpg png gif; alias -s $i=feh
 for i in xls xlsx doc docx ppt pptx; alias -s $i=libreoffice
@@ -119,7 +119,7 @@ setopt HIST_IGNORE_SPACE
 setopt HIST_NO_FUNCTIONS
 setopt SHARE_HISTORY
 export HISTFILE=$HOME/.zsh_history
-export HISTSIZE=1000000
+export HISTSIZE=100000
 export SAVEHIST=$HISTSIZE
 
 # key binding
