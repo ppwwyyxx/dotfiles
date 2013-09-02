@@ -103,10 +103,13 @@ alias pyftp='python2 -m pyftpdlib'
 
 alias pycharm='/opt/pycharm-2.7.3/bin/pycharm.sh'
 alias rubymine='/opt/RubyMine-5.4.3.2.1/bin/rubymine.sh'
+alias webstorm='/opt/WebStorm-129.664/bin/webstorm.sh'
 alias idea='/opt/idea-IC-129.713/bin/idea.sh'
 export PYCHARM_JDK=/opt/java-oracle
 export RUBYMINE_JDK=/opt/java-oracle
 export IDEA_JDK=/opt/java-oracle
+export WEBIDE_JDK=/opt/java-oracle
+alias robomongo='/opt/robomongo-0.8.0-x86_64/bin/robomongo.sh'
 alias mathc='/opt/Mathematica/Executables/math'
 alias mathematica='/opt/Mathematica/Executables/Mathematica -nosplash'
 alias matlab='/opt/Matlab/bin/matlab'

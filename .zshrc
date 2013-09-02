@@ -400,3 +400,5 @@ if [ $commands[fasd] ]; then
 	bindkey '^X^O' fasd-complete
 fi
 
+
+export PATH=$PATH:/home/wyx/Work/android-sdks/tools:/home/wyx/Work/android-sdks/platform-tools
