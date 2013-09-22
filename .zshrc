@@ -77,7 +77,7 @@ function precmd () {
 	fi
 
 	local promptsize=${#----%D%H-%M--$(git_super_status)}
-	(( PR_PWDLEN=${COLUMNS} - $promptsize - 11 - ${#PROMPT_PART}))
+	(( PR_PWDLEN=${COLUMNS} - $promptsize - 13 - ${#PROMPT_PART}))
 	PS1='$CYAN╭─${PROMPT_PART}$MAGENTA [%D{%H:%M}] $GREEN%$PR_PWDLEN<...<%~%<< $(git_super_status)$CYAN
 ╰─\$'
 	PS2='$BLUE($GREEN%_$BLUE)$FINISH'
@@ -282,7 +282,7 @@ compdef telnet=scp
 compdef pacaur=pacman
 
 # specific filetype
-_pic() { _files -g '*.(jpg|png|bmp|gif|ppm|pbm|jpeg)(-.)' }
+_pic() { _files -g '*.(jpg|png|bmp|gif|ppm|pbm|jpeg|xcf|ico)(-.)' }
 compdef _pic gimp
 compdef _pic feh
 
@@ -402,3 +402,6 @@ fi
 
 
 export PATH=$PATH:/home/wyx/Work/android-sdks/tools:/home/wyx/Work/android-sdks/platform-tools
+
+# OPAM configuration
+. $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true

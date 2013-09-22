@@ -55,7 +55,7 @@ function ll(){
 
 function acpi(){
 	=acpi -V | head -n1
-	sensors | grep Physical |sed 's/(.*//g' |sed 's/\+//g'
+	sensors | grep temp1 |sed 's/(.*//g' |sed 's/\+//g'
 	sensors | grep RPM
 	cat /proc/acpi/ibm/fan | head -n3 |tail -n1
 	#echo "Graphic Card:  `nvidia-settings -q gpucoretemp |grep "Keep" |grep -o "\ [0-9]+" `  °C "
@@ -77,6 +77,7 @@ alias psg='pgrep -a'
 alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -r | head"
 alias grep='egrep -I --color=auto'
 alias l='ls -F --color=auto'
+alias l.='ls -d .* --color=auto'
 alias sl='ls -F --color=auto'
 alias ls='ls -F --color=auto'
 alias lss='ls -F --color=auto'
