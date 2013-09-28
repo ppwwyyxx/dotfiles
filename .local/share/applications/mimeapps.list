@@ -1,0 +1,13 @@
+[Added Associations]
+
+[Default Applications]
+application/pdf=mupdf.desktop;
+application/msword=libreoffice-writer.desktop;
+text/x-c=gvim.desktop
+text/x-python=gvim.desktop
+text/plain=gvim.desktop
+
+image/jpeg=feh.desktop
+image/png=feh.desktop
+image/gif=feh.desktop
+
