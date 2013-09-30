@@ -24,7 +24,6 @@ alias gv='gvim'
 alias eclimd='/usr/share/eclipse/eclimd'
 
 alias indent='indent -linux -l80'
-alias gs='gs -dNOPAUSE -dBATCH -sDEVICE=pdfwrite'
 alias gdb='gdb -q'
 alias R='R --vanilla'
 alias LS='LS -eaF'
@@ -36,8 +35,7 @@ alias df='df -Th'
 alias dot='dot -Tpng -O -v'
 alias dstat='dstat -dnmcl --socket --top-io -N eth0,eth1,wlan0,eno1'
 alias ctags='ctags -R -f .tags --c++-kinds=+p --fields=+iaS --extra=+q'
-alias toilet='toilet --filter gay'
-alias valgrind='valgrind --leak-check=full --track-origins=yes --show-reachable=yes --show-possibly-lost=yes'
+alias valgrind='valgrind --leak-check=full --track-origins=yes --show-possibly-lost=yes'
 alias convmv='convmv -f GBK -t UTF-8 --notest -r'
 alias wgetpaste='wgetpaste -C'
 #alias rm='mv --target-directory ~/tmp/.Trash --backup=numbered'
@@ -65,6 +63,16 @@ function acpi(){
 	done
 }
 
+function cdp () {
+    dir=$(git rev-parse --show-toplevel 2>/dev/null)
+    if [ $? -eq 0 ]; then
+        CDP=$dir
+        cd $dir
+    else
+        echo "'$PWD' is not git repos"
+    fi
+}
+
 # customed command
 alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
 alias -g L="|less"
@@ -89,7 +97,7 @@ alias mc='make clean'
 alias gits='git s'
 alias word='/opt/wps/wps'
 alias powerpoint='/opt/wps/wpp'
-alias diff='colordiff'
+which colordiff > /dev/null 2>&1 && alias diff='colordiff'
 alias cp2clip='xclip -i -selection clipboard'
 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -98,9 +106,15 @@ alias mirror='mplayer -tv driver=v4l2:device=/dev/video0 tv:// -vf-add mirror'
 alias tune_pitch='mplayer -af scaletempo=speed=pitch'
 alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_region 1 -qscale 2 -i :0.0 ~/Videos/out.mpg'
 alias learn=". ~/bin/learn"
+
+[[ -s ~/.pythonrc ]] && export PYHTONSTARTUP=~/.pythonrc
 alias ipython_notebook="ipython2 notebook --pylab inline"
 alias bp2='bpython2'
 alias pyftp='python2 -m pyftpdlib'
+function pytwistd() { twistd web --path "$1" -p "${2:-8000}" }
+alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install --user -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip2 install --user -U"
+alias vjavadoc="chromium /usr/share/doc/openjdk7-doc/api/index.html"
+alias restart_wm='pkill compiz -9; pkill fusion-icon -9; DISPLAY=:0.0 fusion-icon &'
 
 alias pycharm='/opt/pycharm-2.7.3/bin/pycharm.sh'
 alias rubymine='/opt/RubyMine-5.4.3.2.1/bin/rubymine.sh'
@@ -130,13 +144,11 @@ alias smth='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.smth.org'
 alias gtalk='weechat-curses -r "/connect localhost; /msg &bitlbee identify 1"'
 alias window='wmctrl -a '
 
-alias vmware_rc='sudo rc.d start vmware-USBArbitrator; sudo rc.d start vmware'
 alias win='cd; virtualbox --startvm win7 & ; cd -'
 alias osx='cd; virtualbox --startvm osx & ; cd -'
 alias ie8="wine 'C:\Program Files (x86)\\\\Internet Explorer\\\\iexplore'"
-alias restart_wm='pkill compiz -9; pkill fusion-icon -9; DISPLAY=:0.0 fusion-icon &'
-alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install --user -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip2 install --user -U"
-alias vjavadoc="chromium /usr/share/doc/openjdk7-doc/api/index.html"
+alias vnc_quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=ZRLE -FullScreen=1 -Shared=1'
+alias rdesktop-lab='rdesktop-vrdp -u wyx -p - 166.111.71.37:3389'
 
 # automatic use sudo
 alias please='sudo'
@@ -152,14 +164,6 @@ alias pSs='pacman -Ss'
 alias pSi='pacman -Si'
 alias pSy='sudo pacman -Syy'
 alias pSu='pacaur -Syu'
-alias vnc_quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=ZRLE -FullScreen=1 -Shared=1'
-alias rdesktop-lab='rdesktop-vrdp -u wyx -p - 166.111.71.37:3389'
-
-
-
-# customed variables
-hw=/home/wyx/Documents/work_thu/original/12_aut/
-pydoc=/usr/share/doc/python2/html
 
 m_sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "WenQuanYi MicroHei"'
 m_avc_param="-oac mp3lame -lameopts fast:preset=medium -ovc x264 -x264encopts subq=5:8x8dct:frameref=2:bframes=3:weight_b"

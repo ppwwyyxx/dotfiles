@@ -10,6 +10,7 @@ export PATH=$HOME/bin:$PATH
 [ -d /home/opt/quartus/quartus/bin ] && export PATH=/home/opt/quartus/quartus/bin:$PATH
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+. $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
 export EDITOR=vim
 export NODE_PATH=$HOME/.local/lib/node_modules/
@@ -77,9 +78,11 @@ function precmd () {
 	fi
 
 	local promptsize=${#----%D%H-%M--$(git_super_status)}
-	(( PR_PWDLEN=${COLUMNS} - $promptsize - 13 - ${#PROMPT_PART}))
-	PS1='$CYAN╭─${PROMPT_PART}$MAGENTA [%D{%H:%M}] $GREEN%$PR_PWDLEN<...<%~%<< $(git_super_status)$CYAN
-╰─\$'
+	(( PR_PWDLEN=${COLUMNS} - $promptsize - 16 - ${#PROMPT_PART}))
+	START_CHBK=$'\e[1m'		# bold on
+	END_CHBK=$'\e[22m'		# bold off
+	PS1="$START_CHBK$CYAN╭─${PROMPT_PART}$MAGENTA [%D{%H:%M}] $GREEN%$PR_PWDLEN<...<%~%<< $(git_super_status)$CYAN$END_CHBK
+╰─\$"
 	PS2='$BLUE($GREEN%_$BLUE)$FINISH'
 	PS3='$GREEN Select:'
 }
@@ -100,6 +103,7 @@ for i in html,mhtml; alias -s $i=chromium
 setopt autocd				# cd without 'cd'
 setopt braceccl				# ls {a-e.1}
 unsetopt hup				# don't close background program when exiting shell
+stty stop undef
 setopt NO_FLOW_CONTROL		# disable Ctrl+s
 setopt NOTIFY				# show bg jobs status immediately
 limit coredumpsize 0		# disable core dumps
@@ -135,10 +139,7 @@ bindkey '^b' backward-word
 bindkey '^f' forward-word
 bindkey '^w' backward-delete-word
 bindkey '^c' kill-buffer
-#bindkey -M viins ' ' magic-space
 bindkey ' ' magic-space
-#bindkey -M vicmd 'u' undo
-#bindkey -M vicmd "q" push-line
 autoload zkbd
 [[ ! -f ${ZDOTDIR:-$HOME}/.zsh/zkbd/$TERM ]] && zkbd
 source ${ZDOTDIR:-$HOME}/.zsh/zkbd/$TERM
@@ -161,7 +162,6 @@ sudo-command-line() {
 	[[ -z $BUFFER ]] && zle up-history
 	[[ $BUFFER != sudo\ * ]] && BUFFER="sudo $BUFFER"
 	zle end-of-line
-	#recolor-cmd
 }
 zle -N sudo-command-line
 bindkey "${key[F2]}" sudo-command-line
@@ -173,11 +173,15 @@ setopt AUTO_LIST
 setopt AUTO_MENU
 setopt MENU_COMPLETE
 setopt complete_in_word   # complete /v/c/a/p
-setopt nonomatch		  # enhanced bash wildcard completion
+setopt no_nomatch		  # enhanced bash wildcard completion
+setopt magic_equal_subst
+setopt noautoremoveslash
+setopt null_glob
 
 # ignore the current directory
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
 
+zstyle ':completion:*' use-cache true
 zstyle ':completion::complete:*' cache-path .zcache
 zstyle ':completion:*' verbose yes
 zstyle ':completion:*' menu select
@@ -211,9 +215,9 @@ zstyle ':completion:*' group-name ''
 zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*:options' auto-description '%d'
 zstyle ':completion:*:descriptions' format $'\e[01;33m -- %d --\e[0m'
-zstyle ':completion:*:messages' format $'\e[01;35m -- %d --\e[0m'
-zstyle ':completion:*:warnings' format $'\e[01;31m -- No Matches Found --\e[0m'
-zstyle ':completion:*:corrections' format $'\e[01;32m -- %d (errors: %e) --\e[0m'
+#zstyle ':completion:*:messages' format $'\e[01;35m -- %d --\e[0m'
+#zstyle ':completion:*:warnings' format $'\e[01;31m -- No Matches Found --\e[0m'
+#zstyle ':completion:*:corrections' format $'\e[01;32m -- %d (errors: %e) --\e[0m'
 
 # huge list
 zstyle ':completion:*:default' list-prompt '%S%M matches%s'
@@ -222,14 +226,12 @@ zstyle ':completion:*:default' menu 'select=0'
 zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
 zstyle ':completion:*' completer _complete _prefix _user_expand _correct _prefix _match
 # newer file first
-zstyle ':completion:*' file-sort modification reverse
+#zstyle ':completion:*' file-sort modification reverse
 # Separate man page sections.
 zstyle ':completion:*:manuals' separate-sections true
-# Egomaniac! XXX
-zstyle ':completion:*' list-separator 'wyx'
 # complete with a menu for xwindow ids
-zstyle ':completion:*:windows' menu on=0
-zstyle ':completion:*:expand:*' tag-order all-expansions
+#zstyle ':completion:*:windows' menu on=0
+#zstyle ':completion:*:expand:*' tag-order all-expansions
 
 #kill completion
 compdef pkill=kill
@@ -279,8 +281,6 @@ function vscp() {
 compdef vscp=scp
 compdef telnet=scp
 
-compdef pacaur=pacman
-
 # specific filetype
 _pic() { _files -g '*.(jpg|png|bmp|gif|ppm|pbm|jpeg|xcf|ico)(-.)' }
 compdef _pic gimp
@@ -292,8 +292,8 @@ zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv)
 # Pinyin Completion
 [[ -d $HOME/.zsh/Pinyin-Completion ]] && source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh && export PATH=$PATH:$HOME/.zsh/Pinyin-Completion/bin
 
-# npm completion
-which npm > /dev/null 2>&1 && eval "$(npm completion 2 > /dev/null)"
+# npm completion (a little slow?)
+#which npm > /dev/null 2>&1 && eval "$(npm completion 2 > /dev/null)"
 
 # hub completion
 #which hub > /dev/null 2>&1 && eval "$(hub alias -s)"
@@ -345,6 +345,7 @@ path_parse(){
 		zle end-of-line
 	fi
 }
+
 bg_list=(pdf geeqie libreoffice word evince)
 special_command(){
 	cmd=`echo $BUFFER | sed 's/^\ *//g' | sed 's/\ .*//g'`
@@ -390,18 +391,15 @@ if [[ -d $HOME/.zsh ]]; then
 	source $HOME/.zsh/syntax-highlighting/zsh-syntax-highlighting.zsh
 	source $HOME/.zsh/history-substring-search.zsh
 	HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS="I"			# sensitive search
-	source $HOME/.zsh/autojump/etc/profile.d/autojump.zsh
+#	source $HOME/.zsh/autojump/etc/profile.d/autojump.zsh
 fi
 if [ $commands[fasd] ]; then
-	eval "$(fasd --init zsh-hook zsh-wcomp zsh-wcomp-install)"
+	#eval "$(fasd --init zsh-hook zsh-wcomp zsh-wcomp-install)"
+	eval "$(fasd --init posix-alias zsh-hook)"
 	#eval "$(fasd --init zsh-wcomp zsh-wcomp-install)"	 # this should be enabled periodically
 	alias o='f -e xdg-open'
 	alias fv='f -e vim'
+	alias j='fasd_cd -d'
+	alias jj='fasd_cd -d -i'
 	bindkey '^X^O' fasd-complete
 fi
-
-
-export PATH=$PATH:/home/wyx/Work/android-sdks/tools:/home/wyx/Work/android-sdks/platform-tools
-
-# OPAM configuration
-. $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true

@@ -128,8 +128,8 @@ _zsh_highlight_bind_widgets()
 {
   # Load ZSH module zsh/zleparameter, needed to override user defined widgets.
   zmodload zsh/zleparameter 2>/dev/null || {
-	echo 'zsh-syntax-highlighting: failed loading zsh/zleparameter.' >&2
-	return 1
+    echo 'zsh-syntax-highlighting: failed loading zsh/zleparameter.' >&2
+    return 1
   }
 
   # Override ZLE widgets to make them invoke _zsh_highlight.
