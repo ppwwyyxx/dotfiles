@@ -101,7 +101,7 @@ which colordiff > /dev/null 2>&1 && alias diff='colordiff'
 alias cp2clip='xclip -i -selection clipboard'
 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias clean_trash='=rm ~/tmp/.Trash/* -rf; =rm ~/.Trash/* -rf; =rm ~/.Trash/.* -rf; =rm ~/tmp/.Trash/.* -rf'
+alias clean_trash='=rm /ssd_home/.Trash/{.,}* -rf; =rm ~/.Trash/{.,}* -rf'
 alias mirror='mplayer -tv driver=v4l2:device=/dev/video0 tv:// -vf-add mirror'
 alias tune_pitch='mplayer -af scaletempo=speed=pitch'
 alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_region 1 -qscale 2 -i :0.0 ~/Videos/out.mpg'
@@ -128,6 +128,7 @@ alias robomongo='/opt/robomongo-0.8.0-x86_64/bin/robomongo.sh'
 alias mathc='/opt/Mathematica/Executables/math'
 alias mathematica='/opt/Mathematica/Executables/Mathematica -nosplash'
 alias matlab='/opt/Matlab/bin/matlab'
+alias matlabc='/opt/Matlab/bin/matlab -nodisplay -r clc '
 alias maple='/opt/Maple/bin/xmaple'
 alias evernote='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/Evernote/Evernote/Evernote.exe'
 
@@ -142,6 +143,9 @@ alias chromium_proxy='chromium --proxy-server=socks5://localhost:8080'
 alias net9='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.net9.org'
 alias smth='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.smth.org'
 alias gtalk='weechat-curses -r "/connect localhost; /msg &bitlbee identify 1"'
+alias ssh_reverse='ssh -R 6333:localhost:22 -ServerAliveInterval=60'
+
+
 alias window='wmctrl -a '
 
 alias win='cd; virtualbox --startvm win7 & ; cd -'
@@ -163,9 +167,10 @@ alias pS='sudo pacman -S'
 alias pSs='pacman -Ss'
 alias pSi='pacman -Si'
 alias pSy='sudo pacman -Syy'
+alias pR='sudo pacman -R'
 alias pSu='pacaur -Syu'
 
-m_sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "WenQuanYi MicroHei"'
+m_sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "/usr/share/fonts/wenquanyi/wqy-microhei/wqy-microhei.ttc"'
 m_avc_param="-oac mp3lame -lameopts fast:preset=medium -ovc x264 -x264encopts subq=5:8x8dct:frameref=2:bframes=3:weight_b"
 f_avc_param="-c:v libx264 -preset slow -crf 22 -c:a libmp3lame"
 mx="/home/wyx/install/files/pics/pic7"

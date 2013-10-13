@@ -7,7 +7,7 @@ export PATH=$HOME/bin:$PATH
 [ -d $HOME/.cabal/bin ] && export PATH=$HOME/.cabal/bin:$PATH
 [ -d /opt/texlive/2013/ ] && export PATH=/opt/texlive/2013/bin/x86_64-linux:$PATH
 [ -d /usr/lib/colorgcc/bin ] && export PATH=/usr/lib/colorgcc/bin:$PATH
-[ -d /home/opt/quartus/quartus/bin ] && export PATH=/home/opt/quartus/quartus/bin:$PATH
+[ -d /opt/cuda/bin ] && export PATH=/opt/cuda/bin:$PATH
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
@@ -35,9 +35,9 @@ FINISH="%{$terminfo[sgr0]%}"
 function rm() {
 	for file in $@; do
 		local FILE_LOC="`readlink -f $file`"
-		if [[ $FILE_LOC == /ssd_home/wyx* ]] ; then
-			mkdir -p /ssd_home/wyx/tmp/.Trash
-			mv "$file" /ssd_home/wyx/tmp/.Trash/ --backup=numbered -fv
+		if [[ $FILE_LOC == /ssd_home/* ]] ; then
+			mkdir -p /ssd_home/.Trash
+			mv "$file" /ssd_home/.Trash/ --backup=numbered -fv
 		elif [[ $FILE_LOC == /home/* ]]; then
 			mkdir -p $HOME/.Trash
 			mv "$file" $HOME/.Trash/ --backup=numbered -fv
@@ -395,11 +395,12 @@ if [[ -d $HOME/.zsh ]]; then
 fi
 if [ $commands[fasd] ]; then
 	#eval "$(fasd --init zsh-hook zsh-wcomp zsh-wcomp-install)"
-	eval "$(fasd --init posix-alias zsh-hook)"
+	eval "$(fasd --init posix-alias zsh-hook zsh-wcomp zsh-wcomp-install)"
 	#eval "$(fasd --init zsh-wcomp zsh-wcomp-install)"	 # this should be enabled periodically
 	alias o='f -e xdg-open'
 	alias fv='f -e vim'
 	alias j='fasd_cd -d'
 	alias jj='fasd_cd -d -i'
+	unalias s
 	bindkey '^X^O' fasd-complete
 fi
