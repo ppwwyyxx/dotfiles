@@ -9,46 +9,54 @@ in_array() {
     return 1
 }
 
-# function improvments for common command
+# common command
 alias cdl='cd'
 alias dc='cd'
 alias p='ping'
 alias meow='ping'
 alias p6='ping6'
+alias cp='cp -rvi'
 
 alias v='vim '
 alias vi='vim '
 alias iv='vim '
 alias sv='sudo vim'
 alias gv='gvim'
-alias eclimd='/usr/share/eclipse/eclimd'
 
-alias indent='indent -linux -l80'
-alias gdb='gdb -q'
-alias R='R --vanilla'
-alias LS='LS -eaF'
-alias which='which -a'
-alias ibus-daemon='ibus-daemon --xim'
-alias zh-CN="LC_ALL='zh_CN.UTF-8'"
-alias free='free -m'
-alias df='df -Th'
-alias dot='dot -Tpng -O -v'
-alias dstat='dstat -dnmcl --socket --top-io -N eth0,eth1,wlan0,eno1'
-alias ctags='ctags -R -f .tags --c++-kinds=+p --fields=+iaS --extra=+q'
-alias valgrind='valgrind --leak-check=full --track-origins=yes --show-possibly-lost=yes'
-alias convmv='convmv -f GBK -t UTF-8 --notest -r'
-alias wgetpaste='wgetpaste -C'
-#alias rm='mv --target-directory ~/tmp/.Trash --backup=numbered'
-alias cp='cp -rvi'
+alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
+alias -g L="|less"
+alias -g G='|grep'
+alias -g N='>/dev/null'
+alias -g NN='>/dev/null 2>&1'
+alias L=less
+alias C='cat'
+alias wcl='wc -l'
+
+alias psg='pgrep -a'
+alias top='top -d 0.5 -o %MEM'
+alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -r | head -n20"
+alias grep='grep -IE --color=auto --exclude=.tags --exclude-dir="node_modules" --exclude-dir=".git" --exclude-dir=".env"'
 alias b='acpi'
-alias km='xmodmap ~/.Xmodmap; xcape -e "Control_L=Escape"'
-alias keyb='xinput set-int-prop $(xinput | grep Touch |grep -o "id=[0-9]*" |grep -o "[0-9]*") "Device Enabled" 8 0'
-alias unkeyb='xinput set-int-prop $(xinput | grep Touch |grep -o "id=[0-9]*" |grep -o "[0-9]*") "Device Enabled" 8 1'
+alias tmuxa='tmux a || tmux'
+
+alias l='ls -F --color=auto'
+alias l.='ls -d .* --color=auto'
+alias sl='ls -F --color=auto'
+alias ls='ls -F --color=auto'
+alias lss='ls -F --color=auto'
+
+alias mk='make'
+alias mr='make run'
+alias mc='make clean'
+alias mkc='make clean'
+alias cmk='mkdir -p build; cd build; cmake ..; make; cd ..'
+alias mkb='make -C build'
+alias gits='git s'
 
 function ll(){
-	ls -AhlF --color=auto $1
-	echo -e " $GREEN  --[$LIGHTBLUE  Dir:    $CYAN`ls -Al $1 | grep '^drw' | wc -l`$LIGHTGREEN|$YELLOW \
-	 File: $GREEN`ls -Al $1 | grep -v '^drw' | grep -v total | wc -l` ]-- $WHITE"
+	ls -AhlF --color=auto $@
+	[[ "$@" == "$1" ]] && echo -e " $GREEN  --[$LIGHTBLUE  Dir:    $CYAN`ls -Al $@ | grep '^drw' | wc -l`$LIGHTGREEN|$YELLOW \
+	 File: $GREEN`ls -Al $@ | grep -v '^drw' | grep -v total | wc -l` ]-- $WHITE"
 }
 
 function acpi(){
@@ -61,6 +69,7 @@ function acpi(){
 		echo -n "cpu$i : "
 		cat "/sys/devices/system/cpu/cpu$i/cpufreq/scaling_governor"
 	done
+	sudo cpupower frequency-info -w | sed 'N;s/\n//g'
 }
 
 function cdp () {
@@ -73,57 +82,19 @@ function cdp () {
     fi
 }
 
-# customed command
-alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
-alias -g L="|less"
-alias -g G='|egrep --color=auto'
-alias -g N='>/dev/null'
-alias -g NN='>/dev/null 2>&1'
-alias L=less
-alias C='cat'
-alias psg='pgrep -a'
-alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -r | head"
-alias grep='egrep -I --color=auto'
-alias l='ls -F --color=auto'
-alias l.='ls -d .* --color=auto'
-alias sl='ls -F --color=auto'
-alias ls='ls -F --color=auto'
-alias lss='ls -F --color=auto'
-
+# long path
+alias eclimd='/usr/share/eclipse/eclimd'
 alias SugarCpp='mono ~/tmp/SugarCpp/src/SugarCpp.CommandLine/bin/Debug/SugarCpp.CommandLine.exe'
-alias mk='make'
-alias mr='make run'
-alias mc='make clean'
-alias gits='git s'
 alias word='/opt/wps/wps'
 alias powerpoint='/opt/wps/wpp'
-which colordiff > /dev/null 2>&1 && alias diff='colordiff'
-alias cp2clip='xclip -i -selection clipboard'
 
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias clean_trash='=rm /ssd_home/.Trash/{.,}* -rf; =rm ~/.Trash/{.,}* -rf'
-alias mirror='mplayer -tv driver=v4l2:device=/dev/video0 tv:// -vf-add mirror'
-alias tune_pitch='mplayer -af scaletempo=speed=pitch'
-alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_region 1 -qscale 2 -i :0.0 ~/Videos/out.mpg'
-alias learn=". ~/bin/learn"
-
-[[ -s ~/.pythonrc ]] && export PYHTONSTARTUP=~/.pythonrc
-alias ipython_notebook="ipython2 notebook --pylab inline"
-alias bp2='bpython2'
-alias pyftp='python2 -m pyftpdlib'
-function pytwistd() { twistd web --path "$1" -p "${2:-8000}" }
-alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install --user -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip2 install --user -U"
-alias vjavadoc="chromium /usr/share/doc/openjdk7-doc/api/index.html"
-alias restart_wm='pkill compiz -9; pkill fusion-icon -9; DISPLAY=:0.0 fusion-icon &'
-
-alias pycharm='/opt/pycharm-2.7.3/bin/pycharm.sh'
-alias rubymine='/opt/RubyMine-5.4.3.2.1/bin/rubymine.sh'
 alias webstorm='/opt/WebStorm-129.664/bin/webstorm.sh'
 alias idea='/opt/idea-IC-129.713/bin/idea.sh'
 export PYCHARM_JDK=/opt/java-oracle
 export RUBYMINE_JDK=/opt/java-oracle
 export IDEA_JDK=/opt/java-oracle
 export WEBIDE_JDK=/opt/java-oracle
+
 alias robomongo='/opt/robomongo-0.8.0-x86_64/bin/robomongo.sh'
 alias mathc='/opt/Mathematica/Executables/math'
 alias mathematica='/opt/Mathematica/Executables/Mathematica -nosplash'
@@ -131,34 +102,73 @@ alias matlab='/opt/Matlab/bin/matlab'
 alias matlabc='/opt/Matlab/bin/matlab -nodisplay -r clc '
 alias maple='/opt/Maple/bin/xmaple'
 alias evernote='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/Evernote/Evernote/Evernote.exe'
+alias ie8="wine 'C:\Program Files (x86)\\\\Internet Explorer\\\\iexplore'"
 
-alias samba_thu='sudo mount -t cifs -o username=tuna,password=Tunahallelujah2012  //166.111.9.155/movie /mnt'
+# add arguments for some commands
+alias indent='indent -linux -l80'
+alias gdb='gdb -q'
+alias R='R --vanilla'
+alias LS='LS -eaF'
+alias which='which -a'
+alias ibus-daemon='ibus-daemon --xim'
+alias zh-CN="LC_ALL='zh_CN.UTF-8'"
+alias manzh="LC_ALL='zh_CN.UTF-8' man"
+alias free='free -m'
+alias df='df -Th'
+alias dot='dot -Tpng -O -v'
+alias dstat='dstat -dnmcl --socket --top-io -N eth0,eth1,wlan0,eno1'
+alias ctags='ctags -R -f .tags --c++-kinds=+p --fields=+iaS --extra=+q'
+alias valgrind='valgrind --leak-check=full --track-origins=yes --show-possibly-lost=yes'
+alias convmv='convmv -f GBK -t UTF-8 --notest -r'
+which colordiff > /dev/null 2>&1 && alias diff='colordiff'
+
+
+# customed command
+alias km='xmodmap ~/.Xmodmap; xcape -e "Control_L=Escape"; xinput set-button-map $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*") 1 0 0'
+alias keyb='xinput disable $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*")'
+alias unkeyb='xinput enable $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*")'
+
+alias cp2clip='xclip -i -selection clipboard'
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias clean_trash='=rm /ssd_home/.Trash/{.,}* -rf; =rm ~/.Trash/{.,}* -rf'
+alias mirror='mplayer -tv driver=v4l2:device=/dev/video0 tv:// -vf-add mirror'
+alias tune_pitch='mplayer -af scaletempo=speed=pitch'
+alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_region 1 -qscale 2 -i :0.0 ~/Video/out.mpg'
+alias learn=". ~/bin/learn"
+alias restart_wm='pkill compiz -9; pkill fusion-icon -9; DISPLAY=:0.0 fusion-icon &'
+alias window='wmctrl -a '
+
+[[ -s ~/.pythonrc ]] && export PYHTONSTARTUP=~/.pythonrc
+alias ipython_notebook="ipython2 notebook --pylab inline"
+alias bp2='bpython2'
+alias pyftp='python2 -m pyftpdlib'
+function pytwistd() { twistd web --path "$1" -p "${2:-8000}" }
+alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install --user -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip2 install --user -U"
+
 alias hotspot='sudo nmcli con up id Seattle'
-alias iwc='iwconfig'
+alias iwc='iwconfig wlan0; ifconfig wlan0'
 alias port='netstat -ntlp'
 alias rsync='rsync --progress --partial'
 alias m_rsync='rsync --progress --partial --delete --size-only -rlv'
 # rsync ./book/ /mnt/books/ -rlv --delete --size-only
 alias chromium_proxy='chromium --proxy-server=socks5://localhost:8080'
+alias chromium_rug='chromium --proxy-server=rug.net9.org:7777'
 alias net9='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.net9.org'
 alias smth='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.smth.org'
 alias gtalk='weechat-curses -r "/connect localhost; /msg &bitlbee identify 1"'
 alias ssh_reverse='ssh -R 6333:localhost:22 -ServerAliveInterval=60'
 
-
-alias window='wmctrl -a '
-
 alias win='cd; virtualbox --startvm win7 & ; cd -'
 alias osx='cd; virtualbox --startvm osx & ; cd -'
-alias ie8="wine 'C:\Program Files (x86)\\\\Internet Explorer\\\\iexplore'"
+alias winxp='cd; virtualbox --startvm winxp &; cd -'
 alias vnc_quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=ZRLE -FullScreen=1 -Shared=1'
 alias rdesktop-lab='rdesktop-vrdp -u wyx -p - 166.111.71.37:3389'
 
-# automatic use sudo
 alias please='sudo'
 alias logout='xfce4-session-logout --logout'
 alias umount='sudo umount'
 alias mount='sudo mount'
+alias samba_thu='sudo mount -t cifs -o username=tuna,password=Tunahallelujah2012  //166.111.9.155/movie /mnt'
 alias iotop='sudo iotop'
 alias iftop='sudo iftop -B'
 alias powertop='sudo powertop'

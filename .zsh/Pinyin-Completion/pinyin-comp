@@ -262,18 +262,25 @@ if __name__ == '__main__':
         #print ( "\n".join(reply) )
 
 
+    def filter_escape(s):
+        s = s.replace('\\', '\\\\')
+        s = s.replace(' ', '\ ')
+        s = s.replace('(', '\(')
+        s = s.replace(')', '\)')
+        return s
+
     if index :
         try:
             tmp = reply[index - 1]
-            tmp = tmp.replace(' ','\ ')
+            tmp = filter_escape(tmp)
             print tmp
         except IndexError:
             # return the last candidate when index is out of range
             if reply :
                 tmp = reply[-1]
-                tmp = tmp.replace(' ','\ ')
+                tmp = filter_escape(tmp)
                 print tmp
     else:
         for i in range(0,len(reply)):
-            reply[i] = reply[i].replace(' ','\ ').replace('\'', '\\\'')
+            reply[i] = filter_escape(reply[i])
         print ( "\n".join(reply) )

@@ -22,6 +22,18 @@ export DISTCC_POTENTIAL_HOSTS='166.111.71.24/8 166.111.71.25/16'
 export MAKEFLAGS="-j4"
 export CXXFLAGS="-Wall -Wextra -std=c++11 -g"
 
+export PAGER="/usr/bin/less -s"
+export BROWSER="$PAGER"
+export LESS_TERMCAP_mb=$YELLOW
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
+export PYTHONDOCS=/usr/share/doc/python2/html
+export SDCV_PAGER="sed 's/\ \ \([1-9]\)/\n\n◆\1/g' |less"
+
 # colors
 autoload colors zsh/terminfo
 colors
@@ -93,7 +105,7 @@ source $HOME/.aliasrc
 alias mv='nocorrect mv -i'
 alias mkdir='nocorrect mkdir'
 alias cp='nocorrect cp -rvi'
-alias -s pdf=mupdf
+alias -s pdf=mupdf -b 0
 for i in wmv mkv mp4 mp3 avi rm rmvb flv; alias -s $i=mplayer
 for i in jpg png gif; alias -s $i=feh
 for i in xls xlsx doc docx ppt pptx; alias -s $i=libreoffice
@@ -203,7 +215,7 @@ export ZLSCOLORS="${LS_COLORS}"
 zmodload zsh/complist
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
-export LS_COLORS="$LS_COLORS*.f4v=01;35:"		# add custom ls_color
+export LS_COLORS="$LS_COLORS*.f4v=01;35:*.pdf=01;35:"		# add custom ls_color
 
 # Fix case and typo
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
@@ -278,6 +290,7 @@ function vscp() {
 	echo ${targs[@]}
     vim ${targs[@]}
 }
+
 compdef vscp=scp
 compdef telnet=scp
 
@@ -391,8 +404,10 @@ if [[ -d $HOME/.zsh ]]; then
 	source $HOME/.zsh/syntax-highlighting/zsh-syntax-highlighting.zsh
 	source $HOME/.zsh/history-substring-search.zsh
 	HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS="I"			# sensitive search
-#	source $HOME/.zsh/autojump/etc/profile.d/autojump.zsh
+	#source $HOME/.zsh/autojump/etc/profile.d/autojump.zsh
 fi
+
+fasd_cache="$HOME/.vimtmp/fasd-cache"
 if [ $commands[fasd] ]; then
 	#eval "$(fasd --init zsh-hook zsh-wcomp zsh-wcomp-install)"
 	eval "$(fasd --init posix-alias zsh-hook zsh-wcomp zsh-wcomp-install)"
