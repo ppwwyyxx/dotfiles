@@ -17,7 +17,7 @@ use_spacer right
 use_xft yes
 
 # Update interval in seconds
-update_interval .5
+update_interval 1
 
 # Minimum size of text area
 minimum_size 170 5
@@ -43,14 +43,14 @@ stippled_borders 3
 border_width 10
 
 # Default colors and also border colors, grey90 == #e5e5e5
-default_color grey
+default_color green
 
 own_window_colour brown
 own_window_transparent yes
 
 # Text alignment, other possible values are commented
 #alignment top_left
-alignment top_right
+alignment top_left
 #alignment bottom_left
 #alignment bottom_right
 
@@ -62,30 +62,27 @@ gap_y 40
 top_name_width 12
 
 #${font arial black:size=9}INTERNAL:$font ${execi 300 internalip.py}${color}
-#${font arial black:size=9}FAN: $font$color${ibm_fan}rpm${alignr}${font arial black:size=9}TEMP: $font$color${ibm_temps 0}℃
 TEXT
-${font arial black:size=12}${color orange}SYSTEM${color}${font arial black:size=8}INFORMATION${color orange} ${hr 2}$color$font
+${font arial black:size=12}${color magneta}SYSTEM${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
 $nodename $kernel
 ${font arial black:size=9}UP: $font$uptime ${voffset -18}
 ${voffset 6}${font arial black:size=30}${time %e}$font ${voffset -17}${time %A, }${time %B} ${time %G}
-${voffset -2}${goto 65}${font arial black:size=10} ${time %I:%M:%S %p}
-${font arial black:size=12}${color orange}CPU${color}${font arial black:size=8}INFORMATION${color orange} ${hr 2}$color$font
+${voffset -2}${goto 65}${font arial black:size=10} ${time %I:%M:%S %p} ${font arial black:size=12}
+${color magneta}CPU${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
 ${font arial black:size=9}USAGE: $font${cpu cpu0}%
 ${cpugraph cpu0 C0C0C0 C0C0C0}
 ${font arial black:size=9}Name${goto 120} PID${goto 160} CPU${goto 200} MEM
 ${color #ddaa00}${top name 1}${goto 120}${top pid 1}${goto 160}${top cpu 1}${goto 200}${top mem 1}
 ${color lightgrey}${top name 2}${goto 120}${top pid 2}${goto 160}${top cpu 2}${goto 200}${top mem 2}
 ${color lightgrey}${top name 3}${goto 120}${top pid 3}${goto 160}${top cpu 3}${goto 200}${top mem 3}$color$font
-${font arial black:size=12}${color orange}MEMORY${color}${font arial black:size=8}INFORMATION${color orange} ${hr 2}$color$font
+${font arial black:size=12}${color magneta}Storage${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
 ${font arial black:size=9}RAM: $font$memperc% ${alignr}$mem/$memmax
 ${membar}
-${font arial black:size=9}SWAP: $font$swapperc% ${alignr}$swap/$swapmax
-${swapbar}
-${font arial black:size=12}${color orange}DISK${color}${font arial black:size=8}INFORMATION${color orange} ${hr 2}$color$font
-${font arial black:size=9}VOLUME${goto 80}FREE${alignr 1}SIZE$font
-${font arial black:size=9}ROOT:$font${goto 80}${fs_free /}(${fs_free_perc /}%)${alignr}${fs_size /}
+${font arial black:size=9}ROOT:$font${fs_free_perc /}% ${alignr}${fs_free /}/${fs_size /}
 ${fs_bar /}$color
-${font arial black:size=12}${color orange}NETWORK${color}${font arial black:size=8}INFORMATION${color orange} ${hr 2}$color$font
+${font arial black:size=9}HOME:$font${fs_free_perc /home}% ${alignr}${fs_free /home}/${fs_size /home}
+${fs_bar /home/}$color
+${font arial black:size=12}${color magneta}NETWORK${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
 ${font arial black:size=9}LOCAL:$font ${addr wlan0}${color}
 ${font arial black:size=9}EXTERNAL:$font ${execi 300 curl ifconfig.me}${color}
 ${font arial black:size=9}DOWN: $font$color${downspeed wlan0}/${totaldown wlan0}
@@ -93,6 +90,8 @@ ${downspeedgraph wlan0 C0C0C0 C0C0C0}
 ${font arial black:size=9}UP: $font${upspeed wlan0}/${totalup wlan0}
 ${upspeedgraph wlan0 C0C0C0 C0C0C0}$color
 ${font arial black:size=9}IN: $font${tcp_portmon 1 32767 count} ${font arial black:size=9}OUT: $font${tcp_portmon 32768 61000 count}${alignr}${font arial black:size=9}TOTAL: $font${tcp_portmon 1 65535 count}
-${font arial black:size=12}${color orange}BATTERY${color}${font arial black:size=8}INFORMATION${color orange} ${hr 2}$color$font
+${font arial black:size=12}${color magneta}BATTERY${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
 ${battery_bar}
 ${font arial black:size=9}STATE: $font$color${battery} $alignr ${battery_time}
+${font arial black:size=9}FAN: $font$color${ibm_fan}rpm${alignr}${font arial black:size=9}
+${font arial black:size=9}TEMPERATURE:$font ${execi 300 sensors | grep Physi | cut -d ' ' -f 5 | grep -oE '[0-9]+.*'}${color}

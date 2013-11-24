@@ -82,6 +82,24 @@ function cdp () {
     fi
 }
 
+sdu () {
+  du -sk $@ | sort -n | awk '
+BEGIN {
+  split("K,M,G,T", Units, ",");
+  FS="\t";
+  OFS="\t";
+} {
+  u = 1;
+  while ($1 >= 1024) {
+    $1 = $1 / 1024;
+    u += 1
+  }
+  $1 = sprintf("%.1f%s", $1, Units[u]);
+  sub(/\.0/, "", $1);
+  print $0;
+}'
+}
+
 # long path
 alias eclimd='/usr/share/eclipse/eclimd'
 alias SugarCpp='mono ~/tmp/SugarCpp/src/SugarCpp.CommandLine/bin/Debug/SugarCpp.CommandLine.exe'
@@ -162,7 +180,7 @@ alias win='cd; virtualbox --startvm win7 & ; cd -'
 alias osx='cd; virtualbox --startvm osx & ; cd -'
 alias winxp='cd; virtualbox --startvm winxp &; cd -'
 alias vnc_quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=ZRLE -FullScreen=1 -Shared=1'
-alias rdesktop-lab='rdesktop-vrdp -u wyx -p - 166.111.71.37:3389'
+alias rdesktop-lab='rdesktop-vrdp -u wyx -p - 166.111.71.57:3389'
 
 alias please='sudo'
 alias logout='xfce4-session-logout --logout'
@@ -186,5 +204,7 @@ f_avc_param="-c:v libx264 -preset slow -crf 22 -c:a libmp3lame"
 mx="/home/wyx/install/files/pics/pic7"
 function ffmpeg_compress() { ffmpeg -i $1 `echo $f_avc_param` $1.avi }
 function mencoder_compress() { mencoder $1 -o $1.avi `echo $m_avc_param` }
+
+alias workdir='export PATH=~/tmp/kinect/bin:$PATH'
 
 #  vim:ft=zsh

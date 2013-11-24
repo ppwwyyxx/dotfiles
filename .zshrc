@@ -1,3 +1,8 @@
+# learning: A-q: push-line. c-r + c-o: accept-line-and-down-history
+#http://lilydjwg.is-programmer.com/2012/3/19/thress-zsh-line-editor-tips.32549.html
+
+# ENV ------------------------------------------------------------------------------------------
+
 fpath=($HOME/.zsh/Completion $fpath)
 
 export PATH=$HOME/bin:$PATH
@@ -34,7 +39,7 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 export PYTHONDOCS=/usr/share/doc/python2/html
 export SDCV_PAGER="sed 's/\ \ \([1-9]\)/\n\n◆\1/g' |less"
 
-# colors
+# Colors ------------------------------------------------------------------------------------------
 autoload colors zsh/terminfo
 colors
 for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
@@ -59,6 +64,8 @@ function rm() {
 	done
 }
 
+# PROMPT ------------------------------------------------------------------------------------------
+
 autoload -U promptinit
 promptinit
 
@@ -73,8 +80,6 @@ else
   alias -g reboot=
   export SUDO_PROMPT=$'[\e[31;5mYou\'re on %H!\e[m] password for \e[34;1m%p\e[m on\e[0;31m %H\e[m: '
 fi
-
-
 source $HOME/.zsh/git-prompt/zshrc.sh
 
 local return_code="%(?..%{$fg[RED]%}%?)%{$reset_color%}"
@@ -106,6 +111,9 @@ alias mv='nocorrect mv -i'
 alias mkdir='nocorrect mkdir'
 alias cp='nocorrect cp -rvi'
 alias -s pdf=mupdf -b 0
+alias -s djvu=djview4
+alias -s obj=meshlab
+alias -s pcd=~/tmp/kinect/pcd_viewer/pcd_viewer
 for i in wmv mkv mp4 mp3 avi rm rmvb flv; alias -s $i=mplayer
 for i in jpg png gif; alias -s $i=feh
 for i in xls xlsx doc docx ppt pptx; alias -s $i=libreoffice
@@ -126,6 +134,9 @@ setopt correctall
 zmodload zsh/mathfunc
 autoload -U zsh-mime-setup
 zsh-mime-setup
+
+autoload -U url-quote-magic		# auto add quote on url
+zle -N self-insert url-quote-magic
 
 # History
 setopt INC_APPEND_HISTORY
@@ -168,6 +179,32 @@ source ${ZDOTDIR:-$HOME}/.zsh/zkbd/$TERM
 [[ -n ${key[Down]} ]] && bindkey "${key[Down]}" down-line-or-search
 [[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
 [[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
+
+# Move along shell argument, aka 'Word'
+zsh-word-movement () {
+  # by lilydjwg, http://lilydjwg.is-programmer.com/posts/41712
+  local -a word_functions
+  local f
+
+  word_functions=(backward-kill-word backward-word
+    capitalize-word down-case-word
+    forward-word kill-word
+    transpose-words up-case-word)
+
+  if ! zle -l $word_functions[1]; then
+    for f in $word_functions; do
+      autoload -Uz $f-match
+      zle -N zsh-$f $f-match
+    done
+  fi
+  # set the style to shell
+  zstyle ':zle:zsh-*' word-style shell
+}
+zsh-word-movement
+unfunction zsh-word-movement
+bindkey "\eB" zsh-backward-word
+bindkey "\eF" zsh-forward-word
+bindkey "\eW" zsh-backward-kill-word
 
 # add sudo
 sudo-command-line() {
@@ -215,7 +252,7 @@ export ZLSCOLORS="${LS_COLORS}"
 zmodload zsh/complist
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
-export LS_COLORS="$LS_COLORS*.f4v=01;35:*.pdf=01;35:"		# add custom ls_color
+export LS_COLORS="$LS_COLORS*.f4v=01;35:*.pdf=01;35:*.djvu=01;35:"		# add custom ls_color
 
 # Fix case and typo
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
@@ -304,12 +341,6 @@ zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv)
 
 # Pinyin Completion
 [[ -d $HOME/.zsh/Pinyin-Completion ]] && source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh && export PATH=$PATH:$HOME/.zsh/Pinyin-Completion/bin
-
-# npm completion (a little slow?)
-#which npm > /dev/null 2>&1 && eval "$(npm completion 2 > /dev/null)"
-
-# hub completion
-#which hub > /dev/null 2>&1 && eval "$(hub alias -s)"
 
 # ... completion
 user_complete(){
@@ -406,6 +437,7 @@ if [[ -d $HOME/.zsh ]]; then
 	HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS="I"			# sensitive search
 	#source $HOME/.zsh/autojump/etc/profile.d/autojump.zsh
 fi
+alias x=aunpack
 
 fasd_cache="$HOME/.vimtmp/fasd-cache"
 if [ $commands[fasd] ]; then
