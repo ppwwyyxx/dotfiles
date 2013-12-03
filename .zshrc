@@ -306,7 +306,7 @@ tmux_buffer_completion() {
 }
 zle -C tmux-pane-words-prefix   complete-word _generic
 zle -C tmux-pane-words-anywhere complete-word _generic
-bindkey '^P' tmux-pane-words-prefix
+bindkey '^X^P' tmux-pane-words-prefix
 bindkey '^X^O' tmux-pane-words-anywhere
 zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' completer tmux_buffer_completion
 zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' ignore-line current
