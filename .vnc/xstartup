@@ -1,0 +1,4 @@
+#!/bin/sh
+
+[ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
+exec ~/.xinitrc
