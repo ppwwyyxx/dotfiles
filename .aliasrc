@@ -102,7 +102,7 @@ BEGIN {
 
 # long path
 alias eclimd='/usr/share/eclipse/eclimd'
-alias SugarCpp='mono ~/tmp/SugarCpp/src/SugarCpp.CommandLine/bin/Debug/SugarCpp.CommandLine.exe'
+alias SugarCpp='mono ~/Work/SugarCpp-C\#/src/SugarCpp.CommandLine/bin/Debug/SugarCpp.CommandLine.exe'
 alias word='/opt/wps/wps'
 alias powerpoint='/opt/wps/wpp'
 
@@ -205,6 +205,6 @@ mx="/home/wyx/install/files/pics/pic7"
 function ffmpeg_compress() { ffmpeg -i $1 `echo $f_avc_param` $1.avi }
 function mencoder_compress() { mencoder $1 -o $1.avi `echo $m_avc_param` }
 
-alias workdir='export PATH=~/tmp/kinect/bin:$PATH'
+alias workdir='export PATH=~/tmp/modeling/bin:$PATH'
 
 #  vim:ft=zsh

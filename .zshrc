@@ -23,7 +23,7 @@ export JDK_HOME=/usr/lib/jvm/java-7-openjdk
 export LD_LIBRARY_PATH=/lib/:/home/wyx/.local/lib/wkhtmltox/
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 #export DISTCC_POTENTIAL_HOSTS='10.20.0.204/8'
-export DISTCC_POTENTIAL_HOSTS='166.111.71.24/8 166.111.71.25/16'
+export DISTCC_POTENTIAL_HOSTS='166.111.71.80/8 166.111.71.95/16'
 export MAKEFLAGS="-j4"
 export CXXFLAGS="-Wall -Wextra -std=c++11 -g"
 
@@ -37,6 +37,7 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 export PYTHONDOCS=/usr/share/doc/python2/html
+export PYTHONSTARTUP=$HOME/.startup.py
 export SDCV_PAGER="sed 's/\ \ \([1-9]\)/\n\n◆\1/g' |less"
 
 # Colors ------------------------------------------------------------------------------------------
@@ -98,7 +99,8 @@ function precmd () {
 	(( PR_PWDLEN=${COLUMNS} - $promptsize - 16 - ${#PROMPT_PART}))
 	START_CHBK=$'\e[1m'		# bold on
 	END_CHBK=$'\e[22m'		# bold off
-	PS1="$START_CHBK$CYAN╭─${PROMPT_PART}$MAGENTA [%D{%H:%M}] $GREEN%$PR_PWDLEN<...<%~%<< $(git_super_status)$CYAN$END_CHBK
+	[[ -n "$VIRTUAL_ENV" ]] && VIRTUAL="(`basename $VIRTUAL_ENV`)"
+	PS1="$START_CHBK$CYAN╭─${VIRTUAL}${PROMPT_PART}$MAGENTA [%D{%H:%M}] $GREEN%$PR_PWDLEN<...<%~%<< $(git_super_status)$CYAN$END_CHBK
 ╰─\$"
 	PS2='$BLUE($GREEN%_$BLUE)$FINISH'
 	PS3='$GREEN Select:'
@@ -113,7 +115,7 @@ alias cp='nocorrect cp -rvi'
 alias -s pdf=mupdf -b 0
 alias -s djvu=djview4
 alias -s obj=meshlab
-alias -s pcd=~/tmp/kinect/pcd_viewer/pcd_viewer
+alias -s pcd=~/tmp/modeling/bin/pcd_viewer
 for i in wmv mkv mp4 mp3 avi rm rmvb flv; alias -s $i=mplayer
 for i in jpg png gif; alias -s $i=feh
 for i in xls xlsx doc docx ppt pptx; alias -s $i=libreoffice

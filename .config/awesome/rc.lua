@@ -3,7 +3,6 @@ gears = require("gears")
 awful = require("awful")
 awful.rules = require("awful.rules")
 require("awful.autofocus")
--- Widget and layout library
 wibox = require("wibox")
 vicious = require("vicious")
 beautiful = require("beautiful")
@@ -57,8 +56,22 @@ local altkey = "Mod1"
 local last_tag = 6
 local home   = os.getenv("HOME")
 local exec   = awful.util.spawn
-local sexec  = exec_with_shell
-local scount = screen.count()
+local sexec  = awful.util.spawn_with_shell
+
+function run_term(cmd, name)
+	exec(terminal .. " -name '" .. name .. "' -e bash -c '" .. cmd .. "'")
+end
+
+autorun_items = {
+    "xrdb ~/.Xresources",
+	"xinput disable $(xinput | egrep -o 'TouchPad.*id=[0-9]*' | egrep -o '[0-9]*'",
+    "fcitx-autostart",
+	"conky"
+}
+local runonce = require("runonce")
+for _, item in ipairs(autorun_items) do
+    runonce.run(item)
+end
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 local layouts = {
@@ -125,40 +138,52 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- Bar f[[
 my_textclock = awful.widget.textclock(" %m-%d %H:%M %A ", 1)
 
-cpugraph  = awful.widget.graph()
+cpugraph = awful.widget.graph()
 cpugraph:set_width(40):set_height(14)
-cpugraph:set_background_color(beautiful.fg_off_widget)
+cpugraph:set_background_color("#494B4F")
+cpugraph:set_color({ type = "linear",
+				   from = { 0, 0 }, to = { 10,0 },
+				   stops = { {0, "#FF5656"}, {0.5, "#88A175"}, {1, "#AECF96" }}})
+cpugraph:buttons(
+	awful.button({}, 1, function() run_term('htop', 'FSTerm') end)
+)
 vicious.register(cpugraph,  vicious.widgets.cpu, "$1")
 
 temp_widget = wibox.widget.textbox()
 vicious.register(temp_widget, vicious.widgets.thermal, " $1℃", 19, "thermal_zone0")
 
 mem_widget = wibox.widget.textbox()
-vicious.register(mem_widget, vicious.widgets.mem, '<span color="#90ee90">Mem $1%</span>')
+vicious.register(mem_widget, vicious.widgets.mem, '<span color="#90ee90"> Mem $1%</span>')
+mem_widget:buttons(
+	awful.button({ }, 1, function() run_term('top', 'FSTerm') end)
+)
 
 -- Network f[[
 net_widget = wibox.widget.textbox()
+local active_net_if
 function update_netstat()
-    local netif
     local f = io.open('/proc/net/route')
     for line in f:lines() do
-        netif = line:match('^(%w+)%s+00000000%s')
-        if netif then break end
+        active_net_if = line:match('^(%w+)%s+00000000%s')
+        if active_net_if then break end
     end
     f:close()
 
-	if not netif then
+	if not active_net_if then
 		vicious.unregister(net_widget, false)
 		vicious.register(net_widget, vicious.widgets.net, 'No Network', 3)
 	else
 		vicious.unregister(net_widget, false)
 		vicious.register(net_widget, vicious.widgets.net,
-				   '<span color="#5798d9">↓${' .. netif .. ' down_kb}</span> <span color="#c2ba62">↑${'.. netif ..' up_kb}</span>', 1)
+				   '<span color="#5798d9">↓${' .. active_net_if .. ' down_kb}</span> <span color="#c2ba62">↑${'.. active_net_if ..' up_kb}</span>', a )
 	end
 end
-net_widget_clock = timer({ timeout = 100 })
+net_widget_clock = timer({ timeout = 1000 })
 net_widget_clock:connect_signal("timeout", update_netstat)
 net_widget_clock:start()
+net_widget:buttons(
+	awful.button({}, 1, function() run_term("sudo iftop -i " .. active_net_if, 'FSTerm') end)
+)
 update_netstat()
 -- f]]
 
@@ -182,8 +207,13 @@ function update_bat_widget()
 	local state_text = battery_state[state] or battery_state.unknown
 
 	f = io.open(bat_dir .. 'remaining_percent')
-	local percent = tonumber(f:read())
+	local percent = f:read()
+	if not percent then
+		bat_widget:set_markup('<span color="red">No Battery</span>')
+		return
+	end
 	f:close()
+	percent = tonumber(percent)
 	if percent <= 25 then
 		if state == 'discharging' then
 			local t = os.time()
@@ -202,9 +232,12 @@ function update_bat_widget()
 end
 local last_bat_warning = 0
 bat_widget = fixwidthtextbox('↯??%')
-bat_widget.width = 55
+bat_widget.width = 45
 bat_widget:set_align('center')
-bat_clock = timer({ timeout = 20 })
+bat_widget:buttons(
+	awful.button({}, 1, function() run_term("sudo powertop", 'FSTerm') end)
+)
+bat_clock = timer({ timeout = 30 })
 bat_clock:connect_signal("timeout", update_bat_widget)
 bat_clock:start()
 -- f]]
@@ -240,12 +273,12 @@ function volumectl (mode, widget)
 		volumectl("update", widget)
 	end
 end
-volume_clock = timer({ timeout = 10 })
+volume_clock = timer({ timeout = 30 })
 volume_clock:connect_signal("timeout", function() volumectl("update", volume_widget) end)
 volume_clock:start()
 
 volume_widget = fixwidthtextbox('(volume)')
-volume_widget.width = 68
+volume_widget.width = 58
 volume_widget:set_align('center')
 volume_widget:buttons(awful.util.table.join(
 	awful.button({ }, 4, function() volumectl("up", volume_widget) end),
@@ -350,6 +383,8 @@ end
 -- Root Keys/Buttons: f[[
 -- Global Keys f[[
 function moveresize_abs(x, y, w, c)
+	c.maximized_horizontal = false
+	c.maximized_vertical = false
 	local g = c:geometry()
     local scr = screen[c.screen].workarea
 	if x < 0 then x = scr.x + scr.width + x end
@@ -359,13 +394,19 @@ function moveresize_abs(x, y, w, c)
 end
 
 globalkeys = awful.util.table.join(
-	awful.key({ modkey,           }, "w", function() my_mainmenu:show() end),
+	-- awful.key({ modkey,           }, "w", function() my_mainmenu:show() end),
 	awful.key({ modkey,           }, "n", function() awful.screen.focus_relative(1) end),
-	-- awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
+	awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
 
 	-- Layout manipulation for tiling
+	awful.key({ modkey,           }, "space", function() awful.layout.inc(layouts,  1) end),
+	awful.key({ modkey, "Shift"   }, "space", function() awful.layout.inc(layouts, -1) end),
+
 	awful.key({ modkey,           }, "l",     function() awful.tag.incmwfact( 0.05)    end),
 	awful.key({ modkey,           }, "h",     function() awful.tag.incmwfact(-0.05)    end),
+
+	awful.key({ modkey }, "Next",  function () awful.client.moveresize( 20,  20, -40, -40) end),
+    awful.key({ modkey }, "Prior", function () awful.client.moveresize(-20, -20,  40,  40) end),
 
 	awful.key({modkey, }, ";", function()
 		   local c = client.focus
@@ -379,19 +420,20 @@ globalkeys = awful.util.table.join(
 	awful.key({modkey, "Shift"}, "'", function()
 		  keygrabber.run(function(mod, key, event)
 				   if event == "release" then return end
-				   if     key == 'k' then awful.client.moveresize(0, -7, 0, 0)
-				   elseif key == 'j' then awful.client.moveresize(0, 7, 0, 0)
-				   elseif key == 'l' then awful.client.moveresize(7, 0, 0, 0)
-				   elseif key == 'h' then awful.client.moveresize(-7, 0, 0, 0)
-				   elseif key == ',' then awful.client.moveresize(-20, 0, 0, 0)
-				   elseif key == '.' then awful.client.moveresize(20, 0, 0, 0)
+				   if     key == 'k'    then awful.client.moveresize(0, -10, 0, 0)
+				   elseif key == 'j'    then awful.client.moveresize(0, 10, 0, 0)
+				   elseif key == 'l'    then awful.client.moveresize(10, 0, 0, 0)
+				   elseif key == 'h'    then awful.client.moveresize(-10, 0, 0, 0)
+				   elseif key == ','    then awful.client.moveresize(-30, 0, 0, 0)
+				   elseif key == '.'    then awful.client.moveresize(30, 0, 0, 0)
+				   elseif key == 'Up'   then awful.client.moveresize(0, -20, 0, 40)
+				   elseif key == 'Down' then awful.client.moveresize(0, 10, 0, -20)
+				   elseif key == 'Right'then awful.client.moveresize(-20, 0, 40, 0)
+				   elseif key == 'Left' then awful.client.moveresize(10, 0, -20, 0)
 				   else keygrabber.stop() end
 			   end)
-	 end),
+	end),
 
-
-	awful.key({ modkey,           }, "space", function() awful.layout.inc(layouts,  1) end),
-	awful.key({ modkey, "Shift"   }, "space", function() awful.layout.inc(layouts, -1) end),
 
 	-- toggle sticky for unfocusable object under mouse
 	awful.key({ modkey, "Shift"   }, "s",
@@ -403,6 +445,7 @@ globalkeys = awful.util.table.join(
 	-- terrible things
 	awful.key({ altkey, "Control", "Shift"}, "r", awesome.restart),
 	awful.key({ altkey, "Control", "Shift"}, "q", awesome.quit),
+	awful.key({ altkey, "Control", "Shift"}, "l", function() exec("slock") end),
 	awful.key({ altkey, "Control", "Shift" }, "k", function() exec("xkill") end),
 	awful.key({altkey, "Control", "Shift"}, "Print", function()
 		exec("zsh -c 'cd /tmp\nscrot\n'")
@@ -419,7 +462,15 @@ globalkeys = awful.util.table.join(
 	awful.key({ modkey }, "Escape", awful.tag.history.restore),
 
 
-	-- Alt-Tab
+	-- Switching clients
+	awful.key({ modkey }, "j", function()
+        awful.client.focus.byidx(1)
+        if client.focus then client.focus:raise() end
+    end),
+    awful.key({ modkey }, "k", function()
+        awful.client.focus.byidx(-1)
+        if client.focus then client.focus:raise() end
+    end),
 	awful.key({ altkey,          }, "Tab", function()
 		awful.client.focus.byidx(1)
 		if client.focus then client.focus:raise() end
@@ -477,17 +528,17 @@ globalkeys = awful.util.table.join(
 
 	-- htop
 	awful.key({ modkey,   }, "z", function()
-		if client.focus and client.focus.name == 'htop' then
+		if client.focus and client.focus.instance == 'FSTerm' then
 			awful.client.movetotag(tags[mouse.screen][last_tag], client.focus)
 		else
-			myutil.run_or_raise("urxvt -e 'htop'", { name = "htop" })
+			myutil.run_or_raise("urxvt -name 'FSTerm' -e 'htop'", { instance = 'FSTerm'})
 		end
 	end),
 
 	awful.key({ modkey,   }, "q", function()
 		local c = client.focus
 		if not c then return end
-		if c.name == 'htop' or c.name == tmp_terminal_name then
+		if c.instance == 'FSTerm' or c.name == tmp_terminal_name then
 			awful.client.movetotag(tags[mouse.screen][last_tag], c)
 		else
 			c:kill()
@@ -511,7 +562,7 @@ globalkeys = awful.util.table.join(
 	end),
 	awful.key({ altkey, "Shift"}, "F3", function()
 		awful.prompt.run({ prompt = "Dictionary: " }, my_promptbox[mouse.screen].widget,
-				   function (words)
+				   function(words)
 					   _old_word = words
 					   naughty.notify({ text = words, timeout = 5, width = 1020 })
 					   local f  = io.popen("sdcv -n --utf8-output '" .. words .. "'")
@@ -520,6 +571,14 @@ globalkeys = awful.util.table.join(
 					   _dict_notify = naughty.notify({ text = ans, timeout = 5, width = 1020 })
 				   end)
 	end),
+
+	-- yubnub. g;wp;gfl;gi;gm;yt;py;python(search);pypi;rdoc;cppdoc;dbm
+	awful.key({ modkey }, "w", function()
+		   awful.prompt.run({ prompt = "Web: " }, my_promptbox[mouse.screen].widget,
+					  function(command)
+						  sexec(browser .. " 'http://yubnub.org/parser/parse?command="..command.."'")
+					  end)
+	   end),
 
 	-- Volume
 	awful.key({ }, 'XF86AudioRaiseVolume', function() volumectl("up", volume_widget) end),
@@ -569,7 +628,7 @@ root.buttons(awful.util.table.join(
 	awful.button({ }, 3, function() my_mainmenu:toggle() end),
 	awful.button({ }, 4, awful.tag.viewprev),
 	awful.button({ }, 5, awful.tag.viewnext)
-	))
+))
 
 -- f]]
 
@@ -586,10 +645,11 @@ clientkeys = awful.util.table.join(
 	awful.key({ altkey, }, "F12",  function(c) c.above = not c.above            end),
 	awful.key({ altkey, }, "F9",   function(c) c.minimized = true end),
 	awful.key({ altkey, }, "F10",  function(c)
-	 c.maximized_horizontal = not c.maximized_horizontal
-	 c.maximized_vertical   = not c.maximized_vertical
- end)
+		c.maximized_horizontal = not c.maximized_horizontal
+		c.maximized_vertical   = not c.maximized_vertical
+	end)
 )
+
 clientbuttons = awful.util.table.join(
 	awful.button({ }, 1, function(c) client.focus = c; c:raise() end),
 	awful.button({ modkey }, 1, awful.mouse.client.move),
@@ -611,7 +671,7 @@ function bind_text_key(client) client:keys(awful.util.table.join(client:keys(), 
 
 
 awful.rules.rules = {
-	{ rule = { },     -- default
+{ rule = { },     -- default
 	properties = {
 		border_width = beautiful.border_width,
 		border_color = beautiful.border_normal,
@@ -627,24 +687,16 @@ awful.rules.rules = {
 		border_width = 0,
 	}
 }, {
-	rule = { name = "htop" },
+	rule = { instance = 'FSTerm' },
 	properties = {
 		maximized_horizontal = true,
 		maximized_vertical = true,
 	}
 }, {
-	rule = { class = "Chromium" },
-	properties = { floating = true, },
-}, {
-	rule = { class = "Wireshark", name = "Wireshark" }, -- wireshark startup window
-	properties = { floating = true }
-}, {
 	rule_any = {
 		instance = {'TM.exe', 'QQ.exe'},
 	},
 	properties = {
-		-- This, together with myfocus_filter, make the popup menus flicker taskbars less
-		-- Non-focusable menus may cause TM2013preview1 to not highlight menu items on hover and crash.
 		focusable = true,
 		floating = true,
 		border_width = 0,
@@ -652,16 +704,13 @@ awful.rules.rules = {
 }, {
 	rule_any = {
 		class = {
-			'MPlayer', 'feh', 'Display', 'Gimp',
+			'MPlayer', 'feh', 'Display', 'Gimp', 'Wireshark',
 			'Screenkey', 'Dia', 'Pavucontrol', 'Stardict', 'XEyes', 'Skype',
 		},
 		name = {
 			'文件传输', 'Firefox 首选项', '暂存器', 'Keyboard', tmp_terminal_name
 		},
-		instance = {
-			'Browser', -- 火狐的关于对话框
-			'MATLAB', -- splash
-		},
+		instance = { 'MATLAB', },
 	},
 	properties = { floating = true, }
 }, {
@@ -671,6 +720,7 @@ awful.rules.rules = {
 	properties = { above = true, }
 } }
 
+qqad_blocked = 0
 client.connect_signal(
 	"manage",
 	function(c, startup)
@@ -681,9 +731,7 @@ client.connect_signal(
 					 client_unfocused = c.window
 				 end
 			 end)
-
 		c:connect_signal("mouse::enter", function(c)
-			 -- 如果离开后又进入同一窗口则忽略，这解决了由于输入条而造成的焦点移动
 			 if client_unfocused ~= c.window and awful.layout.get(c.screen) ~= awful.layout.suit.magnifier then
 				 client.focus = c
 			 end
@@ -703,6 +751,11 @@ client.connect_signal(
 
 		if c.instance == "TM.exe" then
 			bind_text_key(c)
+			if c.name and c.name:match('^腾讯') and c.above then
+				qqad_blocked = qqad_blocked + 1
+				naughty.notify{title="QQ Ad Block " .. qqad_blocked, text="One window blocked, title: ".. c.name}
+				c:kill()
+			end
 		end
 	end)
 
