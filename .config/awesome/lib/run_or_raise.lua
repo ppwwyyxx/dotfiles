@@ -1,5 +1,4 @@
 local awful = require("awful")
-local myutil = {}
 
 -- Returns true if all pairs in table1 are present in table2 {{{1
 local function match(table1, table2)
@@ -34,7 +33,7 @@ end
 
 -- {{{1 run_or_raise
 -- 来源: http://awesome.naquadah.org/wiki/Run_or_raise
-function myutil.run_or_raise(cmd, properties, beforemove)
+function run_or_raise(cmd, properties, beforemove)
 	local findex, matched_clients
 	matched_clients, findex = getclients(properties)
 	local n = #matched_clients
@@ -68,4 +67,4 @@ function myutil.run_or_raise(cmd, properties, beforemove)
 	awful.util.spawn(cmd)
 end
 
-return myutil
+return run_or_raise

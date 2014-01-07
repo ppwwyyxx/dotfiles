@@ -180,7 +180,7 @@ alias win='cd; virtualbox --startvm win7 & ; cd -'
 alias osx='cd; virtualbox --startvm osx & ; cd -'
 alias winxp='cd; virtualbox --startvm winxp &; cd -'
 alias vnc_quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=ZRLE -FullScreen=1 -Shared=1'
-alias rdesktop-lab='rdesktop-vrdp -u wyx -p - 166.111.71.80:3389'
+alias rdesktop-lab='rdesktop-vrdp -K -u wyx -p - 166.111.71.80:3389'
 
 alias please='sudo'
 alias logout='xfce4-session-logout --logout'

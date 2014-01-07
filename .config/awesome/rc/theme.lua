@@ -7,6 +7,7 @@ local confdir = awful.util.getdir("config")
 
 theme = {}
 
+theme.icons = awful.util.getdir("config") .. "/icons"
 theme.font          = "文泉驿正黑 12"
 
 theme.bg_normal     = "#222222"
@@ -20,9 +21,9 @@ theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#1e90ff"
 theme.fg_minimize   = "#ffffff"
 
-theme.border_width  = "2"
+theme.border_width  = "1"
 theme.border_normal = "#000000"
-theme.border_focus  = "#1e90ff"
+theme.border_focus  = "#2e90ff"
 theme.border_marked = "#91231c"
 
 -- There are other variable sets
@@ -74,8 +75,6 @@ theme.titlebar_maximized_button_normal_inactive = "/usr/share/awesome/themes/def
 theme.titlebar_maximized_button_focus_inactive  = "/usr/share/awesome/themes/default/titlebar/maximized_focus_inactive.png"
 theme.titlebar_maximized_button_normal_active = "/usr/share/awesome/themes/default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = "/usr/share/awesome/themes/default/titlebar/maximized_focus_active.png"
-
-theme.wallpaper = confdir .. "/image/background.png"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = "/usr/share/awesome/themes/default/layouts/fairhw.png"
