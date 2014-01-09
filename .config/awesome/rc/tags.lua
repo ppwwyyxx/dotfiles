@@ -7,7 +7,7 @@ for s = 1, screen.count() do
     tags[s] = awful.tag(tag_name, s, awful.layout.suit.floating)
 end
 
-local register_tagkey = function(key, index)
+local function register_tagkey(key, index)
 	config.global = join(
 		config.global,
 		awful.key({ modkey }, key, function()      -- view only

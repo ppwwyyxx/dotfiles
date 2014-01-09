@@ -1,4 +1,5 @@
 local autorun_items = {
+    "mkdir -p /tmp/t",
 	"dunst -config ~/.dunstrc",
     "xrdb ~/.Xresources",
 	"xinput disable $(xinput | egrep -o 'TouchPad.*id=[0-9]*' | egrep -o '[0-9]*')",

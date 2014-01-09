@@ -16,7 +16,11 @@ function run_term(cmd, name)
 end
 
 function sendkey(c, key)		-- send key in xdotool format
-	exec('xdotool key --clearmodifiers --window ' .. c.window .. ' ' .. key)
+    if not c then
+	    exec('xdotool key --clearmodifiers ' .. key)
+    else
+	    exec('xdotool key --clearmodifiers --window ' .. c.window .. ' ' .. key)
+    end
 end
 
 function rexec(cmd)

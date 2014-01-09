@@ -1,4 +1,5 @@
 run_or_raise = require("lib/run_or_raise")
+require("lib/mouse")
 
 
 root.buttons(join(
@@ -8,8 +9,7 @@ root.buttons(join(
 	awful.button({ }, 5, awful.tag.viewnext)
 ))
 
-
-function moveresize_abs(left, y, w, c)
+local function moveresize_abs(left, y, w, c)
 	c.maximized_horizontal = false
 	c.maximized_vertical = false
 	local g = c:geometry()
@@ -20,6 +20,8 @@ function moveresize_abs(left, y, w, c)
 	awful.client.moveresize(-g.x + scr.x + x, -g.y + scr.y + y,
 						-g.width + w, -g.height + scr.height, c)
 end
+
+local alt_tab_dir = 1
 
 config.global = join(
 	config.global,
@@ -61,6 +63,8 @@ config.global = join(
 		end)
 	end),
 
+    awful.key({modkey }, "m", mouse_control),
+
 
 	-- toggle sticky for unfocusable object under mouse
 	awful.key({ modkey, "Shift"   }, "s",
@@ -97,6 +101,9 @@ config.global = join(
 
 
 	-- Switching clients
+    awful.key({ modkey, "Shift" }, "j", function() awful.client.swap.byidx(1) end),
+    awful.key({ modkey, "Shift" }, "k", function() awful.client.swap.byidx(-1) end),
+
 	awful.key({ modkey }, "j", function()
         awful.client.focus.byidx(1)
         if client.focus then client.focus:raise() end
@@ -105,17 +112,30 @@ config.global = join(
         awful.client.focus.byidx(-1)
         if client.focus then client.focus:raise() end
     end),
-	awful.key({ altkey,          }, "Tab", function()
-		awful.client.focus.byidx(1)
-		if client.focus then client.focus:raise() end
+	awful.key({ altkey }, "Tab", function()
+        awful.client.focus.byidx(alt_tab_dir)
+        if client.focus then client.focus:raise() end
+        keygrabber.run(function(mod, key, event)
+            if event == 'release' then
+                if key == 'Alt_L' then
+                    alt_tab_dir = -alt_tab_dir
+                    keygrabber.stop()
+                end
+                return
+            end
+            if key == 'Tab' then
+               awful.client.focus.byidx(alt_tab_dir)
+               if client.focus then client.focus:raise() end
+            elseif key == 'ISO_Left_Tab' then       -- shfit + tab
+               awful.client.focus.byidx(-alt_tab_dir)
+               if client.focus then client.focus:raise() end
+            elseif key ~= 'Shift_L' then
+                keygrabber.stop()
+            end
+       end)
 	end),
-	awful.key({ altkey, "Shift"  }, "Tab", function()
-		awful.client.focus.byidx(-1)
-		if client.focus then client.focus:raise() end
-	end),
-	awful.key({ modkey,           }, "Tab", function()
-		awful.client.focus.history.previous()
-		if client.focus then client.focus:raise() end
+	awful.key({ modkey }, "Tab", function()
+       exec("simpleswitcher -now")
 	end),
 
 	awful.key({ modkey, }, "d", function()

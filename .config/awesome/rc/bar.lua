@@ -11,7 +11,7 @@ local spacer = wibox.widget.imagebox()
 spacer:set_image(beautiful.icons .. "/widgets/spacer.png")
 
 -- Simple Widgets
-local my_textclock = awful.widget.textclock(" %m-%d %H:%M:%S %A ", 1)
+local my_textclock = awful.widget.textclock("%m-%d %H:%M:%S %a", 1)
 my_textclock:buttons(
     awful.button({}, 1, function() sexec(browser .. "http://calendar.google.com") end)
 )
@@ -40,9 +40,7 @@ netgraph:set_stack(true):set_scale(true)
 netgraph:set_stack_colors({ "#c2ba62", "#5798d9" })
 netgraph:set_background_color("#00000033")
 vicious.register(net_widget, vicious.widgets.net, function(widget, args)
-		local up = 0
-		local down = 0
-		local iface
+		local up, down, iface = 0, 0
 		-- sum up/down value for all interfaces
 		for name, value in pairs(args) do
 		   iface = name:match("^{(%S+) down_b}$")
@@ -52,7 +50,7 @@ vicious.register(net_widget, vicious.widgets.net, function(widget, args)
 		end
 		netgraph:add_value(up, 1)
 		netgraph:add_value(down, 2)
-		local format = function(val)
+		local function format(val)
 			if val > 500000 then return string.format("%.1fM", val/1000000.)
 			else return string.format("%.0fK", val/1000.) end
 		end
@@ -184,6 +182,7 @@ for s = 1, screen.count() do
     left_layout:add(sepclose)
 
     local right_layout = wibox.layout.fixed.horizontal()
+    right_layout:add(sepopen)
     right_layout:add(cpugraph)
     right_layout:add(temp_widget)
     right_layout:add(mem_widget)
@@ -194,6 +193,7 @@ for s = 1, screen.count() do
     if s == 1 then
         right_layout:add(wibox.widget.systray())
     end
+    right_layout:add(sepclose)
     right_layout:add(my_textclock)
     right_layout:add(my_layoutbox[s])
 

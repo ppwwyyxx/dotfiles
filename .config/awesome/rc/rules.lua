@@ -5,7 +5,7 @@ local text_edit_key = join(
 	awful.key({'Control'}, 'd',      function(c) sendkey(c, 'Home') end),
 	awful.key({'Control'}, 'e',      function(c) sendkey(c, 'End') end)
 )
-local bind_text_key = function(client)
+local function bind_text_key(client)
 	client:keys(join(client:keys(), text_edit_key))
 end
 
