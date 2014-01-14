@@ -1,6 +1,5 @@
-run_or_raise = require("lib/run_or_raise")
+local run_or_raise = require("lib/run_or_raise")
 require("lib/mouse")
-
 
 root.buttons(join(
 	awful.button({ }, 1, function() my_mainmenu:hide() end),
@@ -21,7 +20,9 @@ local function moveresize_abs(left, y, w, c)
 						-g.width + w, -g.height + scr.height, c)
 end
 
-local alt_tab_dir = 1
+local function t_exec(cmd)
+
+end
 
 config.global = join(
 	config.global,
@@ -29,22 +30,16 @@ config.global = join(
 	awful.key({ modkey }, "u", awful.client.urgent.jumpto),
 
 	-- Layout manipulation for tiling
-	awful.key({ modkey,           }, "space", function() awful.layout.inc(config.layouts,  1) end),
-	awful.key({ modkey, "Shift"   }, "space", function() awful.layout.inc(config.layouts, -1) end),
+	awful.key({ modkey, }, "space", function() awful.layout.inc(config.layouts,  1) end),
+	awful.key({ modkey, "Shift" }, "space", function() awful.layout.inc(config.layouts, -1) end),
 	awful.key({ modkey }, "l",     function() awful.tag.incmwfact( 0.05)    end),
 	awful.key({ modkey }, "h",     function() awful.tag.incmwfact(-0.05)    end),
 
 	awful.key({ modkey }, "Next",  function () awful.client.moveresize( 20,  20, -40, -40) end),
     awful.key({ modkey }, "Prior", function () awful.client.moveresize(-20, -20,  40,  40) end),
 
-	awful.key({modkey, }, ";", function()
-		local c = client.focus
-		moveresize_abs(1, 0, 0.5, c)
-	end),
-	awful.key({modkey, }, "'", function()
-		local c = client.focus
-		moveresize_abs(0, 0, 0.5, c)
-	   end),
+	awful.key({modkey, }, ";", function() moveresize_abs(1, 0, 0.5, client.focus) end),
+	awful.key({modkey, }, "'", function() moveresize_abs(0, 0, 0.5, client.focus) end),
 
 	awful.key({modkey, "Shift"}, "'", function()
 		keygrabber.run(function(mod, key, event)
@@ -62,6 +57,24 @@ config.global = join(
 		     else keygrabber.stop() end
 		end)
 	end),
+
+    awful.key({modkey, "Shift"}, "t", function()
+        keygrabber.run(function(mod, key, event)
+            if event == 'release' then return
+            elseif key == 'Return' then exec(terminal)
+            elseif key == 'p' then run_term('bpython2')
+            elseif key == 'P' then run_term('bpython')
+            elseif key == 'r' then run_term('pry')
+            elseif key == 'c' then run_term('coffee')
+            elseif key == 't' then run_term('top', 'FSTerm')
+            elseif key == 'h' then run_term('htop', 'FSTerm')
+            elseif key == 'd' then run_term('dstat', 'FSTerm')
+            elseif key == 'n' then net_monitor()
+            elseif key == 'Shift_L' or key == 'Shift_R' then return
+            end
+            keygrabber.stop()
+        end)
+    end),
 
     awful.key({modkey }, "m", mouse_control),
 
@@ -112,23 +125,28 @@ config.global = join(
         awful.client.focus.byidx(-1)
         if client.focus then client.focus:raise() end
     end),
+    -- better use a queue to implement this
 	awful.key({ altkey }, "Tab", function()
-        awful.client.focus.byidx(alt_tab_dir)
+        local nowc = client.focus
+        awful.client.focus.history.previous()
         if client.focus then client.focus:raise() end
         keygrabber.run(function(mod, key, event)
             if event == 'release' then
                 if key == 'Alt_L' then
-                    alt_tab_dir = -alt_tab_dir
+                    if nowc ~= client.focus then
+                        awful.client.focus.history.add(nowc)
+                        awful.client.focus.history.add(client.focus)
+                    end
                     keygrabber.stop()
                 end
                 return
             end
             if key == 'Tab' then
-               awful.client.focus.byidx(alt_tab_dir)
-               if client.focus then client.focus:raise() end
+                awful.client.focus.byidx(1)
+                if client.focus then client.focus:raise() end
             elseif key == 'ISO_Left_Tab' then       -- shfit + tab
-               awful.client.focus.byidx(-alt_tab_dir)
-               if client.focus then client.focus:raise() end
+                awful.client.focus.byidx(-1)
+                if client.focus then client.focus:raise() end
             elseif key ~= 'Shift_L' then
                 keygrabber.stop()
             end
@@ -165,15 +183,15 @@ config.global = join(
 	end),
 
 	-- Common program
-	awful.key({ modkey,   }, "Return", function() run_or_raise("urxvt -name '" .. TMP_TERM .. "'", {instance = TMP_TERM}) end),
+	awful.key({ modkey, }, "Return", function() run_or_raise("urxvt -name '" .. TMP_TERM .. "'", {instance = TMP_TERM}) end),
 	-- awful.key({ modkey    }, "r",     function() my_promptbox[mouse.screen]:run() end),     -- TODO: change launcher
-	awful.key({ modkey    }, "r", function() exec("dmenu_run") end),     -- TODO: change launcher
-	awful.key({ modkey,   }, "g", function() exec("sudo gnome-control-center") end),
+	awful.key({ modkey, }, "r", function() exec(home .. "/bin/launcher") end),     -- TODO: change launcher
+	awful.key({ modkey, }, "g", function() exec("sudo gnome-control-center") end),
 	-- awful.key({ modkey,           }, "x", function() exec("openmsg.py", false) end),
-	awful.key({ modkey,   }, "t", function() exec(terminal) end),
-	awful.key({ modkey,   }, "c", function() exec("chromium") end),
-	awful.key({ modkey,   }, "f", function() exec("firefox") end),
-	awful.key({ modkey,   }, "a", function() exec(home .. "/bin/background/screenshot") end),
+	awful.key({ modkey, }, "t", function() exec(terminal) end),
+	awful.key({ modkey, }, "c", function() exec("chromium") end),
+	awful.key({ modkey, }, "f", function() exec("firefox") end),
+	awful.key({ modkey, }, "a", function() exec(home .. "/bin/background/screenshot") end),
 
 	-- htop
 	awful.key({ modkey,   }, "z", function()
@@ -189,7 +207,9 @@ config.global = join(
 		if not c then return end
 		if c.instance == 'FSTerm' or c.instance == TMP_TERM then
 			awful.client.movetotag(tags[c.screen][last_tag], c)
-		else
+        elseif c.class == 'Gvim' then
+            awful.client.movetotag(tags[c.screen][vim_tag], c)
+        else
 			c:kill()
 		end
 	end),
@@ -242,7 +262,13 @@ config.global = join(
 config.clientkeys = join(
 	awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle ),
 	awful.key({ modkey, "Control" }, "Return", function(c) c:swap(awful.client.getmaster()) end),
-	awful.key({ modkey, }, "o",    awful.client.movetoscreen ),
+	awful.key({ modkey, }, "o",    function(c)
+        awful.client.movetoscreen(c)
+        c.maximized_horizontal = not c.maximized_horizontal
+        c.maximized_vertical=  not c.maximized_vertical
+        c.maximized_horizontal = not c.maximized_horizontal
+        c.maximized_vertical=  not c.maximized_vertical
+    end),
 	awful.key({ modkey, }, "s",    function(c) c.sticky = not c.sticky end),
 
 	awful.key({ },         "F11",  function(c) c.fullscreen = not c.fullscreen  end),

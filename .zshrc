@@ -453,3 +453,10 @@ if [ $commands[fasd] ]; then
 	unalias s
 	bindkey '^X^O' fasd-complete
 fi
+
+if [[ -n "$DISPLAY" ]]; then
+    function postCallVim {
+      wmctrl -R 'gvim'
+    }
+	source $HOME/.zsh/vim-interaction.plugin.zsh
+fi

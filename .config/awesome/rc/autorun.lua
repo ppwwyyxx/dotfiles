@@ -1,4 +1,5 @@
 local autorun_items = {
+    "gvim",
     "mkdir -p /tmp/t",
 	"dunst -config ~/.dunstrc",
     "xrdb ~/.Xresources",

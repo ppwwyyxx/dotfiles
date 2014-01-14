@@ -25,6 +25,7 @@ end
 local wp_timer = timer({ timeout = wp_timeout })
 wp_timer:connect_signal("timeout", changewp)
 wp_timer:start()
+changewp()
 
 
 -- for fcitx-chttrans

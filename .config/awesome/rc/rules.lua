@@ -1,4 +1,5 @@
 -- Text Edit Keys
+local run_or_raise = require("lib/run_or_raise")
 local text_edit_key = join(
 	awful.key({altkey}, 'f',         function(c) sendkey(c, 'ctrl+Right') end),
 	awful.key({altkey}, 'b',         function(c) sendkey(c, 'ctrl+Left') end),
@@ -20,6 +21,19 @@ awful.rules.rules = {
 		keys = config.clientkeys,
 		buttons = config.clientbuttons,
 	}
+}, {
+    rule = { class = 'Gvim' },
+    properties = {
+        maximized_vertical = true,
+        maximized_horizontal = true },
+    callback = function(c)
+        if c.name ~= 'Question' then            -- don't move gvim question box
+            awful.client.movetotag(tags[screen.count()][vim_tag], c)
+        end
+        c:connect_signal("unmanage", function(c)
+            run_or_raise("gvim", { class = 'Gvim' })
+        end)
+    end,
 }, {
     rule = { class = "Chromium" },
     callback = function(c)

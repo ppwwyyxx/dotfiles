@@ -40,13 +40,24 @@ netgraph:set_stack(true):set_scale(true)
 netgraph:set_stack_colors({ "#c2ba62", "#5798d9" })
 netgraph:set_background_color("#00000033")
 vicious.register(net_widget, vicious.widgets.net, function(widget, args)
+        local f = io.open('/proc/net/route')
+        local netif
+        for line in f:lines() do
+            netif = line:match('^(%w+)%s+00000000%s')
+            if netif then
+                break
+            end
+        end
+        f:close()
+        active_net_if = netif
+
 		local up, down, iface = 0, 0
 		-- sum up/down value for all interfaces
 		for name, value in pairs(args) do
 		   iface = name:match("^{(%S+) down_b}$")
-		   if iface and iface ~= "lo" then down = down + value end
+           if iface == active_net_if then down = down + value end
 		   iface = name:match("^{(%S+) up_b}$")
-		   if iface and iface ~= "lo" then up = up + value end
+		   if iface == active_net_if then up = up + value end
 		end
 		netgraph:add_value(up, 1)
 		netgraph:add_value(down, 2)
@@ -56,9 +67,9 @@ vicious.register(net_widget, vicious.widgets.net, function(widget, args)
 		end
 		return string.format('<span color="#5798d9">↓%s</span><span color="#c2ba62">↑%s</span>',
 					   format(down), format(up))
-    end, 2)
+    end, 5)
 net_widget:buttons(
-    awful.button({}, 1, function() run_term("sudo iftop -i " .. active_net_if, 'FSTerm') end)
+    awful.button({}, 1, net_monitor)
 )
 -- f]]
 

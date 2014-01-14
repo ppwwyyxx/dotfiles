@@ -1,10 +1,14 @@
 
 -- Tags
 -- Define a tag table which hold all screen tags.
-local tag_name = { "1", "2", "3", "4", "5", "0"}
-tags = {}
+local tag_name = { "1", "2", "3", "4", "vim", "0"}
+vim_tag = 5
+tags, revtags = {}, {}
 for s = 1, screen.count() do
     tags[s] = awful.tag(tag_name, s, awful.layout.suit.floating)
+    for i, t in ipairs(tags[s]) do
+        revtags[t] = i
+    end
 end
 
 local function register_tagkey(key, index)
