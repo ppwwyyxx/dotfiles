@@ -1,5 +1,6 @@
 local run_or_raise = require("lib/run_or_raise")
 require("lib/mouse")
+require("lib/web_cmd")
 
 root.buttons(join(
 	awful.button({ }, 1, function() my_mainmenu:hide() end),
@@ -241,7 +242,8 @@ config.global = join(
 	awful.key({ modkey }, "w", function()
 		   awful.prompt.run({ prompt = "Web: " }, my_promptbox[mouse.screen].widget,
 					  function(command)
-						  sexec(browser .. "'http://yubnub.org/parser/parse?command="..command.."'")
+                          local url = web_cmd(command)
+						  sexec(browser .. '"' .. url .. '"')
 					  end)
 	   end),
 

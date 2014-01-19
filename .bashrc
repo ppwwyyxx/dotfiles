@@ -10,6 +10,8 @@ export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 source $HOME/.rvm/scripts/rvm
 
+export PYTHONSTARTUP=$HOME/.startup.py
+
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
