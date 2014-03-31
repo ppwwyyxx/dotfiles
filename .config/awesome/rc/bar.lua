@@ -51,22 +51,24 @@ vicious.register(net_widget, vicious.widgets.net, function(widget, args)
         f:close()
         active_net_if = netif
 
-		local up, down, iface = 0, 0
-		-- sum up/down value for all interfaces
-		for name, value in pairs(args) do
-		   iface = name:match("^{(%S+) down_b}$")
+        local up, down, iface = 0, 0
+        -- sum up/down value for all interfaces
+        for name, value in pairs(args) do
+           iface = name:match("^{(%S+) down_b}$")
            if iface == active_net_if then down = down + value end
-		   iface = name:match("^{(%S+) up_b}$")
-		   if iface == active_net_if then up = up + value end
-		end
-		netgraph:add_value(up, 1)
-		netgraph:add_value(down, 2)
-		local function format(val)
-			if val > 500000 then return string.format("%.1fM", val/1000000.)
-			else return string.format("%.0fK", val/1000.) end
-		end
-		return string.format('<span color="#5798d9">↓%s</span><span color="#c2ba62">↑%s</span>',
-					   format(down), format(up))
+           iface = name:match("^{(%S+) up_b}$")
+           if iface == active_net_if then up = up + value end
+        end
+        netgraph:add_value(up, 1)
+        netgraph:add_value(down, 2)
+        local function format(val)
+            -- no network
+            if val > 500000000 then return "0" end
+            if val > 500000 then return string.format("%.1fM", val/1000000.)
+            else return string.format("%.0fK", val/1000.) end
+        end
+        return string.format('<span color="#5798d9">↓%s</span><span color="#c2ba62">↑%s</span>',
+                       format(down), format(up))
     end, 5)
 net_widget:buttons(
     awful.button({}, 1, net_monitor)
@@ -198,8 +200,8 @@ for s = 1, screen.count() do
     right_layout:add(temp_widget)
     right_layout:add(mem_widget)
     right_layout:add(bat_widget)
-	--right_layout:add(netgraph)
-	right_layout:add(net_widget)
+    --right_layout:add(netgraph)
+    right_layout:add(net_widget)
     right_layout:add(volume_widget)
     if s == 1 then
         right_layout:add(wibox.widget.systray())

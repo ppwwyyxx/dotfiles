@@ -100,7 +100,7 @@ config.global = join(
 	awful.key({ altkey, "Control", "Shift"}, "l", function() exec("slock") end),
 	awful.key({ altkey, "Control", "Shift" }, "k", function() exec("xkill") end),
 	awful.key({altkey, "Control", "Shift"}, "a", function()
-		exec("zsh -c 'cd /tmp\nscrot\n'")
+		 exec("zsh -c 'cd /tmp\nscrot\n'")
 		os.execute("sleep .5")
 		notify("Screenshot", "Screenshot saved to /tmp")
 	end),
@@ -273,7 +273,7 @@ config.clientkeys = join(
     end),
 	awful.key({ modkey, }, "s",    function(c) c.sticky = not c.sticky end),
 
-	awful.key({ },         "F11",  function(c) c.fullscreen = not c.fullscreen  end),
+	awful.key({ altkey, }, "F11",  function(c) c.fullscreen = not c.fullscreen  end),
 	awful.key({ modkey, }, "F4",   function(c) c:kill()                         end),
 	awful.key({ altkey, }, "F4",   function(c) c:kill()                         end),
 	awful.key({ altkey, }, "F12",  function(c) c.above = not c.above            end),

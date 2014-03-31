@@ -7,7 +7,8 @@ beautiful.init(awful.util.getdir("config") .. "/rc/theme.lua")
 local wp_index = 1
 local wp_timeout  = 300
 local wp_path = awful.util.getdir("config") .. "/wallpaper/"
-local wp_files = { "best.png", "best1.png", "best2.png" }
+local wp_files = { "best.png", "best1.png", "best2.png", "sky.jpg"}
+--local wp_files = { "sky.jpg", "frozen.jpg"}
 
 -- use dark.png for second screen
 if screen.count() == 2 then

@@ -15,7 +15,8 @@ local template = {
     wp =  "http://en.wikipedia.org/?search=%s",
     dbm = "http://movie.douban.com/subject_search?search_text=%s&cat=1002",
     dbb = "http://book.douban.com/subject_search?search_text=%s&cat=1001",
-    mp3 = "http://music.baidu.com/search?key=%s"
+    mp3 = "http://music.baidu.com/search?key=%s",
+    etym = "http://www.etymonline.com/index.php?allowed_in_frame=0&search=%s&searchmode=none"
 }
 
 function web_cmd(cmd)

@@ -7,7 +7,11 @@ do
         if in_error then return end
         in_error = true
 
-        notify("An uncaught error happened!", tostring(err), 'critical')
+        stacktrace = debug.traceback()
+
+        notify("An uncaught error happened!",
+               tostring(err) .. ", " .. tostring(stacktrace),
+               'critical')
         in_error = false
     end)
 end

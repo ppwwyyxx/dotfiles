@@ -10,7 +10,7 @@ local function bind_text_key(client)
 	client:keys(join(client:keys(), text_edit_key))
 end
 
-local qqad_blocked = 0
+local ad_blocked = 0
 
 awful.rules.rules = {
 { rule = { },     -- default
@@ -60,8 +60,8 @@ awful.rules.rules = {
     callback = function(c)
         bind_text_key(c)
         if c.name and c.name:match('^腾讯') and c.above then
-            qqad_blocked = qqad_blocked + 1
-            notify("QQ Ad Block " .. qqad_blocked, "One window blocked, title: ".. c.name)
+            ad_blocked = ad_blocked + 1
+            notify("Ad Blocked " .. ad_blocked, "One window blocked, title: ".. c.name)
             c:kill()
         end
     end
@@ -94,6 +94,11 @@ awful.rules.rules = {
 client.connect_signal(
 	"manage",
 	function(c, startup)
+        if c.name and c.name:match('新词锐词') then
+            ad_blocked = ad_blocked + 1
+            notify("Ad Blocked " .. ad_blocked .. c.name)
+            c:kill()
+        end
 		-- Enable sloppy focus
 		c:connect_signal("mouse::leave",
 			 function(c)
