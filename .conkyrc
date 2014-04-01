@@ -17,7 +17,7 @@ use_spacer right
 use_xft yes
 
 # Update interval in seconds
-update_interval 1
+update_interval 2
 
 # Minimum size of text area
 minimum_size 170 5
@@ -27,13 +27,14 @@ draw_shades no
 
 # Draw borders around graphs
 draw_graph_borders no
+default_graph_size 115 20
 
 # Text stuff
 draw_outline no # amplifies text if yes
 draw_borders no
-xftfont Eurostile:size=10
+#xftfont black:size=9
 xftalpha 0.7
-#font arial
+font arial black:size=8
 uppercase no # set to yes if you want all text to be in uppercase
 
 # Stippled borders?
@@ -43,7 +44,7 @@ stippled_borders 3
 border_width 10
 
 # Default colors and also border colors, grey90 == #e5e5e5
-default_color green
+default_color grey
 
 own_window_colour brown
 own_window_transparent yes
@@ -65,33 +66,35 @@ top_name_width 12
 TEXT
 ${font arial black:size=12}${color magneta}SYSTEM${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
 $nodename $kernel
-${font arial black:size=9}UP: $font$uptime ${voffset -18}
+UP: $font$uptime ${voffset -18}
 ${voffset 6}${font arial black:size=30}${time %e}$font ${voffset -17}${time %A, }${time %B} ${time %G}
 ${voffset -2}${goto 65}${font arial black:size=10} ${time %I:%M:%S %p} ${font arial black:size=12}
 ${color magneta}CPU${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
-${font arial black:size=9}USAGE: $font${cpu cpu0}%
+USAGE: $font${cpu cpu0}%
 ${cpugraph cpu0 C0C0C0 C0C0C0}
-${font arial black:size=9}Name${goto 120} PID${goto 160} CPU${goto 200} MEM
+Name${goto 120} PID${goto 160} CPU${goto 200} MEM
 ${color #ddaa00}${top name 1}${goto 120}${top pid 1}${goto 160}${top cpu 1}${goto 200}${top mem 1}
 ${color lightgrey}${top name 2}${goto 120}${top pid 2}${goto 160}${top cpu 2}${goto 200}${top mem 2}
 ${color lightgrey}${top name 3}${goto 120}${top pid 3}${goto 160}${top cpu 3}${goto 200}${top mem 3}$color$font
 ${font arial black:size=12}${color magneta}Storage${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
-${font arial black:size=9}RAM: $font$memperc% ${alignr}$mem/$memmax
+RAM: $font$memperc% ${alignr}$mem/$memmax
 ${membar}
-${font arial black:size=9}ROOT:$font${fs_free_perc /}% ${alignr}${fs_free /}/${fs_size /}
+ROOT:$font${fs_used_perc /}% ${alignr}${fs_used /}/${fs_size /}
 ${fs_bar /}$color
-${font arial black:size=9}HOME:$font${fs_free_perc /home}% ${alignr}${fs_free /home}/${fs_size /home}
+HOME:$font${fs_used_perc /home}% ${alignr}${fs_used /home}/${fs_size /home}
 ${fs_bar /home/}$color
+Read: ${diskio_read /dev/sda}${alignc}/dev/sda${alignr}Write: ${diskio_write /dev/sda}
+${diskiograph_read /dev/sda 20,115} ${diskiograph_write /dev/sda 20,115}
+Read: ${diskio_read /dev/sdb}${alignc}/dev/sdb${alignr}Write: ${diskio_write /dev/sdb}
+${diskiograph_read /dev/sdb 20,115} ${diskiograph_write /dev/sdb 20,115}
 ${font arial black:size=12}${color magneta}NETWORK${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
-${font arial black:size=9}LOCAL:$font ${addr wlan0}${color}
-${font arial black:size=9}EXTERNAL:$font ${execi 300 curl ifconfig.me}${color}
-${font arial black:size=9}DOWN: $font$color${downspeed wlan0}/${totaldown wlan0}
-${downspeedgraph wlan0 C0C0C0 C0C0C0}
-${font arial black:size=9}UP: $font${upspeed wlan0}/${totalup wlan0}
-${upspeedgraph wlan0 C0C0C0 C0C0C0}$color
-${font arial black:size=9}IN: $font${tcp_portmon 1 32767 count} ${font arial black:size=9}OUT: $font${tcp_portmon 32768 61000 count}${alignr}${font arial black:size=9}TOTAL: $font${tcp_portmon 1 65535 count}
+DOWN: $font$color${downspeed eth0}/${totaldown eth0}
+UP: $font${upspeed eth0}/${totalup eth0}
+${downspeedgraph eth0 20,115 C0C0C0 C0C0C0} ${upspeedgraph eth0 20,115 C0C0C0 C0C0C0}$color
+IN: $font${tcp_portmon 1 32767 count} OUT: $font${tcp_portmon 32768 61000 count}${alignr}TOTAL: $font${tcp_portmon 1 65535 count}
+LOCAL:$font ${addr eth0}${color}
 ${font arial black:size=12}${color magneta}BATTERY${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
 ${battery_bar}
-${font arial black:size=9}STATE: $font$color${battery} $alignr ${battery_time}
-${font arial black:size=9}FAN: $font$color${ibm_fan}rpm${alignr}${font arial black:size=9}
-${font arial black:size=9}TEMPERATURE:$font ${execi 300 sensors | grep Physi | cut -d ' ' -f 5 | grep -oE '[0-9]+.*'}${color}
+STATE: $font$color${battery} $alignr ${battery_time}
+FAN: $font$color${ibm_fan}rpm${alignr}
+TEMPERATURE:$font ${acpitemp}°C${color}
