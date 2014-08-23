@@ -12,7 +12,7 @@ local function match(table1, table2)
 end
 
 -- Get clients by condition {{{1
-local function getclients(properties)
+function getclients(properties)
 	local clients = client.get()
 	local focused = awful.client.next(0)
 	local findex = 0

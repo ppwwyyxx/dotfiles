@@ -7,8 +7,8 @@ beautiful.init(awful.util.getdir("config") .. "/rc/theme.lua")
 local wp_index = 1
 local wp_timeout  = 300
 local wp_path = awful.util.getdir("config") .. "/wallpaper/"
-local wp_files = { "best.png", "best1.png", "best2.png", "sky.jpg"}
---local wp_files = { "sky.jpg", "frozen.jpg"}
+--local wp_files = { "best.png", "best1.png", "best2.png", "sky.jpg"}
+local wp_files = { "sky.jpg", "forzen.jpg"}
 
 -- use dark.png for second screen
 if screen.count() == 2 then
@@ -17,15 +17,16 @@ end
 
 function changewp()
     local old_index = wp_index
-    while wp_index == old_index do
-        wp_index = math.random(1, #wp_files)
-    end
+    wp_index = (old_index + 1) % #wp_files + 1
+--    notify(tostring(wp_index) .. tostring(#wp_files) .. tostring(wp_files[1]))
     gears.wallpaper.maximized(wp_path .. wp_files[wp_index], 1, true)
 end
 
-local wp_timer = timer({ timeout = wp_timeout })
-wp_timer:connect_signal("timeout", changewp)
-wp_timer:start()
+--[[
+   [local wp_timer = timer({ timeout = wp_timeout })
+   [wp_timer:connect_signal("timeout", changewp)
+   [wp_timer:start()
+   ]]
 changewp()
 
 

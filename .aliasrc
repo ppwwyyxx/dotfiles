@@ -21,7 +21,6 @@ alias v='vim '
 alias vi='vim '
 alias iv='vim '
 alias sv='sudo vim'
-alias gv='gvim'
 
 alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
 alias -g L="|less"
@@ -54,7 +53,7 @@ alias mkb='make -C build'
 alias gits='git s'
 
 function ll(){
-	ls -AhlF --color=auto $@
+	ls -AhlXF --color=auto --time-style="+[33m[[32m%g-%m-%d [35m%k:%M[33m][m" $@
 	[[ "$@" == "$1" ]] && echo -e " $GREEN  --[$LIGHTBLUE  Dir:    $CYAN`ls -Al $@ | grep '^drw' | wc -l`$LIGHTGREEN|$YELLOW \
 	 File: $GREEN`ls -Al $@ | grep -v '^drw' | grep -v total | wc -l` ]-- $WHITE"
 }
@@ -118,9 +117,11 @@ alias mathc='/opt/Mathematica/Executables/math'
 alias mathematica='/opt/Mathematica/Executables/Mathematica -nosplash'
 alias matlab='/opt/Matlab/bin/matlab'
 alias matlabc='/opt/Matlab/bin/matlab -nodisplay -r clc '
+alias rstudio='/opt/RStudio/lib/rstudio/bin/rstudio'
 alias maple='/opt/Maple/bin/xmaple'
 alias evernote='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/Evernote/Evernote/Evernote.exe'
 alias ie8="wine 'C:\Program Files (x86)\\\\Internet Explorer\\\\iexplore'"
+alias lingoes='wine ~/.wine/drive_c/users/wyx/Local\ Settings/Application\ Data/Lingoes/Translator/lingoes-cn/Lingoes.exe'
 
 # add arguments for some commands
 alias indent='indent -linux -l80'
@@ -167,7 +168,7 @@ alias hotspot='sudo nmcli con up id Seattle'
 alias iwc='iwconfig wlan0; ifconfig wlan0'
 alias port='netstat -ntlp'
 alias rsync='rsync --progress --partial'
-alias m_rsync='rsync --progress --partial --delete --size-only -rlv'
+alias m_rsync='rsync --progress --partial --delete --size-only -rlv --bwlimit=5m'
 # rsync ./book/ /mnt/books/ -rlv --delete --size-only
 alias chromium_proxy='chromium --proxy-server=socks5://localhost:8080'
 alias chromium_rug='chromium --proxy-server=rug.net9.org:7777'
@@ -180,7 +181,7 @@ alias win='cd; virtualbox --startvm win7 & ; cd -'
 alias osx='cd; virtualbox --startvm osx & ; cd -'
 alias winxp='cd; virtualbox --startvm winxp &; cd -'
 alias vnc_quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=ZRLE -FullScreen=1 -Shared=1'
-alias rdesktop-lab='rdesktop-vrdp -K -u wyx -p - 166.111.71.80:3389'
+alias rdesktop-lab='rdesktop-vrdp -K -u wyx -p - 166.111.71.23:3389'
 
 alias please='sudo'
 alias logout='xfce4-session-logout --logout'

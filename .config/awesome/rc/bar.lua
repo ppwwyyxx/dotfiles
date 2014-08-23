@@ -34,11 +34,13 @@ mem_widget:buttons(awful.button({}, 1, function() run_term('top -o %MEM -d 1', '
 
 -- Network f[[
 local net_widget = wibox.widget.textbox()
-local netgraph = awful.widget.graph()
-netgraph:set_width(40):set_height(16)
-netgraph:set_stack(true):set_scale(true)
-netgraph:set_stack_colors({ "#c2ba62", "#5798d9" })
-netgraph:set_background_color("#00000033")
+--[[
+   [local netgraph = awful.widget.graph()
+   [netgraph:set_width(40):set_height(16)
+   [netgraph:set_stack(true):set_scale(true)
+   [netgraph:set_stack_colors({ "#c2ba62", "#5798d9" })
+   [netgraph:set_background_color("#00000033")
+   ]]
 vicious.register(net_widget, vicious.widgets.net, function(widget, args)
         local f = io.open('/proc/net/route')
         local netif
@@ -50,6 +52,9 @@ vicious.register(net_widget, vicious.widgets.net, function(widget, args)
         end
         f:close()
         active_net_if = netif
+        if active_net_if == nil then
+            return '<span color="#5798d9">No Network</span>'
+        end
 
         local up, down, iface = 0, 0
         -- sum up/down value for all interfaces
@@ -59,8 +64,10 @@ vicious.register(net_widget, vicious.widgets.net, function(widget, args)
            iface = name:match("^{(%S+) up_b}$")
            if iface == active_net_if then up = up + value end
         end
-        netgraph:add_value(up, 1)
-        netgraph:add_value(down, 2)
+        --[[
+           [netgraph:add_value(up, 1)
+           [netgraph:add_value(down, 2)
+           ]]
         local function format(val)
             -- no network
             if val > 500000000 then return "0" end
@@ -69,7 +76,7 @@ vicious.register(net_widget, vicious.widgets.net, function(widget, args)
         end
         return string.format('<span color="#5798d9">↓%s</span><span color="#c2ba62">↑%s</span>',
                        format(down), format(up))
-    end, 5)
+    end, 3)
 net_widget:buttons(
     awful.button({}, 1, net_monitor)
 )

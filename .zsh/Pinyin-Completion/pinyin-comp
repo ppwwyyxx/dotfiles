@@ -252,21 +252,13 @@ if __name__ == '__main__':
     reply = [ stringlize(x) for x in reply]
     reply.sort( key=locale.strxfrm )
 
-    #if index :
-        #try:
-            #print ( reply[index - 1] )
-        #except IndexError:
-            ## return the last candidate when index is out of range
-            #print ( reply[:-1])
-    #else:
-        #print ( "\n".join(reply) )
-
-
     def filter_escape(s):
         s = s.replace('\\', '\\\\')
         s = s.replace(' ', '\ ')
         s = s.replace('(', '\(')
         s = s.replace(')', '\)')
+        s = s.replace('[', '\[')
+        s = s.replace(']', '\]')
         return s
 
     if index :

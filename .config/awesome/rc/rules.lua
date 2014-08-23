@@ -53,7 +53,7 @@ awful.rules.rules = {
 		instance = {'TM.exe', 'QQ.exe'},
 	},
 	properties = {
-		focusable = true,
+		focusable = false,
 		floating = true,
 		border_width = 0,
 	},
@@ -88,6 +88,11 @@ awful.rules.rules = {
 }, {
     rule = { class = 'rdesktop'},
     properties = { screen = 1 }
+}, {
+    rule = { name = 'sogou-qimpanel'},
+    callback = function(c)
+        notify("here")
+    end
 }
 }
 
@@ -122,16 +127,16 @@ client.connect_signal(
 	end)
 
 client.connect_signal("focus", function(c)
-			  c.border_color = beautiful.border_focus
-              if c.instance == 'gimp' then
-                  local curtags = awful.tag.selectedlist()
-                  for _, curtag in ipairs(curtags) do
-                      for _, j in ipairs(curtag:clients()) do
-                          if j.instance == 'gimp' then
-                              j:raise()
-                          end
-                      end
+      c.border_color = beautiful.border_focus
+      if c.instance == 'gimp' then
+          local curtags = awful.tag.selectedlist()
+          for _, curtag in ipairs(curtags) do
+              for _, j in ipairs(curtag:clients()) do
+                  if j.instance == 'gimp' then
+                      j:raise()
                   end
               end
-		  end)
+          end
+      end
+  end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)

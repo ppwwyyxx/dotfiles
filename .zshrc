@@ -6,6 +6,7 @@
 fpath=($HOME/.zsh/Completion $fpath)
 
 export PATH=$HOME/bin:$PATH
+export TERM=screen-256color
 [ -d $HOME/.zsh/bin ] && export PATH=$HOME/.zsh/bin:$PATH
 [ -d $HOME/.local/bin ] && export PATH=$HOME/.local/bin:$PATH
 [ -d $HOME/.cw/def ] && export PATH=$HOME/.cw/def:$PATH
@@ -20,12 +21,12 @@ export PATH=$HOME/bin:$PATH
 export EDITOR=vim
 export NODE_PATH=$HOME/.local/lib/node_modules/
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
-export LD_LIBRARY_PATH=/lib/:/home/wyx/.local/lib/wkhtmltox/
+export LD_LIBRARY_PATH=/lib64/:/lib/:/home/wyx/.local/lib/wkhtmltox/
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 #export DISTCC_POTENTIAL_HOSTS='10.20.0.204/8'
 export DISTCC_POTENTIAL_HOSTS='166.111.71.80/8 166.111.71.95/16'
 export MAKEFLAGS="-j4"
-export CXXFLAGS="-Wall -Wextra -std=c++11 -g"
+export CXXFLAGS="-Wall -Wextra -std=c++11 -g -pthread -fopenmp"
 
 export PAGER="/usr/bin/less -s"
 export BROWSER="$PAGER"

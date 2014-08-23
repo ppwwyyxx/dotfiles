@@ -5,7 +5,8 @@ local autorun_items = {
     "xrdb ~/.Xresources",
 	"xinput disable $(xinput | egrep -o 'TouchPad.*id=[0-9]*' | egrep -o '[0-9]*')",
     "fcitx-autostart",
-	"conky",
+    "sogou-qimpanel",
+    "conky",
     "xrandr --output VGA1 --auto --right-of LVDS1 --rotate normal"
 }
 local runonce = require("lib/runonce")

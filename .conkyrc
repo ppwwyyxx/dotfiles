@@ -1,68 +1,38 @@
-# Based on conky-jc and the default .conkyrc.
-# Original: Pengo (conky@pengo.us)
-# Modified: Felix Yan (felixonmars@gmail.com)
-
-# Create own window instead of using desktop (required in nautilus)
-#own_window yes
-own_window_type overide
+update_interval 2
+own_window yes
 own_window_transparent yes
+own_window_type override
 own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
-background no #Transparent background.
-
-# Use double buffering (reduces flicker, may not work for everyone)
 double_buffer yes
 
-# fiddle with window
-use_spacer right
+# fonts
 use_xft yes
-
-# Update interval in seconds
-update_interval 2
-
-# Minimum size of text area
-minimum_size 170 5
-
-# Draw shades?
-draw_shades no
-
-# Draw borders around graphs
-draw_graph_borders no
-default_graph_size 115 20
-
-# Text stuff
-draw_outline no # amplifies text if yes
-draw_borders no
-#xftfont black:size=9
+text_buffer_size 2048
+xftfont black:size=9
 xftalpha 0.7
 font arial black:size=8
-uppercase no # set to yes if you want all text to be in uppercase
+uppercase no
+use_spacer none
 
-# Stippled borders?
-stippled_borders 3
-
-# border width
-border_width 10
-
-# Default colors and also border colors, grey90 == #e5e5e5
+# apperances
+draw_shades no
+draw_outline no
+draw_borders no
+stippled_borders 0
+border_width 0
 default_color grey
+own_window_colour white
 
-own_window_colour brown
-own_window_transparent yes
+no_buffers yes
+cpu_avg_samples 2
+net_avg_samples 2
+override_utf8_locale yes
 
-# Text alignment, other possible values are commented
-#alignment top_left
+# position
 alignment top_left
-#alignment bottom_left
-#alignment bottom_right
-
-# Gap between borders of screen and text
 gap_x 15
 gap_y 40
-
-# stuff after 'TEXT' will be formatted on screen
 top_name_width 12
-
-#${font arial black:size=9}INTERNAL:$font ${execi 300 internalip.py}${color}
 TEXT
 ${font arial black:size=12}${color magneta}SYSTEM${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
 $nodename $kernel
