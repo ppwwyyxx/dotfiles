@@ -16,6 +16,7 @@ alias p='ping'
 alias meow='ping'
 alias p6='ping6'
 alias cp='cp -rvi'
+alias cpv="rsync -pogh -e /dev/null --progress --"
 
 alias v='vim '
 alias vi='vim '
@@ -30,9 +31,10 @@ alias -g NN='>/dev/null 2>&1'
 alias L=less
 alias C='cat'
 alias wcl='wc -l'
+alias cls='clear'
 
 alias psg='pgrep -a'
-alias top='top -d 0.5 -o %MEM'
+alias top='top -d 0.5' # ' -o %MEM'
 alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -r | head -n20"
 alias grep='grep -IE --color=auto --exclude=.tags --exclude-dir="node_modules" --exclude-dir=".git" --exclude-dir=".env"'
 alias b='acpi'
@@ -60,7 +62,7 @@ function ll(){
 
 function acpi(){
 	=acpi -V | head -n1
-	sensors | grep temp1 |sed 's/(.*//g' |sed 's/\+//g'
+	sensors | grep Physical
 	sensors | grep RPM
 	cat /proc/acpi/ibm/fan | head -n3 |tail -n1
 	#echo "Graphic Card:  `nvidia-settings -q gpucoretemp |grep "Keep" |grep -o "\ [0-9]+" `  °C "
@@ -157,7 +159,7 @@ alias learn=". ~/bin/learn"
 alias restart_wm='pkill compiz -9; pkill fusion-icon -9; DISPLAY=:0.0 fusion-icon &'
 alias window='wmctrl -a '
 
-[[ -s ~/.pythonrc ]] && export PYHTONSTARTUP=~/.pythonrc
+[[ -s ~/.startup.py ]] && export PYTHONSTARTUP=~/.startup.py
 alias ipython_notebook="ipython2 notebook --pylab inline"
 alias bp2='bpython2'
 alias pyftp='python2 -m pyftpdlib'
@@ -176,12 +178,14 @@ alias net9='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.net9.org'
 alias smth='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.smth.org'
 alias gtalk='weechat-curses -r "/connect localhost; /msg &bitlbee identify 1"'
 alias ssh_reverse='ssh -R 6333:localhost:22 -ServerAliveInterval=60'
+alias googlelink='python2 -c "import urlparse, sys; print urlparse.parse_qs(urlparse.urlparse(sys.argv[1]).query)[\"url\"][0]"'
 
 alias win='cd; virtualbox --startvm win7 & ; cd -'
 alias osx='cd; virtualbox --startvm osx & ; cd -'
 alias winxp='cd; virtualbox --startvm winxp &; cd -'
 alias vnc_quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=ZRLE -FullScreen=1 -Shared=1'
-alias rdesktop-lab='rdesktop-vrdp -K -u wyx -p - 166.111.71.23:3389'
+alias rdesktop-nana='rdesktop-vrdp -K -u wyx -p - 59.66.131.64:3389'
+alias rdesktop-ali='rdesktop-vrdp -K -u OuJMojwe -p - 115.28.254.131:55555'
 
 alias please='sudo'
 alias logout='xfce4-session-logout --logout'
@@ -192,12 +196,20 @@ alias iotop='sudo iotop'
 alias iftop='sudo iftop -B'
 alias powertop='sudo powertop'
 
-alias pS='sudo pacman -S'
-alias pSs='pacman -Ss'
-alias pSi='pacman -Si'
-alias pSy='sudo pacman -Syy'
-alias pR='sudo pacman -R'
-alias pSu='pacaur -Syu'
+if [[ -n "$(lsb_release -a | grep 'Arch Linux')" ]]; then
+	alias pS='sudo pacman -S'
+	alias pSs='pacman -Ss'
+	alias pSi='pacman -Si'
+	alias pSy='sudo pacman -Syy'
+	alias pR='sudo pacman -R'
+	alias pSu='pacaur -Syu'
+	alias paur='pacman -Qm'
+else
+	alias pS='sudo aptitude install'
+	alias pSs='aptitude search'
+	alias pSy='sudo aptitude update'
+	alias pSu='sudo aptitude upgrade'
+fi
 
 m_sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "/usr/share/fonts/wenquanyi/wqy-microhei/wqy-microhei.ttc"'
 m_avc_param="-oac mp3lame -lameopts fast:preset=medium -ovc x264 -x264encopts subq=5:8x8dct:frameref=2:bframes=3:weight_b"

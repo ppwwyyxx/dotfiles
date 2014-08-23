@@ -14,6 +14,7 @@ export TERM=screen-256color
 [ -d /opt/texlive/2013/ ] && export PATH=/opt/texlive/2013/bin/x86_64-linux:$PATH
 [ -d /usr/lib/colorgcc/bin ] && export PATH=/usr/lib/colorgcc/bin:$PATH
 [ -d /opt/cuda/bin ] && export PATH=/opt/cuda/bin:$PATH
+[ -d /opt/lingo14/bin/linux64 ] && export PATH=/opt/lingo14/bin/linux64:$PATH
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
@@ -21,7 +22,8 @@ export TERM=screen-256color
 export EDITOR=vim
 export NODE_PATH=$HOME/.local/lib/node_modules/
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
-export LD_LIBRARY_PATH=/lib64/:/lib/:/home/wyx/.local/lib/wkhtmltox/
+export LD_LIBRARY_PATH=/lib64/:/lib/:/home/wyx/.local/lib/wkhtmltox/:/opt/lingo14/bin/linux64
+export LINGO_14_HOME=/opt/lingo14
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 #export DISTCC_POTENTIAL_HOSTS='10.20.0.204/8'
 export DISTCC_POTENTIAL_HOSTS='166.111.71.80/8 166.111.71.95/16'
@@ -38,7 +40,6 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 export PYTHONDOCS=/usr/share/doc/python2/html
-export PYTHONSTARTUP=$HOME/.startup.py
 export SDCV_PAGER="sed 's/\ \ \([1-9]\)/\n\n◆\1/g' |less"
 
 # Colors ------------------------------------------------------------------------------------------
@@ -346,26 +347,26 @@ zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv)
 [[ -d $HOME/.zsh/Pinyin-Completion ]] && source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh && export PATH=$PATH:$HOME/.zsh/Pinyin-Completion/bin
 
 # ... completion
-user_complete(){
+user-complete(){
 	if [[ -z $BUFFER ]]; then
 		return
 	fi
 	if [[ $BUFFER =~ "^\.\.\.*$" ]]; then
 		BUFFER=`echo "$BUFFER" |sed 's/^/cd\ /g'`
 		zle end-of-line
-		user_complete
+		user-complete
 		return
 	elif [[ $BUFFER =~ ".*\.\.\..*$" ]] ;then
 		BUFFER=`echo "$BUFFER" |sed 's/\.\.\./\.\.\/\.\./g'`
 		zle end-of-line
-		user_complete
+		user-complete
 		return
 	fi
 	zle expand-or-complete
 	#recolor-cmd
 }
-zle -N user_complete
-bindkey "\t" user_complete
+zle -N user-complete
+bindkey "\t" user-complete
 autoload compinstall
 
 # Custom Return
@@ -395,13 +396,13 @@ path_parse(){
 
 bg_list=(pdf geeqie libreoffice word evince)
 special_command(){
-	cmd=`echo $BUFFER | sed 's/^\ *//g' | sed 's/\ .*//g'`
+	cmd=`echo $BUFFER | awk '{print $1}'`
 	# command running in background
 	in_array $cmd "${bg_list[@]}" && BUFFER=`echo $BUFFER |sed 's/[&]*\s*$/\ 2>\/dev\/null\ \&/g'`
 
-	## command ending with alert
+	# command ending with alert
 	alert_list=(mencoder aria2c axel)
-	in_array $cmd "${alert_list[@]}" && BUFFER=`echo $BUFFER |sed 's/$/\ ;notify-send finished/g'`
+	in_array $cmd "${alert_list[@]}" && BUFFER="$BUFFER ; notify-send \"$cmd finished! \""
 }
 
 user-ret(){
@@ -409,6 +410,7 @@ user-ret(){
 	if [[ $HOST == "KeepMoving" ]]; then
 		special_command
 	fi
+	BUFFER=${BUFFER/mms:\/\/officetv/rtsp:\/\/officetv}		# mms IPTV urls in China are actually in rtsp!
 	zle accept-line
 }
 zle -N user-ret
@@ -461,3 +463,4 @@ if [[ -n "$DISPLAY" ]]; then
     }
 	source $HOME/.zsh/vim-interaction.plugin.zsh
 fi
+
