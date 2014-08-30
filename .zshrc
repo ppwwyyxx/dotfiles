@@ -433,6 +433,14 @@ function command_not_found_handler() {
 	return 1
 }
 
+# wait a process to finish
+function waitpid() {
+	pid="$1"
+	while test -d "/proc/$pid"; do
+		sleep 1
+	done
+}
+
 # plugins
 if [[ -d $HOME/.zsh ]]; then
 	source $HOME/.zsh/extract.zsh
