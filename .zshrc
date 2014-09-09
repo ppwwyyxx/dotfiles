@@ -231,6 +231,9 @@ setopt magic_equal_subst
 setopt noautoremoveslash
 setopt null_glob
 
+# alias cpv needs completion
+compdef cpv=cp
+
 # ignore the current directory
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
 
