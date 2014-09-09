@@ -16,34 +16,22 @@ export XMODIFIERS="@im=fcitx"
 export QT_IM_MODULE=fcitx
 export GTK_IM_MODULE=fcitx
 
-export PAGER="/usr/bin/less -s"
-export BROWSER="$PAGER"
-export LESS_TERMCAP_mb=$YELLOW
-export LESS_TERMCAP_md=$'\E[01;31m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[01;44;33m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[01;32m'
-
-export PYTHONDOCS=/usr/share/doc/python2/html
-export SDCV_PAGER="sed 's/\ \ \([1-9]\)/\n\n◆\1/g' |less"
-
 xrandr --output VGA1 --right-of LVDS1
 xset -b
 xset r rate 170 50
 
-DEFAULT_SESSION=startxfce4
+DEFAULT_SESSION=awesome
 
 case $1 in
-xfce4)
+startxfce4)
 	exec dbus-launch startxfce4
 	;;
 fluxbox)
 	exec startfluxbox
 	;;
-gnome-shell)
-	exec gnome-session
+awesome)
+	compton --config ~/.compton.conf &
+	exec awesome
 	;;
 *)
 	exec $DEFAULT_SESSION
