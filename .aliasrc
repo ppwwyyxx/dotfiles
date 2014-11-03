@@ -17,27 +17,24 @@ alias meow='ping'
 alias p6='ping6'
 alias cp='cp -rvi'
 alias cpv="rsync -pogh -e /dev/null -P --"
+alias sort='LC_ALL=C sort'
 
 alias v='vim '
 alias vi='vim '
 alias iv='vim '
 alias sv='sudo vim'
 
-alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
-alias -g L="|less"
-alias -g G='|grep'
-alias -g N='>/dev/null'
-alias -g NN='>/dev/null 2>&1'
 alias L=less
 alias C='cat'
 alias wcl='wc -l'
 alias cls='clear'
+alias du='du -sh'
+which aunpack > /dev/null 2>&1 && alias x=aunpack
 
 alias psg='pgrep -a'
 alias top='top -d 0.5' # ' -o %MEM'
 alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -r | head -n20"
 alias grep='grep -IE --color=auto --exclude=.tags --exclude-dir="node_modules" --exclude-dir=".git" --exclude-dir=".env"'
-alias b='acpi'
 alias tmuxa='tmux a || tmux'
 
 alias l='ls -F --color=auto'
@@ -51,55 +48,7 @@ alias mr='make run'
 alias mc='make clean'
 alias mkc='make clean'
 alias cmk='mkdir -p build; cd build; cmake ..; make; cd ..'
-alias mkb='make -C build'
 alias gits='git s'
-
-function ll(){
-	ls -AhlXF --color=auto --time-style="+[33m[[32m%g-%m-%d [35m%k:%M[33m][m" $@
-	[[ "$@" == "$1" ]] && echo -e " $GREEN  --[$LIGHTBLUE  Dir:    $CYAN`ls -Al $@ | grep '^drw' | wc -l`$LIGHTGREEN|$YELLOW \
-	 File: $GREEN`ls -Al $@ | grep -v '^drw' | grep -v total | wc -l` ]-- $WHITE"
-}
-
-function acpi(){
-	=acpi -V | head -n1
-	sensors | grep Physical
-	sensors | grep RPM
-	cat /proc/acpi/ibm/fan | head -n3 |tail -n1
-	#echo "Graphic Card:  `nvidia-settings -q gpucoretemp |grep "Keep" |grep -o "\ [0-9]+" `  °C "
-	for ((i=0; i<1; i++)); do
-		echo -n "cpu$i : "
-		cat "/sys/devices/system/cpu/cpu$i/cpufreq/scaling_governor"
-	done
-	sudo cpupower frequency-info -w | sed 'N;s/\n//g'
-}
-
-function cdp () {
-    dir=$(git rev-parse --show-toplevel 2>/dev/null)
-    if [ $? -eq 0 ]; then
-        CDP=$dir
-        cd $dir
-    else
-        echo "'$PWD' is not git repos"
-    fi
-}
-
-sdu () {
-  du -sk $@ | sort -n | awk '
-BEGIN {
-  split("K,M,G,T", Units, ",");
-  FS="\t";
-  OFS="\t";
-} {
-  u = 1;
-  while ($1 >= 1024) {
-    $1 = $1 / 1024;
-    u += 1
-  }
-  $1 = sprintf("%.1f%s", $1, Units[u]);
-  sub(/\.0/, "", $1);
-  print $0;
-}'
-}
 
 # long path
 alias eclimd='/usr/share/eclipse/eclimd'
@@ -129,7 +78,6 @@ alias lingoes='wine ~/.wine/drive_c/users/wyx/Local\ Settings/Application\ Data/
 alias indent='indent -linux -l80'
 alias gdb='gdb -q'
 alias R='R --vanilla'
-alias LS='LS -eaF'
 alias which='which -a'
 alias ibus-daemon='ibus-daemon --xim'
 alias zh-CN="LC_ALL='zh_CN.UTF-8'"
@@ -145,7 +93,8 @@ which colordiff > /dev/null 2>&1 && alias diff='colordiff'
 
 
 # customed command
-alias km='xmodmap ~/.Xmodmap; xcape -e "Control_L=Escape"; xinput set-button-map $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*") 1 0 0'
+#alias km='xmodmap ~/.Xmodmap; xcape -e "Control_L=Escape"; xinput set-button-map $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*") 1 0 0'
+alias km='xmodmap ~/.Xmodmap; xcape -e "Control_L=Escape"; xset r rate 200 40'
 alias keyb='xinput disable $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*")'
 alias unkeyb='xinput enable $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*")'
 
@@ -154,12 +103,11 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias clean_trash='=rm /ssd_home/.Trash/{.,}* -rf; =rm ~/.Trash/{.,}* -rf'
 alias mirror='mplayer -tv driver=v4l2:device=/dev/video0 tv:// -vf-add mirror'
 alias tune_pitch='mplayer -af scaletempo=speed=pitch'
-alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_region 1 -qscale 2 -i :0.0 ~/Video/out.mpg'
+alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_region 1 -i :0.0 ~/Video/out.mpg'
 alias learn=". ~/bin/learn"
 alias restart_wm='pkill compiz -9; pkill fusion-icon -9; DISPLAY=:0.0 fusion-icon &'
 alias window='wmctrl -a '
 
-[[ -s ~/.startup.py ]] && export PYTHONSTARTUP=~/.startup.py
 alias ipython_notebook="ipython2 notebook --pylab inline"
 alias bp2='bpython2'
 alias pyftp='python2 -m pyftpdlib'
@@ -177,21 +125,19 @@ alias chromium_rug='chromium --proxy-server=rug.net9.org:7777'
 alias net9='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.net9.org'
 alias smth='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.smth.org'
 alias gtalk='weechat-curses -r "/connect localhost; /msg &bitlbee identify 1"'
+alias tunairc='weechat-curses -r "/connect irc.freenode.net; /join #tuna"'
 alias ssh_reverse='ssh -R 6333:localhost:22 -ServerAliveInterval=60'
+function st() { ssh $1 -t tmux a }
 alias googlelink='python2 -c "import urlparse, sys; print urlparse.parse_qs(urlparse.urlparse(sys.argv[1]).query)[\"url\"][0]"'
 
 alias win='cd; virtualbox --startvm win7 & ; cd -'
 alias osx='cd; virtualbox --startvm osx & ; cd -'
-alias winxp='cd; virtualbox --startvm winxp &; cd -'
 alias vnc_quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=ZRLE -FullScreen=1 -Shared=1'
 alias rdesktop-nana='rdesktop-vrdp -K -u wyx -p - 59.66.131.64:3389'
-alias rdesktop-ali='rdesktop-vrdp -K -u OuJMojwe -p - 115.28.254.131:55555'
 
 alias please='sudo'
-alias logout='xfce4-session-logout --logout'
 alias umount='sudo umount'
 alias mount='sudo mount'
-alias samba_thu='sudo mount -t cifs -o username=tuna,password=Tunahallelujah2012  //166.111.9.155/movie /mnt'
 alias iotop='sudo iotop'
 alias iftop='sudo iftop -B'
 alias powertop='sudo powertop'
@@ -204,6 +150,7 @@ if [[ -n "$(lsb_release -a | grep 'Arch Linux')" ]]; then
 	alias pR='sudo pacman -R'
 	alias pSu='pacaur -Syu'
 	alias paur='pacman -Qm'
+	alias pacman-size="paste <(pacman -Q | awk '{ print \$1; }' | xargs pacman -Qi | grep 'Size' | awk '{ print \$4\$5; }') <(pacman -Q | awk '{print \$1; }') | sort -n | column -t"
 else
 	alias pS='sudo aptitude install'
 	alias pSs='aptitude search'
@@ -214,10 +161,64 @@ fi
 m_sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "/usr/share/fonts/wenquanyi/wqy-microhei/wqy-microhei.ttc"'
 m_avc_param="-oac mp3lame -lameopts fast:preset=medium -ovc x264 -x264encopts subq=5:8x8dct:frameref=2:bframes=3:weight_b:threads=auto"
 f_avc_param="-c:v libx264 -preset slow -crf 22 -c:a libmp3lame"
-mx="/home/wyx/install/files/pics/pic7"
 function ffmpeg_compress() { ffmpeg -i $1 `echo $f_avc_param` $1.avi }
 function mencoder_compress() { mencoder $1 -o $1.avi `echo $m_avc_param` }
 
-alias workdir='export PATH=~/tmp/modeling/bin:$PATH'
+
+function ll(){
+	ls -AhlXF --color=auto --time-style="+[33m[[32m%g-%m-%d [35m%k:%M[33m][m" $@
+	[[ "$@" == "$1" ]] && echo -e " $GREEN  --[$LIGHTBLUE  Dir:    $CYAN`ls -Al $@ | grep '^drw' | wc -l`$LIGHTGREEN|$YELLOW \
+	 File: $GREEN`ls -Al $@ | grep -v '^drw' | grep -v total | wc -l` ]-- $WHITE"
+}
+
+function b(){
+	=acpi -V | head -n1
+	sensors | grep Physical
+	sensors | grep RPM
+	cat /proc/acpi/ibm/fan | head -n3 |tail -n1
+	#echo "Graphic Card:  `nvidia-settings -q gpucoretemp |grep "Keep" |grep -o "\ [0-9]+" `  °C "
+	for ((i=0; i<1; i++)); do
+		echo -n "cpu$i : "
+		cat "/sys/devices/system/cpu/cpu$i/cpufreq/scaling_governor"
+	done
+	sudo cpupower frequency-info -w | sed 'N;s/\n//g'
+}
+
+# cd to git repo root
+function cdp () {
+	dir=$(git rev-parse --show-toplevel 2>/dev/null)
+	if [ $? -eq 0 ]; then
+		CDP=$dir
+		cd $dir
+	else
+		echo "'$PWD' is not git repos"
+	fi
+}
+
+function sdu () {
+  du -sk $@ | sort -n | awk '
+BEGIN {
+  split("K,M,G,T", Units, ",");
+  FS="\t";
+  OFS="\t";
+} {
+  u = 1;
+  while ($1 >= 1024) {
+	$1 = $1 / 1024;
+	u += 1
+  }
+  $1 = sprintf("%.1f%s", $1, Units[u]);
+  sub(/\.0/, "", $1);
+  print $0;
+}'
+}
+
+# wait a process to finish
+function waitpid() {
+	pid="$1"
+	while test -d "/proc/$pid"; do
+		sleep 1
+	done
+}
 
 #  vim:ft=zsh

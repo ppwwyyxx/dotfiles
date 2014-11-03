@@ -3,11 +3,12 @@ local autorun_items = {
     "mkdir -p /tmp/t",
 	"dunst -config ~/.dunstrc",
     "xrdb ~/.Xresources",
-	"xinput disable $(xinput | egrep -o 'TouchPad.*id=[0-9]*' | egrep -o '[0-9]*')",
     "fcitx-autostart",
     "sogou-qimpanel",
     "conky",
-    "xrandr --output VGA1 --auto --right-of LVDS1 --rotate normal"
+    "xrandr --output VGA1 --auto --right-of LVDS1 --rotate normal",
+    "xcape -e 'Control_L=Escape'",
+    "xset r rate 200 40"
 }
 local runonce = require("lib/runonce")
 for _, item in ipairs(autorun_items) do

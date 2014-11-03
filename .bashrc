@@ -4,13 +4,7 @@
 
 export PATH=
 source /etc/environment
-export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin/core_perl
-[ -d $HOME/bin ] && PATH=$HOME/bin:$PATH
-[ -d $HOME/.local/bin ] && PATH=$HOME/.local/bin:$PATH
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-source $HOME/.rvm/scripts/rvm
-
-export PYTHONSTARTUP=$HOME/.startup.py
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
@@ -32,11 +26,6 @@ shopt -s checkwinsize
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
@@ -89,7 +78,5 @@ fi
 PS1='\[\e]0;\w\007\]\[\033[32m\]\D{%Y-%m-%d %H:%M:%S}\[\033[01;32m\] \u@\h \[\033[01;34m\]\W\[\033[00m\]\n\$ '
 
 set -o vi
-#source ~/.aliasrc
-alias ll='ls -ahl'
-alias acpi='acpi -V'
+source ~/.aliasrc
 

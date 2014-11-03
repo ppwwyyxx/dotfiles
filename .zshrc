@@ -3,33 +3,37 @@
 
 # ENV ------------------------------------------------------------------------------------------
 
-fpath=($HOME/.zsh/Completion $fpath)
+[[ -d $HOME/.zsh/Completion ]] && fpath=($HOME/.zsh/Completion $fpath)
 
-export PATH=$HOME/bin:$PATH
 export TERM=screen-256color
-[ -d $HOME/.zsh/bin ] && export PATH=$HOME/.zsh/bin:$PATH
-[ -d $HOME/.local/bin ] && export PATH=$HOME/.local/bin:$PATH
-[ -d $HOME/.cw/def ] && export PATH=$HOME/.cw/def:$PATH
-[ -d $HOME/.cabal/bin ] && export PATH=$HOME/.cabal/bin:$PATH
-[ -d /opt/texlive/2013/ ] && export PATH=/opt/texlive/2013/bin/x86_64-linux:$PATH
-[ -d /usr/lib/colorgcc/bin ] && export PATH=/usr/lib/colorgcc/bin:$PATH
-[ -d /opt/cuda/bin ] && export PATH=/opt/cuda/bin:$PATH
-[ -d /opt/lingo14/bin/linux64 ] && export PATH=/opt/lingo14/bin/linux64:$PATH
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-. $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+function safe_export_path() { [[ -d $1 ]] && export PATH=$PATH:$1 }
+function safe_source() { [[ -s $1 ]] && source $1 }
 
-export EDITOR=vim
-export NODE_PATH=$HOME/.local/lib/node_modules/
-export JDK_HOME=/usr/lib/jvm/java-7-openjdk
-export LD_LIBRARY_PATH=/lib64/:/lib/:/home/wyx/.local/lib/wkhtmltox/:/opt/lingo14/bin/linux64
-export LINGO_14_HOME=/opt/lingo14
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
-#export DISTCC_POTENTIAL_HOSTS='10.20.0.204/8'
-export DISTCC_POTENTIAL_HOSTS='166.111.71.80/8 166.111.71.95/16'
+safe_export_path $HOME/bin
+safe_export_path $HOME/.local/bin
+safe_export_path $HOME/.zsh/bin
+safe_export_path $HOME/.cabal/bin
+safe_export_path /opt/texlive/2013/bin/x86_64-linux
+safe_export_path /usr/lib/colorgcc/bin
+safe_export_path /opt/lingo14/bin/linux64
+
+#export LD_LIBRARY_PATH=/lib64/:/lib/:/home/wyx/.local/lib/wkhtmltox/:/opt/lingo14/bin/linux64
 export MAKEFLAGS="-j4"
 export CXXFLAGS="-Wall -Wextra -std=c++11 -g -pthread -fopenmp"
+export GOPATH=$HOME/.local/gocode
+safe_export_path $GOPATH/bin
+export PATH=$PATH:$GOPATH/bin
+export NODE_PATH=$HOME/.local/lib/node_modules/
+export JDK_HOME=/usr/lib/jvm/java-7-openjdk
+safe_source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+. $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
+export PYTHONDOCS=/usr/share/doc/python2/html
+[[ -s ~/.startup.py ]] && export PYTHONSTARTUP=~/.startup.py
 
+export DISTCC_POTENTIAL_HOSTS='166.111.71.80/8 166.111.71.95/16'
+export EDITOR=vim
 export PAGER="/usr/bin/less -s"
 export BROWSER="$PAGER"
 export LESS_TERMCAP_mb=$YELLOW
@@ -39,7 +43,6 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
-export PYTHONDOCS=/usr/share/doc/python2/html
 export SDCV_PAGER="sed 's/\ \ \([1-9]\)/\n\n◆\1/g' |less"
 
 # Colors ------------------------------------------------------------------------------------------
@@ -77,13 +80,15 @@ if [[ $HOST == "KeepMoving" ]]; then
   alias reboot='vboxmanage controlvm win7 savestate; sudo reboot'
   export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: (meow~~) '
 else
+  # avoid shutting server down by mistake!
   alias -g halt=
   alias -g poweroff=
   alias -g shutdown=
   alias -g reboot=
   export SUDO_PROMPT=$'[\e[31;5mYou\'re on %H!\e[m] password for \e[34;1m%p\e[m on\e[0;31m %H\e[m: '
 fi
-source $HOME/.zsh/git-prompt/zshrc.sh
+
+safe_source $HOME/.zsh/git-prompt/zshrc.sh
 
 local return_code="%(?..%{$fg[RED]%}%?)%{$reset_color%}"
 export RPS1="${return_code}"
@@ -107,10 +112,10 @@ function precmd () {
 	PS2='$BLUE($GREEN%_$BLUE)$FINISH'
 	PS3='$GREEN Select:'
 }
-preexec () { print -Pn "\e]0;%n@%M//%/\ $1\a" }
+#preexec () { print -Pn "\e]0;%n@%M//%/\ $1\a" }		# wtf?
 
 # alias
-source $HOME/.aliasrc
+safe_source $HOME/.aliasrc
 alias mv='nocorrect mv -i'
 alias mkdir='nocorrect mkdir'
 alias cp='nocorrect cp -rvi'
@@ -118,6 +123,11 @@ alias -s pdf=mupdf -b 0
 alias -s djvu=djview4
 alias -s obj=meshlab
 alias -s pcd=~/tmp/modeling/bin/pcd_viewer
+alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
+alias -g L="|less"
+alias -g G='|grep'
+alias -g N='>/dev/null'
+alias -g NN='>/dev/null 2>&1'
 for i in wmv mkv mp4 mp3 avi rm rmvb flv; alias -s $i=mplayer
 for i in jpg png gif; alias -s $i=feh
 for i in xls xlsx doc docx ppt pptx; alias -s $i=libreoffice
@@ -168,13 +178,10 @@ bindkey '^w' backward-delete-word
 bindkey '^c' kill-buffer
 bindkey ' ' magic-space
 autoload zkbd
-[[ ! -f ${ZDOTDIR:-$HOME}/.zsh/zkbd/$TERM ]] && zkbd
-source ${ZDOTDIR:-$HOME}/.zsh/zkbd/$TERM
+[[ -f $HOME/.zsh/zkbd/$TERM ]] && source $HOME/.zsh/zkbd/$TERM || zkbd
 [[ -n ${key[Backspace]} ]] && bindkey "${key[Backspace]}" backward-delete-char
 [[ -n ${key[Insert]} ]] && bindkey "${key[Insert]}" overwrite-mode
 [[ -n ${key[Home]} ]] && bindkey "${key[Home]}" beginning-of-line
-#[[ -n ${key[PageUp]} ]] && bindkey "${key[PageUp]}" up-line-or-history
-#[[ -n ${key[PageDown]} ]] && bindkey "${key[PageDown]}" down-line-or-history
 [[ -n ${key[PageUp]} ]] && bindkey "${key[PageUp]}" history-substring-search-up
 [[ -n ${key[PageDown]} ]] && bindkey "${key[PageDown]}" history-substring-search-down
 [[ -n ${key[Delete]} ]] && bindkey "${key[Delete]}" delete-char
@@ -184,7 +191,7 @@ source ${ZDOTDIR:-$HOME}/.zsh/zkbd/$TERM
 [[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
 [[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
 
-# Move along shell argument, aka 'Word'
+# Move along shell argument, aka 'Big Word' (defined as separate by spaces)
 zsh-word-movement () {
   # by lilydjwg, http://lilydjwg.is-programmer.com/posts/41712
   local -a word_functions
@@ -234,6 +241,7 @@ setopt null_glob
 # alias cpv needs completion
 compdef cpv=cp
 
+
 # ignore the current directory
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
 
@@ -281,13 +289,8 @@ zstyle ':completion:*:default' menu 'select=0'
 # Completing order
 zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
 zstyle ':completion:*' completer _complete _prefix _user_expand _correct _prefix _match
-# newer file first
-#zstyle ':completion:*' file-sort modification reverse
 # Separate man page sections.
 zstyle ':completion:*:manuals' separate-sections true
-# complete with a menu for xwindow ids
-#zstyle ':completion:*:windows' menu on=0
-#zstyle ':completion:*:expand:*' tag-order all-expansions
 
 #kill completion
 compdef pkill=kill
@@ -344,12 +347,13 @@ compdef _pic gimp
 compdef _pic feh
 
 # vim ignore
-zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv)'
+zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv|mp3|pdf|doc|docx|jpg|png|bmp|gif)'
 
 # Pinyin Completion
-[[ -d $HOME/.zsh/Pinyin-Completion ]] && source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh && export PATH=$PATH:$HOME/.zsh/Pinyin-Completion/bin
+safe_source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
+safe_export_path $HOME/.zsh/Pinyin-Completion/bin
 
-# ... completion
+# .... path completion
 user-complete(){
 	if [[ -z $BUFFER ]]; then
 		return
@@ -366,7 +370,6 @@ user-complete(){
 		return
 	fi
 	zle expand-or-complete
-	#recolor-cmd
 }
 zle -N user-complete
 bindkey "\t" user-complete
@@ -382,21 +385,22 @@ path_parse(){
 			BUFFER="cd $BUFFER"
 			path_parse
 		fi
-	elif [[ $BUFFER =~ ".*\.\.\..*" ]] ;then	# complete ...
+	elif [[ $BUFFER =~ ".*\.\.\..*" ]] ;then	# expand ...
 		BUFFER=`echo "$BUFFER" |sed 's/\.\.\./\.\.\/\.\./g'`
 		path_parse
-	elif [[ $BUFFER =~ "^\.\..*" ]]; then		# auto add cd
+	elif [[ $BUFFER =~ "^\.\..*" ]]; then		# auto add cd to the beginning of ...
 		if [[ -d `echo "$BUFFER" |sed 's/\\\ /\ /g; s/l$//g; s/ls$//g'` ]]; then
 			BUFFER=`echo "$BUFFER" |sed 's/^/cd\ /g'`
 			path_parse
 		fi
 		zle accept-line
-	elif [[ $BUFFER =~ "^cd .*/ls*$" ]] ; then	# fix ls typo
+	elif [[ $BUFFER =~ "^cd .*/ls*$" ]] ; then	# auto fix ls typo
 		BUFFER=`echo "$BUFFER" |sed 's/l[^\/]*$/;ls/g' `
 		zle end-of-line
 	fi
 }
 
+# commands which should always be executed in background
 bg_list=(pdf geeqie libreoffice word evince)
 special_command(){
 	cmd=`echo $BUFFER | awk '{print $1}'`
@@ -436,27 +440,16 @@ function command_not_found_handler() {
 	return 1
 }
 
-# wait a process to finish
-function waitpid() {
-	pid="$1"
-	while test -d "/proc/$pid"; do
-		sleep 1
-	done
-}
-
 # plugins
-if [[ -d $HOME/.zsh ]]; then
-	source $HOME/.zsh/extract.zsh
-	# the next two have to be this order
-	source $HOME/.zsh/syntax-highlighting/zsh-syntax-highlighting.zsh
-	source $HOME/.zsh/history-substring-search.zsh
-	HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS="I"			# sensitive search
-	#source $HOME/.zsh/autojump/etc/profile.d/autojump.zsh
-fi
-alias x=aunpack
+safe_source $HOME/.zsh/extract.zsh
+# the next two have to be this order
+safe_source $HOME/.zsh/syntax-highlighting/zsh-syntax-highlighting.zsh
+safe_source $HOME/.zsh/history-substring-search.zsh
+HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS="I"			# sensitive search
+#safe_source $HOME/.zsh/autojump/etc/profile.d/autojump.zsh
 
-fasd_cache="$HOME/.vimtmp/fasd-cache"
 if [ $commands[fasd] ]; then
+	fasd_cache="$HOME/.vimtmp/fasd-cache"
 	#eval "$(fasd --init zsh-hook zsh-wcomp zsh-wcomp-install)"
 	eval "$(fasd --init posix-alias zsh-hook zsh-wcomp zsh-wcomp-install)"
 	#eval "$(fasd --init zsh-wcomp zsh-wcomp-install)"	 # this should be enabled periodically
@@ -472,6 +465,6 @@ if [[ -n "$DISPLAY" ]]; then
     function postCallVim {
       wmctrl -R 'gvim'
     }
-	source $HOME/.zsh/vim-interaction.plugin.zsh
+	safe_source $HOME/.zsh/vim-interaction.plugin.zsh
 fi
 

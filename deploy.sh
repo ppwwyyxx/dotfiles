@@ -1,6 +1,6 @@
 #!/bin/bash
 # File: deploy.sh
-# Date: Mon May 06 16:24:08 2013 +0800
+# Date: Wed Sep 17 18:39:13 2014 -0700
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 if [[ "$HOST" == "KeepMoving" ]]; then
@@ -9,7 +9,7 @@ if [[ "$HOST" == "KeepMoving" ]]; then
 fi
 
 rm ~/.vim ~/.zsh -rf
-cp .vim .zsh .vimrc .zshrc .aliasrc .bashrc ~/ -rvf
+cp .vim .zsh .vimrc .zshrc .aliasrc .bashrc .gitconfig ~/ -rvf
 
 cat << EOT >> .tmux.conf
 set -g status-bg green
