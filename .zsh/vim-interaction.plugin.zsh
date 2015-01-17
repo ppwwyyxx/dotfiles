@@ -64,8 +64,6 @@ EOH
   fi
 }
 
-alias v=callvim
-alias vi=callvim
 alias vim=callvim
 alias vvsp="callvim -b':vsp'"
 alias vsp="callvim -b':sp'"

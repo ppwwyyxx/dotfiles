@@ -3,12 +3,12 @@ local gears = require("gears")
 -- Themes define colours, icons, and wallpapers
 beautiful.init(awful.util.getdir("config") .. "/rc/theme.lua")
 
--- configuration - edit to your liking
+-- configuration -
 local wp_index = 1
 local wp_timeout  = 300
 local wp_path = awful.util.getdir("config") .. "/wallpaper/"
 --local wp_files = { "best.png", "best1.png", "best2.png", "sky.jpg"}
-local wp_files = { "sky.jpg", "forzen.jpg"}
+local wp_files = { "miao.jpg", "sky.jpg" }
 
 -- use dark.png for second screen
 if screen.count() == 2 then
@@ -22,11 +22,9 @@ function changewp()
     gears.wallpaper.maximized(wp_path .. wp_files[wp_index], 1, true)
 end
 
---[[
-   [local wp_timer = timer({ timeout = wp_timeout })
-   [wp_timer:connect_signal("timeout", changewp)
-   [wp_timer:start()
-   ]]
+local wp_timer = timer({ timeout = wp_timeout })
+wp_timer:connect_signal("timeout", changewp)
+wp_timer:start()
 changewp()
 
 

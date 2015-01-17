@@ -7,7 +7,7 @@
 
 export TERM=screen-256color
 
-function safe_export_path() { [[ -d $1 ]] && export PATH=$PATH:$1 }
+function safe_export_path() { [[ -d $1 ]] && export PATH=$1:$PATH }
 function safe_source() { [[ -s $1 ]] && source $1 }
 
 safe_export_path $HOME/bin
@@ -17,10 +17,13 @@ safe_export_path $HOME/.cabal/bin
 safe_export_path /opt/texlive/2013/bin/x86_64-linux
 safe_export_path /usr/lib/colorgcc/bin
 safe_export_path /opt/lingo14/bin/linux64
+safe_export_path $HOME/.gem/ruby/2.0.0/bin
 
-#export LD_LIBRARY_PATH=/lib64/:/lib/:/home/wyx/.local/lib/wkhtmltox/:/opt/lingo14/bin/linux64
+export OPENCV3_DIR=/opt/opencv3
+export LD_LIBRARY_PATH=$OPENCV3_DIR/lib
+
 export MAKEFLAGS="-j4"
-export CXXFLAGS="-Wall -Wextra -std=c++11 -g -pthread -fopenmp"
+export CXXFLAGS="-Wall -Wextra -std=c++11 -pthread -fopenmp"
 export GOPATH=$HOME/.local/gocode
 safe_export_path $GOPATH/bin
 export PATH=$PATH:$GOPATH/bin
@@ -124,7 +127,6 @@ alias -s djvu=djview4
 alias -s obj=meshlab
 alias -s pcd=~/tmp/modeling/bin/pcd_viewer
 alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
-alias -g L="|less"
 alias -g G='|grep'
 alias -g N='>/dev/null'
 alias -g NN='>/dev/null 2>&1'
@@ -426,13 +428,13 @@ bindkey "\r" user-ret
 # command not found
 function command_not_found_handler() {
 	local command="$1"
-	# to avoid infinite recursion
+	# avoid recursive command-not-found when /usr/bin/ is mistakenly lost
 	[ -x /usr/bin/fortune ] && [ -x /usr/bin/cowsay ] && {
-		fortune -s | cowsay -W 70
+		/usr/bin/fortune -s | /usr/bin/cowsay -W 70
 	}
 	[ -n "$command" ] && [ -x /usr/bin/pkgfile ] && {
 		echo -e "searching for \"$command\" in repos..."
-		local pkgs="$(pkgfile -b -v -- "$command")"
+		local pkgs="$(/usr/bin/pkgfile -b -v -- "$command")"
 		if [ ! -z "$pkgs" ]; then
 			echo -e "\"$command\" may be found in the following packages:\n\n${pkgs}\n"
 		fi
@@ -461,7 +463,7 @@ if [ $commands[fasd] ]; then
 	bindkey '^X^O' fasd-complete
 fi
 
-if [[ -n "$DISPLAY" ]]; then
+if [[ -n "$DISPLAY" && -x "/usr/bin/gvim" ]]; then
     function postCallVim {
       wmctrl -R 'gvim'
     }

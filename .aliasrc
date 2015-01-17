@@ -19,9 +19,9 @@ alias cp='cp -rvi'
 alias cpv="rsync -pogh -e /dev/null -P --"
 alias sort='LC_ALL=C sort'
 
-alias v='vim '
-alias vi='vim '
-alias iv='vim '
+alias v='=vim --servername miao'
+alias vi='=vim --servername miao'
+alias iv='=vim --servername miao'
 alias sv='sudo vim'
 
 alias L=less
@@ -49,6 +49,7 @@ alias mc='make clean'
 alias mkc='make clean'
 alias cmk='mkdir -p build; cd build; cmake ..; make; cd ..'
 alias gits='git s'
+alias idf='identify'
 
 # long path
 alias eclimd='/usr/share/eclipse/eclimd'
@@ -90,6 +91,21 @@ alias ctags='ctags -R -f .tags --c++-kinds=+p --fields=+iaS --extra=+q'
 alias valgrind='valgrind --leak-check=full --track-origins=yes --show-possibly-lost=yes'
 alias convmv='convmv -f GBK -t UTF-8 --notest -r'
 which colordiff > /dev/null 2>&1 && alias diff='colordiff'
+function usbon () {
+# usage: $1 is the first 4 characters of id in `lsusb`
+	id=$1
+	for i in $(find -L /sys/bus/usb/devices -maxdepth 2 -name idVendor);
+		if [[ $(cat $i) == $id ]]; then
+			f=$i
+		fi
+	echo "USB in: $(dirname $f)"
+	powerf=$(dirname $f)/power/control
+	echo -n "USB power state: "
+	cat $powerf
+	sudo bash -c "echo on > $powerf"
+	echo -n "USB power state now: "
+	cat $powerf
+}
 
 
 # customed command
@@ -143,11 +159,11 @@ alias iftop='sudo iftop -B'
 alias powertop='sudo powertop'
 
 if [[ -n "$(lsb_release -a | grep 'Arch Linux')" ]]; then
-	alias pS='sudo pacman -S'
-	alias pSs='pacman -Ss'
-	alias pSi='pacman -Si'
+	alias pS='pacaur -S'
+	alias pSs='pacaur -Ss'
+	alias pSi='pacaur -Si'
 	alias pSy='sudo pacman -Syy'
-	alias pR='sudo pacman -R'
+	alias pR='pacaur -R'
 	alias pSu='pacaur -Syu'
 	alias paur='pacman -Qm'
 	alias pacman-size="paste <(pacman -Q | awk '{ print \$1; }' | xargs pacman -Qi | grep 'Size' | awk '{ print \$4\$5; }') <(pacman -Q | awk '{print \$1; }') | sort -n | column -t"
@@ -220,5 +236,7 @@ function waitpid() {
 		sleep 1
 	done
 }
+
+export PYTHONPATH=$PYTHONPATH:/home/wyx/Work/OCR/image2text/neupack/
 
 #  vim:ft=zsh

@@ -185,8 +185,7 @@ config.global = join(
 
 	-- Common program
 	awful.key({ modkey, }, "Return", function() run_or_raise("urxvt -name '" .. TMP_TERM .. "'", {instance = TMP_TERM}) end),
-	-- awful.key({ modkey    }, "r",     function() my_promptbox[mouse.screen]:run() end),     -- TODO: change launcher
-	awful.key({ modkey, }, "r", function() exec(home .. "/bin/launcher") end),     -- TODO: change launcher
+	awful.key({ modkey, }, "r", function() exec(home .. "/bin/background/launcher") end),
 	awful.key({ modkey, }, "g", function() exec("sudo gnome-control-center") end),
 	-- awful.key({ modkey,           }, "x", function() exec("openmsg.py", false) end),
 	awful.key({ modkey, }, "t", function() exec(terminal) end),
@@ -195,13 +194,18 @@ config.global = join(
 	awful.key({ modkey, }, "a", function() exec(home .. "/bin/background/screenshot") end),
 
 	-- htop
-	awful.key({ modkey,   }, "z", function()
-		if client.focus and client.focus.instance == 'FSTerm' then
-			awful.client.movetotag(tags[client.focus.screen][last_tag], client.focus)
-		else
-			run_or_raise("urxvt -name 'FSTerm' -e 'htop'", { instance = 'FSTerm'})
-		end
-	end),
+    --[[
+	   [awful.key({ modkey,   }, "z", function()
+	   [    if client.focus and client.focus.instance == 'FSTerm' then
+	   [        awful.client.movetotag(tags[client.focus.screen][last_tag], client.focus)
+	   [    else
+	   [        run_or_raise("urxvt -name 'FSTerm' -e 'htop'", { instance = 'FSTerm'})
+	   [    end
+	   [end),
+       ]]
+   awful.key({ modkey,   }, "z", function()
+        exec(home .. "/bin/xclick.py " .. home .. "/bin/imgs/zeal-tray.png");
+   end),
 
 	awful.key({ modkey,   }, "q", function()
 		local c = client.focus
