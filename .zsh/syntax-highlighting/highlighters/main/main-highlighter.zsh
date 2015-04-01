@@ -63,9 +63,9 @@ _zsh_highlight_main_highlighter_predicate()
 # Main syntax highlighting function.
 _zsh_highlight_main_highlighter()
 {
-  emulate -L zsh 
+  emulate -L zsh
   setopt localoptions extendedglob bareglobqual
-  local start_pos=0 end_pos highlight_glob=true new_expression=true arg style
+  local start_pos=0 end_pos highlight_glob=true new_expression=true arg style sudo=false sudo_arg=false
   typeset -a ZSH_HIGHLIGHT_TOKENS_COMMANDSEPARATOR
   typeset -a ZSH_HIGHLIGHT_TOKENS_PRECOMMANDS
   typeset -a ZSH_HIGHLIGHT_TOKENS_FOLLOWED_BY_COMMANDS
@@ -75,7 +75,7 @@ _zsh_highlight_main_highlighter()
     '|' '||' ';' '&' '&&'
   )
   ZSH_HIGHLIGHT_TOKENS_PRECOMMANDS=(
-    'builtin' 'command' 'exec' 'nocorrect' 'noglob' 'sudo'
+    'builtin' 'command' 'exec' 'nocorrect' 'noglob'
   )
   # Tokens that are always immediately followed by a command.
   ZSH_HIGHLIGHT_TOKENS_FOLLOWED_BY_COMMANDS=(
@@ -88,16 +88,35 @@ _zsh_highlight_main_highlighter()
     [[ $start_pos -eq 0 && $arg = 'noglob' ]] && highlight_glob=false
     ((start_pos+=${#BUFFER[$start_pos+1,-1]}-${#${BUFFER[$start_pos+1,-1]##[[:space:]]#}}))
     ((end_pos=$start_pos+${#arg}))
+    # Parse the sudo command line
+    if $sudo; then
+      case "$arg" in
+        # Flag that requires an argument
+        '-'[Cgprtu]) sudo_arg=true;;
+        # This prevents misbehavior with sudo -u -otherargument
+        '-'*)        sudo_arg=false;;
+        *)           if $sudo_arg; then
+                       sudo_arg=false
+                     else
+                       sudo=false
+                       new_expression=true
+                     fi
+                     ;;
+      esac
+    fi
     if $new_expression; then
       new_expression=false
      if [[ -n ${(M)ZSH_HIGHLIGHT_TOKENS_PRECOMMANDS:#"$arg"} ]]; then
       style=$ZSH_HIGHLIGHT_STYLES[precommand]
+     elif [[ "$arg" = "sudo" ]]; then
+      style=$ZSH_HIGHLIGHT_STYLES[precommand]
+      sudo=true
      else
       res=$(LC_ALL=C builtin type -w $arg 2>/dev/null)
       case $res in
         *': reserved')  style=$ZSH_HIGHLIGHT_STYLES[reserved-word];;
         *': alias')     style=$ZSH_HIGHLIGHT_STYLES[alias]
-                        local aliased_command="${"$(alias $arg)"#*=}"
+                        local aliased_command="${"$(alias -- $arg)"#*=}"
                         [[ -n ${(M)ZSH_HIGHLIGHT_TOKENS_FOLLOWED_BY_COMMANDS:#"$aliased_command"} && -z ${(M)ZSH_HIGHLIGHT_TOKENS_FOLLOWED_BY_COMMANDS:#"$arg"} ]] && ZSH_HIGHLIGHT_TOKENS_FOLLOWED_BY_COMMANDS+=($arg)
                         ;;
         *': builtin')   style=$ZSH_HIGHLIGHT_STYLES[builtin];;
@@ -109,7 +128,7 @@ _zsh_highlight_main_highlighter()
                           new_expression=true
                         elif _zsh_highlight_main_highlighter_check_path; then
                           style=$ZSH_HIGHLIGHT_STYLES[path]
-                        elif [[ $arg[0,1] = $histchars[0,1] ]]; then
+                        elif [[ $arg[0,1] == $histchars[0,1] || $arg[0,1] == $histchars[2,2] ]]; then
                           style=$ZSH_HIGHLIGHT_STYLES[history-expansion]
                         else
                           style=$ZSH_HIGHLIGHT_STYLES[unknown-token]
@@ -153,7 +172,7 @@ _zsh_highlight_main_highlighter()
 _zsh_highlight_main_highlighter_check_assign()
 {
     setopt localoptions extended_glob
-    [[ ${(Q)arg} == [[:alpha:]_]([[:alnum:]_])#=* ]]
+    [[ $arg == [[:alpha:]_][[:alnum:]_]#(|\[*\])=* ]]
 }
 
 # Check if the argument is a path.
@@ -164,6 +183,7 @@ _zsh_highlight_main_highlighter_check_path()
   [[ -z $expanded_path ]] && return 1
   [[ -e $expanded_path ]] && return 0
   # Search the path in CDPATH
+  local cdpath_dir
   for cdpath_dir in $cdpath ; do
     [[ -e "$cdpath_dir/$expanded_path" ]] && return 0
   done

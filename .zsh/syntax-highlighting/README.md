@@ -3,7 +3,7 @@ zsh-syntax-highlighting
 
 **[Fish shell](http://www.fishshell.com) like syntax highlighting for [Zsh](http://www.zsh.org).**
 
-*Requirements: zsh 4.3.9+.*
+*Requirements: zsh 4.3.17+.*
 
 
 How to install
@@ -11,7 +11,7 @@ How to install
 
 ### Using packages
 
-* Arch Linux: [AUR/zsh-syntax-highlighting](https://aur.archlinux.org/packages.php?ID=54171) / [AUR/zsh-syntax-highlighting-git](https://aur.archlinux.org/packages.php?ID=50867)
+* Arch Linux: [community/zsh-syntax-highlighting](https://www.archlinux.org/packages/zsh-syntax-highlighting) / [AUR/zsh-syntax-highlighting-git](https://aur.archlinux.org/packages/zsh-syntax-highlighting-git)
 * Gentoo: [mv overlay](http://gpo.zugaina.org/app-shells/zsh-syntax-highlighting)
 
 ### In your ~/.zshrc

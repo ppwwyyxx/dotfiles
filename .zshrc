@@ -20,7 +20,7 @@ safe_export_path /opt/lingo14/bin/linux64
 safe_export_path $HOME/.gem/ruby/2.0.0/bin
 
 export OPENCV3_DIR=/opt/opencv3
-export LD_LIBRARY_PATH=$OPENCV3_DIR/lib
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$OPENCV3_DIR/lib
 
 export MAKEFLAGS="-j4"
 export CXXFLAGS="-Wall -Wextra -std=c++11 -pthread -fopenmp"
@@ -33,9 +33,11 @@ safe_source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a funct
 . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 export PYTHONDOCS=/usr/share/doc/python2/html
-[[ -s ~/.startup.py ]] && export PYTHONSTARTUP=~/.startup.py
+[[ -s ~/.config/python/.startup.py ]] && export PYTHONSTARTUP=~/.config/python/.startup.py
 
-export DISTCC_POTENTIAL_HOSTS='166.111.71.80/8 166.111.71.95/16'
+export PYTHONPATH=$PYTHONPATH:$HOME/Work/OCR/image2text/neupack/
+
+#export DISTCC_POTENTIAL_HOSTS='166.111.71.80/8 166.111.71.95/16'
 export EDITOR=vim
 export PAGER="/usr/bin/less -s"
 export BROWSER="$PAGER"
@@ -68,7 +70,7 @@ function rm() {
 			mkdir -p $HOME/.Trash
 			mv "$file" $HOME/.Trash/ --backup=numbered -fv
 		else
-			/bin/rm "$@" -rvf
+			/bin/rm "$file" -rvf
 		fi
 	done
 }
@@ -92,6 +94,7 @@ else
 fi
 
 safe_source $HOME/.zsh/git-prompt/zshrc.sh
+[[ -d $HOME/.zsh/git-prompt ]] || { function  git_super_status() {} }
 
 local return_code="%(?..%{$fg[RED]%}%?)%{$reset_color%}"
 export RPS1="${return_code}"
@@ -99,23 +102,23 @@ export RPS1="${return_code}"
 function precmd () {
 	if [[ $USER == "wyx" ]] && [[ $HOST == "KeepMoving" ]]; then
 		PROMPT_PART=""
-	elif [[ $HOST == "KeepMoving" ]]; then
-		PROMPT_PART="$GREEN [%n]"
 	else
 		PROMPT_PART="$GREEN [%n@$YELLOW%M]"
 	fi
 
 	local promptsize=${#----%D%H-%M--$(git_super_status)}
-	(( PR_PWDLEN=${COLUMNS} - $promptsize - 16 - ${#PROMPT_PART}))
+	((PR_PWDLEN=${COLUMNS} - $promptsize - 9 - ${#PROMPT_PART}))
 	START_CHBK=$'\e[1m'		# bold on
 	END_CHBK=$'\e[22m'		# bold off
 	[[ -n "$VIRTUAL_ENV" ]] && VIRTUAL="(`basename $VIRTUAL_ENV`)"
-	PS1="$START_CHBK$CYAN╭─${VIRTUAL}${PROMPT_PART}$MAGENTA [%D{%H:%M}] $GREEN%$PR_PWDLEN<...<%~%<< $(git_super_status)$CYAN$END_CHBK
+	# my magic prompt
+	PS1="$START_CHBK$CYAN╭─${VIRTUAL}${PROMPT_PART}$MAGENTA \
+[%D{%H:%M}] $GREEN%$PR_PWDLEN<...<%~%<< \
+${reset_color}$(git_super_status)$CYAN$END_CHBK
 ╰─\$"
 	PS2='$BLUE($GREEN%_$BLUE)$FINISH'
 	PS3='$GREEN Select:'
 }
-#preexec () { print -Pn "\e]0;%n@%M//%/\ $1\a" }		# wtf?
 
 # alias
 safe_source $HOME/.aliasrc
