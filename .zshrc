@@ -106,8 +106,11 @@ function precmd () {
 		PROMPT_PART="$GREEN [%n@$YELLOW%M]"
 	fi
 
-	local promptsize=${#----%D%H-%M--$(git_super_status)}
-	((PR_PWDLEN=${COLUMNS} - $promptsize - 9 - ${#PROMPT_PART}))
+	# to calculate length
+	local prompt_nodir="----$(date +%H:%M)---$(git_super_status)$PROMPT_PART"
+	local zero='%([BSUbfksu]|([FB]|){*})'
+	local part_length=${#${(S%%)prompt_nodir//$~zero/}}
+	((PR_PWDLEN=${COLUMNS} - $part_length - 2))
 	START_CHBK=$'\e[1m'		# bold on
 	END_CHBK=$'\e[22m'		# bold off
 	[[ -n "$VIRTUAL_ENV" ]] && VIRTUAL="(`basename $VIRTUAL_ENV`)"
