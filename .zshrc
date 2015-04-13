@@ -93,8 +93,12 @@ else
   export SUDO_PROMPT=$'[\e[31;5mYou\'re on %H!\e[m] password for \e[34;1m%p\e[m on\e[0;31m %H\e[m: '
 fi
 
+export ZSH_THEME_GIT_PROMPT_CACHE=1
 safe_source $HOME/.zsh/git-prompt/zshrc.sh
-[[ -d $HOME/.zsh/git-prompt ]] || { function  git_super_status() {} }
+[[ -d $HOME/.zsh/git-prompt ]] && {
+	# init git status on zsh start
+	update_current_git_vars
+} || { function  git_super_status() {} }
 
 local return_code="%(?..%{$fg[RED]%}%?)%{$reset_color%}"
 export RPS1="${return_code}"
@@ -107,7 +111,8 @@ function precmd () {
 	fi
 
 	# to calculate length
-	local prompt_nodir="----$(date +%H:%M)---$(git_super_status)$PROMPT_PART"
+	local git_status=$(git_super_status)
+	local prompt_nodir="----$(date +%H:%M)---$git_status$PROMPT_PART"
 	local zero='%([BSUbfksu]|([FB]|){*})'
 	local part_length=${#${(S%%)prompt_nodir//$~zero/}}
 	((PR_PWDLEN=${COLUMNS} - $part_length - 2))
@@ -117,7 +122,7 @@ function precmd () {
 	# my magic prompt
 	PS1="$START_CHBK$CYAN╭─${VIRTUAL}${PROMPT_PART}$MAGENTA \
 [%D{%H:%M}] $GREEN%$PR_PWDLEN<...<%~%<< \
-${reset_color}$(git_super_status)$CYAN$END_CHBK
+${reset_color}$git_status$CYAN$END_CHBK
 ╰─\$"
 	PS2='$BLUE($GREEN%_$BLUE)$FINISH'
 	PS3='$GREEN Select:'
@@ -163,13 +168,13 @@ zle -N self-insert url-quote-magic
 # History
 setopt INC_APPEND_HISTORY
 setopt EXTENDED_HISTORY
-setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 setopt HIST_NO_FUNCTIONS
 setopt SHARE_HISTORY
 export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=100000
-export SAVEHIST=$HISTSIZE
+export SAVEHIST=80000
 
 # key binding
 bindkey -e
