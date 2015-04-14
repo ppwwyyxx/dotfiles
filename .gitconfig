@@ -1,0 +1,113 @@
+[user]
+	name = ppwwyyxx\n
+	email = ppwwyyxxc@gmail.com
+[core]
+	autocrlf = input
+	editor = vim
+[advice]
+	statusHints = false
+[merge]
+	tool = vimdiff
+[branch]
+	autosetuprebase = always
+[github]
+	user = ppwwyyxx
+[push]
+	default = simple
+[diff]
+  mnemonicprefix = true
+  tool = gvimdiff
+[diff "lisp"]
+  xfuncname="^(\\((def|test).*)$"
+[diff "python"]
+  xfuncname="^\\s*(class.*\\(.*\\)|def.*)(\\(|:)"
+[color]
+	ui = auto
+	diff = always
+	status = auto
+	grep = always
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[color "diff"]
+  meta = yellow bold
+  old = red bold
+  new = green bold
+  frag = magenta bold
+[alias]
+	a   = add
+	b   = branch
+	pl  = pull --rebase
+	pu  = push
+	m   = merge
+	mt  = mergetool
+	cl  = clone --recursive
+	s   = status -b
+	ck	= checkout
+	ckb = checkout -b
+	r	= remote
+
+	t   = tag
+	rc  = rebase --continue
+	sqlast = rebase -i HEAD~2
+	untrack = rm -r --cached
+	unstage = reset --hard 'HEAD'
+	dupes = !git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40
+	showdelete = log --diff-filter=D --summary
+
+	dc  = diff --cached
+	d   = diff
+	last= diff HEAD^
+
+	c   = commit
+	cv  = commit -v
+	ca  = commit -a
+	cav = commit -av
+
+	l   = log --graph
+	log = log --graph
+	lc  = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+	lola= log --graph --decorate --pretty=oneline --abbrev-commit --all
+
+	ss  = stash
+	sl  = stash list
+	sa  = stash apply
+
+	sbi = submodule init && git submodule update --recursive
+
+	gcc = gc --aggressive --prune=now
+
+	pulll = pull --rebase
+	pullll = pull --rebase
+	pulllll = pull --rebase
+	pullllll = pull --rebase
+	pulllllll = pull --rebase
+	pullllllll = pull --rebase
+	pulllllllll = pull --rebase
+	pullllllllll = pull --rebase
+	pulllllllllll = pull --rebase
+	pullllllllllll = pull --rebase
+	pulllllllllllll = pull --rebase
+	pullllllllllllll = pull --rebase
+	pulllllllllllllll = pull --rebase
+	pullllllllllllllll = pull --rebase
+	pulllllllllllllllll = pull --rebase
+	pullllllllllllllllll = pull --rebase
+	pulllllllllllllllllll = pull --rebase
+	pullllllllllllllllllll = pull --rebase
+	pulllllllllllllllllllll = pull --rebase
+	pullllllllllllllllllllll = pull --rebase
+	pulllllllllllllllllllllll = pull --rebase
+	pullllllllllllllllllllllll = pull --rebase
+	pulllllllllllllllllllllllll = pull --rebase
+	pullllllllllllllllllllllllll = pull --rebase
+	pulllllllllllllllllllllllllll = pull --rebase
+	pullllllllllllllllllllllllllll = pull --rebase
+	pulllllllllllllllllllllllllllll = pull --rebase
+	pullllllllllllllllllllllllllllll = pull --rebase
+	pulllllllllllllllllllllllllllllll = pull --rebase
+;[http]
+	;proxy=http://server4.net9.org:7777
+;[https]
+	;proxy=http://server4.net9.org:7777
