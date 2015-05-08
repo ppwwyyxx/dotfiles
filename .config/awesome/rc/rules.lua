@@ -46,7 +46,6 @@ awful.rules.rules = {
 	properties = {
 		maximized_horizontal = true,
 		maximized_vertical = true,
-        screen = 1,
 	}
 }, {
 	rule_any = {

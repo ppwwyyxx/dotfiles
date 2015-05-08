@@ -1,0 +1,53 @@
+#"sleep 0.04 && xdotool click 3"
+  #Mod4 + b:1
+
+#"/home/wyx/bin/right-click.sh"
+  #Mod4 + b:1
+
+#"sleep .04 && xdotool click 2"
+  #Mod4 + shift + b:1
+
+"sleep .07 && xdotool key --clearmodifiers Delete"
+  shift + BackSpace
+
+# app keys..
+"chromium"
+  Mod4 + c
+"firefox"
+  Mod4 + f
+"~/bin/background/screenshot"
+  Mod4 + a
+"urxvt"
+  Mod4 + t
+"urxvt -name FSTerm"
+  Mod4 + Return
+"~/bin/background/launcher"
+  Mod4 + r
+"~/bin/xclick.py ~/bin/imgs/zeal-tray.png"
+  Mod4 + z
+"simpleswitcher -now"
+  Mod4 + Tab
+"slock"
+  Control+Alt+Shift+l
+"xkill"
+  Control+Alt+Shift+k
+"cd /tmp && scrot && sleep .5 && notify-send 'Screenshot saved to /tmp'"
+  Control+Alt+Shift+a
+
+# audio keys..
+"banshee --toggle-playing"
+  XF86AudioPlay
+"banshee --next"
+  XF86AudioNext
+"banshee --previous"
+  XF86AudioPrev
+"banshee --stop"
+  XF86AudioStop
+
+# Logitech Mouse..
+"notify-send www"
+  XF86WWW
+"notify-send launch1"
+  XF86Launch1
+"notify-send comb"
+  release + mod4 + XF86WWW

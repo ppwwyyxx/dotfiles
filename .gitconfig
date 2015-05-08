@@ -67,14 +67,14 @@
 
 	l   = log --graph
 	log = log --graph
-	lc  = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+	lc  = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
 	lola= log --graph --decorate --pretty=oneline --abbrev-commit --all
 
 	ss  = stash
 	sl  = stash list
 	sa  = stash apply
 
-	sbi = submodule init && git submodule update --recursive
+	sbi = submodule update --recursive
 
 	gcc = gc --aggressive --prune=now
 
@@ -111,3 +111,5 @@
 	;proxy=http://server4.net9.org:7777
 ;[https]
 	;proxy=http://server4.net9.org:7777
+[init]
+	templatedir = /home/wyx/.git-templates

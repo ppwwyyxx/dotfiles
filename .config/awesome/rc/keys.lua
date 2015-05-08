@@ -79,7 +79,6 @@ config.global = join(
 
     awful.key({modkey }, "m", mouse_control),
 
-
 	-- toggle sticky for unfocusable object under mouse
 	awful.key({ modkey, "Shift"   }, "s",
 		function()
@@ -96,23 +95,11 @@ config.global = join(
                 notify("Conf Syntax Error!", check)
             end
        end),
-	awful.key({ altkey, "Control", "Shift"}, "q", awesome.quit),
-	awful.key({ altkey, "Control", "Shift"}, "l", function() exec("slock") end),
-	awful.key({ altkey, "Control", "Shift" }, "k", function() exec("xkill") end),
-	awful.key({altkey, "Control", "Shift"}, "a", function()
-		 exec("zsh -c 'cd /tmp\nscrot\n'")
-		os.execute("sleep .5")
-		notify("Screenshot", "Screenshot saved to /tmp")
-	end),
-
-	-- TODO
-	-- awful.key({ modkey, "Shift"   }, "x", function() exec('openmsg_tm.py', false) end),
 
 	-- Switching tags
 	awful.key({ modkey }, "Left",   awful.tag.viewprev       ),
 	awful.key({ modkey }, "Right",  awful.tag.viewnext       ),
 	awful.key({ modkey }, "Escape", awful.tag.history.restore),
-
 
 	-- Switching clients
     awful.key({ modkey, "Shift" }, "j", function() awful.client.swap.byidx(1) end),
@@ -153,9 +140,6 @@ config.global = join(
             end
        end)
 	end),
-	awful.key({ modkey }, "Tab", function()
-       exec("simpleswitcher -now")
-	end),
 
 	awful.key({ modkey, }, "d", function()
 		local curtags = awful.tag.selectedlist()
@@ -184,28 +168,6 @@ config.global = join(
 	end),
 
 	-- Common program
-	awful.key({ modkey, }, "Return", function() run_or_raise("urxvt -name '" .. TMP_TERM .. "'", {instance = TMP_TERM}) end),
-	awful.key({ modkey, }, "r", function() exec(home .. "/bin/background/launcher") end),
-	awful.key({ modkey, }, "g", function() exec("sudo gnome-control-center") end),
-	-- awful.key({ modkey,           }, "x", function() exec("openmsg.py", false) end),
-	awful.key({ modkey, }, "t", function() exec(terminal) end),
-	awful.key({ modkey, }, "c", function() exec("chromium") end),
-	awful.key({ modkey, }, "f", function() exec("firefox") end),
-	awful.key({ modkey, }, "a", function() exec(home .. "/bin/background/screenshot") end),
-
-	-- htop
-    --[[
-	   [awful.key({ modkey,   }, "z", function()
-	   [    if client.focus and client.focus.instance == 'FSTerm' then
-	   [        awful.client.movetotag(tags[client.focus.screen][last_tag], client.focus)
-	   [    else
-	   [        run_or_raise("urxvt -name 'FSTerm' -e 'htop'", { instance = 'FSTerm'})
-	   [    end
-	   [end),
-       ]]
-   awful.key({ modkey,   }, "z", function()
-        exec(home .. "/bin/xclick.py " .. home .. "/bin/imgs/zeal-tray.png");
-   end),
 
 	awful.key({ modkey,   }, "q", function()
 		local c = client.focus
@@ -232,6 +194,7 @@ config.global = join(
 		local ans = rexec("sdcv -n --utf8-output '"..new_word.."'")
 		_dict_notify = naughty.notify({ text = ans, timeout = 5, width = 1020 })
 	end),
+
 	awful.key({ altkey, "Shift"}, "F3", function()
 		awful.prompt.run({ prompt = "Dictionary: " }, my_promptbox[mouse.screen].widget,
 				   function(words)
@@ -254,12 +217,7 @@ config.global = join(
 	-- Volume
 	awful.key({ }, 'XF86AudioRaiseVolume', function() volumectl("up") end),
 	awful.key({ }, 'XF86AudioLowerVolume', function() volumectl("down") end),
-	awful.key({ }, 'XF86AudioMute', function() volumectl("mute") end) ,
-
-	awful.key({ }, 'XF86AudioPlay', function() exec("banshee --toggle-playing") end),
-	awful.key({ }, 'XF86AudioNext', function() exec("banshee --next") end),
-	awful.key({ }, 'XF86AudioPrev', function() exec("banshee --previous") end),
-	awful.key({ }, 'XF86AudioStop', function() exec("banshee --stop") end)
+	awful.key({ }, 'XF86AudioMute', function() volumectl("mute") end)
 )
 
 
