@@ -38,7 +38,7 @@ awful.rules.rules = {
     rule = { class = "Chromium" },
     callback = function(c)
         c:keys(join(c:keys(),
-            awful.key({'Control'}, 'q', function(c) sendkey(c, 'Tab Escape ctrl+w') end)
+            awful.key({'Control'}, 'q', function(c) sendkey(c, 'Tab Escape Ctrl+w') end)
         ))
     end
 }, {

@@ -1,15 +1,3 @@
-#"sleep 0.04 && xdotool click 3"
-  #Mod4 + b:1
-
-#"/home/wyx/bin/right-click.sh"
-  #Mod4 + b:1
-
-#"sleep .04 && xdotool click 2"
-  #Mod4 + shift + b:1
-
-"sleep .07 && xdotool key --clearmodifiers Delete"
-  shift + BackSpace
-
 # app keys..
 "chromium"
   Mod4 + c
@@ -45,9 +33,21 @@
   XF86AudioStop
 
 # Logitech Mouse..
-"notify-send www"
-  XF86WWW
+# TODO use awesome-client for switch, and volume
+"xdotool key --clearmodifiers alt+Tab"
+  XF86Mail	# the forward button, depends on xcape rules
+"notify-send comb"
+  Mod4 + XF86Mail	# the backward button
+# TODO hold htop to the middle, and release
 "notify-send launch1"
   XF86Launch1
-"notify-send comb"
-  release + mod4 + XF86WWW
+"notify-send launch2"
+  XF86Launch2
+
+# Right click (conflict with awesome move window, use on macbook)
+#"sleep .04 && xdotool click 3"
+  #Release + Mod4 + b:1
+
+"sleep .04 && xdotool key --clearmodifiers Delete"
+  shift + BackSpace
+

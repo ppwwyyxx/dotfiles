@@ -1,6 +1,7 @@
 
 exec              = awful.util.spawn
 sexec             = awful.util.spawn_with_shell
+exec_sync         = awful.util.pread
 join              = awful.util.table.join
 
 
@@ -22,11 +23,8 @@ function net_monitor()
 end
 
 function sendkey(c, key)		-- send key in xdotool format
-    if not c then
-        exec('xdotool key --clearmodifiers ' .. key)
-    else
-        exec('xdotool key --clearmodifiers --window ' .. c.window .. ' ' .. key)
-    end
+    exec_sync('sleep 0.1')
+    exec('xdotool key --clearmodifiers ' .. key)
 end
 
 function rexec(cmd)

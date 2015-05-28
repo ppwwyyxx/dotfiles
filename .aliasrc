@@ -110,7 +110,7 @@ which colordiff > /dev/null 2>&1 && alias diff='colordiff'
 
 # customed command
 #alias km='xmodmap ~/.Xmodmap; xcape -e "Control_L=Escape"; xinput set-button-map $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*") 1 0 0'
-alias km='xmodmap ~/.Xmodmap; xcape -e "Control_L=Escape"; xset r rate 200 40'
+alias km='xmodmap ~/.Xmodmap; xset r rate 200 40; xinput set-button-map $(xinput | grep -o "TouchPad.*id=[0-9]*" | grep -o "[0-9]*") 1 0 0'
 alias keyb='xinput disable $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*")'
 alias unkeyb='xinput enable $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*")'
 
