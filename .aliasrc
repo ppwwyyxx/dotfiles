@@ -63,7 +63,10 @@ alias mkc='make clean'
 alias cmk='mkdir -p build; cd build; cmake ..; make; cd ..'
 alias gits='git s'
 alias idf='identify'
-alias py='PYTHONPATH=$HOME/.config/python:$PYTHONPATH python2'
+#alias py='PYTHONPATH=$HOME/.config/python:$PYTHONPATH python2'
+function pydbg () {
+	ipython --pdb -c "%run $1"
+}
 alias strings='strings -atx'
 alias fuck='$(thefuck $(fc -ln -1))'
 
@@ -180,6 +183,13 @@ m_avc_param="-oac mp3lame -lameopts fast:preset=medium -ovc x264 -x264encopts su
 f_avc_param="-c:v libx264 -preset slow -crf 22 -c:a libmp3lame"
 function ffmpeg_compress() { ffmpeg -i $1 `echo $f_avc_param` $1.avi }
 function mencoder_compress() { mencoder $1 -o $1.avi `echo $m_avc_param` }
+
+function colormap(){
+	for i in {1..255}; do
+		echo -n "$i"
+		print -Pn "%{%F{$i}%B%}Hello World\n"
+	done
+}
 
 
 function ll(){

@@ -23,7 +23,7 @@ export OPENCV3_DIR=/opt/opencv3
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$OPENCV3_DIR/lib
 
 export MAKEFLAGS="-j4"
-export CXXFLAGS="-Wall -Wextra -std=c++11 -pthread -fopenmp"
+export CXXFLAGS="-Wall -Wextra"
 export GOPATH=$HOME/.local/gocode
 safe_export_path $GOPATH/bin
 export PATH=$PATH:$GOPATH/bin
@@ -94,39 +94,50 @@ else
 fi
 
 export ZSH_THEME_GIT_PROMPT_CACHE=1
+export ZSH_THEME_GIT_PROMPT_ADDED="%{$fg[green]%} ✚"
+export ZSH_THEME_GIT_PROMPT_MODIFIED="%{$fg[blue]%} ✹"
+export ZSH_THEME_GIT_PROMPT_DELETED="%{$fg[red]%} ✖"
+export ZSH_THEME_GIT_PROMPT_RENAMED="%{$fg[magenta]%} ➜"
+export ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[yellow]%} ═"
+export ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[cyan]%} ✭"
 safe_source $HOME/.zsh/git-prompt/zshrc.sh
 [[ -d $HOME/.zsh/git-prompt ]] && {
 	# init git status on zsh start
 	update_current_git_vars
 } || { function  git_super_status() {} }
 
-local return_code="%(?..%{$fg[RED]%}%?)%{$reset_color%}"
-export RPS1="${return_code}"
+if [[ $USER == "wyx" ]] && [[ $HOST == "KeepMoving" ]]; then
+	PROMPT_PART="" # on my laptop
+else
+	PROMPT_PART="$GREEN [%n@$YELLOW%M]"
+fi
 
-function precmd () {
-	if [[ $USER == "wyx" ]] && [[ $HOST == "KeepMoving" ]]; then
-		PROMPT_PART=""
-	else
-		PROMPT_PART="$GREEN [%n@$YELLOW%M]"
-	fi
 
-	# to calculate length
-	local git_status=$(git_super_status)
-	local prompt_nodir="----$(date +%H:%M)---$git_status$PROMPT_PART"
-	local zero='%([BSUbfksu]|([FB]|){*})'
-	local part_length=${#${(S%%)prompt_nodir//$~zero/}}
-	((PR_PWDLEN=${COLUMNS} - $part_length - 2))
-	START_CHBK=$'\e[1m'		# bold on
-	END_CHBK=$'\e[22m'		# bold off
-	[[ -n "$VIRTUAL_ENV" ]] && VIRTUAL="(`basename $VIRTUAL_ENV`)"
-	# my magic prompt
-	PS1="$START_CHBK$CYAN╭─${VIRTUAL}${PROMPT_PART}$MAGENTA \
-[%D{%H:%M}] $GREEN%$PR_PWDLEN<...<%~%<< \
-${reset_color}$git_status$CYAN$END_CHBK
-╰─\$"
-	PS2='$BLUE($GREEN%_$BLUE)$FINISH'
-	PS3='$GREEN Select:'
-}
+# to calculate length
+local git_status=$(git_super_status)
+local prompt_nodir="----$(date +%H:%M)---$git_status$PROMPT_PART"
+local zero='%([BSUbfksu]|([FB]|){*})'	# used to calculate length withou control sequence
+local part_length=${#${(S%%)prompt_nodir//$~zero/}}
+local pwdlen=$((${COLUMNS} - $part_length - 2))
+local START_BOLD=$'\e[1m'		# bold on
+local END_BOLD=$'\e[22m'		# bold off
+local ORANGE="%{%F{209}%B%}"
+local PINK="%{%F{213}%B%}"
+local INDICATOR="\$"
+#local INDICATOR="%{$fg_bold[red]%}❮%{$reset_color%}%{$fg[red]%}❮❮%{$reset_color%}"
+[[ -n "$VIRTUAL_ENV" ]] && VIRTUAL="(`basename $VIRTUAL_ENV`)"
+# my magic prompt
+PROMPT="$START_BOLD$CYAN╭─${VIRTUAL}${PROMPT_PART}\
+$ORANGE [%D{%H:%M}] \
+$GREEN%$pwdlen<...<%~%<< \
+${reset_color}$git_status$CYAN$END_BOLD
+╰─%(?..%{$fg[red]%})$INDICATOR"
+
+local return_status="%{$fg[red]%}%(?..%?⏎)%{$reset_color%}"
+RPROMPT="${return_status}"
+
+PROMPT2='$BLUE($PINK%_$BLUE)$FINISH'
+PROMPT3='$PINK Select:'
 
 # alias
 safe_source $HOME/.aliasrc
