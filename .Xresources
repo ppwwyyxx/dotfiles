@@ -35,9 +35,9 @@ URxvt.tripleclickwords: true
 URxvt.saveLines: 10000
 URxvt.insecure: true
 
-!URxvt.font: xft:WenQuanYi Micro Hei Mono-12x19:antialias=true,xft:WenQuanYi Micro Hei Mono-11x19:antialias=true
-URxvt.font: xft:Source Code Pro-12x21:antialias=true,xft:WenQuanYi Micro Hei Mono-11x19:antialias=true
-URxvt.boldfont: xft:WenQuanYi Micro Hei Mono-11:bold
+!URxvt.font: xft:Source Code Pro-12x21:antialias=true,xft:WenQuanYi Micro Hei Mono-11x19:antialias=true
+URxvt*font: xft:Source Code Pro-12x21:antialias=true,xft:WenQuanYi Micro Hei Mono-11x19:antialias=true,xft:Symbola:size=10
+URxvt.boldfont: xft:WenQuanYi Micro Hei Mono-11:bold,xft:Symbola Bold:size=10
 URxvt.italicfont: xft:WenQuanYi Micro Hei Mono-11:italic
 URxvt.buffered: true
 !urxvt have terrible letter space
@@ -62,7 +62,8 @@ Xft.rgba: rgb
 #ifndef URXVT_PERL_LIB
 #define URXVT_PERL_LIB /home/wyx/.urxvt/
 #endif
-URxvt.perl-ext-common: default,clipboard,url-select,keyboard-select,readline,matcher,selection
+!URxvt.perl-ext-common: default,clipboard,url-select,keyboard-select,readline,matcher,selection
+URxvt.perl-ext-common: default,clipboard,url-select,keyboard-select,readline,matcher
 URxvt.perl-ext:selection-popup,selection-autotransform,searchable-scrollback
 URxvt.perl-lib: URXVT_PERL_LIB
 
@@ -70,8 +71,8 @@ URxvt.matcher.button: 1
 URxvt.url-select.launcher:  chromium
 URxvt.url-select.underline: true
 URxvt.keysym.M-u:           perl:url-select:select_next
-!URxvt.keysym.M-Escape:      perl:keyboard-select:activate
-!URxvt.keysym.M-s:           perl:keyboard-select:search
+URxvt.keysym.M-Escape:      perl:keyboard-select:activate
+URxvt.keysym.M-s:           perl:keyboard-select:search
 
 URxvt.tabbed.tabbar-fg: 5
 URxvt.tabbed.tabbar-bg: 0
@@ -84,8 +85,14 @@ URxvt.tabbed.title: no
 !URxvt.keysym.M-h: perl:tabbedex:prev_tab
 !URxvt.tabbed.no-tabbedex-keys: true
 
-URxvt.keysym.C-C:   perl:clipboard:copy
-URxvt.keysym.C-V:   perl:clipboard:paste
+! USE selection & mouse-2!  will fill 'primary' clipboard buffer
+URxvt.keysym.C-S-C:   perl:clipboard:copy
+URxvt.keysym.C-S-V:   perl:clipboard:paste
+!URxvt.clipboard.copycmd:  xclip -i -selection primary
+!URxvt.clipboard.pastecmd: xclip -o -selection primary
+!on OSX:
+!URxvt.clipboard.copycmd:  pbcopy
+!URxvt.clipboard.pastecmd: pbpaste
 
 ! Fix Color
 ! 0 - 7, 8 - 15: black, red, green, yellow, blue, magenta, cyan, white
