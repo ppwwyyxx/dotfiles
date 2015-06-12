@@ -76,7 +76,6 @@ function rm() {
 }
 
 # PROMPT ------------------------------------------------------------------------------------------
-
 autoload -U promptinit
 promptinit
 
@@ -93,6 +92,7 @@ else
   export SUDO_PROMPT=$'[\e[31;5mYou\'re on %H!\e[m] password for \e[34;1m%p\e[m on\e[0;31m %H\e[m: '
 fi
 
+# Config git-prompt
 export ZSH_THEME_GIT_PROMPT_CACHE=1
 export ZSH_THEME_GIT_PROMPT_ADDED="%{$fg[green]%} ✚"
 export ZSH_THEME_GIT_PROMPT_MODIFIED="%{$fg[blue]%} ✹"
@@ -106,44 +106,53 @@ safe_source $HOME/.zsh/git-prompt/zshrc.sh
 	update_current_git_vars
 } || { function  git_super_status() {} }
 
-if [[ $USER == "wyx" ]] && [[ $HOST == "KeepMoving" ]]; then
-	PROMPT_PART="" # on my laptop
-else
-	PROMPT_PART="$GREEN [%n@$YELLOW%M]"
-fi
+function preexec() {
+timer=${timer:-$SECONDS}
+}
+function precmd() {
+	if [[ $USER == "wyx" ]] && [[ $HOST == "KeepMoving" ]]; then
+		PROMPT_PART="" # on my laptop
+	else
+		PROMPT_PART="$GREEN [%n@$YELLOW%M]"
+	fi
 
-
-# to calculate length
-local git_status=$(git_super_status)
-local prompt_nodir="----$(date +%H:%M)---$git_status$PROMPT_PART"
-local zero='%([BSUbfksu]|([FB]|){*})'	# used to calculate length withou control sequence
-local part_length=${#${(S%%)prompt_nodir//$~zero/}}
-local pwdlen=$((${COLUMNS} - $part_length - 2))
-local START_BOLD=$'\e[1m'		# bold on
-local END_BOLD=$'\e[22m'		# bold off
-local ORANGE="%{%F{209}%B%}"
-local PINK="%{%F{213}%B%}"
-local INDICATOR="\$"
-#local INDICATOR="%{$fg_bold[red]%}❮%{$reset_color%}%{$fg[red]%}❮❮%{$reset_color%}"
-[[ -n "$VIRTUAL_ENV" ]] && VIRTUAL="(`basename $VIRTUAL_ENV`)"
-# my magic prompt
-PROMPT="$START_BOLD$CYAN╭─${VIRTUAL}${PROMPT_PART}\
+	# to calculate length
+	local git_status=$(git_super_status)
+	local prompt_nodir="----$(date +%H:%M)---$git_status$PROMPT_PART"
+	local zero='%([BSUbfksu]|([FB]|){*})'	# used to calculate length withou control sequence
+	local part_length=${#${(S%%)prompt_nodir//$~zero/}}
+	local pwdlen=$((${COLUMNS} - $part_length - 2))
+	local START_BOLD=$'\e[1m'		# bold on
+	local END_BOLD=$'\e[22m'		# bold off
+	local ORANGE="%{%F{209}%B%}"
+	local PINK="%{%F{213}%B%}"
+	local YELLOWGREEN="%{%F{154}%}"
+	local INDICATOR="\$"
+	#local INDICATOR="%{$fg_bold[red]%}❮%{$reset_color%}%{$fg[red]%}❮❮%{$reset_color%}"
+	[[ -n "$VIRTUAL_ENV" ]] && VIRTUAL="(`basename $VIRTUAL_ENV`)"
+	# my magic prompt
+	export PROMPT="$START_BOLD$CYAN╭─${VIRTUAL}${PROMPT_PART}\
 $ORANGE [%D{%H:%M}] \
-$GREEN%$pwdlen<...<%~%<< \
+$YELLOWGREEN%$pwdlen<...<%~%<< \
 ${reset_color}$git_status$CYAN$END_BOLD
 ╰─%(?..%{$fg[red]%})$INDICATOR"
 
-local return_status="%{$fg[red]%}%(?..%?⏎)%{$reset_color%}"
-RPROMPT="${return_status}"
+	local return_status="%{$fg[red]%}%(?..%?⏎)%{$reset_color%}"
+	RPROMPT="${return_status}"
+	if [ $timer ]; then
+		timer_show=$(($SECONDS - $timer))
+		if [ $timer_show -gt 0 ]; then
+			RPROMPT=$RPROMPT"$PINK${timer_show}s %{$reset_color%}"
+		fi
+		unset timer
+	fi
 
-PROMPT2='$BLUE($PINK%_$BLUE)$FINISH'
-PROMPT3='$PINK Select:'
+	PROMPT2='$BLUE($PINK%_$BLUE)$FINISH'
+	PROMPT3='$PINK Select:'
+}
 
 # alias
 safe_source $HOME/.aliasrc
-alias mv='nocorrect mv -i'
-alias mkdir='nocorrect mkdir'
-alias cp='nocorrect cp -rvi'
 alias -s pdf=mupdf -b 0
 alias -s djvu=djview4
 alias -s obj=meshlab
