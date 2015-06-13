@@ -78,12 +78,6 @@ fi
 
 # Config git-prompt
 export ZSH_THEME_GIT_PROMPT_CACHE=1
-export ZSH_THEME_GIT_PROMPT_ADDED="%{$fg[green]%} ✚"
-export ZSH_THEME_GIT_PROMPT_MODIFIED="%{$fg[blue]%} ✹"
-export ZSH_THEME_GIT_PROMPT_DELETED="%{$fg[red]%} ✖"
-export ZSH_THEME_GIT_PROMPT_RENAMED="%{$fg[magenta]%} ➜"
-export ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[yellow]%} ═"
-export ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[cyan]%} ✭"
 safe_source $HOME/.zsh/git-prompt/zshrc.sh
 [[ -d $HOME/.zsh/git-prompt ]] && {
 	# init git status on zsh start
@@ -91,7 +85,7 @@ safe_source $HOME/.zsh/git-prompt/zshrc.sh
 } || { function  git_super_status() {} }
 
 function preexec() {
-timer=${timer:-$SECONDS}
+COMMAND_TIMER=${COMMAND_TIMER:-$((SECONDS + $(date "+%N") / 1000000000.0))}
 }
 function precmd() {
 	if [[ $USER == "wyx" ]] && [[ $HOST == "KeepMoving" ]]; then
@@ -121,14 +115,18 @@ $YELLOWGREEN%$pwdlen<...<%~%<< \
 ${reset_color}$git_status$CYAN$END_BOLD
 ╰─%(?..%{$fg[red]%})$INDICATOR"
 
-	local return_status="%{$fg[red]%}%(?..%?⏎)%{$reset_color%}"
+	#local return_status="%{$fg[red]%}%(?..%?⏎)%{$reset_color%}"	# return code is useless
+	local return_status="%{$fg[red]%}%(?..⏎)%{$reset_color%}"
 	RPROMPT="${return_status}"
-	if [ $timer ]; then
-		timer_show=$(($SECONDS - $timer))
-		if [ $timer_show -gt 0 ]; then
-			RPROMPT=$RPROMPT"$PINK${timer_show}s %{$reset_color%}"
+	if [ $COMMAND_TIMER ]; then
+		#timer_show=$(($SECONDS - $timer))
+		#if [ $timer_show -gt 0 ]; then
+		local diff=$((SECONDS + $(date "+%N") / 1000000000.0 - COMMAND_TIMER))
+		diff=`printf "%.2f" $diff`
+		if [ $(echo "$diff > 1" | bc -l) -eq 1 ]; then
+			RPROMPT=$RPROMPT"$PINK${diff}s %{$reset_color%}"
 		fi
-		unset timer
+		unset COMMAND_TIMER
 	fi
 
 	PROMPT2='$BLUE($PINK%_$BLUE)$FINISH'
