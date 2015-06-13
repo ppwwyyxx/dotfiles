@@ -18,23 +18,22 @@ safe_export_path /opt/texlive/2013/bin/x86_64-linux
 safe_export_path /usr/lib/colorgcc/bin
 safe_export_path /opt/lingo14/bin/linux64
 safe_export_path $HOME/.gem/ruby/2.0.0/bin
-
-export OPENCV3_DIR=/opt/opencv3
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$OPENCV3_DIR/lib
-
-export MAKEFLAGS="-j4"
-export CXXFLAGS="-Wall -Wextra"
 export GOPATH=$HOME/.local/gocode
 safe_export_path $GOPATH/bin
-export PATH=$PATH:$GOPATH/bin
+
+
+# programming
+export OPENCV3_DIR=/opt/opencv3
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$OPENCV3_DIR/lib
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
+export MAKEFLAGS="-j4"
+export CXXFLAGS="-Wall -Wextra"
 export NODE_PATH=$HOME/.local/lib/node_modules/
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
 safe_source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 export PYTHONDOCS=/usr/share/doc/python2/html
 [[ -s ~/.config/python/.startup.py ]] && export PYTHONSTARTUP=~/.config/python/.startup.py
-
 export PYTHONPATH=$PYTHONPATH:$HOME/Work/OCR/image2text/neupack/
 
 #export DISTCC_POTENTIAL_HOSTS='166.111.71.80/8 166.111.71.95/16'
@@ -50,6 +49,11 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 export SDCV_PAGER="sed 's/\ \ \([1-9]\)/\n\n◆\1/g' |less"
 
+
+# PROMPT: f[[
+autoload -U promptinit
+promptinit
+
 # Colors ------------------------------------------------------------------------------------------
 autoload colors zsh/terminfo
 colors
@@ -58,26 +62,6 @@ for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
 	eval $color='$fg[${(L)color}]'
 done
 FINISH="%{$terminfo[sgr0]%}"
-
-# custom rm command
-function rm() {
-	for file in $@; do
-		local FILE_LOC="`readlink -f $file`"
-		if [[ $FILE_LOC == /ssd_home/* ]] ; then
-			mkdir -p /ssd_home/.Trash
-			mv "$file" /ssd_home/.Trash/ --backup=numbered -fv
-		elif [[ $FILE_LOC == /home/* ]]; then
-			mkdir -p $HOME/.Trash
-			mv "$file" $HOME/.Trash/ --backup=numbered -fv
-		else
-			/bin/rm "$file" -rvf
-		fi
-	done
-}
-
-# PROMPT ------------------------------------------------------------------------------------------
-autoload -U promptinit
-promptinit
 
 if [[ $HOST == "KeepMoving" ]]; then
   alias poweroff='vboxmanage controlvm win7 savestate; sudo poweroff'
@@ -150,6 +134,7 @@ ${reset_color}$git_status$CYAN$END_BOLD
 	PROMPT2='$BLUE($PINK%_$BLUE)$FINISH'
 	PROMPT3='$PINK Select:'
 }
+# f]]
 
 # alias
 safe_source $HOME/.aliasrc
@@ -196,7 +181,7 @@ export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=100000
 export SAVEHIST=80000
 
-# key binding
+# key binding f[[
 bindkey -e
 autoload edit-command-line
 zle -N edit-command-line
@@ -258,8 +243,9 @@ sudo-command-line() {
 }
 zle -N sudo-command-line
 bindkey "${key[F2]}" sudo-command-line
+# f]]
 
-# Complete
+# Complete f[[
 autoload -U compinit
 compinit
 setopt AUTO_LIST
@@ -455,6 +441,7 @@ user-ret(){
 }
 zle -N user-ret
 bindkey "\r" user-ret
+# f]]
 
 # command not found
 function command_not_found_handler() {

@@ -28,6 +28,21 @@ function ll(){
 	[[ "$@" == "$1" ]] && echo -e " $GREEN  --[$LIGHTBLUE  Dir:    $CYAN`ls -Al $@ | grep '^drw' | wc -l`$LIGHTGREEN|$YELLOW \
 	 File: $GREEN`ls -Al $@ | grep -v '^drw' | grep -v total | wc -l` ]-- $WHITE"
 }
+# custom rm command
+function rm() {
+	for file in $@; do
+		local FILE_LOC="`readlink -f $file`"
+		if [[ $FILE_LOC == /ssd_home/* ]] ; then
+			mkdir -p /ssd_home/.Trash
+			mv "$file" /ssd_home/.Trash/ --backup=numbered -fv
+		elif [[ $FILE_LOC == /home/* ]]; then
+			mkdir -p $HOME/.Trash
+			mv "$file" $HOME/.Trash/ --backup=numbered -fv
+		else
+			/bin/rm "$file" -rvf
+		fi
+	done
+}
 
 
 alias v='=vim --servername miao'
