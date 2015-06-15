@@ -1,0 +1,6 @@
+# Logitech M-545
+keyboard:usb:v046DpC52B*
+  KEYBOARD_KEY_90004=prog1               # left
+  KEYBOARD_KEY_90005=prog2               # right
+  KEYBOARD_KEY_700E3=www
+  KEYBOARD_KEY_70007=mail
