@@ -6,6 +6,8 @@
 [[ -d $HOME/.zsh/Completion ]] && fpath=($HOME/.zsh/Completion $fpath)
 
 export TERM=screen-256color
+export TERMINFO=$HOME/.terminfo
+# neovim#2048 suggests: infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti; tic $TERM.ti
 
 function safe_export_path() { [[ -d $1 ]] && export PATH=$1:$PATH }
 function safe_source() { [[ -s $1 ]] && source $1 }
@@ -124,7 +126,7 @@ ${reset_color}$git_status$CYAN$END_BOLD
 		local diff=$((SECONDS + $(date "+%N") / 1000000000.0 - COMMAND_TIMER))
 		diff=`printf "%.2f" $diff`
 		if [ $(echo "$diff > 1" | bc -l) -eq 1 ]; then
-			RPROMPT=$RPROMPT"$PINK${diff}s %{$reset_color%}"
+			RPROMPT=$RPROMPT"$PINK${diff}s %{$reset_color%}"	# reset color not working for 256
 		fi
 		unset COMMAND_TIMER
 	fi

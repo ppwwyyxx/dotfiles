@@ -45,9 +45,15 @@ function rm() {
 }
 
 
-alias v='=vim --servername miao'
-alias vi='=vim --servername miao'
-alias iv='=vim --servername miao'
+which nvim > /dev/null 2>&1 && {
+	alias v='nvim'
+	alias vi='nvim'
+	alias iv='nvim'
+} || {
+	alias v='=vim'
+	alias vi='=vim'
+	alias iv='=vim'
+}
 alias sv='sudo vim'
 
 alias L=less
@@ -90,8 +96,6 @@ function linkto() {
 	ln -sv $f ./
 	cd -
 }
-
-
 
 # network
 alias p='ping'
@@ -223,6 +227,7 @@ alias net9='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.net9.org'
 alias smth='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.smth.org'
 alias gtalk='weechat-curses -r "/connect localhost; /msg &bitlbee identify 1"'
 alias tunairc='weechat-curses -r "/connect irc.freenode.net; /join #tuna"'
+alias telegram='/opt/telegram/Telegram'
 
 # media
 alias idf='identify'
@@ -236,10 +241,10 @@ f_avc_param="-c:v libx264 -preset slow -crf 22 -c:a libmp3lame"
 function ffmpeg_compress() { ffmpeg -i $1 `echo $f_avc_param` $1.avi }
 function mencoder_compress() { mencoder $1 -o $1.avi `echo $m_avc_param` }
 function colormap(){
-	for i in {1..255}; do
+	for i in {0..255}; do
 		echo -n "$i: "
 		print -Pn "%{%b%F{$i}%}Hello World, "
-		print -Pn "%{%F{$i}%B%}Hello World\n"
+		print -P "%{%F{$i}%B%}Hello World"
 	done
 }
 
@@ -247,7 +252,12 @@ function colormap(){
 # processes
 alias psg='pgrep -a'
 function pstack() { gdb -q -nx -p $1 <<< 't a a bt' 2>&- | sed -ne '/^#/p' }
-alias top='top -d 0.5 -o %CPU'
+local top_version=$(=top -h | head -n1 | grep -o '[0-9]*$')
+if [[ "$top_version" -ge 10 ]]; then
+	alias top='top -d 0.5 -o %CPU'
+else
+	alias top='top -d 0.5'
+fi
 alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -r | head -n20"
 function killz() {
 	ppid=$(ps -oppid $1 | tail -n1)
@@ -274,11 +284,18 @@ if [[ -n "$(lsb_release -a | grep 'Arch Linux')" ]]; then
 	alias pU='sudo pacman -U'
 	alias pSs='pacaur -Ss'
 	alias pSi='pacman -Si'
-	alias pSy='pacman -Syy'
+	alias pSy='sudo pacman -Syy'
 	alias pR='sudo pacman -R'
 	alias pSu='pacaur -Syu'
 	alias paur='pacman -Qm'
 	alias pacman-size="paste <(pacman -Q | awk '{ print \$1; }' | xargs pacman -Qi | grep 'Size' | awk '{ print \$4\$5; }') <(pacman -Q | awk '{print \$1; }') | sort -n | column -t"
+	function pacmanorphan() {
+	  if [[ ! -n $(pacman -Qdt) ]]; then
+		echo "No orphans to remove."
+	  else
+		sudo pacman -Rns $(pacman -Qdtq)
+	  fi
+	}
 else
 	alias pS='sudo aptitude install'
 	alias pSs='aptitude search'
