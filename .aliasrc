@@ -251,7 +251,8 @@ function colormap(){
 
 # processes
 alias psg='pgrep -a'
-function pstack() { gdb -q -nx -p $1 <<< 't a a bt' 2>&- | sed -ne '/^#/p' }
+#function pstack() { =gdb -q -nx -p $1 <<< 't a a bt' 2>&- | sed -ne '/^#/p' }
+function pstack() { =gdb -q -nx -p $1 <<< 't a a bt' | sed -ne '/^#/p' }
 local top_version=$(=top -h | head -n1 | grep -o '[0-9]*$')
 if [[ "$top_version" -ge 10 ]]; then
 	alias top='top -d 0.5 -o %CPU'

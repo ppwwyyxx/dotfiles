@@ -36,12 +36,12 @@ URxvt.saveLines: 10000
 URxvt.insecure: true
 
 !URxvt.font: xft:Source Code Pro-12x21:antialias=true,xft:WenQuanYi Micro Hei Mono-11x19:antialias=true
-URxvt*font: xft:Source Code Pro-12x21:antialias=true,xft:WenQuanYi Micro Hei Mono-11x19:antialias=true,xft:Symbola:size=10
+URxvt*font: xft:FantasqueSansMono-13x21,xft:WenQuanYi Micro Hei Mono-11x19:antialias=true,xft:Symbola:size=10
 URxvt.boldfont: xft:WenQuanYi Micro Hei Mono-11:bold,xft:Symbola Bold:size=10
 URxvt.italicfont: xft:WenQuanYi Micro Hei Mono-11:italic
 URxvt.buffered: true
 !urxvt have terrible letter space
-URxvt.letterSpace: -1
+!URxvt.letterSpace: -1
 URxvt.lineSpace: 0
 ! font settings suggested by infinality {
 Xft.autohint: 0

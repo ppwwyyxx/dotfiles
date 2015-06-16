@@ -7,6 +7,7 @@
 
 export TERM=screen-256color
 export TERMINFO=$HOME/.terminfo
+export LC_ALL=en_US.UTF-8
 # neovim#2048 suggests: infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti; tic $TERM.ti
 
 function safe_export_path() { [[ -d $1 ]] && export PATH=$1:$PATH }
@@ -36,7 +37,7 @@ safe_source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a funct
 . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 export PYTHONDOCS=/usr/share/doc/python2/html
 [[ -s ~/.config/python/.startup.py ]] && export PYTHONSTARTUP=~/.config/python/.startup.py
-export PYTHONPATH=$PYTHONPATH:$HOME/Work/OCR/image2text/neupack/
+export PYTHONPATH=$HOME/Work/OCR/image2text/neupack/
 
 #export DISTCC_POTENTIAL_HOSTS='166.111.71.80/8 166.111.71.95/16'
 export EDITOR=vim
@@ -90,10 +91,15 @@ function preexec() {
 COMMAND_TIMER=${COMMAND_TIMER:-$((SECONDS + $(date "+%N") / 1000000000.0))}
 }
 function precmd() {
+	local TIMECOLOR="%{%b%F{211}%}"
+	local PINK="%{%b%F{213}%}"
+	local YELLOWGREEN="%{%b%F{045}%}"
+	local PURPLE="%{%b%F{171}%}"
+
 	if [[ $USER == "wyx" ]] && [[ $HOST == "KeepMoving" ]]; then
 		PROMPT_PART="" # on my laptop
 	else
-		PROMPT_PART="$GREEN [%n@$YELLOW%M]"
+		PROMPT_PART="$GREEN [%{%F{171}%}%n@%{%F{219}%}%M$GREEN]"
 	fi
 
 	# to calculate length
@@ -104,25 +110,21 @@ function precmd() {
 	local pwdlen=$((${COLUMNS} - $part_length - 2))
 	local START_BOLD=$'\e[1m'		# bold on
 	local END_BOLD=$'\e[22m'		# bold off
-	local ORANGE="%{%F{209}%B%}"
-	local PINK="%{%F{213}%B%}"
-	local YELLOWGREEN="%{%F{154}%}"
+
 	local INDICATOR="\$"
 	#local INDICATOR="%{$fg_bold[red]%}❮%{$reset_color%}%{$fg[red]%}❮❮%{$reset_color%}"
 	[[ -n "$VIRTUAL_ENV" ]] && VIRTUAL="(`basename $VIRTUAL_ENV`)"
 	# my magic prompt
 	export PROMPT="$START_BOLD$CYAN╭─${VIRTUAL}${PROMPT_PART}\
-$ORANGE [%D{%H:%M}] \
+$TIMECOLOR [%D{%H:%M}] \
 $YELLOWGREEN%$pwdlen<...<%~%<< \
-${reset_color}$git_status$CYAN$END_BOLD
-╰─%(?..%{$fg[red]%})$INDICATOR"
+%{$reset_color%}$git_status$CYAN
+╰─%(?..%{$fg[red]%})$INDICATOR%{$reset_color%}"
 
 	#local return_status="%{$fg[red]%}%(?..%?⏎)%{$reset_color%}"	# return code is useless
 	local return_status="%{$fg[red]%}%(?..⏎)%{$reset_color%}"
 	RPROMPT="${return_status}"
 	if [ $COMMAND_TIMER ]; then
-		#timer_show=$(($SECONDS - $timer))
-		#if [ $timer_show -gt 0 ]; then
 		local diff=$((SECONDS + $(date "+%N") / 1000000000.0 - COMMAND_TIMER))
 		diff=`printf "%.2f" $diff`
 		if [ $(echo "$diff > 1" | bc -l) -eq 1 ]; then
@@ -131,7 +133,7 @@ ${reset_color}$git_status$CYAN$END_BOLD
 		unset COMMAND_TIMER
 	fi
 
-	PROMPT2='$BLUE($PINK%_$BLUE)$FINISH'
+	PROMPT2='$BLUE($PINK%_$BLUE)$FINISH%{$reset_color%}'
 	PROMPT3='$PINK Select:'
 }
 # f]]
@@ -146,7 +148,7 @@ alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things 
 alias -g G='|grep'
 alias -g N='>/dev/null'
 alias -g NN='>/dev/null 2>&1'
-for i in wmv mkv mp4 mp3 avi rm rmvb flv; alias -s $i=mplayer
+for i in wmv mkv mp4 mp3 avi rm rmvb flv; alias -s $i=mpv
 for i in jpg png gif; alias -s $i=feh
 for i in xls xlsx doc docx ppt pptx; alias -s $i=libreoffice
 for i in html,mhtml; alias -s $i=chromium
