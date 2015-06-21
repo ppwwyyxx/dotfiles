@@ -110,7 +110,7 @@ alias m_rsync='rsync --progress --partial --delete --size-only -rlv --bwlimit=5m
 alias chromium_socks='chromium --proxy-server=socks5://localhost:8080'
 alias chromium_http='chromium --proxy-server=localhost:7777'
 alias ssh_reverse='ssh -R 6333:localhost:22 -ServerAliveInterval=60'
-function st() { ssh $1 -t tmux a }
+function st() { ssh $1 -t 'tmux a || tmux' }
 alias vnc_quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=ZRLE -FullScreen=1 -Shared=1'
 alias rdesktop-nana='rdesktop-vrdp -K -u wyx -p - 59.66.131.64:3389'
 
@@ -259,6 +259,7 @@ if [[ "$top_version" -ge 10 ]]; then
 else
 	alias top='top -d 0.5'
 fi
+alias topme='top -u $USER'
 alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -r | head -n20"
 function killz() {
 	ppid=$(ps -oppid $1 | tail -n1)

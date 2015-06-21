@@ -1,0 +1,6 @@
+[global]
+floatX = float32
+device=cpu
+
+[nvcc]
+fastmath = True

@@ -28,6 +28,14 @@ safe_export_path $GOPATH/bin
 # programming
 export OPENCV3_DIR=/opt/opencv3
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$OPENCV3_DIR/lib
+local CUDA_ROOT=/usr/local/cuda
+if [[ -d $CUDA_ROOT ]]; then
+	local CUDNN_ROOT=/usr/local/cudnn
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_ROOT/lib64
+	export LIBRARY_PATH=$LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDNN_ROOT
+	export CPATH=$CPATH:$CUDNN_ROOT:$CUDA_ROOT/include
+	safe_export_path $CUDA_ROOT/bin
+fi
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 export MAKEFLAGS="-j4"
 export CXXFLAGS="-Wall -Wextra"
@@ -37,12 +45,12 @@ safe_source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a funct
 . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 export PYTHONDOCS=/usr/share/doc/python2/html
 [[ -s ~/.config/python/.startup.py ]] && export PYTHONSTARTUP=~/.config/python/.startup.py
-export PYTHONPATH=$HOME/Work/OCR/image2text/neupack/
+export PYTHONPATH=$HOME/Work/facepp/OCR/image2text/neupack/
 
 #export DISTCC_POTENTIAL_HOSTS='166.111.71.80/8 166.111.71.95/16'
 export EDITOR=vim
+export BROWSER=chromium
 export PAGER="/usr/bin/less -s"
-export BROWSER="$PAGER"
 export LESS_TERMCAP_mb=$YELLOW
 export LESS_TERMCAP_md=$'\E[01;31m'
 export LESS_TERMCAP_me=$'\E[0m'
