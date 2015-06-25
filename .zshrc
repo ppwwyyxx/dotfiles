@@ -26,18 +26,20 @@ safe_export_path $GOPATH/bin
 
 
 # programming
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:$HOME/.local/lib
 export OPENCV3_DIR=/opt/opencv3
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$OPENCV3_DIR/lib
+[[ -d $OPENCV3_DIR ]] && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$OPENCV3_DIR/lib
 local CUDA_ROOT=/usr/local/cuda
 if [[ -d $CUDA_ROOT ]]; then
 	local CUDNN_ROOT=/usr/local/cudnn
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_ROOT/lib64
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDNN_ROOT
 	export LIBRARY_PATH=$LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDNN_ROOT
 	export CPATH=$CPATH:$CUDNN_ROOT:$CUDA_ROOT/include
 	safe_export_path $CUDA_ROOT/bin
 fi
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 export MAKEFLAGS="-j4"
+which ccache > /dev/null 2>&1 && export CXX='ccache g++' || true
 export CXXFLAGS="-Wall -Wextra"
 export NODE_PATH=$HOME/.local/lib/node_modules/
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk

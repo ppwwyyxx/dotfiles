@@ -28,6 +28,14 @@ function ll(){
 	[[ "$@" == "$1" ]] && echo -e " $GREEN  --[$LIGHTBLUE  Dir:    $CYAN`ls -Al $@ | grep '^drw' | wc -l`$LIGHTGREEN|$YELLOW \
 	 File: $GREEN`ls -Al $@ | grep -v '^drw' | grep -v total | wc -l` ]-- $WHITE"
 }
+
+alias L=less
+alias C='cat'
+alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
+alias -g G='|grep'
+alias -g N='>/dev/null'
+alias -g NN='>/dev/null 2>&1'
+alias -g awk-sum="awk '{s+=\$1} END {print s, s / NR}' "
 # custom rm command
 function rm() {
 	for file in $@; do
@@ -45,7 +53,7 @@ function rm() {
 }
 
 
-which nvim > /dev/null 2>&1 && {
+which nvim NN && {
 	alias v='nvim'
 	alias vi='nvim'
 	alias iv='nvim'
@@ -56,13 +64,6 @@ which nvim > /dev/null 2>&1 && {
 }
 alias sv='sudo vim'
 
-alias L=less
-alias C='cat'
-alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
-alias -g G='|grep'
-alias -g N='>/dev/null'
-alias -g NN='>/dev/null 2>&1'
-
 alias wcl='wc -l'
 alias cls='clear'
 alias grep='grep -IE --color=auto --exclude=.tags --exclude-dir="node_modules" --exclude-dir=".git" --exclude-dir=".env"'
@@ -70,7 +71,7 @@ alias tmuxa='tmux a || tmux'
 alias sort='LC_ALL=C sort'
 alias du='du -sh'
 function sdu () {
-# TODO add param
+  [[ -d "$1" ]] && cd "$1"
   du -sk * | sort -n | awk '
 BEGIN {
   split("K,M,G,T", Units, ",");
@@ -126,7 +127,7 @@ alias gdb='gdb -q'
 alias R='R --vanilla'
 alias ctags='ctags -R -f .tags --c++-kinds=+p --fields=+iaS --extra=+q'
 alias valgrind='valgrind --leak-check=full --track-origins=yes --show-possibly-lost=yes'
-which colordiff > /dev/null 2>&1 && alias diff='colordiff'
+which colordiff NN && alias diff='colordiff'
 alias googlelink='python2 -c "import urlparse, sys; print urlparse.parse_qs(urlparse.urlparse(sys.argv[1]).query)[\"url\"][0]"'
 # cd to git repo root
 function cdp () {
@@ -141,7 +142,7 @@ function cdp () {
 
 
 # tools
-which aunpack > /dev/null 2>&1 && alias x=aunpack
+which aunpack NN && alias x=aunpack
 alias strings='strings -atx'
 alias fuck='$(thefuck $(fc -ln -1))'
 alias which='which -a'
@@ -253,6 +254,7 @@ function colormap(){
 alias psg='pgrep -a'
 #function pstack() { =gdb -q -nx -p $1 <<< 't a a bt' 2>&- | sed -ne '/^#/p' }
 function pstack() { =gdb -q -nx -p $1 <<< 't a a bt' | sed -ne '/^#/p' }
+
 local top_version=$(=top -h | head -n1 | grep -o '[0-9]*$')
 if [[ "$top_version" -ge 10 ]]; then
 	alias top='top -d 0.5 -o %CPU'
@@ -260,7 +262,7 @@ else
 	alias top='top -d 0.5'
 fi
 alias topme='top -u $USER'
-alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -r | head -n20"
+alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -rn | head -n20"
 function killz() {
 	ppid=$(ps -oppid $1 | tail -n1)
 	kill -SIGHUP $ppid
@@ -281,11 +283,12 @@ function pytwistd() { twistd web --path "$1" -p "${2:-8000}" }
 alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --user -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install --user -U"
 
 # package
-if [[ -n "$(lsb_release -a | grep 'Arch Linux')" ]]; then
+which lsb_release NN && lsb_release -a | grep 'Arch Linux' NN && {
 	alias pS='pacaur -S'
 	alias pU='sudo pacman -U'
 	alias pSs='pacaur -Ss'
 	alias pSi='pacman -Si'
+	alias pQo='pacman -Qo'
 	alias pSy='sudo pacman -Syy'
 	alias pR='sudo pacman -R'
 	alias pSu='pacaur -Syu'
@@ -298,11 +301,12 @@ if [[ -n "$(lsb_release -a | grep 'Arch Linux')" ]]; then
 		sudo pacman -Rns $(pacman -Qdtq)
 	  fi
 	}
-else
+} || {
 	alias pS='sudo aptitude install'
 	alias pSs='aptitude search'
 	alias pSy='sudo aptitude update'
 	alias pSu='sudo aptitude upgrade'
-fi
+}
+# yum whatprovides == pQo
 
 #  vim:ft=zsh
