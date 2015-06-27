@@ -493,10 +493,10 @@ if [ $commands[fasd] ]; then
 	bindkey '^X^O' fasd-complete
 fi
 
-if [[ -n "$DISPLAY" && -x "/usr/bin/gvim" ]]; then
-    function postCallVim {
-      wmctrl -R 'gvim'
-    }
-	safe_source $HOME/.zsh/vim-interaction.plugin.zsh
-fi
+#if [[ -n "$DISPLAY" && -x "/usr/bin/gvim" ]]; then
+    #function postCallVim {
+      #wmctrl -R 'gvim'
+    #}
+	#safe_source $HOME/.zsh/vim-interaction.plugin.zsh
+#fi
 

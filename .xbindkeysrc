@@ -7,7 +7,7 @@
   Mod4 + a
 "urxvt"
   Mod4 + t
-"urxvt -name FSTerm"
+"sleep .1; xdotool click 1"
   Mod4 + Return
 "~/bin/background/launcher"
   Mod4 + r

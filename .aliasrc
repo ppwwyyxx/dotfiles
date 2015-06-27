@@ -170,7 +170,12 @@ alias dstat='dstat -dnmcl --socket --top-io -N eth0,eth1,wlan0,eno1'
 
 # hardware
 #alias km='xmodmap ~/.Xmodmap; xcape -e "Control_L=Escape"; xinput set-button-map $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*") 1 0 0'
-alias km='xmodmap ~/.Xmodmap; xset r rate 200 40; xinput set-button-map $(xinput | grep -o "TouchPad.*id=[0-9]*" | grep -o "[0-9]*") 1 0 0'
+function km() {
+	xmodmap ~/.Xmodmap
+	xset r rate 200 40
+	xcape -e "Control_L=Escape;Hyper_L=XF86Mail"
+	xinput set-button-map $(xinput | grep -o "TouchPad.*id=[0-9]*" | grep -o "[0-9]*") 1 0 0
+}
 alias keyb='xinput disable $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*")'
 alias unkeyb='xinput enable $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*")'
 function usbon () {
@@ -283,7 +288,7 @@ function pytwistd() { twistd web --path "$1" -p "${2:-8000}" }
 alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --user -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install --user -U"
 
 # package
-which lsb_release NN && lsb_release -a | grep 'Arch Linux' NN && {
+which pacman NN && {
 	alias pS='pacaur -S'
 	alias pU='sudo pacman -U'
 	alias pSs='pacaur -Ss'
@@ -302,11 +307,17 @@ which lsb_release NN && lsb_release -a | grep 'Arch Linux' NN && {
 	  fi
 	}
 } || {
-	alias pS='sudo aptitude install'
-	alias pSs='aptitude search'
-	alias pSy='sudo aptitude update'
-	alias pSu='sudo aptitude upgrade'
+	which apt-get NN && {
+		alias pS='sudo aptitude install'
+		alias pSs='aptitude search'
+		alias pSy='sudo aptitude update'
+		alias pSu='sudo aptitude upgrade'
+		alias pQo='apt-file'
+	} || {
+		alias pS='sudo yum install'
+		alias pSs='yum search'
+		alias pQo='yum whatprovides'
+	}
 }
-# yum whatprovides == pQo
 
 #  vim:ft=zsh

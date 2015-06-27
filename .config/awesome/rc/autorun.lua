@@ -7,6 +7,7 @@ local autorun_items = {
     "conky",
     "xcape -e 'Control_L=Escape;Hyper_L=XF86Mail'",
     "megasync",
+    "/home/wyx/bin/cvim-server.py"
 }
 local runonce = require("lib/runonce")
 for _, item in ipairs(autorun_items) do

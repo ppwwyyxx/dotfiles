@@ -22,19 +22,6 @@ awful.rules.rules = {
 		buttons = config.clientbuttons,
 	}
 }, {
-    rule = { class = 'Gvim' },
-    properties = {
-        maximized_vertical = true,
-        maximized_horizontal = true },
-    callback = function(c)
-        if c.name ~= 'Question' then            -- don't move gvim question box
-            awful.client.movetotag(tags[screen.count()][vim_tag], c)
-        end
-        c:connect_signal("unmanage", function(c)
-            run_or_raise("gvim", { class = 'Gvim' })
-        end)
-    end,
-}, {
     rule = { class = "Chromium" },
     callback = function(c)
         c:keys(join(c:keys(),

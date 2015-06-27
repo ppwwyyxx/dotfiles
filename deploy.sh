@@ -1,8 +1,9 @@
 #!/bin/bash
 # File: deploy.sh
-# Date: Mon Apr 13 22:55:54 2015 +0800
+# Date: Sat Jun 27 22:34:55 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
+# avoid mistakenly deploy on laptop
 if [[ "$HOST" == "KeepMoving" ]]; then
 	echo "at Keepmoving"
 	exit 1
