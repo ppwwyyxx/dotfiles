@@ -1,2 +1,2 @@
 
-Take a look at my .zshrc, .aliasrc and .conkyrc :)
+You might be interested in my .zshrc, .zsh/alias.zsh and .conkyrc :)
