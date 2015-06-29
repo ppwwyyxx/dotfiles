@@ -5,4 +5,5 @@ doc/tags
 *.so
 *.o
 
+*.sqlite
 wallpaper
