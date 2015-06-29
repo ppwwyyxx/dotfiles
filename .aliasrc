@@ -72,7 +72,7 @@ alias tmuxa='tmux a || tmux'
 alias sort='LC_ALL=C sort'
 alias du='du -sh'
 function sdu () {
-  [[ -d "$1" ]] && cd "$1"
+  [[ "$#" -eq 1 && -d "$1" ]] && cd "$1"
   du -sk * | sort -n | awk '
 BEGIN {
   split("K,M,G,T", Units, ",");
