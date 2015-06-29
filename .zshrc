@@ -153,7 +153,7 @@ $YELLOWGREEN%$pwdlen<...<%~%<< \
 # f]]
 
 # alias
-safe_source $HOME/.aliasrc
+safe_source $HOME/.zsh/alias.zsh
 alias -s pdf=mupdf -b 0
 alias -s djvu=djview4
 alias -s obj=meshlab
