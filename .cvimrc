@@ -1,0 +1,46 @@
+set scalehints
+set noautofocus
+set showtabindices
+"set defaultnewtabpage
+let mapleader = ","
+let highlight = '#d28ce3'
+let activehighlight = '#0ff3db'
+let qmark g = ["http://google.com"]
+map gm :tabnew mail.google.com&<CR>
+let barposition = "bottom"
+
+map K previousTab
+map J nextTab
+
+" insert maps
+iunmapAll
+imap <C-l> forwardChar
+imap <C-h> backwardChar
+imap <C-f> forwardWord
+imap <C-b> backwardWord
+imap <C-o> editWithVim
+imap <C-j> forwardLine
+imap <C-k> backwardLine
+
+site '*://mail.google.com/*' {
+	unmapAll
+	map : openCommandBar
+	map / openSearchBar
+	map n nextSearchResult
+	map N previousSearchResult
+	map <C-v> toggleVisualMode
+	map <Space> :buffer<Space>
+}
+
+let configpath = '/home/wyx/.cvimrc'
+set localconfig
+
+" gy copy URL from link to clipboard
+" I	search through browser history
+" z<Enter>	toggle image zoom (same as clicking the image on image-only pages)
+" gu	go up one path in the URL
+" gU	go to to the base URL
+" gx0/$	 close all tabs to the left/right of the current tab
+" gxt/T
+" <	move current tab left
+" ]]	click the "next" link on the page (see nextmatchpattern above)
