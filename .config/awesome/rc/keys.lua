@@ -158,7 +158,7 @@ config.global = join(
 			for _, c in pairs(clients) do
 				if allminimized == false then
 					c.minimized = true
-				elseif allminimized == true then
+				else
 					c.minimized = false
                     client.focus = c
                     c:raise()
@@ -174,8 +174,6 @@ config.global = join(
 		if not c then return end
 		if c.instance == 'FSTerm' or c.instance == TMP_TERM then
 			awful.client.movetotag(tags[c.screen][last_tag], c)
-        elseif c.class == 'Gvim' then
-            awful.client.movetotag(tags[c.screen][vim_tag], c)
         else
 			c:kill()
 		end
@@ -224,7 +222,7 @@ config.global = join(
 
 -- Client Keys/Buttons:   f[[
 config.clientkeys = join(
-	awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle ),
+	--awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle ),
 	awful.key({ modkey, "Control" }, "Return", function(c) c:swap(awful.client.getmaster()) end),
 	awful.key({ modkey, }, "o",    function(c)
         awful.client.movetoscreen(c)
@@ -236,7 +234,7 @@ config.clientkeys = join(
 	awful.key({ modkey, }, "s",    function(c) c.sticky = not c.sticky end),
 
 	awful.key({ altkey, }, "F11",  function(c) c.fullscreen = not c.fullscreen  end),
-	awful.key({ modkey, }, "F4",   function(c) c:kill()                         end),
+	--awful.key({ modkey, }, "F4",   function(c) c:kill()                         end),
 	awful.key({ altkey, }, "F4",   function(c) c:kill()                         end),
 	awful.key({ altkey, }, "F12",  function(c) c.above = not c.above            end),
 	awful.key({ altkey, }, "F9",   function(c) c.minimized = true end),

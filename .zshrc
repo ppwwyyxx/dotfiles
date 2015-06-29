@@ -101,9 +101,13 @@ function preexec() {
 COMMAND_TIMER=${COMMAND_TIMER:-$((SECONDS + $(date "+%N") / 1000000000.0))}
 }
 function precmd() {
+	local separator1=
+    local separator2=
+    local separator3=
 	local TIMECOLOR="%{%b%F{211}%}"
 	local PINK="%{%b%F{213}%}"
-	local YELLOWGREEN="%{%b%F{045}%}"
+	local YELLOWGREEN="%{%b%F{154}%}"
+	local YELLOWGREENB="%{%b%K{154}%F{black}%}"
 	local PURPLE="%{%b%F{171}%}"
 
 	if [[ $USER == "wyx" ]] && [[ $HOST == "KeepMoving" ]]; then
@@ -138,7 +142,7 @@ $YELLOWGREEN%$pwdlen<...<%~%<< \
 		local diff=$((SECONDS + $(date "+%N") / 1000000000.0 - COMMAND_TIMER))
 		diff=`printf "%.2f" $diff`
 		if [ $(echo "$diff > 1" | bc -l) -eq 1 ]; then
-			RPROMPT=$RPROMPT"$PINK${diff}s %{$reset_color%}"	# reset color not working for 256
+			RPROMPT=$RPROMPT"$PINK${diff}s %{$reset_color%}"
 		fi
 		unset COMMAND_TIMER
 	fi
@@ -458,9 +462,10 @@ bindkey "\r" user-ret
 # command not found
 function command_not_found_handler() {
 	local command="$1"
-	# avoid recursive command-not-found when /usr/bin/ is mistakenly lost
-	[ -x /usr/bin/fortune ] && [ -x /usr/bin/cowsay ] && {
-		/usr/bin/fortune -s | /usr/bin/cowsay -W 70
+	local fortuneList; fortuneList=("tang300" "song100" "chucknorris" "love")
+	# avoid recursive command-not-found when /usr/bin/ is mistakenly lost in PATH
+	[ -x /usr/bin/fortune ] && [ -x /usr/bin/cowthink ] && {
+		/usr/bin/fortune ${fortuneList[@]} | /usr/bin/cowthink -W 70
 	}
 	[ -n "$command" ] && [ -x /usr/bin/pkgfile ] && {
 		echo -e "searching for \"$command\" in repos..."

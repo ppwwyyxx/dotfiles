@@ -26,7 +26,10 @@ cpugraph:buttons(awful.button({}, 1, function() run_term('htop', 'FSTerm') end))
 vicious.register(cpugraph, vicious.widgets.cpu, "$1")
 
 local temp_widget = wibox.widget.textbox()
-vicious.register(temp_widget, vicious.widgets.thermal, " $1°C", 19, "thermal_zone0")
+vicious.register(temp_widget, vicious.widgets.thermal,
+                 function(widget, args)
+                     return string.format("%d℃", args[1])
+                 end, 20, "thermal_zone0")
 
 local mem_widget = wibox.widget.textbox()
 vicious.register(mem_widget, vicious.widgets.mem, '<span color="#90ee90"> M$1%</span>')
@@ -136,7 +139,6 @@ volume_widget:buttons(join(
 ))
 -- f]]
 
-
 -- tag, task
 
 local my_taglist = {}
@@ -210,7 +212,7 @@ for s = 1, screen.count() do
     --right_layout:add(netgraph)
     right_layout:add(net_widget)
     right_layout:add(volume_widget)
-    if s == 1 then
+    if s == screen.count() then     -- add systray to the last screen
         right_layout:add(wibox.widget.systray())
     end
     right_layout:add(sepclose)

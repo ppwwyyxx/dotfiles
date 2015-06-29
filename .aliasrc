@@ -23,6 +23,7 @@ alias l.='ls -d .* --color=auto'
 alias sl='ls -F --color=auto'
 alias ls='ls -F --color=auto'
 alias lss='ls -F --color=auto'
+alias lll='ls++'
 function ll(){
 	ls -AhlXF --color=auto --time-style="+[33m[[32m%g-%m-%d [35m%k:%M[33m][m" $@
 	[[ "$@" == "$1" ]] && echo -e " $GREEN  --[$LIGHTBLUE  Dir:    $CYAN`ls -Al $@ | grep '^drw' | wc -l`$LIGHTGREEN|$YELLOW \
@@ -150,7 +151,13 @@ alias ibus-daemon='ibus-daemon --xim'
 alias zh-CN="LC_ALL='zh_CN.UTF-8'"
 alias manzh="LC_ALL='zh_CN.UTF-8' man"
 alias free='free -m'
-alias df='df -Th'
+which dfc NN && alias df='dfc' || alias df='df -Th | grep sd |\
+	sed -e "s_/dev/sda[1-9]_\x1b[34m&\x1b[0m_" |\
+	sed -e "s_/dev/sd[b-z][1-9]_\x1b[33m&\x1b[0m_" |\
+	sed -e "s_[,0-9]*[MG]_\x1b[36m&\x1b[0m_" |\
+	sed -e "s_[0-9]*%_\x1b[32m&\x1b[0m_" |\
+	sed -e "s_9[0-9]%_\x1b[31m&\x1b[0m_" |\
+	sed -e "s_/mnt/[-_A-Za-z0-9]*_\x1b[34;1m&\x1b[0m_"'
 alias convmv='convmv -f GBK -t UTF-8 --notest -r'
 alias window='wmctrl -a '
 alias cp2clip='xclip -i -selection clipboard'
@@ -248,7 +255,7 @@ function ffmpeg_compress() { ffmpeg -i $1 `echo $f_avc_param` $1.avi }
 function mencoder_compress() { mencoder $1 -o $1.avi `echo $m_avc_param` }
 function colormap(){
 	for i in {0..255}; do
-		echo -n "$i: "
+		print -Pn "%{$reset_color%}$i: "
 		print -Pn "%{%b%F{$i}%}Hello World, "
 		print -P "%{%F{$i}%B%}Hello World"
 	done
@@ -309,12 +316,15 @@ which pacman NN && {
 } || {
 	which apt-get NN && {
 		alias pS='sudo aptitude install'
+		alias pR='sudo aptitude purge'
 		alias pSs='aptitude search'
 		alias pSy='sudo aptitude update'
 		alias pSu='sudo aptitude upgrade'
 		alias pQo='apt-file'
 	} || {
 		alias pS='sudo yum install'
+		alias pR='sudo yum remove'
+		alias pSy='sudo yum update'
 		alias pSs='yum search'
 		alias pQo='yum whatprovides'
 	}

@@ -9,7 +9,6 @@ naughty = require("naughty")
 os.setlocale("")
 dbus.release_name("session", "org.freedesktop.Notifications")
 
-
 -- Simple function to load additional LUA files from rc/.
 function loadrc(name, module)
    local path = awful.util.getdir("config") .. "/" ..
@@ -39,13 +38,10 @@ end
 
 config = {}
 config.layouts = {
--- for fcitx-chttrans
     awful.layout.suit.floating,
     awful.layout.suit.tile,
     awful.layout.suit.tile.top,
-    awful.layout.suit.max,
 }
-config.global = {}
 config.global = {}
 
 terminal          = "urxvt"
@@ -54,7 +50,6 @@ browser           = "chromium "
 editor            = "gvim "
 modkey            = "Mod4"
 altkey            = "Mod1"
-last_tag          = 6
 home              = os.getenv("HOME")
 
 loadrc("common")
