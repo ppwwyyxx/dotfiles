@@ -8,6 +8,7 @@ let activehighlight = '#0ff3db'
 let qmark g = ["http://google.com"]
 map gm :tabnew mail.google.com&<CR>
 let barposition = "bottom"
+map <Space> :buffer<Space>
 
 map K previousTab
 map J nextTab
@@ -26,10 +27,16 @@ site '*://mail.google.com/*' {
 	unmapAll
 	map : openCommandBar
 	map / openSearchBar
+	map N nextSearchResult
+	map <C-v> toggleVisualMode
+}
+site '*://groups.google.com/*' {
+	unmapAll
+	map : openCommandBar
+	map / openSearchBar
 	map n nextSearchResult
 	map N previousSearchResult
 	map <C-v> toggleVisualMode
-	map <Space> :buffer<Space>
 }
 
 let configpath = '/home/wyx/.cvimrc'

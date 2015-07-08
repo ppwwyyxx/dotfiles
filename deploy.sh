@@ -1,6 +1,6 @@
 #!/bin/bash
 # File: deploy.sh
-# Date: Sat Jun 27 22:34:55 2015 +0800
+# Date: Wed Jul 08 22:10:24 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 # avoid mistakenly deploy on laptop
@@ -10,7 +10,7 @@ if [[ "$HOST" == "KeepMoving" ]]; then
 fi
 
 rm ~/.zsh -rf
-cp .zsh .zshrc .aliasrc .bashrc .gitconfig ~/ -rvf
+cp .zsh .zshrc .bashrc .gitconfig ~/ -rvf
 
 cat << EOT >> .tmux.conf
 set -g status-bg green

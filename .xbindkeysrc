@@ -15,6 +15,8 @@
   Mod4 + z
 "simpleswitcher -now"
   Mod4 + Tab
+"~/bin/google-keep"
+  Mod4 + g
 "slock"
   Control+Alt+Shift+l
 "xkill"

@@ -118,7 +118,7 @@ function precmd() {
 
 	# to calculate length
 	local git_status=$(git_super_status)
-	local prompt_nodir="----$(date +%H:%M)---$git_status$PROMPT_PART"
+	local prompt_nodir="-----$(date +%H:%M)---$git_status$PROMPT_PART"
 	local zero='%([BSUbfksu]|([FB]|){*})'	# used to calculate length withou control sequence
 	local part_length=${#${(S%%)prompt_nodir//$~zero/}}
 	local pwdlen=$((${COLUMNS} - $part_length - 2))
@@ -497,11 +497,3 @@ if [ $commands[fasd] ]; then
 	unalias s
 	bindkey '^X^O' fasd-complete
 fi
-
-#if [[ -n "$DISPLAY" && -x "/usr/bin/gvim" ]]; then
-    #function postCallVim {
-      #wmctrl -R 'gvim'
-    #}
-	#safe_source $HOME/.zsh/vim-interaction.plugin.zsh
-#fi
-

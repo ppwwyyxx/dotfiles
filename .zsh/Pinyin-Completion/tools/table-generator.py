@@ -1,53 +1,29 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # vim: set fileencoding=utf-8 :
 
-pinyin         = { }
-pinyin_initial = { }
+from collections import defaultdict
 
-if __name__ == "__main__":
+pinyin_initial = defaultdict(list)
 
-    lines = open("unicode-han-pinyin.txt").readlines()
+lines = open("unicode_to_pinyin.txt").readlines()
 
-    for line in lines :
+for line in lines :
 
-        line = line[:-1] if line[-1] == '\n' else line
-        line = unicode( line, "utf-8")
+    line = line.strip().split(' ')
 
-        unichar, accent = line.split('=')
+    unicode_ord = line[0]
+    char = unichr(int(unicode_ord, 16))
 
-        accent  = accent.lower()
-        initial = accent[0]
+    pinyins = line[1][1:-1].split(',')
+    initials = set([k[0] for k in pinyins])
 
-        try :
-            pinyin[unichar].append(accent)
-        except KeyError:
-            pinyin[unichar] = [accent, ]
+    pinyin_initial[char].extend(list(initials))
 
-        try :
-            pinyin_initial[unichar].append(initial)
-        except KeyError:
-            pinyin_initial[unichar] = [initial,]
-
-    # remove duplication
-    for key in pinyin.keys():
-        pinyin[key] = list( set(pinyin[key] ) )
-    for key in pinyin_initial.keys():
-        pinyin_initial[key] = list( set(pinyin_initial[key]) )
-
-    # now generate an python module containing pinyin table
-    print  "# vim: set fileencoding=utf-8 :"
-    print  ""
-
-    #print  "pinyin = {"
-    #for key in pinyin_initial.keys():
-        #print "u'%s' : %s ," % (key.encode("utf-8"),  pinyin[key] )
-    #print "}"
-
-    print ""
-    print ""
-
-    print  "pinyin_initial = {"
-    for key in pinyin_initial.keys():
-        print "u'%s' : %s ," % (key.encode("utf-8"),  pinyin_initial[key] )
-    print "}"
+# now generate an python module containing pinyin table
+print  "# vim: set fileencoding=utf-8 :"
+print  "\n" * 3
+print  "pinyin_initial = {"
+for key in pinyin_initial.keys():
+    print "u'%s' : %s ," % (key.encode("utf-8"),  pinyin_initial[key] )
+print "}"
 

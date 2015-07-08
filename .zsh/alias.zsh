@@ -226,6 +226,7 @@ alias maple='/opt/Maple/bin/xmaple'
 alias evernote='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/Evernote/Evernote/Evernote.exe'
 alias ie8="wine 'C:\Program Files (x86)\\\\Internet Explorer\\\\iexplore'"
 alias lingoes='wine ~/.wine/drive_c/users/wyx/Local\ Settings/Application\ Data/Lingoes/Translator/lingoes-cn/Lingoes.exe'
+alias wine32='WINEARCH=win32 LC_ALL=zh_CN.utf-8 WINEPREFIX=~/.wine32 wine'
 alias eclimd='/usr/share/eclipse/eclimd'
 alias SugarCpp='mono ~/Work/SugarCpp-C\#/src/SugarCpp.CommandLine/bin/Debug/SugarCpp.CommandLine.exe'
 alias word='/opt/wps/wps'
