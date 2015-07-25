@@ -5,7 +5,8 @@ local autorun_items = {
     "sogou-qimpanel",
     "conky",
     "xcape -e 'Control_L=Escape;Hyper_L=XF86Mail'",
-    "/home/wyx/bin/cvim-server.py"
+    "/home/wyx/bin/cvim-server.py",
+    "telegram"
 }
 local runonce = require("lib/runonce")
 for _, item in ipairs(autorun_items) do

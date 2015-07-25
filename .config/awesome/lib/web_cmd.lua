@@ -1,6 +1,6 @@
 local template = {
     g = "http://www.google.com/search?q=%s",
-    gfl =  "http://google.com/search?q=%s&btnI=I%%27m+Feeling+Lucky",
+    gl =  "http://google.com/search?q=%s&btnI=I%%27m+Feeling+Lucky",
     gi = "http://images.google.com/images?q=%s&&tbo=1",
     gm = "http://maps.google.com/maps?q=%s",
 

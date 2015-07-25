@@ -253,12 +253,9 @@ if __name__ == '__main__':
     reply.sort( key=locale.strxfrm )
 
     def filter_escape(s):
-        s = s.replace('\\', '\\\\')
-        s = s.replace(' ', '\ ')
-        s = s.replace('(', '\(')
-        s = s.replace(')', '\)')
-        s = s.replace('[', '\[')
-        s = s.replace(']', '\]')
+        chars = ['\\', ' ', '(', ')', '[', ']', ';', '#']
+        for c in chars:
+            s = s.replace(c, '\\' + c)
         return s
 
     if index :
@@ -275,4 +272,4 @@ if __name__ == '__main__':
     else:
         for i in range(0,len(reply)):
             reply[i] = filter_escape(reply[i])
-        print ( "\n".join(reply) )
+        print("\n".join(reply) )

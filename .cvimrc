@@ -8,6 +8,7 @@ let activehighlight = '#0ff3db'
 let qmark g = ["http://google.com"]
 map gm :tabnew mail.google.com&<CR>
 let barposition = "bottom"
+let nextmatchpattern = "((?!first)(next|more|>|›|»|forward|后页|下一页)+)"
 map <Space> :buffer<Space>
 
 map K previousTab
@@ -34,8 +35,7 @@ site '*://groups.google.com/*' {
 	unmapAll
 	map : openCommandBar
 	map / openSearchBar
-	map n nextSearchResult
-	map N previousSearchResult
+	map N nextSearchResult
 	map <C-v> toggleVisualMode
 }
 

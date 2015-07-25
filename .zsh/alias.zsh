@@ -109,11 +109,14 @@ alias scp='scp -r'
 alias rsync='rsync -avP'
 alias m_rsync='rsync --progress --partial --delete --size-only -rlv --bwlimit=5m'
 # rsync ./book/ /mnt/books/ -rlv --delete --size-only
-alias chromium_socks='chromium --proxy-server=socks5://localhost:8080'
-alias chromium_http='chromium --proxy-server=localhost:7777'
-alias ssh_reverse='ssh -R 6333:localhost:22 -ServerAliveInterval=60'
+alias chromium-socks='chromium --proxy-server=socks5://localhost:8080'
+alias chromium-http='chromium --proxy-server=localhost:7777'
+
+alias ssh-reverse='ssh -R 6333:localhost:22 -ServerAliveInterval=60'
 function st() { ssh $1 -t 'tmux a || tmux' }
-alias vnc_quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=ZRLE -FullScreen=1 -Shared=1'
+function ssh-proxy { ssh $2 -o ProxyCommand="ssh -q $1 nc %h %p" }
+
+alias vnc-quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=ZRLE -FullScreen=1 -Shared=1'
 alias rdesktop-nana='rdesktop-vrdp -K -u wyx -p - 59.66.131.64:3389'
 
 # develop utils
@@ -162,7 +165,7 @@ alias convmv='convmv -f GBK -t UTF-8 --notest -r'
 alias window='wmctrl -a '
 alias cp2clip='xclip -i -selection clipboard'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias clean_trash='=rm /ssd_home/.Trash/{.,}* -rf; =rm ~/.Trash/{.,}* -rf'
+alias clean-trash='=rm /ssd_home/.Trash/{.,}* -rf; =rm ~/.Trash/{.,}* -rf'
 
 alias win='cd; virtualbox --startvm win7 & ; cd -'
 alias osx='cd; virtualbox --startvm osx & ; cd -'
@@ -201,6 +204,7 @@ function usbon () {
 	echo -n "USB power state now: "
 	cat $powerf
 }
+alias nvq='nvidia-smi --query-gpu=temperature.gpu,clocks.current.sm,power.limit,power.draw,utilization.gpu,utilization.memory --format=csv'
 
 function b(){
 	=acpi -V | head -n1
@@ -247,11 +251,12 @@ alias telegram='/opt/telegram/Telegram'
 alias idf='identify'
 alias mirror='mplayer -tv driver=v4l2:device=/dev/video0 tv:// -vf-add mirror'
 alias dot='dot -Tpng -O -v'
-alias tune_pitch='mplayer -af scaletempo=speed=pitch'
+alias tune-pitch='mplayer -af scaletempo=speed=pitch'
 alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_region 1 -i :0.0 ~/Video/out.mpg'
 m_sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "/usr/share/fonts/wenquanyi/wqy-microhei/wqy-microhei.ttc"'
 m_avc_param="-oac mp3lame -lameopts fast:preset=medium -ovc x264 -x264encopts subq=5:8x8dct:frameref=2:bframes=3:weight_b:threads=auto"
 f_avc_param="-c:v libx264 -preset slow -crf 22 -c:a libmp3lame"
+#f_avc_param="-c:v libx265 -preset medium -x265-params crf=28 -c:a aac -strict experimental -b:a 128k"
 function ffmpeg_compress() { ffmpeg -i $1 `echo $f_avc_param` $1.avi }
 function mencoder_compress() { mencoder $1 -o $1.avi `echo $m_avc_param` }
 function colormap(){

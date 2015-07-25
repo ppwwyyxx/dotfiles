@@ -75,6 +75,11 @@ awful.rules.rules = {
     rule = { class = 'rdesktop'},
     properties = { screen = 1 }
 }, {
+    rule = { class = 'Telegram'},
+    callback = function(c)
+        awful.client.movetotag(tags[screen.count()][3], c)
+    end
+}, {
     rule = { name = 'sogou-qimpanel'},
     callback = function(c)
         notify("here")
