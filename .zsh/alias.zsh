@@ -107,6 +107,7 @@ alias iwc='iwconfig wlan0; ifconfig wlan0'
 alias port='netstat -ntlp'
 alias scp='scp -r'
 alias rsync='rsync -avP'
+alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test10.zip'
 alias m_rsync='rsync --progress --partial --delete --size-only -rlv --bwlimit=5m'
 # rsync ./book/ /mnt/books/ -rlv --delete --size-only
 alias chromium-socks='chromium --proxy-server=socks5://localhost:8080'
@@ -126,6 +127,7 @@ alias mc='make clean'
 alias mkc='make clean'
 alias cmk='mkdir -p build; cd build; cmake ..; make; cd ..'
 alias gits='git s'
+alias gsh='git -c color.status=always status | head -n20'
 alias indent='indent -linux -l80'
 alias gdb='gdb -q'
 alias R='R --vanilla'
@@ -310,6 +312,7 @@ which pacman NN && {
 	alias pSy='sudo pacman -Syy'
 	alias pR='sudo pacman -R'
 	alias pSu='pacaur -Syu'
+	alias pQl='pacman -Ql'
 	alias paur='pacman -Qm'
 	alias pacman-size="paste <(pacman -Q | awk '{ print \$1; }' | xargs pacman -Qi | grep 'Size' | awk '{ print \$4\$5; }') <(pacman -Q | awk '{print \$1; }') | sort -n | column -t"
 	function pacmanorphan() {

@@ -35,6 +35,15 @@ awful.rules.rules = {
 		maximized_vertical = true,
 	}
 }, {
+	rule = { instance = 'EMAIL' },
+	properties = {
+		maximized_horizontal = true,
+		maximized_vertical = true,
+	},
+    callback = function(c)
+        awful.client.movetotag(tags[screen.count()][3], c)
+    end
+}, {
 	rule_any = {
 		instance = {'TM.exe', 'QQ.exe'},
 	},

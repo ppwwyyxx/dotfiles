@@ -1,4 +1,7 @@
 # learning: A-q: push-line. c-r + c-o: accept-line-and-down-history
+# !history expansion; !:1, !$, !:1-3, !:* take word from last command
+# !-4 fourth last command; !ls, most recent command with ls; !# current buffer
+# ^foo^bar^:G  global substitution on last command, !?str?:s^foo^bar^:G, on last command containing str
 #http://lilydjwg.is-programmer.com/2012/3/19/thress-zsh-line-editor-tips.32549.html
 
 # ENV ------------------------------------------------------------------------------------------
@@ -20,7 +23,6 @@ safe_export_path $HOME/.cabal/bin
 safe_export_path /opt/texlive/2013/bin/x86_64-linux
 safe_export_path /usr/lib/colorgcc/bin
 safe_export_path /opt/lingo14/bin/linux64
-safe_export_path $HOME/.gem/ruby/2.0.0/bin
 export GOPATH=$HOME/.local/gocode
 safe_export_path $GOPATH/bin
 
@@ -48,6 +50,10 @@ safe_source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a funct
 export PYTHONDOCS=/usr/share/doc/python2/html
 [[ -s ~/.config/python/.startup.py ]] && export PYTHONSTARTUP=~/.config/python/.startup.py
 export PYTHONPATH=$HOME/Work/facepp/OCR/image2text/neupack/
+export RUBY_GC_MALLOC_LIMIT=256000000
+export RUBY_HEAP_MIN_SLOTS=600000
+export RUBY_HEAP_SLOTS_INCREMENT=200000
+export RUBY_HEAP_FREE_MIN=100000
 
 #export DISTCC_POTENTIAL_HOSTS='166.111.71.80/8 166.111.71.95/16'
 export EDITOR=vim
@@ -202,15 +208,12 @@ bindkey -e
 autoload edit-command-line
 zle -N edit-command-line
 bindkey -M viins '^v' edit-command-line
-bindkey '^e' end-of-line
-bindkey '^d' beginning-of-line
 bindkey '^h' backward-char
 bindkey '^l' forward-char
 bindkey '^b' backward-word
 bindkey '^f' forward-word
 bindkey '^w' backward-delete-word
-bindkey '^c' kill-buffer
-bindkey ' ' magic-space
+bindkey ' ' magic-space		# history expansion + space
 autoload zkbd
 [[ -f $HOME/.zsh/zkbd/$TERM ]] && source $HOME/.zsh/zkbd/$TERM || zkbd
 [[ -n ${key[Backspace]} ]] && bindkey "${key[Backspace]}" backward-delete-char
