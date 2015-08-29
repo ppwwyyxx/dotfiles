@@ -32,6 +32,8 @@ function ll(){
 
 alias L=less
 alias C='cat'
+function cat() { highlight --out-format xterm256 $1 2>/dev/null || =cat $1 }
+function cless() { ccat $1 | less -r }
 alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
 alias -g G='|grep'
 alias -g N='>/dev/null'
@@ -110,6 +112,7 @@ alias rsync='rsync -avP'
 alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test10.zip'
 alias m_rsync='rsync --progress --partial --delete --size-only -rlv --bwlimit=5m'
 # rsync ./book/ /mnt/books/ -rlv --delete --size-only
+function view-email() { mhonarc -single $1 | w3m -dump -T text/html }
 alias chromium-socks='chromium --proxy-server=socks5://localhost:8080'
 alias chromium-http='chromium --proxy-server=localhost:7777'
 
