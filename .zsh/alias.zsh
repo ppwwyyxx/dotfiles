@@ -33,7 +33,7 @@ function ll(){
 alias L=less
 alias C='cat'
 function cat() { highlight --out-format xterm256 $1 2>/dev/null || =cat $1 }
-function cless() { ccat $1 | less -r }
+function cless() { cat $1 | less -r }
 alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
 alias -g G='|grep'
 alias -g N='>/dev/null'
@@ -60,6 +60,7 @@ which nvim NN && {
 	alias v='nvim'
 	alias vi='nvim'
 	alias iv='nvim'
+	alias vim='nvim'
 } || {
 	alias v='=vim'
 	alias vi='=vim'
@@ -73,6 +74,8 @@ alias grep='grep -IE --color=auto --exclude=.tags --exclude-dir="node_modules" -
 alias tmuxa='tmux a || tmux'
 alias sort='LC_ALL=C sort'
 alias du='du -sh'
+alias tail='tail -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
+alias head='head -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
 function sdu () {
   [[ "$#" -eq 1 && -d "$1" ]] && cd "$1"
   du -sk * | sort -n | awk '
@@ -105,23 +108,38 @@ function linkto() {
 alias p='ping'
 alias meow='ping'
 alias p6='ping6'
-alias iwc='iwconfig wlan0; ifconfig wlan0'
-alias port='netstat -ntlp'
+alias iwc='iwconfig wlp3s0; ifconfig wlp3s0'
+alias port='sudo netstat -ntlp'
 alias scp='scp -r'
 alias rsync='rsync -avP'
-alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test10.zip'
+alias speedtest='wget -O /dev/null http://speedtest-nyc3.digitalocean.com/10mb.test'
 alias m_rsync='rsync --progress --partial --delete --size-only -rlv --bwlimit=5m'
 # rsync ./book/ /mnt/books/ -rlv --delete --size-only
 function view-email() { mhonarc -single $1 | w3m -dump -T text/html }
 alias chromium-socks='chromium --proxy-server=socks5://localhost:8080'
 alias chromium-http='chromium --proxy-server=localhost:7777'
+alias google-keep='chromium --profile-directory=Default --app-id=hmjkmjkepdijhoojdojkdfohbdgmmhki'
 
 alias ssh-reverse='ssh -R 6333:localhost:22 -ServerAliveInterval=60'
-function st() { ssh $1 -t 'tmux a || tmux' }
+function st() { ssh "$1" -t 'tmux a || tmux' }
 function ssh-proxy { ssh $2 -o ProxyCommand="ssh -q $1 nc %h %p" }
-
+function gmtr() {
+	sudo mtr -lnc 1 "$1" | paste - - \
+		| awk 'function geo(ip) {
+			s="geoiplookup "ip;
+			s|&getline; s|&getline;
+			split($0, a, "[,:] ");
+			return a[3]","a[4]","a[5]","a[6]
+		  };
+		  { print $2"\t"$3"\t"$6/1000"ms\t"geo($3) }'
+}
+function web() {
+  #twistd web --path "$1" -p "${2:-8000}"
+  ruby -run -e httpd "$1" -p "${2:-8000}"
+}
 alias vnc-quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=ZRLE -FullScreen=1 -Shared=1'
 alias rdesktop-nana='rdesktop-vrdp -K -u wyx -p - 59.66.131.64:3389'
+
 
 # develop utils
 alias mk='make'
@@ -169,6 +187,7 @@ which dfc NN && alias df='dfc' || alias df='df -Th | grep sd |\
 alias convmv='convmv -f GBK -t UTF-8 --notest -r'
 alias window='wmctrl -a '
 alias cp2clip='xclip -i -selection clipboard'
+alias adate='for i in Asia/Shanghai US/{Eastern,Pacific}; do printf %-22s "$i ";TZ=:$i date +"%F %a %T %Z";done'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias clean-trash='=rm /ssd_home/.Trash/{.,}* -rf; =rm ~/.Trash/{.,}* -rf'
 
@@ -181,7 +200,12 @@ alias mount='sudo mount'
 alias iotop='sudo iotop'
 alias iftop='sudo iftop -B'
 alias powertop='sudo powertop'
-alias dstat='dstat -dnmcl --socket --top-io -N eth0,eth1,wlan0,eno1'
+alias sy='sudo systemctl'
+alias dstat='dstat -dnmcl --socket --top-io -N eth0,enp0s25,eth1,wlan0,wlp3s0,eno1'
+function agenda() {
+	gcalcli agenda '12am' $(date --date="${1:-1} day" +"%Y%m%d")
+}
+alias calw='gcalcli calw'
 
 # hardware
 #alias km='xmodmap ~/.Xmodmap; xcape -e "Control_L=Escape"; xinput set-button-map $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*") 1 0 0'
@@ -191,6 +215,7 @@ function km() {
 	xcape -e "Control_L=Escape;Hyper_L=XF86Mail"
 	xinput set-button-map $(xinput | grep -o "TouchPad.*id=[0-9]*" | grep -o "[0-9]*") 1 0 0
 }
+alias dmesg='dmesg -H || dmesg | less'
 alias keyb='xinput disable $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*")'
 alias unkeyb='xinput enable $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*")'
 function usbon () {
@@ -254,8 +279,11 @@ alias telegram='/opt/telegram/Telegram'
 
 # media
 alias idf='identify'
-alias mirror='mplayer -tv driver=v4l2:device=/dev/video0 tv:// -vf-add mirror'
 alias dot='dot -Tpng -O -v'
+alias 2pdf='libreoffice --headless --convert-to pdf' # unoconv -f pdf
+alias 2csv='libreoffice --headless --convert-to csv'
+
+alias mirror='mplayer -tv driver=v4l2:device=/dev/video0 tv:// -vf-add mirror'
 alias tune-pitch='mplayer -af scaletempo=speed=pitch'
 alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_region 1 -i :0.0 ~/Video/out.mpg'
 m_sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "/usr/share/fonts/wenquanyi/wqy-microhei/wqy-microhei.ttc"'
@@ -333,6 +361,7 @@ which pacman NN && {
 		alias pSy='sudo aptitude update'
 		alias pSu='sudo aptitude upgrade'
 		alias pQo='apt-file'
+		alias pU='sudo dpkg -i'
 	} || {
 		alias pS='sudo yum install'
 		alias pR='sudo yum remove'

@@ -1,7 +1,7 @@
 
 -- Tags
 -- Define a tag table which hold all screen tags.
-local tag_name = { "1", "2", "3", "0"}
+local tag_name = { "1", "2", "chat", "0"}
 last_tag = #tag_name
 tags, revtags = {}, {}
 for s = 1, screen.count() do

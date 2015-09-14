@@ -7,7 +7,6 @@ local autorun_items = {
     "xcape -e 'Control_L=Escape;Hyper_L=XF86Mail'",
     "telegram",
     "/home/wyx/bin/cvim-server.py",
-    "/home/wyx/bin/email-client"
 }
 local runonce = require("lib/runonce")
 for _, item in ipairs(autorun_items) do

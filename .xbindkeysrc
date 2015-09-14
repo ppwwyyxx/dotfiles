@@ -15,7 +15,7 @@
   Mod4 + z
 "simpleswitcher -now"
   Mod4 + Tab
-"~/bin/google-keep"
+"chromium --profile-directory=Default --app-id=hmjkmjkepdijhoojdojkdfohbdgmmhki"
   Mod4 + g
 "~/bin/email-client"
   Mod4 + e

@@ -31,7 +31,8 @@ safe_export_path $GOPATH/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:$HOME/.local/lib
 export OPENCV3_DIR=/opt/opencv3
 [[ -d $OPENCV3_DIR ]] && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$OPENCV3_DIR/lib
-local CUDA_ROOT=/usr/local/cuda
+[[ -d /usr/local/cuda ]] && local CUDA_ROOT=/usr/local/cuda
+[[ -d /opt/cuda ]] && local CUDA_ROOT=/opt/cuda
 if [[ -d $CUDA_ROOT ]]; then
 	local CUDNN_ROOT=/usr/local/cudnn
 	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDNN_ROOT
@@ -54,6 +55,7 @@ export RUBY_GC_MALLOC_LIMIT=256000000
 export RUBY_HEAP_MIN_SLOTS=600000
 export RUBY_HEAP_SLOTS_INCREMENT=200000
 export RUBY_HEAP_FREE_MIN=100000
+#. /opt/torch/install/bin/torch-activate
 
 #export DISTCC_POTENTIAL_HOSTS='166.111.71.80/8 166.111.71.95/16'
 export EDITOR=vim
@@ -67,7 +69,7 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 export SDCV_PAGER="sed 's/\ \ \([1-9]\)/\n\n◆\1/g' |less"
-
+cdpath=(~)
 
 # PROMPT: f[[
 autoload -U promptinit
@@ -500,3 +502,5 @@ if [ $commands[fasd] ]; then
 	unalias s
 	bindkey '^X^O' fasd-complete
 fi
+
+
