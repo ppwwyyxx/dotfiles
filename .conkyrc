@@ -33,11 +33,12 @@ alignment top_left
 gap_x 15
 gap_y 40
 top_name_width 12
+
 TEXT
 ${font arial black:size=12}${color magneta}SYSTEM${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
 $nodename $kernel
 UP: $font$uptime ${voffset -18}
-${voffset 6}${font arial black:size=30}${time %e}$font ${voffset -17}${time %A, }${time %B} ${time %G}
+${voffset 9}${font arial black:size=30}${time %e}$font ${voffset -17}${time %A, }${time %B} ${time %G}
 ${voffset -2}${goto 65}${font arial black:size=10} ${time %I:%M:%S %p} ${font arial black:size=12}
 ${color magneta}CPU${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
 USAGE: $font${cpu cpu0}%
@@ -62,7 +63,7 @@ DOWN: $font$color${downspeed eth0}/${totaldown eth0}
 UP: $font${upspeed eth0}/${totalup eth0}
 ${downspeedgraph eth0 20,115 C0C0C0 C0C0C0} ${upspeedgraph eth0 20,115 C0C0C0 C0C0C0}$color
 IN: $font${tcp_portmon 1 32767 count} OUT: $font${tcp_portmon 32768 61000 count}${alignr}TOTAL: $font${tcp_portmon 1 65535 count}
-LOCAL:$font ${addr eth0}${color}
+LOCAL:$font ${addr wlan0}${color}
 ${font arial black:size=12}${color magneta}BATTERY${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
 ${battery_bar}
 STATE: $font$color${battery} $alignr ${battery_time}
