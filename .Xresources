@@ -40,10 +40,9 @@ URxvt*font: xft:FantasqueSansMono-13x21,xft:WenQuanYi Micro Hei Mono-11x19:antia
 URxvt.boldfont: xft:WenQuanYi Micro Hei Mono-11:bold,xft:Symbola Bold:size=10
 URxvt.italicfont: xft:WenQuanYi Micro Hei Mono-11:italic
 URxvt.buffered: true
-!urxvt have terrible letter space
+!use letterspace=-1 with source-code-pro
 !URxvt.letterSpace: -1
-URxvt.lineSpace: 0
-! font settings suggested by infinality {
+!URxvt.lineSpace: 0
 Xft.autohint: 0
 Xft.lcdfilter:  lcddefault
 Xft.hintstyle:  hintfull
@@ -51,7 +50,6 @@ Xft.hinting: 1
 Xft.antialias: 1
 Xft.dpi: 96
 Xft.rgba: rgb
-!}
 
 
 ! With ibus: need ibus to start with `ibus-daemon --xim`
@@ -70,7 +68,7 @@ URxvt.perl-lib: URXVT_PERL_LIB
 URxvt.matcher.button: 1
 URxvt.url-select.launcher:  chromium
 URxvt.url-select.underline: true
-URxvt.keysym.M-u:           perl:url-select:select_next
+!URxvt.keysym.M-u:           perl:url-select:select_next
 URxvt.keysym.M-Escape:      perl:keyboard-select:activate
 URxvt.keysym.M-s:           perl:keyboard-select:search
 

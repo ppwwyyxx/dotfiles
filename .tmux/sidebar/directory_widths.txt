@@ -1,0 +1,5 @@
+/home/wyx/Work/facepp/OCR/image2text	40
+/home/wyx/Work/facepp/OCR/image2text/prod	40
+/home/wyx/Work/facepp/OCR/image2text/prod	40
+/home/wyx/Work/facepp/OCR/image2text/prod	40
+/home/wyx/Work/facepp/OCR/image2text/prod	40
