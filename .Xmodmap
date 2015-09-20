@@ -1,6 +1,16 @@
-keycode 66 = Control_L
-keycode 167 = 0xff56
-keycode 166 = 0xff55
-clear Lock
+! capslock and ctrl
+keysym Caps_Lock = Control_L
+remove lock = Caps_Lock
 add Control = Control_L
 keycode 107 = Caps_Lock
+
+! thinkpad T420
+keycode 167 = Next
+keycode 166 = Prior
+
+! for a strange usb mouse to work
+keycode 158 = Hyper_L
+
+! for HHKB
+keycode 102 = Super_L
+keycode 100 = ISO_Level3_Shift
