@@ -238,12 +238,10 @@ config.clientkeys = join(
 	awful.key({ altkey, }, "F4",   function(c) c:kill()                         end),
 	awful.key({ altkey, }, "F12",  function(c) c.above = not c.above            end),
 	awful.key({ altkey, }, "F9",   function(c) c.minimized = true end),
-    --[[
-	   [awful.key({ altkey, }, "F10",  function(c)
-	   [    c.maximized_horizontal = not c.maximized_horizontal
-	   [    c.maximized_vertical   = not c.maximized_vertical
-	   [end),
-       ]]
+    awful.key({ altkey, }, "F10",  function(c)
+        c.maximized_horizontal = not c.maximized_horizontal
+        c.maximized_vertical   = not c.maximized_vertical
+    end),
 	awful.key({ modkey , }, "Up",  function(c)
 		c.maximized_horizontal = not c.maximized_horizontal
 		c.maximized_vertical   = not c.maximized_vertical

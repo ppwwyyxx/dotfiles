@@ -20,7 +20,7 @@ safe_export_path $HOME/bin
 safe_export_path $HOME/.local/bin
 safe_export_path $HOME/.zsh/bin
 safe_export_path $HOME/.cabal/bin
-safe_export_path /opt/texlive/2013/bin/x86_64-linux
+safe_export_path /opt/texlive/2015/bin/x86_64-linux
 safe_export_path /usr/lib/colorgcc/bin
 safe_export_path /opt/lingo14/bin/linux64
 export GOPATH=$HOME/.local/gocode
@@ -28,7 +28,7 @@ safe_export_path $GOPATH/bin
 
 
 # programming
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:$HOME/.local/lib
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib:/usr/local/lib:$HOME/.local/lib
 export OPENCV3_DIR=/opt/opencv3
 [[ -d $OPENCV3_DIR ]] && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$OPENCV3_DIR/lib
 [[ -d /usr/local/cuda ]] && local CUDA_ROOT=/usr/local/cuda

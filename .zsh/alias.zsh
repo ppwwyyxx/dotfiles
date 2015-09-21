@@ -94,6 +94,16 @@ BEGIN {
   print $0;
 }'
 }
+# TODO merge dug and sdu
+function dug() {
+=du -x --max-depth=1 \
+	|sort -rn|awk -F / -v c=$COLUMNS \
+	'NR==1{t=$1} NR>1{r=int($1/t*c+.5);
+	b="\033[1;31m";
+	for (i=0; i<r; i++) b=b"#";
+	printf " %5.2f%% %s\033[0m %s\n", $1/t*100, b, $2}' | tac
+}
+alias openedfile="find /proc/*/fd -xtype f -printf \"%l\n\" | =grep -P '^/(?!dev|proc|sys)' | sort | uniq -c | sort -n"
 
 function linkto() {
 	[[ -d $1 ]] || return 1
@@ -119,6 +129,7 @@ function view-email() { mhonarc -single $1 | w3m -dump -T text/html }
 alias chromium-socks='chromium --proxy-server=socks5://localhost:8080'
 alias chromium-http='chromium --proxy-server=localhost:7777'
 alias google-keep='chromium --profile-directory=Default --app-id=hmjkmjkepdijhoojdojkdfohbdgmmhki'
+alias gg='google -r'
 
 alias ssh-reverse='ssh -R 6333:localhost:22 -ServerAliveInterval=60'
 function st() { ssh "$1" -t 'tmux a || tmux' }
@@ -177,13 +188,7 @@ alias ibus-daemon='ibus-daemon --xim'
 alias zh-CN="LC_ALL='zh_CN.UTF-8'"
 alias manzh="LC_ALL='zh_CN.UTF-8' man"
 alias free='free -m'
-which dfc NN && alias df='dfc' || alias df='df -Th | grep sd |\
-	sed -e "s_/dev/sda[1-9]_\x1b[34m&\x1b[0m_" |\
-	sed -e "s_/dev/sd[b-z][1-9]_\x1b[33m&\x1b[0m_" |\
-	sed -e "s_[,0-9]*[MG]_\x1b[36m&\x1b[0m_" |\
-	sed -e "s_[0-9]*%_\x1b[32m&\x1b[0m_" |\
-	sed -e "s_9[0-9]%_\x1b[31m&\x1b[0m_" |\
-	sed -e "s_/mnt/[-_A-Za-z0-9]*_\x1b[34;1m&\x1b[0m_"'
+which dfc NN && alias df='dfc' || alias df='df -Th'
 alias convmv='convmv -f GBK -t UTF-8 --notest -r'
 alias window='wmctrl -a '
 alias cp2clip='xclip -i -selection clipboard'
@@ -203,7 +208,7 @@ alias powertop='sudo powertop'
 alias sy='sudo systemctl'
 alias dstat='dstat -dnmcl --socket --top-io -N eth0,enp0s25,eth1,wlan0,wlp3s0,eno1'
 function agenda() {
-	gcalcli agenda '12am' $(date --date="${1:-1} day" +"%Y%m%d")
+	gcalcli --details=length agenda '12am' $(date --date="${1:-1} day" +"%Y%m%d")
 }
 alias calw='gcalcli calw'
 
@@ -253,8 +258,10 @@ function b(){
 alias robomongo='/opt/robomongo-0.8.0-x86_64/bin/robomongo.sh'
 alias mathc='/opt/Mathematica/Executables/math'
 alias mathematica='/opt/Mathematica/Executables/Mathematica -nosplash'
-alias matlab='/opt/Matlab/bin/matlab'
-alias matlabc='/opt/Matlab/bin/matlab -nodisplay -r clc '
+which matlab NN || {
+  [[ -d /opt/Matlab ]] && alias matlab='/opt/Matlab/bin/matlab'
+}
+alias matlabc='matlab -nodisplay -r clc '
 alias rstudio='/opt/RStudio/lib/rstudio/bin/rstudio'
 alias maple='/opt/Maple/bin/xmaple'
 alias evernote='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/Evernote/Evernote/Evernote.exe'
@@ -263,8 +270,8 @@ alias lingoes='wine ~/.wine/drive_c/users/wyx/Local\ Settings/Application\ Data/
 alias wine32='WINEARCH=win32 LC_ALL=zh_CN.utf-8 WINEPREFIX=~/.wine32 wine'
 alias eclimd='/usr/share/eclipse/eclimd'
 alias SugarCpp='mono ~/Work/SugarCpp-C\#/src/SugarCpp.CommandLine/bin/Debug/SugarCpp.CommandLine.exe'
-alias word='/opt/wps/wps'
-alias powerpoint='/opt/wps/wpp'
+alias word='wps'
+alias powerpoint='wpp'
 alias webstorm='/opt/WebStorm-129.664/bin/webstorm.sh'
 alias idea='/opt/idea-IC-129.713/bin/idea.sh'
 export PYCHARM_JDK=/opt/java-oracle
@@ -327,7 +334,7 @@ function waitpid() {
 # python
 #alias py='PYTHONPATH=$HOME/.config/python:$PYTHONPATH python2'
 function pydbg () { ipython --pdb -c "%run $1" }
-alias ipython_notebook="ipython2 notebook --pylab inline"
+alias ipython_notebook="ipython2 notebook"
 alias bp2='bpython2'
 alias pyftp='python2 -m pyftpdlib'
 function pytwistd() { twistd web --path "$1" -p "${2:-8000}" }
