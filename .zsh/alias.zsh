@@ -32,13 +32,17 @@ function ll(){
 
 alias L=less
 alias C='cat'
-function cat() { highlight --out-format xterm256 $1 2>/dev/null || =cat $1 }
-function cless() { cat $1 | less -r }
+function ccat() { highlight --out-format xterm256 $1 2>/dev/null || =cat $1 }
+function cless() { ccat $1 | less -r }
 alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
-alias -g G='|grep'
 alias -g N='>/dev/null'
 alias -g NN='>/dev/null 2>&1'
-alias -g awk-sum="awk '{s+=\$1} END {print s, s / NR}' "
+which sift NN && {
+	alias -g G='|sift'
+} || {
+	which ag NN && alias -g G='|ag' || alias -g G='|grep'
+}
+alias -g awk-sum="awk '{if (\$1+0!=\$1) { print \"Fail! \"\$0, NR; exit; }; s+=\$1} END {print s, s / NR}' "
 # custom rm command
 function rm() {
 	for file in $@; do
@@ -143,10 +147,6 @@ function gmtr() {
 			return a[3]","a[4]","a[5]","a[6]
 		  };
 		  { print $2"\t"$3"\t"$6/1000"ms\t"geo($3) }'
-}
-function web() {
-  #twistd web --path "$1" -p "${2:-8000}"
-  ruby -run -e httpd "$1" -p "${2:-8000}"
 }
 alias vnc-quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=ZRLE -FullScreen=1 -Shared=1'
 alias rdesktop-nana='rdesktop-vrdp -K -u wyx -p - 59.66.131.64:3389'
@@ -325,19 +325,18 @@ function killz() {
 	ppid=$(ps -oppid $1 | tail -n1)
 	kill -SIGHUP $ppid
 }
-function waitpid() {
-	while test -d "/proc/$1"; do
-		sleep 1
-	done
-}
+function waitpid() { while test -d "/proc/$1"; do sleep 1; done }
 
 # python
 #alias py='PYTHONPATH=$HOME/.config/python:$PYTHONPATH python2'
 function pydbg () { ipython --pdb -c "%run $1" }
-alias ipython_notebook="ipython2 notebook"
 alias bp2='bpython2'
 alias pyftp='python2 -m pyftpdlib'
 function pytwistd() { twistd web --path "$1" -p "${2:-8000}" }
+function web() {
+	pytwistd
+  #ruby -run -e httpd "$1" -p "${2:-8000}"
+}
 alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --user -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install --user -U"
 
 # package
