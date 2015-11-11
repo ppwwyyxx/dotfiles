@@ -1,40 +1,42 @@
-update_interval 2
-own_window yes
-own_window_transparent yes
-own_window_type override
-own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
-double_buffer yes
+-- vim: ts=4 sw=4 noet ai cindent syntax=lua
 
-# fonts
-use_xft yes
-text_buffer_size 2048
-xftfont black:size=9
-xftalpha 0.7
-font arial black:size=8
-uppercase no
-use_spacer none
+conky.config = {
+	update_interval = 2,
+	own_window = true,
+	own_window_transparent = true,
+	own_window_type = 'override',
+	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+	double_buffer = true,
+-- fonts
+	use_xft = true,
+	text_buffer_size = 2048,
+	xftalpha = 0.7,
+	font = 'arial black:size=8',
+	uppercase = false,
+	use_spacer = 'none',
 
-# apperances
-draw_shades no
-draw_outline no
-draw_borders no
-stippled_borders 0
-border_width 0
-default_color grey
-own_window_colour white
+-- apperances
+	draw_shades = false,
+	draw_outline = false,
+	draw_borders = false,
+	stippled_borders = 0,
+	border_width = 0,
+	default_color = 'grey',
+	own_window_colour = 'white',
 
-no_buffers yes
-cpu_avg_samples 2
-net_avg_samples 2
-override_utf8_locale yes
+	no_buffers = true,
+	cpu_avg_samples = 2,
+	net_avg_samples = 2,
+	override_utf8_locale = true,
 
-# position
-alignment top_left
-gap_x 15
-gap_y 40
-top_name_width 12
+-- position
+	alignment = 'top_left',
+	gap_x = 15,
+	gap_y = 40,
+	top_name_width = 12
+}
 
-TEXT
+conky.text = [[
 ${font arial black:size=12}${color magneta}SYSTEM${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
 $nodename $kernel
 UP: $font$uptime ${voffset -18}
@@ -59,13 +61,14 @@ ${diskiograph_read /dev/sda 20,115} ${diskiograph_write /dev/sda 20,115}
 Read: ${diskio_read /dev/sdb}${alignc}/dev/sdb${alignr}Write: ${diskio_write /dev/sdb}
 ${diskiograph_read /dev/sdb 20,115} ${diskiograph_write /dev/sdb 20,115}
 ${font arial black:size=12}${color magneta}NETWORK${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
-DOWN: $font$color${downspeed eth0}/${totaldown eth0}
-UP: $font${upspeed eth0}/${totalup eth0}
-${downspeedgraph eth0 20,115 C0C0C0 C0C0C0} ${upspeedgraph eth0 20,115 C0C0C0 C0C0C0}$color
+DOWN: $font$color${downspeed wlp3s0}/${totaldown wlp3s0}
+UP: $font${upspeed wlp3s0}/${totalup wlp3s0}
+${downspeedgraph wlp3s0 20,115 C0C0C0 C0C0C0} ${upspeedgraph wlp3s0 20,115 C0C0C0 C0C0C0}$color
 IN: $font${tcp_portmon 1 32767 count} OUT: $font${tcp_portmon 32768 61000 count}${alignr}TOTAL: $font${tcp_portmon 1 65535 count}
-LOCAL:$font ${addr wlan0}${color}
+LOCAL:$font ${addr wlp3s0}${color}
 ${font arial black:size=12}${color magneta}BATTERY${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
 ${battery_bar}
 STATE: $font$color${battery} $alignr ${battery_time}
 FAN: $font$color${ibm_fan}rpm${alignr}
 TEMPERATURE:$font ${acpitemp}°C${color}
+]]

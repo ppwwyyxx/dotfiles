@@ -16,3 +16,4 @@ cp ~/.gitconfig ./ -rvf
 cp ~/.xbindkeysrc ./ -fv
 cp ~/.cvimrc ./
 
+cp ~/.conky* ./ -rvH

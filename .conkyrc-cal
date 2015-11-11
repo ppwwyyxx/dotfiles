@@ -1,38 +1,41 @@
-update_interval 2
-own_window yes
-own_window_transparent yes
-own_window_type override
-own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
-double_buffer yes
+-- vim: ts=4 sw=4 noet ai cindent syntax=lua
 
-# fonts
-use_xft yes
-text_buffer_size 2048
-xftfont black:size=11
-xftalpha 0.7
-font arial black:size=8
-uppercase no
-use_spacer none
+conky.config = {
+	update_interval = 2,
+	own_window = true,
+	own_window_transparent = true,
+	own_window_type = 'override',
+	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+	double_buffer = true,
+-- fonts
+	use_xft = true,
+	text_buffer_size = 2048,
+	xftalpha = 0.7,
+	font = 'arial black:size=8',
+	uppercase = false,
+	use_spacer = 'none',
 
-# apperances
-draw_shades no
-draw_outline no
-draw_borders no
-stippled_borders 0
-border_width 0
-default_color grey
-own_window_colour white
+-- apperances
+	draw_shades = false,
+	draw_outline = false,
+	draw_borders = false,
+	stippled_borders = 0,
+	border_width = 0,
+	default_color = 'grey',
+	own_window_colour = 'white',
 
-no_buffers yes
-cpu_avg_samples 2
-net_avg_samples 2
-override_utf8_locale yes
+	no_buffers = true,
+	cpu_avg_samples = 2,
+	net_avg_samples = 2,
+	override_utf8_locale = true,
 
-# position
-alignment top_left
-gap_x 255
-gap_y 40
-top_name_width 30
+-- position
+	alignment = 'top_left',
+	gap_x = 255,
+	gap_y = 40,
+	top_name_width = 30
+}
 
-TEXT
+conky.text = [[
 ${execpi 300 gcalcli --conky --color_owner=magenta agenda '12am' $(date --date="2 day" +"%Y%m%d") }
+]]

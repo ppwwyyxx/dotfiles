@@ -11,6 +11,7 @@ local autorun_items = {
     "/home/wyx/bin/cvim-server.py",
     "dropbox",
     "wicd-client -t",
+    "zeal",
     "urxvt"
 }
 local runonce = require("lib/runonce")
