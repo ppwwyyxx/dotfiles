@@ -156,30 +156,31 @@ local instance
 task_list.buttons = join(
 	awful.button({ }, 1, function(c)
 			  if c == client.focus and not c.minimized then
-				  c.minimized = true
-			  else
-				  client.focus = c
-				  c:raise()
-			  end
-		  end),
-awful.button({ }, 2, function(c) c:kill() end),
-awful.button({ }, 3, function()
-			 if instance then
-				 instance:hide()
-				 instance = nil
-			 else
-				 instance = awful.menu.clients({ width=250 })
-			 end
-		 end),
-awful.button({ }, 4, function()
-			 awful.client.focus.byidx(1)
-			 if client.focus then client.focus:raise() end
-		 end),
-awful.button({ }, 5, function()
-			 awful.client.focus.byidx(-1)
-			 if client.focus then client.focus:raise() end
-		 end)
-)
+                  c.minimized = true
+              else
+                  client.focus = c
+                  c:raise()
+              end
+          end),
+    awful.button({ }, 2, function(c) c:kill() end),
+
+    awful.button({ }, 3, function()
+                 if instance then
+                     instance:hide()
+                     instance = nil
+                 else
+                     instance = awful.menu.clients({ width=250 })
+                 end
+             end),
+    awful.button({ }, 4, function()
+                 awful.client.focus.byidx(1)
+                 if client.focus then client.focus:raise() end
+             end),
+    awful.button({ }, 5, function()
+                 awful.client.focus.byidx(-1)
+                 if client.focus then client.focus:raise() end
+             end)
+    )
 
 local my_wibox = {}
 my_promptbox = {}
@@ -191,7 +192,7 @@ for s = 1, screen.count() do
         awful.button({ }, 3, function() awful.layout.inc(config.layouts, -1) end),
         awful.button({ }, 4, function() awful.layout.inc(config.layouts, 1) end),
         awful.button({ }, 5, function() awful.layout.inc(config.layouts, -1) end)
-    ))
+        ))
     my_taglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, my_taglist.buttons)
     task_list[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, task_list.buttons)
     my_wibox[s] = awful.wibox({ position = "top", screen = s, height = 20 })
@@ -212,7 +213,7 @@ for s = 1, screen.count() do
     --right_layout:add(netgraph)
     right_layout:add(net_widget)
     right_layout:add(volume_widget)
-    if s == screen.count() then     -- add systray to the last screen
+    if s == 1 then     -- add systray to the first screen
         right_layout:add(wibox.widget.systray())
     end
     right_layout:add(sepclose)

@@ -11,7 +11,10 @@
   Mod4 + Return
 "~/bin/background/launcher"
   Mod4 + r
-"~/bin/xclick.py ~/bin/imgs/zeal-tray.png"
+
+#"~/bin/xclick.py ~/bin/imgs/zeal-tray.png"
+
+"zeal"
   Mod4 + z
 "simpleswitcher -now"
   Mod4 + Tab

@@ -253,7 +253,7 @@ if __name__ == '__main__':
     reply.sort( key=locale.strxfrm )
 
     def filter_escape(s):
-        chars = ['\\', ' ', '(', ')', '[', ']', ';', '#']
+        chars = ['\\', ' ', '(', ')', '[', ']', ';', '#', '|', '&']
         for c in chars:
             s = s.replace(c, '\\' + c)
         return s

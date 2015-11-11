@@ -5,10 +5,12 @@ local autorun_items = {
     "fcitx-autostart",
     "sogou-qimpanel",
     "conky",
-    "conky -c ~/.conkyrc-cal",
+    "conky -c /home/wyx/.conkyrc-cal",
     "xcape -e 'Control_L=Escape;Hyper_L=XF86Mail'",
     "telegram",
     "/home/wyx/bin/cvim-server.py",
+    "dropbox",
+    "wicd-client -t",
     "urxvt"
 }
 local runonce = require("lib/runonce")

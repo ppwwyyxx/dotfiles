@@ -16,7 +16,7 @@ alias dc='cd'
 alias mv='nocorrect mv -i'
 alias mkdir='nocorrect mkdir'
 alias cp='nocorrect cp -rvi'
-alias cpv="rsync -pogh -e /dev/null -P --"
+alias cpv="rsync -pogh -e /dev/null -P --"	# cp with progress
 
 alias l='ls -F --color=auto'
 alias l.='ls -d .* --color=auto'
@@ -43,7 +43,7 @@ which sift NN && {
 	which ag NN && alias -g G='|ag' || alias -g G='|grep'
 }
 alias -g awk-sum="awk '{if (\$1+0!=\$1) { print \"Fail! \"\$0, NR; exit; }; s+=\$1} END {print s, s / NR}' "
-# custom rm command
+# rm moves things to trash
 function rm() {
 	for file in $@; do
 		local FILE_LOC="`readlink -f $file`"
@@ -80,7 +80,7 @@ alias sort='LC_ALL=C sort'
 alias du='du -sh'
 alias tail='tail -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
 alias head='head -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
-function sdu () {
+function sdu () {	# human-readable sorted du
   [[ "$#" -eq 1 && -d "$1" ]] && cd "$1"
   du -sk * | sort -n | awk '
 BEGIN {
@@ -98,16 +98,13 @@ BEGIN {
   print $0;
 }'
 }
-# TODO merge dug and sdu
-function dug() {
-=du -x --max-depth=1 \
-	|sort -rn|awk -F / -v c=$COLUMNS \
-	'NR==1{t=$1} NR>1{r=int($1/t*c+.5);
-	b="\033[1;31m";
-	for (i=0; i<r; i++) b=b"#";
-	printf " %5.2f%% %s\033[0m %s\n", $1/t*100, b, $2}' | tac
+function openedfile() {
+  if [[ -n $1 ]]; then
+		find /proc/$1/fd -xtype f -printf "%l\n" | =grep -P '^/(?!dev|proc|sys)'
+	else
+		find /proc/*/fd -xtype f -printf "%l\n" | =grep -P '^/(?!dev|proc|sys)' | sort | uniq -c | sort -n
+	fi
 }
-alias openedfile="find /proc/*/fd -xtype f -printf \"%l\n\" | =grep -P '^/(?!dev|proc|sys)' | sort | uniq -c | sort -n"
 
 function linkto() {
 	[[ -d $1 ]] || return 1
@@ -123,17 +120,19 @@ alias p='ping'
 alias meow='ping'
 alias p6='ping6'
 alias iwc='iwconfig wlp3s0; ifconfig wlp3s0'
-alias port='sudo netstat -ntlp'
+alias port='sudo netstat -ntlpu'
+alias listen='lsof -P -i -n'
 alias scp='scp -r'
 alias rsync='rsync -avP'
 alias speedtest='wget -O /dev/null http://speedtest-nyc3.digitalocean.com/10mb.test'
 alias m_rsync='rsync --progress --partial --delete --size-only -rlv --bwlimit=5m'
-# rsync ./book/ /mnt/books/ -rlv --delete --size-only
+alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 function view-email() { mhonarc -single $1 | w3m -dump -T text/html }
 alias chromium-socks='chromium --proxy-server=socks5://localhost:8080'
 alias chromium-http='chromium --proxy-server=localhost:7777'
 alias google-keep='chromium --profile-directory=Default --app-id=hmjkmjkepdijhoojdojkdfohbdgmmhki'
 alias gg='google -r'
+alias gl='google -o'
 
 alias ssh-reverse='ssh -R 6333:localhost:22 -ServerAliveInterval=60'
 function st() { ssh "$1" -t 'tmux a || tmux' }
@@ -153,7 +152,12 @@ alias rdesktop-nana='rdesktop-vrdp -K -u wyx -p - 59.66.131.64:3389'
 
 
 # develop utils
-alias mk='make'
+which colormake NN && {
+	alias make='colormake'
+}
+which ccache NN && {
+	alias mk='CXX="ccache g++" make'
+} || { alias mk='make' }
 alias mr='make run'
 alias mc='make clean'
 alias mkc='make clean'
@@ -223,6 +227,8 @@ function km() {
 alias dmesg='dmesg -H || dmesg | less'
 alias keyb='xinput disable $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*")'
 alias unkeyb='xinput enable $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*")'
+function modulegraph() { lsmod | perl -e 'print "digraph \"lsmod\" {";<>;while(<>){@_=split/\s+/; print "\"$_[0]\" -> \"$_\"\n" for split/,/,$_[3]}print "}"' | dot -Tpng | feh -; }
+
 function usbon () {
 # usage: $1 is the first 4 characters of id in `lsusb`
 	id=$1
@@ -278,7 +284,7 @@ export PYCHARM_JDK=/opt/java-oracle
 export RUBYMINE_JDK=/opt/java-oracle
 export IDEA_JDK=/opt/java-oracle
 export WEBIDE_JDK=/opt/java-oracle
-alias net9='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.net9.org'
+alias net9='luit -encoding gb18030 -- ssh ppwwyyxx@bbs.net9.org'
 alias smth='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.smth.org'
 alias gtalk='weechat-curses -r "/connect localhost; /msg &bitlbee identify 1"'
 alias tunairc='weechat-curses -r "/connect irc.freenode.net; /join #tuna"'
@@ -321,6 +327,7 @@ else
 fi
 alias topme='top -u $USER'
 alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -rn | head -n20"
+memgrep() { grep VmHWM /proc/$(pgrep -d '/status /proc/' "$1")/status; }
 function killz() {
 	ppid=$(ps -oppid $1 | tail -n1)
 	kill -SIGHUP $ppid

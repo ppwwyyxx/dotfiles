@@ -41,8 +41,7 @@ if [[ -d $CUDA_ROOT ]]; then
 	safe_export_path $CUDA_ROOT/bin
 fi
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
-export MAKEFLAGS="-j4"
-which ccache > /dev/null 2>&1 && export CXX='ccache g++' || true
+export MAKEFLAGS="-j"
 export CXXFLAGS="-Wall -Wextra"
 export NODE_PATH=$HOME/.local/lib/node_modules/
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
@@ -129,7 +128,7 @@ function precmd() {
 	local prompt_nodir="-----$(date +%H:%M)---$git_status$PROMPT_PART"
 	local zero='%([BSUbfksu]|([FB]|){*})'	# used to calculate length withou control sequence
 	local part_length=${#${(S%%)prompt_nodir//$~zero/}}
-	local pwdlen=$((${COLUMNS} - $part_length - 2))
+	local pwdlen=$((${COLUMNS} - $part_length - 3))
 	local START_BOLD=$'\e[1m'		# bold on
 	local END_BOLD=$'\e[22m'		# bold off
 
@@ -200,6 +199,7 @@ setopt SHARE_HISTORY
 export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=100000
 export SAVEHIST=80000
+alias nohistory='unset HISTFILE'
 
 # key binding f[[
 bindkey -e
@@ -500,3 +500,9 @@ if [ $commands[fasd] ]; then
 fi
 
 
+
+PATH="/home/wyx/perl5/bin${PATH+:}${PATH}"; export PATH;
+PERL5LIB="/home/wyx/perl5/lib/perl5${PERL5LIB+:}${PERL5LIB}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/wyx/perl5${PERL_LOCAL_LIB_ROOT+:}${PERL_LOCAL_LIB_ROOT}"; export PERL_LOCAL_LIB_ROOT;
+#PERL_MB_OPT="--install_base \"/home/wyx/perl5\""; export PERL_MB_OPT;
+#PERL_MM_OPT="INSTALL_BASE=/home/wyx/perl5"; export PERL_MM_OPT;
