@@ -69,7 +69,7 @@ config.global = join(
             elseif key == 'c' then run_term('coffee')
             elseif key == 't' then run_term('top', 'FSTerm')
             elseif key == 'h' then run_term('htop', 'FSTerm')
-            elseif key == 'd' then run_term('dstat', 'FSTerm')
+            elseif key == 'd' then run_term('dstat -dnmcl --top-io -Nwlp3s0', 'FSTerm')
             elseif key == 'n' then net_monitor()
             elseif key == 'Shift_L' or key == 'Shift_R' then return
             end
@@ -132,11 +132,13 @@ config.global = join(
             if key == 'Tab' then
                 awful.client.focus.byidx(1)
                 if client.focus then client.focus:raise() end
-            elseif key == 'ISO_Left_Tab' then       -- shfit + tab
-                awful.client.focus.byidx(-1)
-                if client.focus then client.focus:raise() end
-            elseif key ~= 'Shift_L' then
-                keygrabber.stop()
+            --[[
+               [elseif key == 'ISO_Left_Tab' then       -- shfit + tab
+               [    awful.client.focus.byidx(-1)
+               [    if client.focus then client.focus:raise() end
+               [elseif key ~= 'Shift_L' then
+               [    keygrabber.stop()
+               ]]
             end
        end)
 	end),

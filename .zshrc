@@ -21,13 +21,15 @@ safe_export_path $HOME/.local/bin
 safe_export_path $HOME/.zsh/bin
 safe_export_path $HOME/.cabal/bin
 safe_export_path /opt/texlive/2015/bin/x86_64-linux
+safe_export_path /opt/intel/bin
+safe_export_path /opt/intel/vtune_amplifier_xe_2015.3.0.403110/bin64
 safe_export_path /usr/lib/colorgcc/bin
 safe_export_path /opt/lingo14/bin/linux64
 export GOPATH=$HOME/.local/gocode
 safe_export_path $GOPATH/bin
 
 
-# programming
+# dev
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib:/usr/local/lib:$HOME/.local/lib
 export OPENCV3_DIR=/opt/opencv3
 [[ -d $OPENCV3_DIR ]] && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$OPENCV3_DIR/lib
@@ -276,13 +278,13 @@ setopt null_glob
 
 # alias cpv needs completion
 compdef cpv=cp
+compdef rsync=scp
+compdef telnet=ssh
+compdef st=ssh
 
 
 # ignore the current directory
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
-
-zstyle ':completion:*' use-cache true
-zstyle ':completion::complete:*' cache-path .zcache
 zstyle ':completion:*' verbose yes
 zstyle ':completion:*' menu select
 zstyle ':completion:*:*:default' force-list always
@@ -302,7 +304,6 @@ eval $(dircolors -b)
 export ZLSCOLORS="${LS_COLORS}"
 zmodload zsh/complist
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 export LS_COLORS="$LS_COLORS*.f4v=01;35:*.pdf=01;35:*.djvu=01;35:"		# add custom ls_color
 
 # Fix case and typo
@@ -315,9 +316,6 @@ zstyle ':completion:*' group-name ''
 zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*:options' auto-description '%d'
 zstyle ':completion:*:descriptions' format $'\e[01;33m -- %d --\e[0m'
-#zstyle ':completion:*:messages' format $'\e[01;35m -- %d --\e[0m'
-#zstyle ':completion:*:warnings' format $'\e[01;31m -- No Matches Found --\e[0m'
-#zstyle ':completion:*:corrections' format $'\e[01;32m -- %d (errors: %e) --\e[0m'
 
 # huge list
 zstyle ':completion:*:default' list-prompt '%S%M matches%s'
@@ -330,10 +328,11 @@ zstyle ':completion:*:manuals' separate-sections true
 
 #kill completion
 compdef pkill=kill
-compdef pkill=killall
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+zstyle ':completion:*:*:killall:*:processes-names' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:*:kill:*' menu yes select
 zstyle ':completion:*:*:*:*:processes' force-list always
-zstyle ':completion:*:processes' command 'ps -au$USER '
+zstyle ':completion:*:processes' command 'ps a -u $USER -o pid,tname,state,command '
 
 # buffer words completion for tmux
 tmux_buffer_completion() {
@@ -373,9 +372,7 @@ function vscp() {
 	echo ${targs[@]}
     vim ${targs[@]}
 }
-
 compdef vscp=scp
-compdef telnet=scp
 
 # specific filetype
 _pic() { _files -g '*.(jpg|png|bmp|gif|ppm|pbm|jpeg|xcf|ico)(-.)' }
@@ -437,15 +434,14 @@ path_parse(){
 }
 
 # commands which should always be executed in background
-bg_list=(pdf geeqie libreoffice word evince)
+bg_list=(mupdf geeqie libreoffice word powerpoint evince matlab mathematica)
 special_command(){
 	cmd=`echo $BUFFER | awk '{print $1}'`
 	# command running in background
-	in_array $cmd "${bg_list[@]}" && BUFFER=`echo $BUFFER |sed 's/[&]*\s*$/\ 2>\/dev\/null\ \&/g'`
-
-	# command ending with alert
-	alert_list=(mencoder aria2c axel)
-	in_array $cmd "${alert_list[@]}" && BUFFER="$BUFFER ; notify-send \"$cmd finished! \""
+	in_array $cmd "${bg_list[@]}" && BUFFER=`echo $BUFFER |sed 's/\s\+2>\/dev\/null//g; s/[&]*\s*$/\ 2>\/dev\/null\ \&/g'`
+	## command ending with alert
+	#alert_list=(mencoder aria2c axel)
+	#in_array $cmd "${alert_list[@]}" && BUFFER="$BUFFER ; notify-send \"$cmd finished! \""
 }
 
 user-ret(){
@@ -453,7 +449,7 @@ user-ret(){
 	if [[ $HOST == "KeepMoving" ]]; then
 		special_command
 	fi
-	BUFFER=${BUFFER/mms:\/\/officetv/rtsp:\/\/officetv}		# mms IPTV urls in China are actually in rtsp!
+	#BUFFER=${BUFFER/mms:\/\/officetv/rtsp:\/\/officetv}		# mms IPTV urls in China are actually in rtsp!
 	zle accept-line
 }
 zle -N user-ret
@@ -484,7 +480,6 @@ safe_source $HOME/.zsh/extract.zsh
 safe_source $HOME/.zsh/syntax-highlighting/zsh-syntax-highlighting.zsh
 safe_source $HOME/.zsh/history-substring-search.zsh
 HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS="I"			# sensitive search
-#safe_source $HOME/.zsh/autojump/etc/profile.d/autojump.zsh
 
 if [ $commands[fasd] ]; then
 	fasd_cache="$HOME/.vimtmp/fasd-cache"
@@ -499,10 +494,4 @@ if [ $commands[fasd] ]; then
 	bindkey '^X^O' fasd-complete
 fi
 
-
-
-PATH="/home/wyx/perl5/bin${PATH+:}${PATH}"; export PATH;
-PERL5LIB="/home/wyx/perl5/lib/perl5${PERL5LIB+:}${PERL5LIB}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/home/wyx/perl5${PERL_LOCAL_LIB_ROOT+:}${PERL_LOCAL_LIB_ROOT}"; export PERL_LOCAL_LIB_ROOT;
-#PERL_MB_OPT="--install_base \"/home/wyx/perl5\""; export PERL_MB_OPT;
-#PERL_MM_OPT="INSTALL_BASE=/home/wyx/perl5"; export PERL_MM_OPT;
+which thefuck NN && eval "$(thefuck --alias)"

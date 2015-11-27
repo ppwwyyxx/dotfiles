@@ -338,6 +338,7 @@ function waitpid() { while test -d "/proc/$1"; do sleep 1; done }
 #alias py='PYTHONPATH=$HOME/.config/python:$PYTHONPATH python2'
 function pydbg () { ipython --pdb -c "%run $1" }
 alias bp2='bpython2'
+alias piu='pip2 install --user'
 alias pyftp='python2 -m pyftpdlib'
 function pytwistd() { twistd web --path "$1" -p "${2:-8000}" }
 function web() {
@@ -374,6 +375,8 @@ which pacman NN && {
 		alias pSy='sudo aptitude update'
 		alias pSu='sudo aptitude upgrade'
 		alias pQo='apt-file'
+		alias pQl='dpkg-query -L'
+		#alias pQl2='apt-file list'
 		alias pU='sudo dpkg -i'
 	} || {
 		alias pS='sudo yum install'
