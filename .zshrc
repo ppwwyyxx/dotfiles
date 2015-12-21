@@ -31,11 +31,15 @@ safe_export_path $GOPATH/bin
 
 # dev
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib:/usr/local/lib:$HOME/.local/lib
+if [[ -d /opt/intel/mkl ]]; then
+	export MKLROOT=/opt/intel/mkl
+	export LD_LIBRARY_PATH=$MKLROOT/../compiler/lib/intel64:$MKLROOT/lib/intel64:$LD_LIBRARY_PATH;
+fi
 export OPENCV3_DIR=/opt/opencv3
 [[ -d $OPENCV3_DIR ]] && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$OPENCV3_DIR/lib
 [[ -d /usr/local/cuda ]] && local CUDA_ROOT=/usr/local/cuda
 [[ -d /opt/cuda ]] && local CUDA_ROOT=/opt/cuda
-if [[ -d $CUDA_ROOT ]]; then
+if [[ -d "$CUDA_ROOT" ]]; then
 	local CUDNN_ROOT=/usr/local/cudnn
 	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDNN_ROOT
 	export LIBRARY_PATH=$LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDNN_ROOT
@@ -43,7 +47,8 @@ if [[ -d $CUDA_ROOT ]]; then
 	safe_export_path $CUDA_ROOT/bin
 fi
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
-export MAKEFLAGS="-j"
+which ccache >/dev/null 2>&1 && export CXX='ccache g++'
+export MAKEFLAGS="-j2"
 export CXXFLAGS="-Wall -Wextra"
 export NODE_PATH=$HOME/.local/lib/node_modules/
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
@@ -76,7 +81,7 @@ cdpath=(~)
 autoload -U promptinit
 promptinit
 
-# Colors ------------------------------------------------------------------------------------------
+# colors
 autoload colors zsh/terminfo
 colors
 for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do

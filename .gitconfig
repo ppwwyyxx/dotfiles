@@ -8,6 +8,9 @@
 	statusHints = false
 [merge]
 	tool = vimdiff
+	ff = false
+[pull]
+	ff = only
 [branch]
 	autosetuprebase = always
 [github]

@@ -12,7 +12,8 @@ local autorun_items = {
     "dropbox",
     "wicd-client -t",
     "zeal",
-    "urxvt"
+    "urxvt",
+    "mutate"
 }
 local runonce = require("lib/runonce")
 for _, item in ipairs(autorun_items) do

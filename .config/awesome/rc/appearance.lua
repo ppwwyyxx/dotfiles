@@ -13,7 +13,7 @@ local wp_files = { "dark.jpg", "sky.jpg",
 
 -- use dark.png for second screen
 if screen.count() == 2 then
-    gears.wallpaper.maximized(wp_path .. "dark.png", 2, true)
+    gears.wallpaper.maximized(wp_path .. "dark.jpg", 2, true)
 end
 
 function changewp()

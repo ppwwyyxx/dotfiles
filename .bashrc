@@ -39,6 +39,5 @@ PS1='\[\e]0;\w\007\]\[\033[32m\]\D{%Y-%m-%d %H:%M:%S}\[\033[01;32m\] \u@\h \[\03
 alias l='ls -F --color=auto'
 alias ls='ls -F --color=auto'
 alias lss='ls -F --color=auto'
-alias lll='ls++'
 alias L=less
 alias sv='sudo vim'

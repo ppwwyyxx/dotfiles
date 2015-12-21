@@ -261,7 +261,6 @@ function b(){
 }
 
 # softwares
-alias robomongo='/opt/robomongo-0.8.0-x86_64/bin/robomongo.sh'
 alias mathc='/opt/Mathematica/Executables/math'
 alias mathematica='/opt/Mathematica/Executables/Mathematica -nosplash'
 which matlab NN || {
