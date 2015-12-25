@@ -37,14 +37,14 @@ if [[ -d /opt/intel/mkl ]]; then
 fi
 export OPENCV3_DIR=/opt/opencv3
 [[ -d $OPENCV3_DIR ]] && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$OPENCV3_DIR/lib
-[[ -d /usr/local/cuda ]] && local CUDA_ROOT=/usr/local/cuda
-[[ -d /opt/cuda ]] && local CUDA_ROOT=/opt/cuda
-if [[ -d "$CUDA_ROOT" ]]; then
-	local CUDNN_ROOT=/usr/local/cudnn
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDNN_ROOT
-	export LIBRARY_PATH=$LIBRARY_PATH:$CUDA_ROOT/lib64:$CUDNN_ROOT
-	export CPATH=$CPATH:$CUDNN_ROOT:$CUDA_ROOT/include
-	safe_export_path $CUDA_ROOT/bin
+[[ -d /usr/local/cuda ]] && local CUDA_HOME=/usr/local/cuda
+[[ -d /opt/cuda ]] && local CUDA_HOME=/opt/cuda
+if [[ -d "$CUDA_HOME" ]]; then
+	local CUDNN_HOME=/usr/local/cudnn
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_HOME/lib64:$CUDNN_HOME
+	export LIBRARY_PATH=$LIBRARY_PATH:$CUDA_HOME/lib64:$CUDNN_HOME
+	export CPATH=$CPATH:$CUDNN_HOME:$CUDA_HOME/include
+	safe_export_path $CUDA_HOME/bin
 fi
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 which ccache >/dev/null 2>&1 && export CXX='ccache g++'

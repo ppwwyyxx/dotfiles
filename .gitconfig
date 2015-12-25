@@ -13,6 +13,8 @@
 	ff = only
 [branch]
 	autosetuprebase = always
+[clone]
+	progress = true
 [github]
 	user = ppwwyyxx
 [push]
