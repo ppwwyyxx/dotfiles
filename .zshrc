@@ -25,12 +25,12 @@ safe_export_path /opt/intel/bin
 safe_export_path /opt/intel/vtune_amplifier_xe_2015.3.0.403110/bin64
 safe_export_path /usr/lib/colorgcc/bin
 safe_export_path /opt/lingo14/bin/linux64
+safe_export_path $HOME/.linuxbrew/bin
 export GOPATH=$HOME/.local/gocode
 safe_export_path $GOPATH/bin
 
 
-# dev
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib:/usr/local/lib:$HOME/.local/lib
+# dev libraries
 if [[ -d /opt/intel/mkl ]]; then
 	export MKLROOT=/opt/intel/mkl
 	export LD_LIBRARY_PATH=$MKLROOT/../compiler/lib/intel64:$MKLROOT/lib/intel64:$LD_LIBRARY_PATH;
@@ -46,6 +46,10 @@ if [[ -d "$CUDA_HOME" ]]; then
 	export CPATH=$CPATH:$CUDNN_HOME:$CUDA_HOME/include
 	safe_export_path $CUDA_HOME/bin
 fi
+export PYTHONPATH=$HOME/Work/facepp/OCR/image2text/neupack/
+export PYTHONPATH=$HOME/Work/DL/caffe/python/
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib:/usr/local/lib:$HOME/.local/lib
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 which ccache >/dev/null 2>&1 && export CXX='ccache g++'
 export MAKEFLAGS="-j2"
@@ -56,7 +60,6 @@ safe_source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a funct
 . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 export PYTHONDOCS=/usr/share/doc/python2/html
 [[ -s ~/.config/python/.startup.py ]] && export PYTHONSTARTUP=~/.config/python/.startup.py
-export PYTHONPATH=$HOME/Work/facepp/OCR/image2text/neupack/
 export RUBY_GC_MALLOC_LIMIT=256000000
 export RUBY_HEAP_MIN_SLOTS=600000
 export RUBY_HEAP_SLOTS_INCREMENT=200000
@@ -385,7 +388,7 @@ compdef _pic gimp
 compdef _pic feh
 
 # vim ignore
-zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv|mp3|pdf|doc|docx|jpg|png|bmp|gif)'
+zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv|mp3|pdf|doc|docx|jpg|png|bmp|gif|npy)'
 
 # Pinyin Completion
 safe_source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh

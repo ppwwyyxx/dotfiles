@@ -1,0 +1,41 @@
+set meta-flag on
+set input-meta on
+set output-meta on
+set convert-meta off
+
+set bell-style none
+
+set completion-ignore-case on
+set completion-map-case on
+set completion-prefix-display-length 2
+set skip-completed-text on
+
+set visible-stats on
+
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+
+"\C-n": history-search-forward
+"\C-p": history-search-backward
+
+set keymap vi-insert
+"\e.":  yank-last-arg
+"\ef":  vi-next-word
+"\eb":  vi-prev-word
+"\ep":  previous-history
+"\en":  next-history
+"\e&":  tilde-expand
+
+set keymap vi-command
+"qq": start-kbd-macro
+"qe": end-kbd-macro
+"Q":  call-last-kbd-macro
+
+set keymap emacs
+"\C-b": backward-word
+"\C-h": backward-char
+"\C-l": forward-char
+"\C-k": kill-line
+
+# ipython
+set editing-mode emacs

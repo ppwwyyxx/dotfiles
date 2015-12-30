@@ -345,6 +345,16 @@ function web() {
   #ruby -run -e httpd "$1" -p "${2:-8000}"
 }
 alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --user -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install --user -U"
+function theano() {
+	if [[ "$1" == gpu* ]] ; then
+		device="$1"
+		args=("${@: 2}")
+	else
+		device=gpu$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | nl | sort -n -k2 | awk '{print $1-1; exit}')
+		args=("${@: 1}")
+	fi
+	OMP_NUM_THREADS=1 THEANO_FLAGS="device=$device,floatX=float32,allow_gc=False,linker=cvm_nogc,warn_float64=warn" $args
+}
 
 # package
 which pacman NN && {
