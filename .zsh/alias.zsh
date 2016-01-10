@@ -17,6 +17,7 @@ alias mv='nocorrect mv -i'
 alias mkdir='nocorrect mkdir'
 alias cp='nocorrect cp -rvi'
 alias cpv="rsync -pogh -e /dev/null -P --"	# cp with progress
+alias watch='watch '	# allow watching an alias
 
 alias l='ls -F --color=auto'
 alias l.='ls -d .* --color=auto'
@@ -147,6 +148,10 @@ function gmtr() {
 		  };
 		  { print $2"\t"$3"\t"$6/1000"ms\t"geo($3) }'
 }
+function proxy() {
+	p="$1"
+	https_proxy=$p http_proxy=$p ${@: 2}
+}
 alias vnc-quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=ZRLE -FullScreen=1 -Shared=1'
 alias rdesktop-nana='rdesktop-vrdp -K -u wyx -p - 59.66.131.64:3389'
 
@@ -246,6 +251,7 @@ function usbon () {
 	cat $powerf
 }
 alias nvq='nvidia-smi --query-gpu=temperature.gpu,clocks.current.sm,power.limit,power.draw,utilization.gpu,utilization.memory --format=csv'
+alias nsmi='watch -n 0.5 nvidia-smi'
 
 function b(){
 	=acpi -V | head -n1
@@ -355,6 +361,7 @@ function theano() {
 	fi
 	OMP_NUM_THREADS=1 THEANO_FLAGS="device=$device,floatX=float32,allow_gc=False,linker=cvm_nogc,warn_float64=warn" $args
 }
+alias unquote='python2 -c "import sys, urllib as ul; [sys.stdout.write(ul.unquote(l)) for l in sys.stdin]"'
 
 # package
 which pacman NN && {

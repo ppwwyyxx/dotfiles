@@ -45,13 +45,17 @@ function update_current_git_vars() {
 
     if [[ "$GIT_PROMPT_EXECUTABLE" == "python" ]]; then
         local gitstatus="$__GIT_PROMPT_DIR/gitstatus.py"
-        _GIT_STATUS=`python ${gitstatus} 2>/dev/null`
+				which timeout >/dev/null 2>&1 && {
+					_GIT_STATUS=`timeout 0.01 python ${gitstatus} 2>/dev/null`
+				} || {
+					_GIT_STATUS=`python ${gitstatus} 2>/dev/null`
+				}
     fi
     if [[ "$GIT_PROMPT_EXECUTABLE" == "haskell" ]]; then
         local gitstatus="$__GIT_PROMPT_DIR/dist/build/gitstatus/gitstatus"
         _GIT_STATUS=`${gitstatus}`
     fi
-     __CURRENT_GIT_STATUS=("${(@s: :)_GIT_STATUS}")
+  __CURRENT_GIT_STATUS=("${(@s: :)_GIT_STATUS}")
 	GIT_BRANCH=$__CURRENT_GIT_STATUS[1]
 	GIT_AHEAD=$__CURRENT_GIT_STATUS[2]
 	GIT_BEHIND=$__CURRENT_GIT_STATUS[3]

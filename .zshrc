@@ -26,6 +26,7 @@ safe_export_path /opt/intel/vtune_amplifier_xe_2015.3.0.403110/bin64
 safe_export_path /usr/lib/colorgcc/bin
 safe_export_path /opt/lingo14/bin/linux64
 safe_export_path $HOME/.linuxbrew/bin
+safe_export_path $HOME/.rvm/bin		# Add RVM to PATH for scripting
 export GOPATH=$HOME/.local/gocode
 safe_export_path $GOPATH/bin
 
@@ -47,12 +48,17 @@ if [[ -d "$CUDA_HOME" ]]; then
 	safe_export_path $CUDA_HOME/bin
 fi
 export PYTHONPATH=$HOME/Work/facepp/OCR/image2text/neupack/
-export PYTHONPATH=$HOME/Work/DL/caffe/python/
+export PYTHONPATH=$PYTHONPATH:$HOME/Work/oculus/tensorpack
+export PYTHONPATH=$PYTHONPATH:$HOME/Work/DL/caffe/python
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib:/usr/local/lib:$HOME/.local/lib
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 which ccache >/dev/null 2>&1 && export CXX='ccache g++'
-export MAKEFLAGS="-j2"
+if [[ $HOST == "KeepMoving" ]]; then
+	export MAKEFLAGS="-j2"	# my laptop break if run with all threads
+else
+	export MAKEFLAGS="-j"
+fi
 export CXXFLAGS="-Wall -Wextra"
 export NODE_PATH=$HOME/.local/lib/node_modules/
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
@@ -60,10 +66,10 @@ safe_source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a funct
 . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 export PYTHONDOCS=/usr/share/doc/python2/html
 [[ -s ~/.config/python/.startup.py ]] && export PYTHONSTARTUP=~/.config/python/.startup.py
-export RUBY_GC_MALLOC_LIMIT=256000000
-export RUBY_HEAP_MIN_SLOTS=600000
-export RUBY_HEAP_SLOTS_INCREMENT=200000
-export RUBY_HEAP_FREE_MIN=100000
+#export RUBY_GC_MALLOC_LIMIT=256000000
+#export RUBY_HEAP_INIT_SLOTS=600000
+#export RUBY_HEAP_SLOTS_INCREMENT=200000
+#export RUBY_HEAP_FREE_MIN=100000
 #. /opt/torch/install/bin/torch-activate
 
 #export DISTCC_POTENTIAL_HOSTS='166.111.71.80/8 166.111.71.95/16'
@@ -171,7 +177,7 @@ $YELLOWGREEN%$pwdlen<...<%~%<< \
 
 # alias
 safe_source $HOME/.zsh/alias.zsh
-alias -s pdf=mupdf -b 0
+alias -s pdf=llpp
 alias -s djvu=djview4
 alias -s obj=meshlab
 alias -s pcd=~/tmp/modeling/bin/pcd_viewer
@@ -442,7 +448,7 @@ path_parse(){
 }
 
 # commands which should always be executed in background
-bg_list=(mupdf geeqie libreoffice word powerpoint evince matlab mathematica)
+bg_list=(mupdf geeqie libreoffice word powerpoint evince matlab mathematica llpp)
 special_command(){
 	cmd=`echo $BUFFER | awk '{print $1}'`
 	# command running in background
@@ -503,3 +509,6 @@ if [ $commands[fasd] ]; then
 fi
 
 which thefuck NN && eval "$(thefuck --alias)"
+
+
+safe_source $HOME/.zshrc.local

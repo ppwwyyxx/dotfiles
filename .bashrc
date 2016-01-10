@@ -41,3 +41,5 @@ alias ls='ls -F --color=auto'
 alias lss='ls -F --color=auto'
 alias L=less
 alias sv='sudo vim'
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

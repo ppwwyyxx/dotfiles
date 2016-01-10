@@ -12,6 +12,7 @@ local autorun_items = {
     "dropbox",
     "wicd-client -t",
     "zeal",
+    "/home/wyx/bin/notify-daemon.py",
     "urxvt"
 }
 local runonce = require("lib/runonce")
