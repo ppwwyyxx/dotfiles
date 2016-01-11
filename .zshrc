@@ -36,8 +36,6 @@ if [[ -d /opt/intel/mkl ]]; then
 	export MKLROOT=/opt/intel/mkl
 	export LD_LIBRARY_PATH=$MKLROOT/../compiler/lib/intel64:$MKLROOT/lib/intel64:$LD_LIBRARY_PATH;
 fi
-export OPENCV3_DIR=/opt/opencv3
-[[ -d $OPENCV3_DIR ]] && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$OPENCV3_DIR/lib
 [[ -d /usr/local/cuda ]] && local CUDA_HOME=/usr/local/cuda
 [[ -d /opt/cuda ]] && local CUDA_HOME=/opt/cuda
 if [[ -d "$CUDA_HOME" ]]; then
@@ -47,18 +45,11 @@ if [[ -d "$CUDA_HOME" ]]; then
 	export CPATH=$CPATH:$CUDNN_HOME:$CUDA_HOME/include
 	safe_export_path $CUDA_HOME/bin
 fi
-export PYTHONPATH=$HOME/Work/facepp/OCR/image2text/neupack/
-export PYTHONPATH=$PYTHONPATH:$HOME/Work/oculus/tensorpack
-export PYTHONPATH=$PYTHONPATH:$HOME/Work/DL/caffe/python
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib:/usr/local/lib:$HOME/.local/lib
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 which ccache >/dev/null 2>&1 && export CXX='ccache g++'
-if [[ $HOST == "KeepMoving" ]]; then
-	export MAKEFLAGS="-j2"	# my laptop break if run with all threads
-else
-	export MAKEFLAGS="-j"
-fi
+export MAKEFLAGS="-j"
 export CXXFLAGS="-Wall -Wextra"
 export NODE_PATH=$HOME/.local/lib/node_modules/
 export JDK_HOME=/usr/lib/jvm/java-7-openjdk
