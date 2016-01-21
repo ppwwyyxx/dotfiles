@@ -275,25 +275,17 @@ which matlab NN || {
 alias matlabc='matlab -nodisplay -r clc '
 alias rstudio='/opt/RStudio/lib/rstudio/bin/rstudio'
 alias maple='/opt/Maple/bin/xmaple'
-alias evernote='wine ~/.wine/drive_c/Program\ Files\ \(x86\)/Evernote/Evernote/Evernote.exe'
-alias ie8="wine 'C:\Program Files (x86)\\\\Internet Explorer\\\\iexplore'"
-alias lingoes='wine ~/.wine/drive_c/users/wyx/Local\ Settings/Application\ Data/Lingoes/Translator/lingoes-cn/Lingoes.exe'
-alias wine32='WINEARCH=win32 LC_ALL=zh_CN.utf-8 WINEPREFIX=~/.wine32 wine'
-alias eclimd='/usr/share/eclipse/eclimd'
-alias SugarCpp='mono ~/Work/SugarCpp-C\#/src/SugarCpp.CommandLine/bin/Debug/SugarCpp.CommandLine.exe'
-alias word='wps'
-alias powerpoint='wpp'
-alias webstorm='/opt/WebStorm-129.664/bin/webstorm.sh'
 alias idea='/opt/idea-IC-129.713/bin/idea.sh'
+alias webstorm='/opt/WebStorm-129.664/bin/webstorm.sh'
 export PYCHARM_JDK=/opt/java-oracle
 export RUBYMINE_JDK=/opt/java-oracle
 export IDEA_JDK=/opt/java-oracle
 export WEBIDE_JDK=/opt/java-oracle
+
+alias wine32='WINEARCH=win32 LC_ALL=zh_CN.utf-8 WINEPREFIX=~/.wine32 wine'
 alias net9='luit -encoding gb18030 -- ssh ppwwyyxx@bbs.net9.org'
 alias smth='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.smth.org'
-alias gtalk='weechat-curses -r "/connect localhost; /msg &bitlbee identify 1"'
-alias tunairc='weechat-curses -r "/connect irc.freenode.net; /join #tuna"'
-alias telegram='/opt/telegram/Telegram'
+alias freenode='weechat-curses -r "/connect freenode"'	# /join #tuna
 
 # media
 alias idf='identify'

@@ -36,15 +36,25 @@ if [[ -d /opt/intel/mkl ]]; then
 	export MKLROOT=/opt/intel/mkl
 	export LD_LIBRARY_PATH=$MKLROOT/../compiler/lib/intel64:$MKLROOT/lib/intel64:$LD_LIBRARY_PATH;
 fi
-[[ -d /usr/local/cuda ]] && local CUDA_HOME=/usr/local/cuda
-[[ -d /opt/cuda ]] && local CUDA_HOME=/opt/cuda
-if [[ -d "$CUDA_HOME" ]]; then
-	local CUDNN_HOME=/usr/local/cudnn
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_HOME/lib64:$CUDNN_HOME
-	export LIBRARY_PATH=$LIBRARY_PATH:$CUDA_HOME/lib64:$CUDNN_HOME
-	export CPATH=$CPATH:$CUDNN_HOME:$CUDA_HOME/include
-	safe_export_path $CUDA_HOME/bin
-fi
+function try_use_cuda_home() {
+	if [[ -d "$1" ]]; then
+		export CUDA_HOME="$1"
+		export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_HOME/lib64
+		export LIBRARY_PATH=$LIBRARY_PATH:$CUDA_HOME/lib64
+		export CPATH=$CPATH:$CUDA_HOME/include
+		safe_export_path $CUDA_HOME/bin
+	fi
+}
+function try_use_cudnn() {
+	if [[ -d "$1" ]]; then
+		export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$1/lib64
+		export LIBRARY_PATH=$LIBRARY_PATH:$1/lib64
+		export CPATH=$CPATH:$1/include
+	fi
+}
+try_use_cuda_home /usr/local/cuda
+try_use_cuda_home /opt/cuda
+try_use_cudnn /usr/local/cudnn
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib:/usr/local/lib:$HOME/.local/lib
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
@@ -52,18 +62,11 @@ which ccache >/dev/null 2>&1 && export CXX='ccache g++'
 export MAKEFLAGS="-j"
 export CXXFLAGS="-Wall -Wextra"
 export NODE_PATH=$HOME/.local/lib/node_modules/
-export JDK_HOME=/usr/lib/jvm/java-7-openjdk
 safe_source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-export PYTHONDOCS=/usr/share/doc/python2/html
 [[ -s ~/.config/python/.startup.py ]] && export PYTHONSTARTUP=~/.config/python/.startup.py
-#export RUBY_GC_MALLOC_LIMIT=256000000
-#export RUBY_HEAP_INIT_SLOTS=600000
-#export RUBY_HEAP_SLOTS_INCREMENT=200000
-#export RUBY_HEAP_FREE_MIN=100000
 #. /opt/torch/install/bin/torch-activate
 
-#export DISTCC_POTENTIAL_HOSTS='166.111.71.80/8 166.111.71.95/16'
 export EDITOR=vim
 export BROWSER=chromium
 export PAGER="/usr/bin/less -s"

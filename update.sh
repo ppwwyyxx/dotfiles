@@ -15,5 +15,6 @@ cp ~/.config/python ./.config -rvH
 cp ~/.gitconfig ./ -rvf
 cp ~/.xbindkeysrc ./ -fv
 cp ~/.cvimrc ./
+cp ~/.zshrc.local ./
 
 cp ~/.conky* ./ -rvH

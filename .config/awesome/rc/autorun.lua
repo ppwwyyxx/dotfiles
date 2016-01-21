@@ -7,13 +7,18 @@ local autorun_items = {
     "conky",
     "conky -c /home/wyx/.conkyrc-cal",
     "xcape -e 'Control_L=Escape;Hyper_L=XF86Mail'",
-    "telegram",
-    "/home/wyx/bin/cvim-server.py",
-    "dropbox",
     "wicd-client -t",
+
     "zeal",
+    "urxvt",
+
+    "/home/wyx/bin/cvim-server.py",
     "/home/wyx/bin/notify-daemon.py",
-    "urxvt"
+
+    "telegram",
+    "plaidchat",
+
+    "dropbox",
 }
 local runonce = require("lib/runonce")
 for _, item in ipairs(autorun_items) do

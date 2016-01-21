@@ -1,0 +1,13 @@
+export MAKEFLAGS="-j2"
+export OPENCV3_DIR=/opt/opencv3
+[[ -d $OPENCV3_DIR ]] && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$OPENCV3_DIR/lib
+export PYTHONPATH=$PYTHONPATH:$HOME/Work/facepp/OCR/image2text/neupack/
+export PYTHONPATH=$PYTHONPATH:$HOME/Work/oculus/tensorpack
+export PYTHONPATH=$PYTHONPATH:$HOME/Work/DL/caffe/python
+
+alias word='$HOME/.cxoffice/Microsoft_Office_2010/desktopdata/cxmenu/Shortcuts/cxoffice-20f95254-d28c-4011-819a-4716127643a7.winword'
+alias powerpoint='$HOME/.cxoffice/Microsoft_Office_2010/desktopdata/cxmenu/Shortcuts/cxoffice-20f95254-d28c-4011-819a-4716127643a7.powerpnt'
+alias excel='$HOME/.cxoffice/Microsoft_Office_2010/desktopdata/cxmenu/Shortcuts/cxoffice-20f95254-d28c-4011-819a-4716127643a7.excel'
+
+alias ie8='$HOME/.cxoffice/common/desktopdata/cxmenu/Shortcuts/cxoffice-31bdb99f-8220-40bb-b5d3-63d0663c307b.iexplore'
+alias lingoes='$HOME/.cxoffice/common/desktopdata/cxmenu/Shortcuts/cxoffice-31bdb99f-8220-40bb-b5d3-63d0663c307b.lingoes'

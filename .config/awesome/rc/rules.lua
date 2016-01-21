@@ -89,7 +89,7 @@ awful.rules.rules = {
 }, {
     rule_any = { name = {'Telegram', 'plaidchat'} },
     callback = function(c)
-        awful.client.movetotag(tags[screen.count()][3], c)
+        awful.client.movetotag(tags[1][3], c)
     end
 }, {
     rule = { name = 'sogou-qimpanel'},
