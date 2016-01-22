@@ -370,9 +370,9 @@ which pacman NN && {
 	alias pacman-size="paste <(pacman -Q | awk '{ print \$1; }' | xargs pacman -Qi | grep 'Size' | awk '{ print \$4\$5; }') <(pacman -Q | awk '{print \$1; }') | sort -n | column -t"
 	function pacmanorphan() {
 	  if [[ ! -n $(pacman -Qdt) ]]; then
-		echo "No orphans to remove."
+			echo "No orphans to remove."
 	  else
-		sudo pacman -Rns $(pacman -Qdtq)
+			sudo pacman -Rns $(pacman -Qdtq)
 	  fi
 	}
 } || {

@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 # -------------------------------------------------------------------------------------------------
 # Copyright (c) 2010-2011 zsh-syntax-highlighting contributors
 # All rights reserved.
@@ -30,16 +29,20 @@
 
 
 # Define default styles.
-: ${ZSH_HIGHLIGHT_STYLES[line]:=}
+: ${ZSH_HIGHLIGHT_STYLES[cursor]:=standout}
 
-# Whether the root highlighter should be called or not.
-_zsh_highlight_line_highlighter_predicate()
+# Whether the cursor highlighter should be called or not.
+_zsh_highlight_cursor_highlighter_predicate()
 {
-  _zsh_highlight_buffer_modified
+  # accept-* may trigger removal of cursor highlighting
+  [[ $WIDGET == accept-* ]] ||
+    _zsh_highlight_cursor_moved
 }
 
-# root highlighting function.
-_zsh_highlight_line_highlighter()
+# Cursor highlighting function.
+_zsh_highlight_cursor_highlighter()
 {
-  region_highlight+=("0 $#BUFFER $ZSH_HIGHLIGHT_STYLES[line]")
+  [[ $WIDGET == accept-* ]] && return
+  
+  region_highlight+=("$CURSOR $(( $CURSOR + 1 )) $ZSH_HIGHLIGHT_STYLES[cursor]")
 }

@@ -5,20 +5,20 @@ local autorun_items = {
     "fcitx-autostart",
     "sogou-qimpanel",
     "conky",
-    "conky -c /home/wyx/.conkyrc-cal",
+    "sleep 100 && conky -c /home/wyx/.conkyrc-cal",
     "xcape -e 'Control_L=Escape;Hyper_L=XF86Mail'",
     "wicd-client -t",
 
-    "zeal",
+    "sleep 100 && zeal",
     "urxvt",
 
     "/home/wyx/bin/cvim-server.py",
     "/home/wyx/bin/notify-daemon.py",
 
-    "telegram",
-    "plaidchat",
+    "sleep 100 && telegram",
+    "sleep 100 && plaidchat",
 
-    "dropbox",
+    --"sleep 100 && dropbox",
 }
 local runonce = require("lib/runonce")
 for _, item in ipairs(autorun_items) do

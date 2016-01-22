@@ -421,11 +421,6 @@ path_parse(){
 	if [[ $BUFFER = "." ]]; then
 		BUFFER="cd ../"
 		return
-	elif [[ $BUFFER =~ "^\./.*" ]]; then		# automatic cd to directory when executed
-		if [[ ! -f $BUFFER ]] && [[ -d $BUFFER ]]; then
-			BUFFER="cd $BUFFER"
-			path_parse
-		fi
 	elif [[ $BUFFER =~ ".*\.\.\..*" ]] ;then	# expand ...
 		BUFFER=`echo "$BUFFER" |sed 's/\.\.\./\.\.\/\.\./g'`
 		path_parse
@@ -442,9 +437,9 @@ path_parse(){
 }
 
 # commands which should always be executed in background
-bg_list=(mupdf geeqie libreoffice word powerpoint evince matlab mathematica llpp)
+local bg_list=(mupdf geeqie libreoffice word powerpoint evince matlab mathematica llpp)
 special_command(){
-	cmd=`echo $BUFFER | awk '{print $1}'`
+	local cmd=`echo $BUFFER | awk '{print $1}'`
 	# command running in background
 	in_array $cmd "${bg_list[@]}" && BUFFER=`echo $BUFFER |sed 's/\s\+2>\/dev\/null//g; s/[&]*\s*$/\ 2>\/dev\/null\ \&/g'`
 	## command ending with alert
@@ -454,9 +449,7 @@ special_command(){
 
 user-ret(){
 	path_parse
-	if [[ $HOST == "KeepMoving" ]]; then
-		special_command
-	fi
+	special_command
 	#BUFFER=${BUFFER/mms:\/\/officetv/rtsp:\/\/officetv}		# mms IPTV urls in China are actually in rtsp!
 	zle accept-line
 }
@@ -485,13 +478,13 @@ function command_not_found_handler() {
 # plugins
 safe_source $HOME/.zsh/extract.zsh
 # the next two have to be this order
-safe_source $HOME/.zsh/syntax-highlighting/zsh-syntax-highlighting.zsh
+safe_source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 safe_source $HOME/.zsh/history-substring-search.zsh
+safe_source $HOME/.zsh/cdnav.zsh
 HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS="I"			# sensitive search
 
 if [ $commands[fasd] ]; then
 	fasd_cache="$HOME/.vimtmp/fasd-cache"
-	#eval "$(fasd --init zsh-hook zsh-wcomp zsh-wcomp-install)"
 	eval "$(fasd --init posix-alias zsh-hook zsh-wcomp zsh-wcomp-install)"
 	#eval "$(fasd --init zsh-wcomp zsh-wcomp-install)"	 # this should be enabled periodically
 	alias o='f -e xdg-open'

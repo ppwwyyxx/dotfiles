@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 # -------------------------------------------------------------------------------------------------
 # Copyright (c) 2010-2011 zsh-syntax-highlighting contributors
 # All rights reserved.
@@ -30,16 +29,16 @@
 
 
 # Define default styles.
-: ${ZSH_HIGHLIGHT_STYLES[root]:=standout}
+: ${ZSH_HIGHLIGHT_STYLES[line]:=}
 
 # Whether the root highlighter should be called or not.
-_zsh_highlight_root_highlighter_predicate()
+_zsh_highlight_line_highlighter_predicate()
 {
   _zsh_highlight_buffer_modified
 }
 
 # root highlighting function.
-_zsh_highlight_root_highlighter()
+_zsh_highlight_line_highlighter()
 {
-  if [[ $(command id -u) -eq 0 ]] { region_highlight+=("0 $#BUFFER $ZSH_HIGHLIGHT_STYLES[root]") }
+  region_highlight+=("0 $#BUFFER $ZSH_HIGHLIGHT_STYLES[line]")
 }

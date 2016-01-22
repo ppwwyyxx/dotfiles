@@ -1,6 +1,5 @@
-#!/usr/bin/env zsh
 # -------------------------------------------------------------------------------------------------
-# Copyright (c) 2010-2011 zsh-syntax-highlighting contributors
+# Copyright (c) 2010-2015 zsh-syntax-highlighting contributors
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification, are permitted
@@ -29,6 +28,24 @@
 # -------------------------------------------------------------------------------------------------
 
 
+if [[ -o function_argzero ]]; then
+  # $0 is reliable
+  ZSH_HIGHLIGHT_VERSION=$(<"${0:A:h}"/.version)
+  ZSH_HIGHLIGHT_REVISION=$(<"${0:A:h}"/.revision-hash)
+  if [[ $ZSH_HIGHLIGHT_REVISION == \$Format:* ]]; then
+    # When running from a source tree without 'make install', $ZSH_HIGHLIGHT_REVISION
+    # would be set to '$Format:%H$' literally.  That's an invalid value, and obtaining
+    # the valid value (via `git rev-parse HEAD`, as Makefile does) might be costly, so:
+    ZSH_HIGHLIGHT_REVISION=HEAD
+  fi
+else
+  # $0 is unreliable, so the call to _zsh_highlight_load_highlighters will fail.
+  # TODO: If 'zmodload zsh/parameter' is available, ${funcsourcetrace[1]%:*} might serve as a substitute?
+  # TODO: also check POSIX_ARGZERO, but not it's not available in older zsh
+  echo "zsh-syntax-highlighting: error: not compatible with NO_FUNCTION_ARGZERO" >&2
+  return 1
+fi
+
 # -------------------------------------------------------------------------------------------------
 # Core highlighting update system
 # -------------------------------------------------------------------------------------------------
@@ -42,10 +59,12 @@ typeset -ga ZSH_HIGHLIGHT_HIGHLIGHTERS
 # This function is supposed to be called whenever the ZLE state changes.
 _zsh_highlight()
 {
-  setopt localoptions nowarncreateglobal
-
   # Store the previous command return code to restore it whatever happens.
   local ret=$?
+
+  setopt localoptions warncreateglobal
+  setopt localoptions noksharrays
+  local REPLY # don't leak $REPLY into global scope
 
   # Do not highlight if there are more than 300 chars in the buffer. It's most
   # likely a pasted command or a huge list of files in that case..
@@ -55,6 +74,7 @@ _zsh_highlight()
   [[ $PENDING -gt 0 ]] && return $ret
 
   # Reset region highlight to build it from scratch
+  typeset -ga region_highlight
   region_highlight=();
 
   {
@@ -92,10 +112,41 @@ _zsh_highlight()
 
     done
 
-  } always {
-    _ZSH_HIGHLIGHT_PRIOR_BUFFER=$BUFFER
-    _ZSH_HIGHLIGHT_PRIOR_CURSOR=$CURSOR
+    # Re-apply zle_highlight settings
+    () {
+      if (( REGION_ACTIVE )) ; then
+        # zle_highlight[region] defaults to 'standout' if unspecified
+        local region="${${zle_highlight[(r)region:*]#region:}:-standout}"
+        integer start end
+        if (( MARK > CURSOR )) ; then
+          start=$CURSOR end=$MARK
+        else
+          start=$MARK end=$CURSOR
+        fi
+        region_highlight+=("$start $end $region")
+      fi
+    }
+    # YANK_ACTIVE is only available in zsh-5.1.1 and newer
+    (( $+YANK_ACTIVE )) && () {
+      if (( YANK_ACTIVE )) ; then
+        # zle_highlight[paste] defaults to 'standout' if unspecified
+        local paste="${${zle_highlight[(r)paste:*]#paste:}:-standout}"
+        integer start end
+        if (( YANK_END > YANK_START )) ; then
+          start=$YANK_START end=$YANK_END
+        else
+          start=$YANK_END end=$YANK_START
+        fi
+        region_highlight+=("$start $end $paste")
+      fi
+    }
+
     return $ret
+
+
+  } always {
+    typeset -g _ZSH_HIGHLIGHT_PRIOR_BUFFER="$BUFFER"
+    typeset -gi _ZSH_HIGHLIGHT_PRIOR_CURSOR=$CURSOR
   }
 }
 
@@ -128,9 +179,19 @@ _zsh_highlight_cursor_moved()
 # Setup functions
 # -------------------------------------------------------------------------------------------------
 
+# Helper for _zsh_highlight_bind_widgets
+# $1 is name of widget to call
+_zsh_highlight_call_widget()
+{
+  builtin zle "$@" && 
+  _zsh_highlight
+}
+
 # Rebind all ZLE widgets to make them invoke _zsh_highlights.
 _zsh_highlight_bind_widgets()
 {
+  setopt localoptions noksharrays
+
   # Load ZSH module zsh/zleparameter, needed to override user defined widgets.
   zmodload zsh/zleparameter 2>/dev/null || {
     echo 'zsh-syntax-highlighting: failed loading zsh/zleparameter.' >&2
@@ -139,7 +200,7 @@ _zsh_highlight_bind_widgets()
 
   # Override ZLE widgets to make them invoke _zsh_highlight.
   local cur_widget
-  for cur_widget in ${${(f)"$(builtin zle -la)"}:#(.*|_*|orig-*|run-help|which-command|beep|yank*)}; do
+  for cur_widget in ${${(f)"$(builtin zle -la)"}:#(.*|_*|orig-*|run-help|which-command|beep|set-local-history|yank)}; do
     case $widgets[$cur_widget] in
 
       # Already rebound event: do nothing.
@@ -147,16 +208,16 @@ _zsh_highlight_bind_widgets()
 
       # User defined widget: override and rebind old one with prefix "orig-".
       user:*) eval "zle -N orig-$cur_widget ${widgets[$cur_widget]#*:}; \
-                    _zsh_highlight_widget_$cur_widget() { builtin zle orig-$cur_widget -- \"\$@\" && _zsh_highlight }; \
+                    _zsh_highlight_widget_$cur_widget() { _zsh_highlight_call_widget orig-$cur_widget -- \"\$@\" }; \
                     zle -N $cur_widget _zsh_highlight_widget_$cur_widget";;
 
       # Completion widget: override and rebind old one with prefix "orig-".
       completion:*) eval "zle -C orig-$cur_widget ${${widgets[$cur_widget]#*:}/:/ }; \
-                          _zsh_highlight_widget_$cur_widget() { builtin zle orig-$cur_widget -- \"\$@\" && _zsh_highlight }; \
+                          _zsh_highlight_widget_$cur_widget() { _zsh_highlight_call_widget orig-$cur_widget -- \"\$@\" }; \
                           zle -N $cur_widget _zsh_highlight_widget_$cur_widget";;
 
       # Builtin widget: override and make it call the builtin ".widget".
-      builtin) eval "_zsh_highlight_widget_$cur_widget() { builtin zle .$cur_widget -- \"\$@\" && _zsh_highlight }; \
+      builtin) eval "_zsh_highlight_widget_$cur_widget() { _zsh_highlight_call_widget .$cur_widget -- \"\$@\" }; \
                      zle -N $cur_widget _zsh_highlight_widget_$cur_widget";;
 
       # Default: unhandled case.
@@ -171,6 +232,8 @@ _zsh_highlight_bind_widgets()
 #   1) Path to the highlighters directory.
 _zsh_highlight_load_highlighters()
 {
+  setopt localoptions noksharrays
+
   # Check the directory exists.
   [[ -d "$1" ]] || {
     echo "zsh-syntax-highlighting: highlighters directory '$1' not found." >&2
@@ -211,8 +274,8 @@ _zsh_highlight_load_highlighters "${ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR:-${${0:A}:h}/
 # Reset scratch variables when commandline is done.
 _zsh_highlight_preexec_hook()
 {
-  _ZSH_HIGHLIGHT_PRIOR_BUFFER=
-  _ZSH_HIGHLIGHT_PRIOR_CURSOR=
+  typeset -g _ZSH_HIGHLIGHT_PRIOR_BUFFER=
+  typeset -gi _ZSH_HIGHLIGHT_PRIOR_CURSOR=
 }
 autoload -U add-zsh-hook
 add-zsh-hook preexec _zsh_highlight_preexec_hook 2>/dev/null || {

@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 # -------------------------------------------------------------------------------------------------
 # Copyright (c) 2010-2011 zsh-syntax-highlighting contributors
 # All rights reserved.
@@ -53,6 +52,7 @@ _zsh_highlight_pattern_highlighter_loop()
   # This does *not* do its job syntactically, sorry.
   local buf="$1" pat="$2"
   local -a match mbegin mend
+  local MATCH; integer MBEGIN MEND
   if [[ "$buf" == (#b)(*)(${~pat})* ]]; then
     region_highlight+=("$((mbegin[2] - 1)) $mend[2] $ZSH_HIGHLIGHT_PATTERNS[$pat]")
     "$0" "$match[1]" "$pat"; return $?
