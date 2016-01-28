@@ -222,7 +222,6 @@ function agenda() {
 alias calw='gcalcli calw'
 
 # hardware
-#alias km='xmodmap ~/.Xmodmap; xcape -e "Control_L=Escape"; xinput set-button-map $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*") 1 0 0'
 function km() {
 	xmodmap ~/.Xmodmap
 	xset r rate 200 40
@@ -250,7 +249,11 @@ function usbon () {
 	echo -n "USB power state now: "
 	cat $powerf
 }
-alias nvq='nvidia-smi --query-gpu=temperature.gpu,clocks.current.sm,power.limit,power.draw,utilization.gpu,utilization.memory --format=csv'
+which nl NN && {
+	alias nvq='nvidia-smi --query-gpu=temperature.gpu,clocks.current.sm,power.limit,power.draw,utilization.gpu,utilization.memory --format=csv | nl -v -1'
+} || {
+	alias nvq='nvidia-smi --query-gpu=temperature.gpu,clocks.current.sm,power.limit,power.draw,utilization.gpu,utilization.memory --format=csv'
+}
 alias nsmi='watch -n 0.5 nvidia-smi'
 
 function b(){

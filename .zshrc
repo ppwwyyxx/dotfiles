@@ -47,8 +47,8 @@ function try_use_cuda_home() {
 }
 function try_use_cudnn() {
 	if [[ -d "$1" ]]; then
-		export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$1/lib64
-		export LIBRARY_PATH=$LIBRARY_PATH:$1/lib64
+		export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$1
+		export LIBRARY_PATH=$LIBRARY_PATH:$1
 		export CPATH=$CPATH:$1/include
 	fi
 }
@@ -437,8 +437,8 @@ path_parse(){
 }
 
 # commands which should always be executed in background
-local bg_list=(mupdf geeqie libreoffice word powerpoint evince matlab mathematica llpp)
 special_command(){
+	local bg_list=(mupdf geeqie libreoffice word powerpoint evince matlab mathematica llpp)
 	local cmd=`echo $BUFFER | awk '{print $1}'`
 	# command running in background
 	in_array $cmd "${bg_list[@]}" && BUFFER=`echo $BUFFER |sed 's/\s\+2>\/dev\/null//g; s/[&]*\s*$/\ 2>\/dev\/null\ \&/g'`
@@ -450,6 +450,7 @@ special_command(){
 user-ret(){
 	path_parse
 	special_command
+	RPS1= zle reset-prompt	# reset rps1 of last command
 	#BUFFER=${BUFFER/mms:\/\/officetv/rtsp:\/\/officetv}		# mms IPTV urls in China are actually in rtsp!
 	zle accept-line
 }
