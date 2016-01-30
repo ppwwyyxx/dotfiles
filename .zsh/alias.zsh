@@ -249,10 +249,11 @@ function usbon () {
 	echo -n "USB power state now: "
 	cat $powerf
 }
+alias __nvq='nvidia-smi --query-gpu=temperature.gpu,clocks.current.sm,power.draw,utilization.gpu,utilization.memory,memory.free --format=csv'
 which nl NN && {
-	alias nvq='nvidia-smi --query-gpu=temperature.gpu,clocks.current.sm,power.limit,power.draw,utilization.gpu,utilization.memory --format=csv | nl -v -1'
+	alias nvq='__nvq | column -t -s , | nl -v -1'
 } || {
-	alias nvq='nvidia-smi --query-gpu=temperature.gpu,clocks.current.sm,power.limit,power.draw,utilization.gpu,utilization.memory --format=csv'
+	alias nvq='__nvq | column -t -s ,'
 }
 alias nsmi='watch -n 0.5 nvidia-smi'
 

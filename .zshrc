@@ -33,6 +33,14 @@ safe_export_path $HOME/.rvm/bin		# Add RVM to PATH for scripting
 export GOPATH=$HOME/.local/gocode
 safe_export_path $GOPATH/bin
 
+# override tmux master key under ssh
+if [[ -n "$TMUX" ]] && [[ -n "$SSH_CLIENT" ]]; then
+	tmux set -g status-bg cyan
+	tmux unbind C-q
+	tmux set -g prefix C-a
+	tmux bind C-a send-prefix
+fi
+
 
 # dev libraries
 if [[ -d /opt/intel/mkl ]]; then
