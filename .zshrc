@@ -8,6 +8,9 @@
 
 [[ -d $HOME/.zsh/Completion ]] && fpath=($HOME/.zsh/Completion $fpath)
 
+export CPATH=
+export LD_LIBRARY_PATH=
+export PYTHONPATH=
 export TERM=screen-256color
 export TERMINFO=$HOME/.terminfo
 export LC_ALL=en_US.UTF-8
@@ -39,17 +42,17 @@ fi
 function try_use_cuda_home() {
 	if [[ -d "$1" ]]; then
 		export CUDA_HOME="$1"
-		export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_HOME/lib64
-		export LIBRARY_PATH=$LIBRARY_PATH:$CUDA_HOME/lib64
-		export CPATH=$CPATH:$CUDA_HOME/include
+		export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+		export LIBRARY_PATH=$CUDA_HOME/lib64:$LIBRARY_PATH
+		export CPATH=$CUDA_HOME/include
 		safe_export_path $CUDA_HOME/bin
 	fi
 }
 function try_use_cudnn() {
 	if [[ -d "$1" ]]; then
-		export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$1
-		export LIBRARY_PATH=$LIBRARY_PATH:$1
-		export CPATH=$CPATH:$1/include
+		export LD_LIBRARY_PATH=$1/lib64:$LD_LIBRARY_PATH
+		export LIBRARY_PATH=$1/lib64:$LIBRARY_PATH
+		export CPATH=$1/include:$CPATH
 	fi
 }
 try_use_cuda_home /usr/local/cuda
