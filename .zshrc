@@ -11,6 +11,7 @@
 export CPATH=
 export LD_LIBRARY_PATH=
 export PYTHONPATH=
+export PKG_CONFIG_PATH=
 export TERM=screen-256color
 export TERMINFO=$HOME/.terminfo
 export LC_ALL=en_US.UTF-8
@@ -33,6 +34,12 @@ safe_export_path $HOME/.rvm/bin		# Add RVM to PATH for scripting
 export GOPATH=$HOME/.local/gocode
 safe_export_path $GOPATH/bin
 
+# local prefix
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.local/lib
+export LIBRARY_PATH=$LIBRARY_PATH:$HOME/.local/lib
+export CPATH=$CPATH:$HOME/.local/include
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig:$HOME/.local/lib/pkgconfig
+
 # override tmux master key under ssh
 if [[ -n "$TMUX" ]] && [[ -n "$SSH_CLIENT" ]]; then
 	tmux set -g status-bg cyan
@@ -45,7 +52,9 @@ fi
 # dev libraries
 if [[ -d /opt/intel/mkl ]]; then
 	export MKLROOT=/opt/intel/mkl
-	export LD_LIBRARY_PATH=$MKLROOT/../compiler/lib/intel64:$MKLROOT/lib/intel64:$LD_LIBRARY_PATH;
+	export LD_LIBRARY_PATH=`readlink -f $MKLROOT/../compiler/lib/intel64`:$MKLROOT/lib/intel64:$LD_LIBRARY_PATH;
+	export LIBRARY_PATH=`readlink -f $MKLROOT/../compiler/lib/intel64`:$MKLROOT/lib/intel64:$LIBRARY_PATH;
+	export CPATH=$MKLROOT/include/:$CPATH
 fi
 function try_use_cuda_home() {
 	if [[ -d "$1" ]]; then
@@ -67,8 +76,6 @@ try_use_cuda_home /usr/local/cuda
 try_use_cuda_home /opt/cuda
 try_use_cudnn /usr/local/cudnn
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib:/usr/local/lib:$HOME/.local/lib
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 which ccache >/dev/null 2>&1 && export CXX='ccache g++'
 export MAKEFLAGS="-j"
 export CXXFLAGS="-Wall -Wextra"
@@ -76,7 +83,6 @@ export NODE_PATH=$HOME/.local/lib/node_modules/
 safe_source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 . $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 [[ -s ~/.config/python/.startup.py ]] && export PYTHONSTARTUP=~/.config/python/.startup.py
-#. /opt/torch/install/bin/torch-activate
 
 export EDITOR=vim
 export BROWSER=chromium
@@ -449,7 +455,7 @@ path_parse(){
 
 # commands which should always be executed in background
 special_command(){
-	local bg_list=(mupdf geeqie libreoffice word powerpoint evince matlab mathematica llpp)
+	bg_list=(mupdf geeqie libreoffice word powerpoint evince matlab mathematica llpp)
 	local cmd=`echo $BUFFER | awk '{print $1}'`
 	# command running in background
 	in_array $cmd "${bg_list[@]}" && BUFFER=`echo $BUFFER |sed 's/\s\+2>\/dev\/null//g; s/[&]*\s*$/\ 2>\/dev\/null\ \&/g'`

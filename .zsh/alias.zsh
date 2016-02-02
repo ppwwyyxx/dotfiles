@@ -255,6 +255,7 @@ which nl NN && {
 } || {
 	alias nvq='__nvq | column -t -s ,'
 }
+alias nvp="nvidia-smi | awk '/PID/ { seen=1 } seen {print} ' | tail -n+3 | head -n-1  |  awk '{print \$2, \$(NF-1), \$3}' | awk '{ (\"ps -ho pid,command \" \$3) | getline v; \$3=v; print }'"
 alias nsmi='watch -n 0.5 nvidia-smi'
 
 function b(){
@@ -316,7 +317,7 @@ function colormap(){
 
 
 # processes
-alias psg='pgrep -a'
+alias psg='nocorrect pgrep -a'
 #function pstack() { =gdb -q -nx -p $1 <<< 't a a bt' 2>&- | sed -ne '/^#/p' }
 function pstack() { =gdb -q -nx -p $1 <<< 't a a bt' | sed -ne '/^#/p' }
 

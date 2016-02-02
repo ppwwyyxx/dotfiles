@@ -9,6 +9,7 @@ fi
 rm .zshrc .bashrc .zsh -rfv
 rm .config/awesome -rfv
 rm .config/python
+cp ~/.tmux.conf ./ -rvH
 cp ~/.zshrc ~/.zsh ~/.bashrc ./ -rvH
 cp ~/.config/awesome ./.config -rvH
 cp ~/.config/python ./.config -rvH
