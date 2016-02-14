@@ -38,5 +38,5 @@ conky.config = {
 
 --${execpi 300 gcalcli --conky --color_owner=magenta agenda '12am' $(date --date="2 day" +"%Y%m%d") }
 conky.text = [[
-${execpi 300 gcalcli --conky --color_owner=magenta agenda | head -n30 }
+${execpi 300 $HOME/.local/bin/gcalcli --conky --color_owner=magenta agenda | head -n30 }
 ]]

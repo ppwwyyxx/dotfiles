@@ -9,7 +9,6 @@
 [[ -d $HOME/.zsh/Completion ]] && fpath=($HOME/.zsh/Completion $fpath)
 
 export CPATH=
-export LD_LIBRARY_PATH=
 export PYTHONPATH=
 export PKG_CONFIG_PATH=
 export TERM=screen-256color
@@ -207,9 +206,9 @@ setopt NOTIFY				# show bg jobs status immediately
 limit coredumpsize 0		# disable core dumps
 WORDCHARS='*?[]~=&;!#$%^(){}<>'
 setopt EXTENDED_GLOB
-unsetopt CASE_GLOB
+#unsetopt CASE_GLOB
 setopt correctall
-zmodload zsh/mathfunc
+zmodload zsh/mathfunc 2>/dev/null
 autoload -U zsh-mime-setup
 zsh-mime-setup
 

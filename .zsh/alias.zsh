@@ -19,11 +19,11 @@ alias cp='nocorrect cp -rvi'
 alias cpv="rsync -pogh -e /dev/null -P --"	# cp with progress
 alias watch='watch '	# allow watching an alias
 
-alias l='ls -F --color=auto'
+alias l='ls -F --color=auto --quoting-style=literal'
 alias l.='ls -d .* --color=auto'
-alias sl='ls -F --color=auto'
-alias ls='ls -F --color=auto'
-alias lss='ls -F --color=auto'
+alias ls='ls -F --color=auto --quoting-style=literal'
+alias sl='ls -F --color=auto --quoting-style=literal'
+alias lss='ls -F --color=auto --quoting-style=literal'
 alias lll='ls++'
 function ll(){
 	ls -AhlXF --color=auto --time-style="+[33m[[32m%g-%m-%d [35m%k:%M[33m][m" $@
@@ -55,7 +55,7 @@ function rm() {
 			mkdir -p $HOME/.Trash
 			mv "$file" $HOME/.Trash/ --backup=numbered -fv
 		else
-			/bin/rm "$file" -rvf
+			=rm "$file" -rvf
 		fi
 	done
 }
@@ -321,7 +321,7 @@ alias psg='nocorrect pgrep -a'
 #function pstack() { =gdb -q -nx -p $1 <<< 't a a bt' 2>&- | sed -ne '/^#/p' }
 function pstack() { =gdb -q -nx -p $1 <<< 't a a bt' | sed -ne '/^#/p' }
 
-local top_version=$(=top -h | head -n1 | grep -o '[0-9]*$')
+local top_version=$(=top -h 2>/dev/null | head -n1 | grep -o '[0-9]*$')
 if [[ "$top_version" -ge 10 ]]; then
 	alias top='top -d 0.5 -o %CPU'
 else
