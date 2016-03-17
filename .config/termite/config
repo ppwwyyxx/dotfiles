@@ -1,0 +1,15 @@
+[options]
+font = Fantasque Sans Mono 12
+font = WenQuanYi Micro Hei Mono 11
+font = Symbola 10
+font = Monospace 11
+
+mouse_autohide = true
+allow_bold = true
+dynamic_title = true
+clickable_url = true
+
+
+[colors]
+background = rgba(0, 0, 0, 0.90)
+cursor = #113FFF

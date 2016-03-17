@@ -10,7 +10,7 @@ if [[ "$HOST" == "KeepMoving" ]]; then
 fi
 
 rm ~/.zsh -rf
-cp .zsh .zshrc .bashrc .gitconfig ~/ -rvf
+cp .zsh .zshrc .bashrc .gitconfig .profile ~/ -rvf
 
 cat << EOT >> .tmux.conf
 set -g status-bg green

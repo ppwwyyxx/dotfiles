@@ -27,7 +27,7 @@ alias lss='ls -F --color=auto --quoting-style=literal'
 alias lll='ls++'
 function ll(){
 	ls -AhlXF --color=auto --time-style="+[33m[[32m%g-%m-%d [35m%k:%M[33m][m" $@
-	[[ "$@" == "$1" ]] && echo -e " $GREEN  --[$LIGHTBLUE  Dir:    $CYAN`ls -Al $@ | grep '^drw' | wc -l`$LIGHTGREEN|$YELLOW \
+	[[ "$*" == "$1" ]] && echo -e " $GREEN  --[$LIGHTBLUE  Dir:    $CYAN`ls -Al $@ | grep '^drw' | wc -l`$LIGHTGREEN|$YELLOW \
 	 File: $GREEN`ls -Al $@ | grep -v '^drw' | grep -v total | wc -l` ]-- $WHITE"
 }
 
@@ -38,11 +38,11 @@ function cless() { ccat $1 | less -r }
 alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
 alias -g N='>/dev/null'
 alias -g NN='>/dev/null 2>&1'
-which sift NN && {
-	alias -g G='|sift'
-} || {
-	which ag NN && alias -g G='|ag' || alias -g G='|grep'
-}
+which ag NN && {
+	alias -g G='|ag'
+	alias agp='ag --python'
+} || alias -g G='|grep'
+
 alias -g awk-sum="awk '{if (\$1+0!=\$1) { print \"Fail! \"\$0, NR; exit; }; s+=\$1} END {print s, s / NR}' "
 # rm moves things to trash
 function rm() {
@@ -83,21 +83,7 @@ alias tail='tail -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
 alias head='head -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
 function sdu () {	# human-readable sorted du
   [[ "$#" -eq 1 && -d "$1" ]] && cd "$1"
-  du -sk * | sort -n | awk '
-BEGIN {
-  split("K,M,G,T", Units, ",");
-  FS="\t";
-  OFS="\t";
-} {
-  u = 1;
-  while ($1 >= 1024) {
-	$1 = $1 / 1024;
-	u += 1
-  }
-  $1 = sprintf("%.1f%s", $1, Units[u]);
-  sub(/\.0/, "", $1);
-  print $0;
-}'
+	du -sh {*,.*} | sort -h
 }
 function openedfile() {
   if [[ -n $1 ]]; then
@@ -120,6 +106,7 @@ function linkto() {
 alias p='ping'
 alias meow='ping'
 alias p6='ping6'
+alias pc='proxychains4'
 alias iwc='iwconfig wlp3s0; ifconfig wlp3s0'
 alias port='sudo netstat -ntlpu'
 alias listen='lsof -P -i -n'
@@ -134,9 +121,10 @@ alias chromium-http='chromium --proxy-server=localhost:7777'
 alias google-keep='chromium --profile-directory=Default --app-id=hmjkmjkepdijhoojdojkdfohbdgmmhki'
 alias gg='google -r'
 alias gl='google -o'
+alias weather='curl -s http://wttr.in/\?m | head -n-1'
 
 alias ssh-reverse='ssh -R 6333:localhost:22 -ServerAliveInterval=60'
-function st() { ssh "$1" -t 'tmux a || tmux' }
+function st() { ssh "$1" -t 'tmux a -d || tmux' }
 function ssh-proxy { ssh $2 -o ProxyCommand="ssh -q $1 nc %h %p" }
 function gmtr() {
 	sudo mtr -lnc 1 "$1" | paste - - \
@@ -190,8 +178,8 @@ function cdp () {
 
 # tools
 which aunpack NN && alias x=aunpack
+alias gq='geeqie'
 alias strings='strings -atx'
-alias fuck='$(thefuck $(fc -ln -1))'
 alias which='which -a'
 alias ibus-daemon='ibus-daemon --xim'
 alias zh-CN="LC_ALL='zh_CN.UTF-8'"
@@ -222,7 +210,7 @@ function agenda() {
 alias calw='gcalcli calw'
 
 # hardware
-function km() {
+function km() {	# only for my laptop
 	xmodmap ~/.Xmodmap
 	xset r rate 200 40
 	xcape -e "Control_L=Escape;Hyper_L=XF86Mail"
@@ -303,9 +291,9 @@ alias tune-pitch='mplayer -af scaletempo=speed=pitch'
 alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_region 1 -i :0.0 ~/Video/out.mpg'
 m_sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "/usr/share/fonts/wenquanyi/wqy-microhei/wqy-microhei.ttc"'
 m_avc_param="-oac mp3lame -lameopts fast:preset=medium -ovc x264 -x264encopts subq=5:8x8dct:frameref=2:bframes=3:weight_b:threads=auto"
-f_avc_param="-c:v libx264 -preset slow -crf 22 -c:a libmp3lame"
-#f_avc_param="-c:v libx265 -preset medium -x265-params crf=28 -c:a aac -strict experimental -b:a 128k"
-function ffmpeg_compress() { ffmpeg -i $1 `echo $f_avc_param` $1.avi }
+f_avc_param_old="-c:v libx264 -preset slow -crf 22 -c:a libmp3lame"
+f_avc_param="-c:v libx265 -preset medium -x265-params crf=28 -c:a aac -strict experimental -b:a 128k"
+function ffmpeg_compress() { ffmpeg -i $1 `echo $f_avc_param` $1.mp4 }
 function mencoder_compress() { mencoder $1 -o $1.avi `echo $m_avc_param` }
 function colormap(){
 	for i in {0..255}; do
@@ -337,7 +325,8 @@ function killz() {
 function waitpid() { while test -d "/proc/$1"; do sleep 1; done }
 
 # python
-#alias py='PYTHONPATH=$HOME/.config/python:$PYTHONPATH python2'
+alias py='PYTHONPATH=$HOME/.config/python:$PYTHONPATH python2'
+alias ipy='ipython2'
 function pydbg () { ipython --pdb -c "%run $1" }
 alias bp2='bpython2'
 alias piu='pip2 install --user'
@@ -394,9 +383,11 @@ which pacman NN && {
 	} || {
 		alias pS='sudo yum install'
 		alias pR='sudo yum remove'
-		alias pSy='sudo yum update'
+		alias pSy='sudo yum check-update'
+		alias pSu='sudo yum update'
 		alias pSs='yum search'
 		alias pQo='yum whatprovides'
+		alias pQl='rpm -ql'
 	}
 }
 

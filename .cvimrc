@@ -39,6 +39,13 @@ site '*://www.google.com/calendar/*' {
 	map N nextSearchResult
 	map <C-v> toggleVisualMode
 }
+site '*://www.youtube.com/*' {
+	unmapAll
+	map : openCommandBar
+	map / openSearchBar
+	map N nextSearchResult
+	map <C-v> toggleVisualMode
+}
 
 let configpath = '/home/wyx/.cvimrc'
 set localconfig

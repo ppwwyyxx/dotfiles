@@ -5,7 +5,7 @@
   Mod4 + f
 "~/bin/background/screenshot"
   Mod4 + a
-"urxvt"
+"termite"
   Mod4 + t
 "sleep .1; xdotool click 1"
   Mod4 + Return

@@ -4,16 +4,15 @@
 # ^foo^bar^:G  global substitution on last command, !?str?:s^foo^bar^:G, on last command containing str
 #http://lilydjwg.is-programmer.com/2012/3/19/thress-zsh-line-editor-tips.32549.html
 
-# ENV ------------------------------------------------------------------------------------------
 
 [[ -d $HOME/.zsh/Completion ]] && fpath=($HOME/.zsh/Completion $fpath)
 
-export CPATH=
+# ENV f[[
 export PYTHONPATH=
-export PKG_CONFIG_PATH=
 export TERM=screen-256color
 export TERMINFO=$HOME/.terminfo
 export LC_ALL=en_US.UTF-8
+export SSH_ASKPASS=
 # neovim#2048 suggests: infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti; tic $TERM.ti
 
 function safe_export_path() { [[ -d $1 ]] && export PATH=$1:$PATH }
@@ -55,6 +54,7 @@ if [[ -d /opt/intel/mkl ]]; then
 	export LIBRARY_PATH=`readlink -f $MKLROOT/../compiler/lib/intel64`:$MKLROOT/lib/intel64:$LIBRARY_PATH;
 	export CPATH=$MKLROOT/include/:$CPATH
 fi
+[[ -d /opt/OpenBLAS ]] && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/OpenBLAS/lib
 function try_use_cuda_home() {
 	if [[ -d "$1" ]]; then
 		export CUDA_HOME="$1"
@@ -66,16 +66,15 @@ function try_use_cuda_home() {
 }
 function try_use_cudnn() {
 	if [[ -d "$1" ]]; then
-		export LD_LIBRARY_PATH=$1/lib64:$LD_LIBRARY_PATH
-		export LIBRARY_PATH=$1/lib64:$LIBRARY_PATH
-		export CPATH=$1/include:$CPATH
+		export LD_LIBRARY_PATH=$1:$LD_LIBRARY_PATH
+		export LIBRARY_PATH=$1:$LIBRARY_PATH
+		export CPATH=$1:$CPATH
 	fi
 }
 try_use_cuda_home /usr/local/cuda
 try_use_cuda_home /opt/cuda
 try_use_cudnn /usr/local/cudnn
 
-which ccache >/dev/null 2>&1 && export CXX='ccache g++'
 export MAKEFLAGS="-j"
 export CXXFLAGS="-Wall -Wextra"
 export NODE_PATH=$HOME/.local/lib/node_modules/
@@ -95,6 +94,7 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 export SDCV_PAGER="sed 's/\ \ \([1-9]\)/\n\n◆\1/g' |less"
 cdpath=(~)
+# f]]
 
 # PROMPT: f[[
 autoload -U promptinit
@@ -135,8 +135,8 @@ COMMAND_TIMER=${COMMAND_TIMER:-$((SECONDS + $(date "+%N") / 1000000000.0))}
 }
 function precmd() {
 	local separator1=
-    local separator2=
-    local separator3=
+  local separator2=
+  local separator3=
 	local TIMECOLOR="%{%b%F{211}%}"
 	local PINK="%{%b%F{213}%}"
 	local YELLOWGREEN="%{%b%F{154}%}"
@@ -158,7 +158,8 @@ function precmd() {
 	local START_BOLD=$'\e[1m'		# bold on
 	local END_BOLD=$'\e[22m'		# bold off
 
-	local INDICATOR="\$"
+	#local INDICATOR="\$"
+	local INDICATOR="❱"
 	#local INDICATOR="%{$fg_bold[red]%}❮%{$reset_color%}%{$fg[red]%}❮❮%{$reset_color%}"
 	[[ -n "$VIRTUAL_ENV" ]] && VIRTUAL="(`basename $VIRTUAL_ENV`)"
 	# my magic prompt
@@ -217,76 +218,15 @@ zle -N self-insert url-quote-magic
 
 # History
 setopt INC_APPEND_HISTORY
-setopt EXTENDED_HISTORY
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 setopt HIST_NO_FUNCTIONS
 setopt SHARE_HISTORY
+unsetopt EXTENDED_HISTORY
 export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=100000
 export SAVEHIST=80000
 alias nohistory='unset HISTFILE'
-
-# key binding f[[
-bindkey -e
-autoload edit-command-line
-zle -N edit-command-line
-bindkey -M viins '^v' edit-command-line
-bindkey '^h' backward-char
-bindkey '^l' forward-char
-bindkey '^b' backward-word
-bindkey '^f' forward-word
-bindkey '^w' backward-delete-word
-bindkey ' ' magic-space		# history expansion + space
-autoload zkbd
-[[ -f $HOME/.zsh/zkbd/$TERM ]] && source $HOME/.zsh/zkbd/$TERM || zkbd
-[[ -n ${key[Backspace]} ]] && bindkey "${key[Backspace]}" backward-delete-char
-[[ -n ${key[Insert]} ]] && bindkey "${key[Insert]}" overwrite-mode
-[[ -n ${key[Home]} ]] && bindkey "${key[Home]}" beginning-of-line
-[[ -n ${key[PageUp]} ]] && bindkey "${key[PageUp]}" history-substring-search-up
-[[ -n ${key[PageDown]} ]] && bindkey "${key[PageDown]}" history-substring-search-down
-[[ -n ${key[Delete]} ]] && bindkey "${key[Delete]}" delete-char
-[[ -n ${key[End]} ]] && bindkey "${key[End]}" end-of-line
-[[ -n ${key[Up]} ]] && bindkey "${key[Up]}" up-line-or-search
-[[ -n ${key[Down]} ]] && bindkey "${key[Down]}" down-line-or-search
-[[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
-[[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
-
-# Move along shell argument, aka 'Big Word' (defined as separate by spaces)
-zsh-word-movement () {
-  # by lilydjwg, http://lilydjwg.is-programmer.com/posts/41712
-  local -a word_functions
-  local f
-
-  word_functions=(backward-kill-word backward-word
-    capitalize-word down-case-word
-    forward-word kill-word
-    transpose-words up-case-word)
-
-  if ! zle -l $word_functions[1]; then
-    for f in $word_functions; do
-      autoload -Uz $f-match
-      zle -N zsh-$f $f-match
-    done
-  fi
-  # set the style to shell
-  zstyle ':zle:zsh-*' word-style shell
-}
-zsh-word-movement
-unfunction zsh-word-movement
-bindkey "\eB" zsh-backward-word
-bindkey "\eF" zsh-forward-word
-bindkey "\eW" zsh-backward-kill-word
-
-# add sudo
-sudo-command-line() {
-	[[ -z $BUFFER ]] && zle up-history
-	[[ $BUFFER != sudo\ * ]] && BUFFER="sudo $BUFFER"
-	zle end-of-line
-}
-zle -N sudo-command-line
-bindkey "${key[F2]}" sudo-command-line
-# f]]
 
 # Complete f[[
 autoload -U compinit
@@ -306,6 +246,10 @@ compdef rsync=scp
 compdef telnet=ssh
 compdef st=ssh
 
+# specific filetype
+_pic() { _files -g '*.(jpg|png|bmp|gif|ppm|pbm|jpeg|xcf|ico)(-.)' }
+compdef _pic gimp
+compdef _pic feh
 
 # ignore the current directory
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
@@ -381,34 +325,89 @@ zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' completer tmux_buffer_c
 zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' ignore-line current
 zstyle ':completion:tmux-pane-words-anywhere:*' matcher-list 'b:=* m:{A-Za-z}={a-zA-Z}'
 
-# vim edit remote file
-function vscp() {
-    if [[ -z $1 ]]; then
-        echo "usage: vscp [[user@]host1:]file1 ... [[user@]host2:]file2"
-        return
-    fi
-    declare -a targs=()
-	echo "Editing Remote Files"
-    for iarg in $@; do
-        targ="scp://$(echo $iarg | sed -e 's@:/@//@' | sed -e 's@:@/@')"
-        targs=("${targs[@]}" $targ)
-    done
-	echo ${targs[@]}
-    vim ${targs[@]}
-}
-compdef vscp=scp
-
-# specific filetype
-_pic() { _files -g '*.(jpg|png|bmp|gif|ppm|pbm|jpeg|xcf|ico)(-.)' }
-compdef _pic gimp
-compdef _pic feh
-
 # vim ignore
 zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv|mp3|pdf|doc|docx|jpg|png|bmp|gif|npy)'
+# f]]
 
-# Pinyin Completion
-safe_source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
-safe_export_path $HOME/.zsh/Pinyin-Completion/bin
+# key binding f[[
+bindkey -e
+autoload edit-command-line
+zle -N edit-command-line
+bindkey -M viins '^v' edit-command-line
+bindkey '^h' backward-char
+bindkey '^l' forward-char
+bindkey '^b' backward-word
+bindkey '^f' forward-word
+bindkey '^w' backward-delete-word
+bindkey ' ' magic-space		# history expansion + space
+autoload zkbd
+[[ -f $HOME/.zsh/zkbd/$TERM ]] && source $HOME/.zsh/zkbd/$TERM || zkbd
+[[ -n ${key[Backspace]} ]] && bindkey "${key[Backspace]}" backward-delete-char
+[[ -n ${key[Insert]} ]] && bindkey "${key[Insert]}" overwrite-mode
+[[ -n ${key[Home]} ]] && bindkey "${key[Home]}" beginning-of-line
+[[ -n ${key[PageUp]} ]] && bindkey "${key[PageUp]}" history-substring-search-up
+[[ -n ${key[PageDown]} ]] && bindkey "${key[PageDown]}" history-substring-search-down
+[[ -n ${key[Delete]} ]] && bindkey "${key[Delete]}" delete-char
+[[ -n ${key[End]} ]] && bindkey "${key[End]}" end-of-line
+[[ -n ${key[Up]} ]] && bindkey "${key[Up]}" up-line-or-search
+[[ -n ${key[Down]} ]] && bindkey "${key[Down]}" down-line-or-search
+[[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
+[[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
+
+# Move along shell argument, aka 'Big Word' (defined as separate by spaces)
+zsh-word-movement () {
+  # by lilydjwg, http://lilydjwg.is-programmer.com/posts/41712
+  local -a word_functions
+  local f
+
+  word_functions=(backward-kill-word backward-word
+    capitalize-word down-case-word
+    forward-word kill-word
+    transpose-words up-case-word)
+
+  if ! zle -l $word_functions[1]; then
+    for f in $word_functions; do
+      autoload -Uz $f-match
+      zle -N zsh-$f $f-match
+    done
+  fi
+  # set the style to shell
+  zstyle ':zle:zsh-*' word-style shell
+}
+zsh-word-movement
+unfunction zsh-word-movement
+bindkey "\eB" zsh-backward-word
+bindkey "\eF" zsh-forward-word
+bindkey "\eW" zsh-backward-kill-word
+
+# add sudo
+sudo-command-line() {
+	[[ -z $BUFFER ]] && zle up-history
+	[[ $BUFFER != sudo\ * ]] && BUFFER="sudo $BUFFER"
+	zle end-of-line
+}
+zle -N sudo-command-line
+bindkey "${key[F2]}" sudo-command-line
+
+bindkey -M menuselect '^@' accept-and-menu-complete
+# f]]
+
+# vim edit remote file
+function vscp() {
+	if [[ -z $1 ]]; then
+		echo "usage: vscp [[user@]host1:]file1 ... [[user@]host2:]file2"
+		return
+	fi
+	declare -a targs=()
+	echo "Editing Remote Files"
+	for iarg in $@; do
+		targ="scp://$(echo $iarg | sed -e 's@:/@//@' | sed -e 's@:@/@')"
+		targs=("${targs[@]}" $targ)
+	done
+	echo ${targs[@]}
+	vim ${targs[@]}
+}
+compdef vscp=scp
 
 # .... path completion
 user-complete(){
@@ -472,7 +471,6 @@ user-ret(){
 }
 zle -N user-ret
 bindkey "\r" user-ret
-# f]]
 
 # command not found
 function command_not_found_handler() {
@@ -493,6 +491,9 @@ function command_not_found_handler() {
 }
 
 # plugins
+safe_source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
+safe_export_path $HOME/.zsh/Pinyin-Completion/bin
+
 safe_source $HOME/.zsh/extract.zsh
 # the next two have to be this order
 safe_source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -512,7 +513,12 @@ if [ $commands[fasd] ]; then
 	bindkey '^X^O' fasd-complete
 fi
 
-which thefuck NN && eval "$(thefuck --alias)"
-
-
 safe_source $HOME/.zshrc.local
+
+# dedup paths
+which awk NN && {
+	LD_LIBRARY_PATH=$(echo -n "$LD_LIBRARY_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
+	PATH=$(echo -n "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
+	CPATH=$(echo -n "$CPATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
+	PKG_CONFIG_PATH=$(echo -n "$PKG_CONFIG_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
+}

@@ -1,7 +1,7 @@
 local autorun_items = {
     "compton --config ~/.compton.conf",
     "mkdir -p /tmp/t",
-	"dunst -config ~/.dunstrc",
+	 "dunst -config ~/.dunstrc",
     "fcitx-autostart",
     "sogou-qimpanel",
     "conky",
@@ -9,14 +9,14 @@ local autorun_items = {
     "xcape -e 'Control_L=Escape;Hyper_L=XF86Mail'",
     "wicd-client -t",
 
-    "sleep 100 && zeal",
+    "sleep 50 && zeal",
     "urxvt",
 
     "/home/wyx/bin/cvim-server.py",
     "/home/wyx/bin/notify-daemon.py",
 
-    "sleep 100 && telegram",
-    "sleep 100 && plaidchat",
+    "sleep 50 && telegram",
+    "sleep 50 && /home/wyx/.local/bin/plaidchat",
 
     --"sleep 100 && dropbox",
 }
