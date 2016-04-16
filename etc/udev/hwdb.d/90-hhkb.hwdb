@@ -1,0 +1,6 @@
+# HHKB
+evdev:input:b0003v0853p0100*
+ KEYBOARD_KEY_7002a=backslash
+ KEYBOARD_KEY_70031=backspace
+ KEYBOARD_KEY_70029=grave
+ KEYBOARD_KEY_70035=backspace

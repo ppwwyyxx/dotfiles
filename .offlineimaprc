@@ -1,0 +1,50 @@
+[general]
+ui = ttyui
+accounts = Gmail
+socktimeout = 10
+
+[Account Gmail]
+localrepository = Gmail-Local
+remoterepository = Gmail-Remote
+autorefresh = 5
+quick = 10
+
+[Repository Gmail-Local]
+type = Maildir
+localfolders = /opt/Mail/Maildir
+
+[Repository Gmail-Remote]
+type = Gmail
+readonly = true
+remoteuser = ppwwyyxxc@gmail.com
+oauth2_client_id =
+oauth2_client_secret =
+oauth2_refresh_token =
+
+folderfilter = lambda folder: folder not in \
+	[
+	 '[Gmail]/&XfJSIJZkkK5O9g-', # trash
+	 '[Gmail]/&kc2JgQ-', # important
+	 '[Gmail]/&XfJSoGYfaAc-', # starred
+	 '[Gmail]/&YkBnCZCuTvY-', # all
+	 '[Gmail]/&V4NXPpCuTvY-', # spam
+	 '[Gmail]/Starred',
+	 '[Gmail]/Spam',
+	 '[Gmail]/All Mail',
+	 '[Gmail]/Important',
+	 '[Gmail]/Trash',
+	 'road_ahead/hulu/other',
+	]
+	 #'projects/pynojo'
+	 #'projects/unknown'
+	 #'projects/maTHu'
+	 #'projects/nms'
+	 #'THU/OS-courses'
+	 #'[Gmail]/&g0l6Pw-', # draft
+
+
+realdelete = no
+maxconnections = 4
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+# vim: ft=conf

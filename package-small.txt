@@ -125,7 +125,6 @@ gperftools 2.4-1
 graphviz 2.38.0-5
 grep 2.21-2
 groff 1.22.3-3
-grub 1:2.02.beta2-5
 gthumb 3.4.0-3
 gtk-xfce-engine 2.10.1-1
 gvim 7.4.854-1
