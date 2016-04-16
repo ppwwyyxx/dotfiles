@@ -10,12 +10,12 @@ local autorun_items = {
     "wicd-client -t",
 
     "sleep 50 && zeal",
-    "urxvt",
+    "termite",
 
     "/home/wyx/bin/cvim-server.py",
     "/home/wyx/bin/notify-daemon.py",
 
-    "sleep 50 && telegram",
+    "sleep 50 && telegram-desktop",
     "sleep 50 && /home/wyx/.local/bin/plaidchat",
 
     --"sleep 100 && dropbox",

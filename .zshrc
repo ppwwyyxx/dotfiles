@@ -33,9 +33,9 @@ export GOPATH=$HOME/.local/gocode
 safe_export_path $GOPATH/bin
 
 # local prefix
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.local/lib
-export LIBRARY_PATH=$LIBRARY_PATH:$HOME/.local/lib
-export CPATH=$CPATH:$HOME/.local/include
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.local/lib:/usr/local/lib
+export LIBRARY_PATH=$LIBRARY_PATH:$HOME/.local/lib:/usr/local/lib
+export CPATH=$CPATH:$HOME/.local/include:/usr/local/include
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig:$HOME/.local/lib/pkgconfig
 
 # override tmux master key under ssh
@@ -66,9 +66,9 @@ function try_use_cuda_home() {
 }
 function try_use_cudnn() {
 	if [[ -d "$1" ]]; then
-		export LD_LIBRARY_PATH=$1:$LD_LIBRARY_PATH
-		export LIBRARY_PATH=$1:$LIBRARY_PATH
-		export CPATH=$1:$CPATH
+		export LD_LIBRARY_PATH=$1/lib64:$LD_LIBRARY_PATH
+		export LIBRARY_PATH=$1/lib64:$LIBRARY_PATH
+		export CPATH=$1/include:$CPATH
 	fi
 }
 try_use_cuda_home /usr/local/cuda
@@ -109,7 +109,7 @@ for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
 done
 FINISH="%{$terminfo[sgr0]%}"
 
-if [[ $HOST == "KeepMoving" ]]; then
+if [[ $HOST =~ "Keep" ]]; then
   alias poweroff='vboxmanage controlvm win7 savestate; sudo poweroff'
   alias reboot='vboxmanage controlvm win7 savestate; sudo reboot'
   export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: (meow~~) '
@@ -143,7 +143,7 @@ function precmd() {
 	local YELLOWGREENB="%{%b%K{154}%F{black}%}"
 	local PURPLE="%{%b%F{171}%}"
 
-	if [[ $USER == "wyx" ]] && [[ $HOST == "KeepMoving" ]]; then
+	if [[ $USER == "wyx" ]] && [[ $HOST =~ "Keep" ]]; then
 		PROMPT_PART="" # on my laptop
 	else
 		PROMPT_PART="$GREEN [%{%F{171}%}%n@%{%F{219}%}%M$GREEN]"
@@ -166,8 +166,8 @@ function precmd() {
 	export PROMPT="$START_BOLD$CYAN╭─${VIRTUAL}${PROMPT_PART}\
 $TIMECOLOR [%D{%H:%M}] \
 $YELLOWGREEN%$pwdlen<...<%~%<< \
-%{$reset_color%}$git_status$CYAN
-╰─%(?..%{$fg[red]%})$INDICATOR%{$reset_color%}"
+%{$reset_color%}$git_status%{$CYAN%}
+╰─%{$reset_color%}🐻 %{$CYAN%}%(?..%{$fg[red]%})$INDICATOR%{$reset_color%}"
 
 	#local return_status="%{$fg[red]%}%(?..%?⏎)%{$reset_color%}"	# return code is useless
 	local return_status="%{$fg[red]%}%(?..⏎)%{$reset_color%}"
@@ -251,7 +251,6 @@ _pic() { _files -g '*.(jpg|png|bmp|gif|ppm|pbm|jpeg|xcf|ico)(-.)' }
 compdef _pic gimp
 compdef _pic feh
 
-# ignore the current directory
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
 zstyle ':completion:*' verbose yes
 zstyle ':completion:*' menu select
@@ -294,7 +293,7 @@ zstyle ':completion:*' completer _complete _prefix _user_expand _correct _prefix
 # Separate man page sections.
 zstyle ':completion:*:manuals' separate-sections true
 
-#kill completion
+# kill completion
 compdef pkill=kill
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:*:killall:*:processes-names' list-colors '=(#b) #([0-9]#)*=0=01;31'
@@ -325,8 +324,10 @@ zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' completer tmux_buffer_c
 zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' ignore-line current
 zstyle ':completion:tmux-pane-words-anywhere:*' matcher-list 'b:=* m:{A-Za-z}={a-zA-Z}'
 
-# vim ignore
-zstyle ':completion:*:*:vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv|mp3|pdf|doc|docx|jpg|png|bmp|gif|npy)'
+# file completion ignore
+zstyle ':completion:*:*:*vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv|mp3|pdf|doc|docx|jpg|png|bmp|gif|npy|bin|o)'
+zstyle ':completion:*:*:cat:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv|mp3|pdf|doc|docx|jpg|png|bmp|gif|npy|bin|o)'
+
 # f]]
 
 # key binding f[[

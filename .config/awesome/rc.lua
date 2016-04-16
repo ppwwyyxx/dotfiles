@@ -39,8 +39,8 @@ end
 config = {}
 config.layouts = {
     awful.layout.suit.floating,
-    awful.layout.suit.tile,
-    awful.layout.suit.tile.top,
+    awful.layout.suit.fair,
+    awful.layout.suit.spiral,
 }
 config.global = {}
 

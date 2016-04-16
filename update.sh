@@ -2,8 +2,8 @@
 # File: update.sh
 # Date: Wed Jul 01 19:58:58 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
-if [[ ! "$HOST" -eq "KeepMoving" ]]; then
-	echo "Not at KeepMoving! "
+if [[ ! "$HOST" -eq "KeepLearning" ]]; then
+	echo "Not at Laptop!"
 	exit 1
 fi
 rm .zshrc .bashrc .zsh -rfv

@@ -69,6 +69,6 @@ LOCAL:$font ${addr wlp3s0}${color}
 ${font arial black:size=12}${color magneta}BATTERY${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
 ${battery_bar}
 STATE: $font$color${battery} $alignr ${battery_time}
-FAN: $font$color${ibm_fan}rpm${alignr}
 TEMPERATURE:$font ${acpitemp}°C${color}
 ]]
+--FAN: $font$color${ibm_fan}rpm${alignr}

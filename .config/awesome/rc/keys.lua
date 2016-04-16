@@ -106,8 +106,9 @@ config.global = join(
     awful.key({ modkey, "Shift" }, "k", function() awful.client.swap.byidx(-1) end),
 
 	awful.key({ modkey }, "j", function()
-        awful.client.focus.byidx(1)
-        if client.focus then client.focus:raise() end
+      awful.tag.incnmaster(1)
+        --awful.cli  ent.focus.byidx(1)
+        --if client.focus then client.focus:raise() end
     end),
     awful.key({ modkey }, "k", function()
         awful.client.focus.byidx(-1)
@@ -224,15 +225,15 @@ config.global = join(
 
 -- Client Keys/Buttons:   f[[
 config.clientkeys = join(
-	--awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle ),
 	awful.key({ modkey, "Control" }, "Return", function(c) c:swap(awful.client.getmaster()) end),
-	awful.key({ modkey, }, "o",    function(c)
-        awful.client.movetoscreen(c)
-        c.maximized_horizontal = not c.maximized_horizontal
-        c.maximized_vertical=  not c.maximized_vertical
-        c.maximized_horizontal = not c.maximized_horizontal
-        c.maximized_vertical=  not c.maximized_vertical
-    end),
+   awful.key({ modkey, }, "o",    function(c)
+      if screen.count() == 1 then return end
+      awful.client.movetoscreen(c)
+      c.maximized_horizontal = not c.maximized_horizontal
+      c.maximized_vertical=  not c.maximized_vertical
+      c.maximized_horizontal = not c.maximized_horizontal
+      c.maximized_vertical=  not c.maximized_vertical
+   end),
 	awful.key({ modkey, }, "s",    function(c) c.sticky = not c.sticky end),
 
 	awful.key({ altkey, }, "F11",  function(c) c.fullscreen = not c.fullscreen  end),
@@ -240,23 +241,23 @@ config.clientkeys = join(
 	awful.key({ altkey, }, "F4",   function(c) c:kill()                         end),
 	awful.key({ altkey, }, "F12",  function(c) c.above = not c.above            end),
 	awful.key({ altkey, }, "F9",   function(c) c.minimized = true end),
-    awful.key({ altkey, }, "F10",  function(c)
-        c.maximized_horizontal = not c.maximized_horizontal
-        c.maximized_vertical   = not c.maximized_vertical
-    end),
-	awful.key({ modkey , }, "Up",  function(c)
-		c.maximized_horizontal = not c.maximized_horizontal
-		c.maximized_vertical   = not c.maximized_vertical
-	end)
+   awful.key({ altkey, }, "F10",  function(c)
+      c.maximized_horizontal = not c.maximized_horizontal
+      c.maximized_vertical   = not c.maximized_vertical
+   end),
+   awful.key({ modkey , }, "Up",  function(c)
+      c.maximized_horizontal = not c.maximized_horizontal
+      c.maximized_vertical   = not c.maximized_vertical
+   end)
 )
 
 config.clientbuttons = join(
 	awful.button({ }, 1, function(c) client.focus = c; c:raise() end),
 	awful.button({ modkey }, 1, awful.mouse.client.move),
-	awful.button({ modkey }, 3, function(c)
-			  c.maximized_horizontal = false
-			  c.maximized_vertical = false
-			  awful.mouse.client.resize(c, "bottom_right")
-		  end))
+   awful.button({ modkey }, 3, function(c)
+      c.maximized_horizontal = false
+      c.maximized_vertical = false
+      awful.mouse.client.resize(c, "bottom_right")
+   end))
 -- f]]
 

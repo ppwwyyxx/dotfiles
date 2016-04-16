@@ -28,8 +28,12 @@ vicious.register(cpugraph, vicious.widgets.cpu, "$1")
 local temp_widget = wibox.widget.textbox()
 vicious.register(temp_widget, vicious.widgets.thermal,
                  function(widget, args)
-                     return string.format("%d℃", args[1])
-                 end, 20, "thermal_zone0")
+                     --local t = args[1] .. ℃    -- doesn't work with dell
+                     --return string.format("%s", t)
+                     local t = rexec("sensors | grep -Po 'Physical .*?C' | awk '{print $NF}' | cut -c 2-3")
+                     t = t:sub(1,-2) .. '℃'
+                     return t
+                 end, 20, "thermal_zone1")
 
 local mem_widget = wibox.widget.textbox()
 vicious.register(mem_widget, vicious.widgets.mem, '<span color="#90ee90"> M$1%</span>')
@@ -108,25 +112,29 @@ bat_widget:buttons(awful.button({}, 1, function() run_term("sudo powertop", 'FST
 --Volume f[[
 local volume_widget = wibox.widget.textbox()
 function volumectl(mode)
-    if mode == "update" then
-        local volume = rexec("pamixer --get-volume")
-        if not tonumber(volume) then
-            volume_widget:set_markup("<span color='red'>ERR</span>")
-            return
-        end
-		local muted = rexec("pamixer --get-mute")
-        volume = '♫' .. volume .. ((muted == "false") and "%" or "<span color='red'>M</span>")
-        volume_widget:set_markup(volume)
-		return
-    elseif mode == "up" then
-        exec("pamixer --allow-boost --increase 5")
-    elseif mode == "down" then
-        exec("pamixer --allow-boost --decrease 5")
-	elseif mode == "mute" then
-        exec("pamixer --toggle-mute")
-    end
-	volumectl("update")
-end
+   if mode == "update" then
+      local volume = rexec("pamixer --get-volume")
+      if not tonumber(volume) then
+         volume_widget:set_markup("<span color='red'>ERR</span>")
+         return
+      end
+      local muted = rexec("pamixer --get-mute"):sub(1,4)  -- rstrip
+      if muted == "true" then
+         volume = "<span color='red'>♫M</span>"
+      else
+         volume = '♫' .. volume
+      end
+      volume_widget:set_markup(volume)
+      return
+      elseif mode == "up" then
+         exec("pamixer --allow-boost --increase 5")
+         elseif mode == "down" then
+            exec("pamixer --allow-boost --decrease 5")
+            elseif mode == "mute" then
+               exec("pamixer --toggle-mute")
+            end
+            volumectl("update")
+         end
 volumectl()
 local volume_clock = timer({ timeout = 60 })
 volume_clock:connect_signal("timeout", function() volumectl() end)

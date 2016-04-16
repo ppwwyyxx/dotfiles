@@ -1,5 +1,5 @@
 # app keys..
-"chromium"
+"chromium --force-device-scale-factor=1.2"
   Mod4 + c
 "firefox"
   Mod4 + f
@@ -41,9 +41,9 @@
 
 # Logitech Mouse..
 # TODO use awesome-client for switch, and volume
-"xdotool key --clearmodifiers alt+Tab"
+"notify-send mail"
   XF86Mail	# the forward button, depends on xcape rules
-"notify-send comb"
+"notify-send mod4+mail"
   Mod4 + XF86Mail	# the backward button
 # TODO hold htop to the middle, and release
 "notify-send launch1"

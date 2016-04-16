@@ -189,6 +189,7 @@ which dfc NN && alias df='dfc' || alias df='df -Th'
 alias convmv='convmv -f GBK -t UTF-8 --notest -r'
 alias window='wmctrl -a '
 alias cp2clip='xclip -i -selection clipboard'
+alias screenkey='screenkey -s small -t 0.8 --opacity 0.3'
 alias adate='for i in Asia/Shanghai US/{Eastern,Pacific}; do printf %-22s "$i ";TZ=:$i date +"%F %a %T %Z";done'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias clean-trash='=rm /ssd_home/.Trash/{.,}* -rf; =rm ~/.Trash/{.,}* -rf'
@@ -214,7 +215,7 @@ function km() {	# only for my laptop
 	xmodmap ~/.Xmodmap
 	xset r rate 200 40
 	xcape -e "Control_L=Escape;Hyper_L=XF86Mail"
-	xinput set-button-map $(xinput | grep -o "TouchPad.*id=[0-9]*" | grep -o "[0-9]*") 1 0 0
+	#xinput set-button-map $(xinput | grep -o "TouchPad.*id=[0-9]*" | grep -o "[0-9]*") 1 0 0
 }
 alias dmesg='dmesg -H || dmesg | less'
 alias keyb='xinput disable $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*")'
