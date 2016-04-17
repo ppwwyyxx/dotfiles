@@ -271,6 +271,16 @@ alias rstudio='/opt/RStudio/lib/rstudio/bin/rstudio'
 alias maple='/opt/Maple/bin/xmaple'
 alias idea='/opt/idea-IC-129.713/bin/idea.sh'
 alias webstorm='/opt/WebStorm-129.664/bin/webstorm.sh'
+function gource() {
+local f=${1:-gource}
+=gource -s .1 -1280x720 --auto-skip-seconds .1 \
+    --multi-sampling --stop-at-end \
+    --key --highlight-users --file-idle-time 0 --max-files 0  \
+    --background-colour 000000 --font-size 22 \
+		--title "`basename $(readlink -f $f)`" \
+    --output-ppm-stream - --output-framerate 30 > /dev/null
+    #| avconv -y -r 30 -f image2pipe -vcodec ppm -i - -b 65536K movie.mp4
+}
 export PYCHARM_JDK=/opt/java-oracle
 export RUBYMINE_JDK=/opt/java-oracle
 export IDEA_JDK=/opt/java-oracle

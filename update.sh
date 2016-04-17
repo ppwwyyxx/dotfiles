@@ -18,3 +18,5 @@ cp ~/.xbindkeysrc ./ -fv
 cp ~/.cvimrc ./
 
 cp ~/.conky* ./ -rvH
+
+cp /etc/X11/xorg.conf.d/50-synaptics.conf ./etc/X11/xorg.conf.d/ -rvH

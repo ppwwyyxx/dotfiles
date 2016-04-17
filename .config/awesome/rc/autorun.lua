@@ -9,13 +9,14 @@ local autorun_items = {
     "xcape -e 'Control_L=Escape;Hyper_L=XF86Mail'",
     "wicd-client -t",
 
-    "sleep 50 && zeal",
+    "sleep 40 && zeal",
     "termite",
+    "sleep 20 && redshift-gtk",
 
-    "/home/wyx/bin/cvim-server.py",
-    "/home/wyx/bin/notify-daemon.py",
+    --"/home/wyx/bin/cvim-server.py",
+    "/home/wyx/bin/background/notify-daemon.py",
 
-    "sleep 50 && telegram-desktop",
+    "sleep 30 && telegram-desktop",
     "sleep 50 && /home/wyx/.local/bin/plaidchat",
 
     --"sleep 100 && dropbox",

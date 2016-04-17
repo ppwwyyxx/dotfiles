@@ -1,10 +1,7 @@
 # Write your default config options here!
-heartbeat-cmd="xscreensaver-command -deactivate"
-loop=0
+#heartbeat-cmd="xscreensaver-command -deactivate"
 identify=1
-idle=1
 utf8=1
-font=/usr/share/fonts/TTF/msyh.ttf
 ass-font-scale=1.3
 nofontconfig=1
 ass-border-color=0000AA33
@@ -12,8 +9,8 @@ subfont-text-scale=2.5
 
 af-add=scaletempo
 vf-add=screenshot
-volume=100
 nojoystick=yes
 #ao=pulse		# under arch # audio output device
-#vo=xv
+vo=gl
+#vo=x11,xv
 #vc=ffmpeg12vdpau,ffwmv3vdpau,ffvc1vdpau,ffh264vdpau,ffodivxvdpau

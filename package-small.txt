@@ -374,3 +374,22 @@ zbar 0.10-5
 zeal-git 0.1.1.117.g5fdc036-1
 zip 3.0-6
 zsh 5.1.1-1
+hplip
+gist
+lshw
+redshift
+gource
+r
+expect
+colordiff
+colorgcc
+npm
+slock
+strace
+llvm
+lsof
+lostfiles
+swig
+cython
+bazel
+robomongo

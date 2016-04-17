@@ -1,5 +1,7 @@
 # app keys..
-"chromium --force-device-scale-factor=1.2"
+#"chromium"
+
+"chromium --force-device-scale-factor=1.1"
   Mod4 + c
 "firefox"
   Mod4 + f
@@ -20,7 +22,7 @@
   Mod4 + Tab
 "chromium --profile-directory=Default --app-id=hmjkmjkepdijhoojdojkdfohbdgmmhki"
   Mod4 + g
-"~/bin/email-client"
+"~/bin/background/email-client"
   Mod4 + e
 "slock"
   Control+Alt+Shift+l

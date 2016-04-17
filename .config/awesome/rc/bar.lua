@@ -207,6 +207,7 @@ for s = 1, screen.count() do
     my_promptbox[s] = awful.widget.prompt()
 
     local left_layout = wibox.layout.fixed.horizontal()
+    left_layout:add(my_layoutbox[s])
     left_layout:add(sepopen)
     left_layout:add(my_taglist[s])
     left_layout:add(my_promptbox[s])
@@ -226,7 +227,6 @@ for s = 1, screen.count() do
     end
     right_layout:add(sepclose)
     right_layout:add(my_textclock)
-    right_layout:add(my_layoutbox[s])
 
     local layout = wibox.layout.align.horizontal()
     layout:set_left(left_layout)

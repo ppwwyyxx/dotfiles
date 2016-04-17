@@ -11,7 +11,7 @@ conky.config = {
 	use_xft = true,
 	text_buffer_size = 2048,
 	xftalpha = 0.7,
-	font = 'arial black:size=8',
+	font = 'arial black:size=10',
 	uppercase = false,
 	use_spacer = 'none',
 
@@ -31,7 +31,7 @@ conky.config = {
 
 -- position
 	alignment = 'top_left',
-	gap_x = 255,
+	gap_x = 325,
 	gap_y = 40,
 	top_name_width = 30
 }

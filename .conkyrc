@@ -11,7 +11,7 @@ conky.config = {
 	use_xft = true,
 	text_buffer_size = 2048,
 	xftalpha = 0.7,
-	font = 'arial black:size=8',
+	font = 'arial black:size=12',
 	uppercase = false,
 	use_spacer = 'none',
 
@@ -37,38 +37,40 @@ conky.config = {
 }
 
 conky.text = [[
-${font arial black:size=12}${color magneta}SYSTEM${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
+${font arial black:size=14}${color magneta}SYSTEM${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
 $nodename $kernel
-UP: $font$uptime ${voffset -18}
-${voffset 9}${font arial black:size=30}${time %e}$font ${voffset -17}${time %A, }${time %B} ${time %G}
-${voffset -2}${goto 65}${font arial black:size=10} ${time %I:%M:%S %p} ${font arial black:size=12}
+UP: $font$uptime ${voffset -5}
+${voffset 10}${font arial black:size=28}${time %e}$font ${voffset -17}${time %A, }${time %B} ${time %G}
+${voffset -2}${goto 65}${font arial black:size=10} ${time %I:%M:%S %p} ${font arial black:size=14}
 ${color magneta}CPU${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
 USAGE: $font${cpu cpu0}%
 ${cpugraph cpu0 C0C0C0 C0C0C0}
-Name${goto 120} PID${goto 160} CPU${goto 200} MEM
-${color #ddaa00}${top name 1}${goto 120}${top pid 1}${goto 160}${top cpu 1}${goto 200}${top mem 1}
-${color lightgrey}${top name 2}${goto 120}${top pid 2}${goto 160}${top cpu 2}${goto 200}${top mem 2}
-${color lightgrey}${top name 3}${goto 120}${top pid 3}${goto 160}${top cpu 3}${goto 200}${top mem 3}$color$font
-${font arial black:size=12}${color magneta}Storage${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
+Name${goto 120} PID${goto 180} CPU${goto 220} MEM
+${color #ddaa00}${top name 1}${goto 120}${top pid 1}${goto 175}${top cpu 1}${goto 215}${top mem 1}
+${color lightgrey}${top name 2}${goto 120}${top pid 2}${goto 175}${top cpu 2}${goto 215}${top mem 2}
+${color lightgrey}${top name 3}${goto 120}${top pid 3}${goto 175}${top cpu 3}${goto 215}${top mem 3}
+${color lightgrey}${top name 4}${goto 120}${top pid 4}${goto 175}${top cpu 4}${goto 215}${top mem 4}$color$font
+${font arial black:size=14}${color magneta}Storage${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
 RAM: $font$memperc% ${alignr}$mem/$memmax
 ${membar}
 ROOT:$font${fs_used_perc /}% ${alignr}${fs_used /}/${fs_size /}
 ${fs_bar /}$color
 HOME:$font${fs_used_perc /home}% ${alignr}${fs_used /home}/${fs_size /home}
 ${fs_bar /home/}$color
-Read: ${diskio_read /dev/sda}${alignc}/dev/sda${alignr}Write: ${diskio_write /dev/sda}
-${diskiograph_read /dev/sda 20,115} ${diskiograph_write /dev/sda 20,115}
-Read: ${diskio_read /dev/sdb}${alignc}/dev/sdb${alignr}Write: ${diskio_write /dev/sdb}
-${diskiograph_read /dev/sdb 20,115} ${diskiograph_write /dev/sdb 20,115}
-${font arial black:size=12}${color magneta}NETWORK${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
-DOWN: $font$color${downspeed wlp3s0}/${totaldown wlp3s0}
-UP: $font${upspeed wlp3s0}/${totalup wlp3s0}
-${downspeedgraph wlp3s0 20,115 C0C0C0 C0C0C0} ${upspeedgraph wlp3s0 20,115 C0C0C0 C0C0C0}$color
-IN: $font${tcp_portmon 1 32767 count} OUT: $font${tcp_portmon 32768 61000 count}${alignr}TOTAL: $font${tcp_portmon 1 65535 count}
-LOCAL:$font ${addr wlp3s0}${color}
-${font arial black:size=12}${color magneta}BATTERY${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
+Root R: ${diskio_read /dev/nvme0n1p7}${alignr}W: ${diskio_write /dev/nvme0n1p7}
+${diskiograph_read /dev/nvme0n1p7 20,132} ${diskiograph_write /dev/nvme0n1p7 20,132}
+Home R: ${diskio_read /dev/nvme0n1p8}${alignr}W: ${diskio_write /dev/nvme0n1p8}
+${diskiograph_read /dev/nvme0n1p8 20,132} ${diskiograph_write /dev/nvme0n1p8 20,132}
+${font arial black:size=14}${color magneta}NETWORK${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
+DOWN: $font$color${downspeed wlp2s0}/${totaldown wlp2s0}
+UP: $font${upspeed wlp2s0}/${totalup wlp2s0}
+${downspeedgraph wlp2s0 20,132 C0C0C0 C0C0C0} ${upspeedgraph wlp2s0 20,132 C0C0C0 C0C0C0}$color
+Port In: $font${tcp_portmon 1 32767 count} Out: $font${tcp_portmon 32768 61000 count}${alignr}TOTAL: $font${tcp_portmon 1 65535 count}
+LOCAL:$font ${addr wlp2s0}${color}
+${font arial black:size=14}${color magneta}BATTERY${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
 ${battery_bar}
 STATE: $font$color${battery} $alignr ${battery_time}
 TEMPERATURE:$font ${acpitemp}°C${color}
+${voffset 15}
 ]]
 --FAN: $font$color${ibm_fan}rpm${alignr}
