@@ -1,0 +1,196 @@
+# Headers {{{1
+ignore *
+unignore from to cc bcc reply-to mail-followup-to date organization message-id return-path user-agent x-mailer x-url
+unhdr_order *
+hdr_order From: To: Cc: Subject: Date:
+
+# Settings {{{1
+unset abort_unmodified
+set assumed_charset="utf-8:gbk"
+set attach_charset="utf-8:gbk"
+set beep_new
+set charset="utf-8"
+set edit_headers
+set fast_reply
+set forward_format = "Fwd: %s"
+set forward_quote
+set include
+set ispell = "aspell -e -c"
+set mail_check=120
+set menu_scroll
+set pager_context = 5
+set pager_index_lines = 5
+set pager_stop
+set pipe_decode
+#set query_command="echo; grep 'alias.*'%s ~/.mutt/aliases | cut -d' ' -f3-"
+set query_command="echo; recsel -ie 'Alias ~ \"'%s'\"' ~/.mutt/contacts.rec | recfmt '{{Name}} <{{Email}}>%' | tr % '\n'"
+set quit
+set read_inc=100
+set realname="Ray Song"
+set resolve
+set reverse_alias
+set reverse_name
+set rfc2047_parameters=yes
+set search_context=3
+set sendmail="msmtp"
+set sort=threads
+set sort_aux=reverse-last-date-received
+set ssl_force_tls = yes
+set text_flowed
+set timeout = 3
+unset mark_old
+unset markers
+unset reply_to
+unset sort_re
+unset wait_key
+
+# Formats {{{1
+set attribution='On %{%F}, %n wrote:'
+set alias_format = "%4n %t %-20a %r"
+set compose_format = "-- Compose %h [Approx. msg size: %l   Atts: %a]%>-"
+set date_format = "%d/%m/%y at %I:%M%P"
+set index_format = "%3C %Z %[!%y-%m-%d] %-17.17F %s"
+set pager_format = "%S [%C/%T] %n %s %> %P  "
+set status_format = "-%r- %f (%s) [%M/%m] [NEW=%n] %?V?[%V]?"
+set status_format = "-%r- [%?M?%M/?%m msgs%?n?, %n new?%?d?, %d del?%?F?, %F flag?%?t?, %t tag?%?p?, %p postp?%?b?, %b inc?%?l?, %l?]--(%f)--%s-%>-%P-"
+
+# Files {{{1
+set mbox_type=Maildir
+#set alias_file = ~/.mutt/aliases
+set header_cache = ~/.mutt/cache/
+#set maildir_header_cache_verify = no
+set message_cachedir = ~/.mutt/cache/
+set signature = ~/.mutt/signature
+set certificate_file  = ~/.mutt/certificates
+set record = ~/Maildir/Sent
+
+# Sidebar {{{1
+#set sidebar_width = 20
+#set sidebar_visible
+
+# Bindings {{{1
+macro index a "<limit>all\n" "show all messages (undo limit)"
+macro index q '<change-folder>?<toggle-mailboxes>'
+bind index p parent-message
+macro index za "<collapse-thread>" "(un)collapse thread"
+bind index zt current-top
+bind index zz current-middle
+bind index zb current-bottom
+bind index h previous-page
+bind index l next-page
+bind index / limit
+macro index,pager ,p "<pipe-message>cat > /tmp/" "save message as"
+macro index,pager ,z "<shell-escape>offlineimap -q -o<return>" "sync IMAP"
+macro index,pager ,R "<tag-pattern>all<return><tag-prefix><clear-flag>N<untag-pattern>all<return>" "mark all as read"
+macro index,pager ,q \
+  "<enter-command>unset wait_key<enter><shell-escape>mutt-notmuch --output \
+  /tmp/.notmuch --prompt search<enter><change-folder-readonly>/tmp/.notmuch<enter>" \
+  "search mail (using notmuch)"
+bind generic,index j next-entry
+bind generic,index k previous-entry
+bind index,pager . next-unread
+bind index,pager J next-new-then-unread
+bind index,pager K previous-new-then-unread
+bind index,pager a create-alias
+bind index,pager N search-opposite
+#bind index,pager <esc>k sidebar-prev
+#bind index,pager <esc>j sidebar-next
+#bind index,pager <esc>o sidebar-open
+#macro index,pager B '<enter-command>toggle sidebar_visible<enter>'
+#macro index,pager \Cx0 "<enter-command>source ~/.mutt/local<enter>"
+#macro index,pager \Cx1 "<enter-command>source ~/.mutt/remote<enter>"
+macro index,pager A "<pipe-message>abook --add-email-quiet<return>" "add the sender address to abook"
+
+macro index,pager \Cxp "<enter-command>set sendmail=\"proxychains msmtp\"\n" "proxychains msmtp"
+macro index,pager \Cxm "<enter-command>set sendmail=msmtp\n" "msmtp"
+
+macro attach V "<pipe-entry>cat > /tmp/mail.html && $BROWSER /tmp/mail.html<enter>"
+
+bind pager \Cu half-up
+bind pager \Cd half-down
+bind pager p parent-message
+bind pager G bottom
+bind pager h previous-line
+bind pager l next-line
+bind pager H display-toggle-weed
+bind pager N search-opposite
+macro pager \cu "|urlscan\n"
+
+#macro generic \Cx_ "<enter-command>set sendmail" "Internal macro from the MSMTP module"
+#macro generic \Cx| "\Cx_ = \"/usr/bin/msmtp" "Internal macro from the MSMTP module"
+#macro generic \Cx& "<enter-command>macro compose \\t \"\\Cx" "Internal macro from the MSMTP module"
+macro compose <tab> "\Cx1" "Change the current MSMTP account"
+macro compose = "\Cx_\n" "Show the current MSMTP account"
+macro generic \Cx2 "\Cx| -a Gmail\"\n\Cx&2\" \"Change the current MSMTP account\"\n\Cx_\n" "Switch to account Gmail for MSMTP"
+macro generic \Cx3 "\Cx| -a Live\"\n\Cx&3\" \"Change the current MSMTP account\"\n\Cx_\n" "Switch to account Live for MSMTP"
+
+# Folder shortcuts {{{2
+macro index,pager ,i "c!\n"
+macro index,pager ,t "<change-folder>=Tuna<return>" "go to =Tuna"
+macro index,pager ,m "<change-folder>=ML<return>" "go to =ML"
+macro index,pager ,s "<change-folder>=School<return>" "go to =School"
+macro index,pager ,w "<change-folder>=Work<return>" "go to =Work"
+macro index,pager ,< "<change-folder><<return>" "go to =Sent"
+
+bind attach ' ' select-entry
+macro attach s <save-message><bol>/tmp/
+
+bind browser $ check-new
+bind browser ' ' select-entry
+macro browser q '<exit><quit>'
+
+bind editor <tab> complete-query
+
+# PGP {{{1
+#set pgp_auto_decode=yes
+#set pgp_replyencrypt=yes
+#set pgp_timeout=1800
+#set pgp_verify_sig=yes
+#set pgp_decode_command="gpg --status-fd=2 %?p?--passphrase-fd 0? --no-verbose --quiet --batch --output - %f"
+#set pgp_verify_command="gpg --status-fd=2 --no-verbose --quiet --batch --output - --verify %s %f"
+#set pgp_decrypt_command="gpg --status-fd=2 %?p?--passphrase-fd 0? --no-verbose --quiet --batch --output - %f"
+#set pgp_sign_command="gpg --no-verbose --batch --quiet --output - %?p?--passphrase-fd 0? --armor --detach-sign --textmode %?a?-u %a? %f"
+#set pgp_clearsign_command="gpg --no-verbose --batch --quiet --output - %?p?--passphrase-fd 0? --armor --textmode --clearsign %?a?-u %a? %f"
+#set pgp_encrypt_only_command="pgpewrap gpg --encrypt-to 6EF987AE --charset utf8 --batch --quiet --no-verbose --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
+#set pgp_encrypt_sign_command="pgpewrap gpg %?p?--passphrase-fd 0? --encrypt-to 6EF987AE --charset utf8 --batch --quiet --no-verbose --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
+#set pgp_import_command="gpg --no-verbose --import %f"
+#set pgp_export_command="gpg --no-verbose --export --armor %r"
+#set pgp_verify_key_command="gpg --verbose --batch --fingerprint --check-sigs %r"
+#set pgp_list_pubring_command="gpg --no-verbose --batch --quiet --with-colons --list-keys %r"
+#set pgp_list_secring_command="gpg --no-verbose --batch --quiet --with-colons --list-secret-keys %r"
+#set pgp_getkeys_command="gpg --recv-keys %r > /dev/null 2>&1"
+#set pgp_good_sign="^\\[GNUPG:\\] GOODSIG"
+
+# Use GPGME
+set crypt_use_gpgme = yes
+
+# Sign replies to signed email
+set crypt_replysign = yes
+
+# Encrypt replies to encrypted email
+set crypt_replyencrypt = yes
+
+# Encrypt and sign replies to encrypted and signed email
+set crypt_replysignencrypted = yes
+
+# Attempt to verify email signatures automatically
+set crypt_verify_sig = yes
+
+# Misc {{{1
+set editor="vim +'norm }' +'norm o' %s" # insert mode
+auto_view application/* image/* text/html
+alternative_order text/html text/plain
+mime_lookup application/octet-stream
+
+charset-hook gb2312 gbk
+
+message-hook . "set mime_forward=ask-no"
+message-hook "~h multipart" "set mime_forward=ask-yes"
+
+# Includes {{{1
+#source $alias_file
+source ~/.mutt/local
+#source ~/.mutt/profile
+source ~/.mutt/theme
+
+# vim: fdm=marker:

@@ -393,3 +393,14 @@ swig
 cython
 bazel
 robomongo
+weechat
+bvi
+jq
+abricotine
+gephi
+netdata
+gnu-netcat
+links
+android-tools
+xscreensaver
+foxitreader

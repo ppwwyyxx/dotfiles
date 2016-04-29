@@ -11,7 +11,8 @@ quick = 10
 
 [Repository Gmail-Local]
 type = Maildir
-localfolders = /opt/Mail/Maildir
+localfolders = /home/wyx/Mail/Maildir
+nametrans = lambda f: f if 'Sent' not in f else '[Gmail]/Sent Mail'
 
 [Repository Gmail-Remote]
 type = Gmail
@@ -32,15 +33,19 @@ folderfilter = lambda folder: folder not in \
 	 '[Gmail]/Spam',
 	 '[Gmail]/All Mail',
 	 '[Gmail]/Important',
-	 '[Gmail]/Trash',
+	 #'[Gmail]/Trash',
 	 'road_ahead/hulu/other',
+	 'projects/pynojo',
+	 'projects/unknown',
+	 'projects/maTHu',
+	 'projects/nms',
+	 'THU/OS-courses',
+	 'THU/auto-notification',
+	 'THU/Parallel',
 	]
-	 #'projects/pynojo'
-	 #'projects/unknown'
-	 #'projects/maTHu'
-	 #'projects/nms'
-	 #'THU/OS-courses'
 	 #'[Gmail]/&g0l6Pw-', # draft
+
+nametrans = lambda f: f if 'Sent Mail' not in f else 'Sent'
 
 
 realdelete = no

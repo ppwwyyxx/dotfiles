@@ -1,11 +1,11 @@
 # XScreenSaver Preferences File
-# Written by xscreensaver-demo 5.19 for wyx on Tue Aug  7 23:39:54 2012.
+# Written by xscreensaver-demo 5.34 for wyx on Wed Apr 27 22:08:29 2016.
 # http://www.jwz.org/xscreensaver/
 
-timeout:	0:05:00
-cycle:		0:05:00
+timeout:	0:10:00
+cycle:		0:03:00
 lock:		True
-lockTimeout:	0:05:00
+lockTimeout:	0:13:00
 passwdTimeout:	0:00:30
 visualID:	default
 installColormap:    True
@@ -32,7 +32,7 @@ dpmsOff:	4:00:00
 grabDesktopImages:  True
 grabVideoFrames:    False
 chooseRandomImages: False
-imageDirectory:	/home/wyx/install/files
+imageDirectory:	
 
 mode:		random
 selected:	-1
@@ -49,7 +49,7 @@ programs:								      \
 				attraction -root			    \n\
 -				blitspin -root				    \n\
 -				greynetic -root				    \n\
--				helix -root				    \n\
+				helix -root				    \n\
 -				hopalong -root				    \n\
 -				imsmap -root				    \n\
 -				noseguy -root				    \n\
@@ -60,7 +60,7 @@ programs:								      \
 				decayscreen -root			    \n\
 -				flame -root				    \n\
 -				halo -root				    \n\
--				slidescreen -root			    \n\
+				slidescreen -root			    \n\
 -				pedal -root				    \n\
 -				bouboule -root				    \n\
 -				braid -root				    \n\
@@ -80,7 +80,7 @@ programs:								      \
 - GL: 				morph3d -root				    \n\
 				mountain -root				    \n\
 -				munch -root				    \n\
-				penrose -root				    \n\
+				penrose -root -size 27			    \n\
 - GL: 				pipes -root				    \n\
 -				rd-bomb -root				    \n\
   GL: 				rubik -root				    \n\
@@ -94,16 +94,16 @@ programs:								      \
 				xjack -root				    \n\
 -				xlyap -root				    \n\
 - GL: 				atlantis -root				    \n\
-				bsod -root				    \n\
+-				bsod -root				    \n\
 - GL: 				bubble3d -root				    \n\
   GL: 				cage -root				    \n\
 -				crystal -root				    \n\
 -				cynosure -root				    \n\
 -				discrete -root				    \n\
 -				distort -root				    \n\
--				epicycle -root				    \n\
+				epicycle -root				    \n\
 -				flow -root				    \n\
-  GL: 				glplanet -root				    \n\
+- GL: 				glplanet -root				    \n\
 -				interference -root			    \n\
 -				kumppa -root				    \n\
 - GL: 				lament -root				    \n\
@@ -119,8 +119,8 @@ programs:								      \
 -				deluxe -root				    \n\
 -				demon -root				    \n\
 - GL: 				extrusion -root				    \n\
--				loop -root				    \n\
-				penetrate -root				    \n\
+				loop -root				    \n\
+-				penetrate -root				    \n\
 -				petri -root				    \n\
 -				phosphor -root				    \n\
 - GL: 				pulsar -root				    \n\
@@ -152,11 +152,11 @@ programs:								      \
 				whirlwindwarp -root			    \n\
 -				zoom -root				    \n\
 -				anemone -root				    \n\
-				apollonian -root			    \n\
+-				apollonian -root			    \n\
   GL: 				boxed -root				    \n\
 - GL: 				cubenetic -root				    \n\
   GL: 				endgame -root				    \n\
--				euler2d -root				    \n\
+				euler2d -root -count 2334		    \n\
 -				fluidballs -root			    \n\
 - GL: 				flurry -root				    \n\
 - GL: 				glblur -root				    \n\
@@ -169,27 +169,27 @@ programs:								      \
 - GL: 				sballs -root				    \n\
 - GL: 				spheremonics -root			    \n\
 -				thornbird -root				    \n\
--				twang -root				    \n\
+				twang -root				    \n\
 - GL: 				antspotlight -root			    \n\
 -				apple2 -root				    \n\
-  GL: 				atunnel -root				    \n\
+- GL: 				atunnel -root				    \n\
 -				barcode -root				    \n\
-  GL: 				blinkbox -root				    \n\
+- GL: 				blinkbox -root				    \n\
 - GL: 				blocktube -root				    \n\
   GL: 				bouncingcow -root			    \n\
 -				cloudlife -root				    \n\
 - GL: 				cubestorm -root				    \n\
-				eruption -root				    \n\
+-				eruption -root				    \n\
 - GL: 				flipflop -root				    \n\
   GL: 				flyingtoasters -root			    \n\
 -				fontglide -root				    \n\
 - GL: 				gleidescope -root			    \n\
-- GL: 				glknots -root				    \n\
+  GL: 				glknots -root				    \n\
   GL: 				glmatrix -root				    \n\
 - GL: 				glslideshow -root			    \n\
 - GL: 				hypertorus -root			    \n\
 - GL: 				jigglypuff -root			    \n\
--				metaballs -root				    \n\
+				metaballs -root				    \n\
 - GL: 				mirrorblob -root			    \n\
 				piecewise -root				    \n\
   GL: 				polytopes -root				    \n\
@@ -199,12 +199,12 @@ programs:								      \
 -				xanalogtv -root				    \n\
 -				abstractile -root			    \n\
 -				anemotaxis -root			    \n\
-  GL: 				antinspect -root			    \n\
+- GL: 				antinspect -root			    \n\
 				fireworkx -root				    \n\
 -				fuzzyflakes -root			    \n\
 -				interaggregate -root			    \n\
 -				intermomentary -root			    \n\
-				memscroller -root			    \n\
+-				memscroller -root			    \n\
 - GL: 				noof -root				    \n\
 				pacman -root				    \n\
 - GL: 				pinion -root				    \n\
@@ -217,9 +217,9 @@ programs:								      \
 -				boxfit -root				    \n\
 - GL: 				carousel -root				    \n\
 -				celtic -root				    \n\
-  GL: 				crackberg -root				    \n\
+- GL: 				crackberg -root				    \n\
 - GL: 				cube21 -root				    \n\
-				fiberlamp -root				    \n\
+-				fiberlamp -root				    \n\
 - GL: 				fliptext -root				    \n\
   GL: 				glhanoi -root				    \n\
 - GL: 				tangram -root				    \n\
@@ -235,17 +235,31 @@ programs:								      \
   GL: 				moebiusgears -root			    \n\
 - GL: 				voronoi -root				    \n\
   GL: 				hypnowheel -root			    \n\
-  GL: 				klein -root				    \n\
+- GL: 				klein -root				    \n\
 -				lcdscrub -root				    \n\
 - GL: 				photopile -root				    \n\
 - GL: 				skytentacles -root			    \n\
 - GL: 				rubikblocks -root			    \n\
 -				unicode -root				    \n\
 - GL: 				dnalogo -root				    \n\
-  GL: 				companioncube -root			    \n\
-- GL: 				hilbert -root				    \n\
+- GL: 				companioncube -root			    \n\
+  GL: 				hilbert -root				    \n\
 - GL: 				tronbit -root				    \n\
 -				electricsheep --root 1			    \n\
+- GL: 				geodesic -root				    \n\
+-				hexadrop -root				    \n\
+- GL: 				kaleidocycle -root			    \n\
+- GL: 				quasicrystal -root			    \n\
+- GL: 				unknownpleasures -root			    \n\
+-				binaryring -root			    \n\
+- GL: 				cityflow -root				    \n\
+  GL: 				geodesicgears -root			    \n\
+- GL: 				projectiveplane -root			    \n\
+- GL: 				romanboy -root				    \n\
+-				tessellimage -root			    \n\
+  GL: 				winduprobot -root			    \n\
+- GL: 				splitflap -root -speed 5.9359		    \n\
+-				testx11 -root				    \n\
 
 
 pointerPollTime:    0:00:05
@@ -256,4 +270,5 @@ GetViewPortIsFullOfLies:False
 procInterrupts:	True
 xinputExtensionDev: False
 overlayStderr:	True
+authWarningSlack:   20
 

@@ -1,0 +1,3 @@
+set folder=~/Mail/Maildir
+mailboxes *
+set spoolfile=+INBOX

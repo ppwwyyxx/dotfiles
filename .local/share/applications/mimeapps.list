@@ -1,13 +1,16 @@
-[Added Associations]
-
 [Default Applications]
-application/pdf=mupdf.desktop;
-application/msword=libreoffice-writer.desktop;
-text/x-c=gvim.desktop
-text/x-python=gvim.desktop
+text/html=chrome.desktop
 text/plain=gvim.desktop
 
-image/jpeg=feh.desktop
-image/png=feh.desktop
-image/gif=feh.desktop
+x-scheme-handler/http=chrome.desktop
+x-scheme-handler/https=chrome.desktop
+x-scheme-handler/about=chrome.desktop
+x-scheme-handler/unknown=chrome.desktop
 
+application/pdf=FoxitReader.desktop
+application/ppdf=FoxitReader.desktop
+application/octet-stream=FoxitReader.desktop
+
+image/png=feh.desktop
+image/jpeg=feh.desktop
+image/gif=feh.desktop
