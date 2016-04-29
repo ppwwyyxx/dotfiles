@@ -11,15 +11,16 @@ local autorun_items = {
 
     "sleep 40 && zeal",
     "termite",
-    "sleep 20 && redshift-gtk",
+    "sleep 100 && redshift-gtk",
+    "xscreensaver -nosplash",
 
     --"/home/wyx/bin/cvim-server.py",
     "/home/wyx/bin/background/notify-daemon.py",
 
     "sleep 30 && telegram-desktop",
-    "sleep 50 && /home/wyx/.local/bin/plaidchat",
+    "sleep 80 && /home/wyx/.local/bin/plaidchat",
 
-    --"sleep 100 && dropbox",
+    "sleep 100 && dropbox",
 }
 local runonce = require("lib/runonce")
 for _, item in ipairs(autorun_items) do

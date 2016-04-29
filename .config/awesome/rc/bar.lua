@@ -126,15 +126,16 @@ function volumectl(mode)
       end
       volume_widget:set_markup(volume)
       return
-      elseif mode == "up" then
-         exec("pamixer --allow-boost --increase 5")
-         elseif mode == "down" then
-            exec("pamixer --allow-boost --decrease 5")
-            elseif mode == "mute" then
-               exec("pamixer --toggle-mute")
-            end
-            volumectl("update")
-         end
+   elseif mode == "up" then
+      exec("pamixer --allow-boost --increase 5")
+   elseif mode == "down" then
+      exec("pamixer --allow-boost --decrease 5")
+   elseif mode == "mute" then
+      exec("pamixer --set-volume 20")
+      exec("pamixer --toggle-mute")
+   end
+   volumectl("update")
+end
 volumectl()
 local volume_clock = timer({ timeout = 60 })
 volume_clock:connect_signal("timeout", function() volumectl() end)

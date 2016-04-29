@@ -24,7 +24,7 @@
   Mod4 + g
 "~/bin/background/email-client"
   Mod4 + e
-"slock"
+"xscreensaver-command -activate"
   Control+Alt+Shift+l
 "xkill"
   Control+Alt+Shift+k
@@ -43,6 +43,7 @@
 
 # Logitech Mouse..
 # TODO use awesome-client for switch, and volume
+
 "notify-send mail"
   XF86Mail	# the forward button, depends on xcape rules
 "notify-send mod4+mail"

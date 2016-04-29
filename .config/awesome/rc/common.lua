@@ -36,3 +36,24 @@ function rexec(cmd)
     [return ret
     ]]
 end
+
+function moveresize_abs(x, y, w, h, c)
+   -- set the pos/size of a client
+   -- x, y: should be in pixel, can be negative (couting from right or bottom)
+   -- w, h: can be in [0,1] for ratio or in pixel, or 0 to keep unchanged
+	c.maximized_horizontal = false
+	c.maximized_vertical = false
+	local g = c:geometry()
+   local scr = screen[c.screen].workarea
+	if w == 0 then w = g.width end
+   if h == 0 then h = g.width end
+	if w <= 1 then w = scr.width * w end
+   if h <= 1 then h = scr.height * h end
+   if math.abs(x) <= 1 then x = scr.width * x end
+   if math.abs(y) <= 1 then y = scr.height * y end
+   if x < 0 then x = scr.width + x end
+   if y < 0 then y = scr.height + y end
+	awful.client.moveresize(-g.x + scr.x + x, -g.y + scr.y + y,
+						-g.width + w, -g.height + h, c)
+end
+

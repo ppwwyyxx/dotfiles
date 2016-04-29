@@ -109,7 +109,7 @@ for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
 done
 FINISH="%{$terminfo[sgr0]%}"
 
-if [[ $HOST =~ "Keep" ]]; then
+if [[ $HOST == "KeepLearning" ]]; then
   alias poweroff='vboxmanage controlvm win7 savestate; sudo poweroff'
   alias reboot='vboxmanage controlvm win7 savestate; sudo reboot'
   export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: (meow~~) '
@@ -143,7 +143,7 @@ function precmd() {
 	local YELLOWGREENB="%{%b%K{154}%F{black}%}"
 	local PURPLE="%{%b%F{171}%}"
 
-	if [[ $USER == "wyx" ]] && [[ $HOST =~ "Keep" ]]; then
+	if [[ $USER == "wyx" ]] && [[ $HOST == "KeepLearning" ]]; then
 		PROMPT_PART="" # on my laptop
 	else
 		PROMPT_PART="$GREEN [%{%F{171}%}%n@%{%F{219}%}%M$GREEN]"
@@ -188,7 +188,7 @@ $YELLOWGREEN%$pwdlen<...<%~%<< \
 
 # alias
 safe_source $HOME/.zsh/alias.zsh
-alias -s pdf=llpp
+alias -s pdf=foxitreader
 alias -s djvu=djview4
 alias -s obj=meshlab
 alias -s pcd=~/tmp/modeling/bin/pcd_viewer
@@ -227,108 +227,6 @@ export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=100000
 export SAVEHIST=80000
 alias nohistory='unset HISTFILE'
-
-# Complete f[[
-autoload -U compinit
-compinit
-setopt AUTO_LIST
-setopt AUTO_MENU
-setopt MENU_COMPLETE
-setopt complete_in_word   # complete /v/c/a/p
-setopt no_nomatch		  # enhanced bash wildcard completion
-setopt magic_equal_subst
-setopt noautoremoveslash
-setopt null_glob
-
-# alias cpv needs completion
-compdef cpv=cp
-compdef rsync=scp
-compdef telnet=ssh
-compdef st=ssh
-
-# specific filetype
-_pic() { _files -g '*.(jpg|png|bmp|gif|ppm|pbm|jpeg|xcf|ico)(-.)' }
-compdef _pic gimp
-compdef _pic feh
-
-zstyle ':completion:*:cd:*' ignore-parents parent pwd
-zstyle ':completion:*' verbose yes
-zstyle ':completion:*' menu select
-zstyle ':completion:*:*:default' force-list always
-zstyle ':completion:*' select-prompt '%SSelect:  lines: %L  matches: %M  [%p]'
-zstyle ':completion:*:match:*' original only
-zstyle ':completion::prefix-1:*' completer _complete
-zstyle ':completion:predict:*' completer _complete
-zstyle ':completion:incremental:*' completer _complete _correct
-
-# Path Completion
-zstyle ':completion:*' expand 'yes'
-zstyle ':completion:*' squeeze-shlashes 'yes'
-zstyle ':completion::complete:*' '\\'
-
-# Colorful Completion
-eval $(dircolors -b)
-export ZLSCOLORS="${LS_COLORS}"
-zmodload zsh/complist
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-export LS_COLORS="$LS_COLORS*.f4v=01;35:*.pdf=01;35:*.djvu=01;35:"		# add custom ls_color
-
-# Fix case and typo
-zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
-zstyle ':completion:*:approximate:*' max-errors 1 numeric
-
-# Grouping Completion
-zstyle ':completion:*:matches' group 'yes'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*:options' description 'yes'
-zstyle ':completion:*:options' auto-description '%d'
-zstyle ':completion:*:descriptions' format $'\e[01;33m -- %d --\e[0m'
-
-# huge list
-zstyle ':completion:*:default' list-prompt '%S%M matches%s'
-zstyle ':completion:*:default' menu 'select=0'
-# Completing order
-zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
-zstyle ':completion:*' completer _complete _prefix _user_expand _correct _prefix _match
-# Separate man page sections.
-zstyle ':completion:*:manuals' separate-sections true
-
-# kill completion
-compdef pkill=kill
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
-zstyle ':completion:*:*:killall:*:processes-names' list-colors '=(#b) #([0-9]#)*=0=01;31'
-zstyle ':completion:*:*:kill:*' menu yes select
-zstyle ':completion:*:*:*:*:processes' force-list always
-zstyle ':completion:*:processes' command 'ps a -u $USER -o pid,tname,state,command '
-
-# buffer words completion for tmux
-tmux_buffer_completion() {
-	local expl
-	local -a w npane
-	npane=$(tmux list-panes |tail -n 1 |sed 's/:.*//g')
-	if [[ -z "$TMUX_PANE" ]]; then
-		_message "not running inside tmux!"
-		return 1
-	fi
-	for i in $(seq 0 $npane); do
-		w=$w${(u)=$(tmux capture-pane -t $i \; show-buffer \; delete-buffer)}
-	done
-	w=(  $(echo $w)  )							# why must use a echo
-	_wanted values expl 'words from pane buffer' compadd -a w
-}
-zle -C tmux-pane-words-prefix   complete-word _generic
-zle -C tmux-pane-words-anywhere complete-word _generic
-bindkey '^X^P' tmux-pane-words-prefix
-bindkey '^X^O' tmux-pane-words-anywhere
-zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' completer tmux_buffer_completion
-zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' ignore-line current
-zstyle ':completion:tmux-pane-words-anywhere:*' matcher-list 'b:=* m:{A-Za-z}={a-zA-Z}'
-
-# file completion ignore
-zstyle ':completion:*:*:*vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv|mp3|pdf|doc|docx|jpg|png|bmp|gif|npy|bin|o)'
-zstyle ':completion:*:*:cat:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv|mp3|pdf|doc|docx|jpg|png|bmp|gif|npy|bin|o)'
-
-# f]]
 
 # key binding f[[
 bindkey -e
@@ -390,8 +288,111 @@ sudo-command-line() {
 zle -N sudo-command-line
 bindkey "${key[F2]}" sudo-command-line
 
-bindkey -M menuselect '^@' accept-and-menu-complete
 # f]]
+
+# Complete f[[
+autoload -U compinit
+compinit
+zmodload zsh/complist
+bindkey -M menuselect '^@' accept-and-menu-complete
+setopt AUTO_LIST
+setopt AUTO_MENU
+setopt MENU_COMPLETE
+setopt complete_in_word   # complete /v/c/a/p
+setopt no_nomatch		  # enhanced bash wildcard completion
+setopt magic_equal_subst
+setopt noautoremoveslash
+setopt null_glob
+
+# alias completion
+compdef cpv=cp
+compdef rsync=scp
+compdef telnet=ssh
+compdef st=ssh
+
+# specific filetype
+_pic() { _files -g '*.(jpg|png|bmp|gif|ppm|pbm|jpeg|xcf|ico)(-.)' }
+compdef _pic gimp
+compdef _pic feh
+
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' menu select
+zstyle ':completion:*:*:default' force-list always
+zstyle ':completion:*' select-prompt '%SSelect:  lines: %L  matches: %M  [%p]'
+zstyle ':completion:*:match:*' original only
+zstyle ':completion::prefix-1:*' completer _complete
+zstyle ':completion:predict:*' completer _complete
+zstyle ':completion:incremental:*' completer _complete _correct
+
+# Path Completion
+zstyle ':completion:*' expand 'yes'
+zstyle ':completion:*' squeeze-shlashes 'yes'
+zstyle ':completion::complete:*' '\\'
+
+# Colorful Completion
+eval $(dircolors -b)
+export ZLSCOLORS="${LS_COLORS}"
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+export LS_COLORS="$LS_COLORS*.f4v=01;35:*.pdf=01;35:*.djvu=01;35:"		# add custom ls_color
+
+# Fix case and typo
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*:approximate:*' max-errors 1 numeric
+
+# Grouping Completion
+zstyle ':completion:*:matches' group 'yes'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:options' auto-description '%d'
+zstyle ':completion:*:descriptions' format $'\e[01;33m -- %d --\e[0m'
+
+# huge list
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*:default' menu 'select=0'
+# Completing order
+zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
+zstyle ':completion:*' completer _complete _prefix _user_expand _correct _prefix _match
+# Separate man page sections.
+zstyle ':completion:*:manuals' separate-sections true
+
+# kill completion
+compdef pkill=kill
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+zstyle ':completion:*:*:killall:*:processes-names' list-colors '=(#b) #([0-9]#)*=0=01;31'
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:*:*:*:processes' force-list always
+zstyle ':completion:*:processes' command 'ps a -u $USER -o pid,tname,state,command '
+
+# buffer words completion for tmux
+tmux_buffer_completion() {
+	local expl
+	local -a w npane
+	npane=$(tmux list-panes |tail -n 1 |sed 's/:.*//g')
+	if [[ -z "$TMUX_PANE" ]]; then
+		_message "not running inside tmux!"
+		return 1
+	fi
+	for i in $(seq 0 $npane); do
+		w=$w${(u)=$(tmux capture-pane -t $i \; show-buffer \; delete-buffer)}
+	done
+	w=(  $(echo $w)  )							# why must use a echo
+	_wanted values expl 'words from pane buffer' compadd -a w
+}
+zle -C tmux-pane-words-prefix   complete-word _generic
+zle -C tmux-pane-words-anywhere complete-word _generic
+bindkey '^X^P' tmux-pane-words-prefix
+bindkey '^X^O' tmux-pane-words-anywhere
+zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' completer tmux_buffer_completion
+zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' ignore-line current
+zstyle ':completion:tmux-pane-words-anywhere:*' matcher-list 'b:=* m:{A-Za-z}={a-zA-Z}'
+
+# file completion ignore
+zstyle ':completion:*:*:*vim:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv|mp3|pdf|doc|docx|jpg|png|bmp|gif|npy|bin|o)'
+zstyle ':completion:*:*:cat:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv|mp3|pdf|doc|docx|jpg|png|bmp|gif|npy|bin|o)'
+
+# f]]
+
 
 # vim edit remote file
 function vscp() {
@@ -454,7 +455,7 @@ path_parse(){
 
 # commands which should always be executed in background
 special_command(){
-	bg_list=(mupdf geeqie libreoffice word powerpoint evince matlab mathematica llpp)
+	bg_list=(mupdf geeqie libreoffice word powerpoint evince matlab mathematica llpp foxitreader)
 	local cmd=`echo $BUFFER | awk '{print $1}'`
 	# command running in background
 	in_array $cmd "${bg_list[@]}" && BUFFER=`echo $BUFFER |sed 's/\s\+2>\/dev\/null//g; s/[&]*\s*$/\ 2>\/dev\/null\ \&/g'`
@@ -511,6 +512,7 @@ if [ $commands[fasd] ]; then
 	alias j='fasd_cd -d'
 	alias jj='fasd_cd -d -i'
 	unalias s
+	unalias d
 	bindkey '^X^O' fasd-complete
 fi
 

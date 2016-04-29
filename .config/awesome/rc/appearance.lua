@@ -14,7 +14,7 @@ end
 
 -- configuration -
 local wp_index = 1
-local wp_timeout  = 300
+local wp_timeout  = 180
 local wp_path = awful.util.getdir("config") .. "/wallpaper/"
 local wp_files = rexec("find -L " .. wp_path .. " -maxdepth 2 -type f | shuf")
 wp_files = split(wp_files, "\n")

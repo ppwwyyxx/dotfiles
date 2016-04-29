@@ -9,18 +9,6 @@ root.buttons(join(
 	awful.button({ }, 5, awful.tag.viewnext)
 ))
 
-local function moveresize_abs(left, y, w, c)
-	c.maximized_horizontal = false
-	c.maximized_vertical = false
-	local g = c:geometry()
-    local scr = screen[c.screen].workarea
-	if w == 0 then w = g.width end
-	if w < 1 then w = scr.width * w end
-    local x = (left == 1) and 0 or scr.width - w
-	awful.client.moveresize(-g.x + scr.x + x, -g.y + scr.y + y,
-						-g.width + w, -g.height + scr.height, c)
-end
-
 local function t_exec(cmd)
 
 end
@@ -39,8 +27,8 @@ config.global = join(
 	awful.key({ modkey }, "Next",  function () awful.client.moveresize( 20,  20, -40, -40) end),
     awful.key({ modkey }, "Prior", function () awful.client.moveresize(-20, -20,  40,  40) end),
 
-	awful.key({modkey, }, ";", function() moveresize_abs(1, 0, 0.5, client.focus) end),
-	awful.key({modkey, }, "'", function() moveresize_abs(0, 0, 0.5, client.focus) end),
+	awful.key({modkey, }, "'", function() moveresize_abs(-0.5, 0, 0.5, 1, client.focus) end),
+	awful.key({modkey, }, ";", function() moveresize_abs(0, 0, 0.5, 1, client.focus) end),
 
 	awful.key({modkey, "Shift"}, "'", function()
 		keygrabber.run(function(mod, key, event)
@@ -106,9 +94,8 @@ config.global = join(
     awful.key({ modkey, "Shift" }, "k", function() awful.client.swap.byidx(-1) end),
 
 	awful.key({ modkey }, "j", function()
-      awful.tag.incnmaster(1)
-        --awful.cli  ent.focus.byidx(1)
-        --if client.focus then client.focus:raise() end
+        awful.client.focus.byidx(1)
+        if client.focus then client.focus:raise() end
     end),
     awful.key({ modkey }, "k", function()
         awful.client.focus.byidx(-1)

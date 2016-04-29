@@ -87,9 +87,18 @@ awful.rules.rules = {
     rule = { class = 'rdesktop'},
     properties = { screen = 1 }
 }, {
-    rule_any = { name = {'Telegram', 'plaidchat'} },
+    rule_any = { name = {'Telegram', 'plaidchat', 'WeChat', 'Nocturn'} },
     callback = function(c)
         awful.client.movetotag(tags[1][3], c)
+        local g = c:geometry()
+        local scr = screen[c.screen].workarea
+        if c.name == "Nocturn" then
+           moveresize_abs(-400, 0, 400, 1, c)
+        elseif c.name:find("WeChat") ~= nil then
+           moveresize_abs(0, 0, 900, 0.8, c)
+        elseif c.name:find("Telegram") ~= nil then
+           moveresize_abs(-1200, -800, 1000, 800, c)
+        end
     end
 }, {
     rule = { name = 'sogou-qimpanel'},

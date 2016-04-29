@@ -43,7 +43,7 @@ which ag NN && {
 	alias agp='ag --python'
 } || alias -g G='|grep'
 
-alias -g awk-sum="awk '{if (\$1+0!=\$1) { print \"Fail! \"\$0, NR; exit; }; s+=\$1} END {print s, s / NR}' "
+alias awk-sum="awk '{if (\$1+0!=\$1) { print \"Fail! \"\$0, NR; exit; }; s+=\$1} END {print s, s / NR}' "
 # rm moves things to trash
 function rm() {
 	for file in $@; do
@@ -244,7 +244,7 @@ which nl NN && {
 } || {
 	alias nvq='__nvq | column -t -s ,'
 }
-alias nvp="nvidia-smi | awk '/PID/ { seen=1 } seen {print} ' | tail -n+3 | head -n-1  |  awk '{print \$2, \$(NF-1), \$3}' | awk '{ (\"ps -ho pid,command \" \$3) | getline v; \$3=v; print }'"
+alias nvp="nvidia-smi | awk '/PID/ { seen=1 } seen {print} ' | tail -n+3 | head -n-1  |  awk '{print \$2, \$(NF-1), \$3}' | awk '{ cmd=(\"ps -ho pid,command \" \$3); cmd | getline v; close(cmd); \$3=v; print }'"
 alias nsmi='watch -n 0.5 nvidia-smi'
 
 function b(){
@@ -317,7 +317,6 @@ function colormap(){
 
 # processes
 alias psg='nocorrect pgrep -a'
-#function pstack() { =gdb -q -nx -p $1 <<< 't a a bt' 2>&- | sed -ne '/^#/p' }
 function pstack() { =gdb -q -nx -p $1 <<< 't a a bt' | sed -ne '/^#/p' }
 
 local top_version=$(=top -h 2>/dev/null | head -n1 | grep -o '[0-9]*$')
@@ -327,7 +326,7 @@ else
 	alias top='top -d 0.5'
 fi
 alias topme='top -u $USER'
-alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -rn | head -n20"
+alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -n | tail -n20"
 memgrep() { grep VmHWM /proc/$(pgrep -d '/status /proc/' "$1")/status; }
 function killz() {
 	ppid=$(ps -oppid $1 | tail -n1)
@@ -372,7 +371,7 @@ which pacman NN && {
 	alias pSu='pacaur -Syu'
 	alias pQl='pacman -Ql'
 	alias paur='pacman -Qm'
-	alias pacman-size="paste <(pacman -Q | awk '{ print \$1; }' | xargs pacman -Qi | grep 'Size' | awk '{ print \$4\$5; }') <(pacman -Q | awk '{print \$1; }') | sort -n | column -t"
+	alias pacman-size="paste <(pacman -Q | awk '{ print \$1; }' | xargs pacman -Qi | grep 'Size' | awk '{ print \$4\$5; }') <(pacman -Q | awk '{print \$1; }') | sort -h | column -t"
 	function pacmanorphan() {
 	  if [[ ! -n $(pacman -Qdt) ]]; then
 			echo "No orphans to remove."
@@ -401,5 +400,3 @@ which pacman NN && {
 		alias pQl='rpm -ql'
 	}
 }
-
-#  vim:ft=zsh
