@@ -21,6 +21,7 @@ local autorun_items = {
     "sleep 80 && /home/wyx/.local/bin/plaidchat",
 
     "sleep 100 && dropbox",
+    "sleep 100 && nocturn",
 }
 local runonce = require("lib/runonce")
 for _, item in ipairs(autorun_items) do

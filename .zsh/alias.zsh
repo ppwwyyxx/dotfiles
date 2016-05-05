@@ -380,12 +380,20 @@ which pacman NN && {
 	  fi
 	}
 } || {
-	which apt-get NN && {
-		alias pS='sudo aptitude install'
-		alias pR='sudo aptitude purge'
-		alias pSs='aptitude search'
-		alias pSy='sudo aptitude update'
-		alias pSu='sudo aptitude upgrade'
+which apt-get NN && {
+		which apt NN && {
+		  alias pS='sudo apt install'
+			alias pR='sudo apt remove'
+			alias pSs='apt search'
+			alias pSy='sudo apt update'
+			alias pSu='sudo apt upgrade'
+		} || {
+			alias pS='sudo aptitude install'
+			alias pR='sudo aptitude purge'
+			alias pSs='aptitude search'
+			alias pSy='sudo aptitude update'
+			alias pSu='sudo aptitude upgrade'
+		}
 		alias pQo='apt-file'
 		alias pQl='dpkg-query -L'
 		#alias pQl2='apt-file list'

@@ -1,0 +1,3 @@
+# map capslock to ctrl udev-wise to avoid "endless w" bug
+evdev:atkbd:dmi:bvn*:bvr*:bd*:svn*:pn*:pvr*
+ KEYBOARD_KEY_3a=29

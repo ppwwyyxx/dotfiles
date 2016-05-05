@@ -135,6 +135,8 @@ client.connect_signal(
 				awful.placement.no_overlap(c)
 				awful.placement.no_offscreen(c)
 			end
+      else
+         awful.rules.apply(c)
 		end
 	end)
 

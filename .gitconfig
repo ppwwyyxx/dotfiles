@@ -1,5 +1,5 @@
 [user]
-	name = Yuxin Wu\n
+	name = Yuxin Wu
 	email = ppwwyyxxc@gmail.com
 [core]
 	autocrlf = input
@@ -55,7 +55,7 @@
 
 	t   = tag
 	rc  = rebase --continue
-	sqlast = rebase -i HEAD~2
+	sqlast = rebase -i "HEAD~2"
 	untrack = rm -r --cached
 	unstage = reset --hard 'HEAD'
 	dupes = !git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40
@@ -102,19 +102,20 @@
 	pulllllllllllllllllll = pull --rebase
 	pullllllllllllllllllll = pull --rebase
 	pulllllllllllllllllllll = pull --rebase
-	pullllllllllllllllllllll = pull --rebase
-	pulllllllllllllllllllllll = pull --rebase
-	pullllllllllllllllllllllll = pull --rebase
-	pulllllllllllllllllllllllll = pull --rebase
-	pullllllllllllllllllllllllll = pull --rebase
-	pulllllllllllllllllllllllllll = pull --rebase
-	pullllllllllllllllllllllllllll = pull --rebase
-	pulllllllllllllllllllllllllllll = pull --rebase
-	pullllllllllllllllllllllllllllll = pull --rebase
-	pulllllllllllllllllllllllllllllll = pull --rebase
 ;[http]
 	;proxy=http://server4.net9.org:7777
 ;[https]
 	;proxy=http://server4.net9.org:7777
 [init]
 	templatedir = /home/wyx/.git-templates
+[tig]
+	tab-size = 2
+	ignore-space = some
+	main-view = date author:display=full,width=11 commit-title:graph=v2,refs=true
+[tig "bind"]
+	stage = <Enter> :/^@@
+	diff = <Enter> :/^@@
+	main = G none
+	generic = G move-last-line
+	generic = g none
+	generic = gg move-first-line
