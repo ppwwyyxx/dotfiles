@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# ~/.xinitrc
+#
+# Executed by startx (run your window manager from here)
+
+# to work with SDDM
+xmodmap ~/.Xmodmap
+xrandr --output HDMI1 --scale 1.1x1.1 --right-of eDP1
+xbindkeys
+xset -b
+xset r rate 200 40

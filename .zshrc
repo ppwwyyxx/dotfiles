@@ -33,8 +33,8 @@ export GOPATH=$HOME/.local/gocode
 safe_export_path $GOPATH/bin
 
 # local prefix
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.local/lib:/usr/local/lib
-export LIBRARY_PATH=$LIBRARY_PATH:$HOME/.local/lib:/usr/local/lib
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$HOME/.local/lib:/usr/local/lib
+export LIBRARY_PATH=${LIBRARY_PATH+$LIBRARY_PATH:}$HOME/.local/lib:/usr/local/lib
 export CPATH=$CPATH:$HOME/.local/include:/usr/local/include
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig:$HOME/.local/lib/pkgconfig
 

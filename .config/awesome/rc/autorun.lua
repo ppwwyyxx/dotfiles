@@ -11,7 +11,7 @@ local autorun_items = {
 
     "sleep 40 && zeal",
     "termite",
-    "sleep 100 && redshift-gtk",
+    "sleep 10 && redshift-gtk",
     "xscreensaver -nosplash",
 
     --"/home/wyx/bin/cvim-server.py",

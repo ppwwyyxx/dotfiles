@@ -13,8 +13,8 @@
   Mod4 + Return
 "~/bin/background/launcher"
   Mod4 + r
-
-#"~/bin/xclick.py ~/bin/imgs/zeal-tray.png"
+"~/bin/background/launcher"
+  Mod4 + r
 
 "zeal"
   Mod4 + z
@@ -60,4 +60,7 @@
 
 "sleep .04 && xdotool key --clearmodifiers Delete"
   shift + BackSpace
+
+"ssh T460 'export DISPLAY=:0.0; xinput enable 9'"
+	Mod4 + y
 
