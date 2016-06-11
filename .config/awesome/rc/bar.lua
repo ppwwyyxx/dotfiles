@@ -127,7 +127,10 @@ function volumectl(mode)
       volume_widget:set_markup(volume)
       return
    elseif mode == "up" then
-      exec("pamixer --allow-boost --increase 5")
+      local volume = tonumber(rexec("pamixer --get-volume"))
+      if volume < 120 then
+         exec("pamixer --allow-boost --increase 5")
+      end
    elseif mode == "down" then
       exec("pamixer --allow-boost --decrease 5")
    elseif mode == "mute" then

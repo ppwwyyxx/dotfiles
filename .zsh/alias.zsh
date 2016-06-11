@@ -48,10 +48,7 @@ alias awk-sum="awk '{if (\$1+0!=\$1) { print \"Fail! \"\$0, NR; exit; }; s+=\$1}
 function rm() {
 	for file in $@; do
 		local FILE_LOC="`readlink -f $file`"
-		if [[ $FILE_LOC == /ssd_home/* ]] ; then
-			mkdir -p /ssd_home/.Trash
-			mv "$file" /ssd_home/.Trash/ --backup=numbered -fv
-		elif [[ $FILE_LOC == /home/* ]]; then
+		if [[ $FILE_LOC == /home/* ]]; then
 			mkdir -p $HOME/.Trash
 			mv "$file" $HOME/.Trash/ --backup=numbered -fv
 		else
@@ -79,6 +76,7 @@ alias grep='grep -IE --color=auto --exclude=.tags --exclude-dir="node_modules" -
 alias tmuxa='tmux a || tmux'
 alias sort='LC_ALL=C sort'
 alias du='du -sh'
+alias strace='strace -y'
 alias tail='tail -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
 alias head='head -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
 function sdu () {	# human-readable sorted du

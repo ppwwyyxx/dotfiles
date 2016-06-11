@@ -33,10 +33,10 @@ export GOPATH=$HOME/.local/gocode
 safe_export_path $GOPATH/bin
 
 # local prefix
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$HOME/.local/lib:/usr/local/lib
-export LIBRARY_PATH=${LIBRARY_PATH+$LIBRARY_PATH:}$HOME/.local/lib:/usr/local/lib
-export CPATH=$CPATH:$HOME/.local/include:/usr/local/include
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig:$HOME/.local/lib/pkgconfig
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$HOME/.local/lib
+export LIBRARY_PATH=${LIBRARY_PATH+$LIBRARY_PATH:}$HOME/.local/lib
+export CPATH=$CPATH:$HOME/.local/include
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$HOME/.local/lib/pkgconfig
 
 # override tmux master key under ssh
 if [[ -n "$TMUX" ]] && [[ -n "$SSH_CLIENT" ]]; then
@@ -54,9 +54,8 @@ if [[ -d /opt/intel/mkl ]]; then
 	export LIBRARY_PATH=`readlink -f $MKLROOT/../compiler/lib/intel64`:$MKLROOT/lib/intel64:$LIBRARY_PATH;
 	export CPATH=$MKLROOT/include/:$CPATH
 fi
-[[ -d /opt/OpenBLAS ]] && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/OpenBLAS/lib
 function try_use_cuda_home() {
-	if [[ -d "$1" ]]; then
+	if [[ -d "$1/lib64" ]]; then
 		export CUDA_HOME="$1"
 		export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 		export LIBRARY_PATH=$CUDA_HOME/lib64:$LIBRARY_PATH
@@ -65,21 +64,19 @@ function try_use_cuda_home() {
 	fi
 }
 function try_use_cudnn() {
-	if [[ -d "$1" ]]; then
+	if [[ -d "$1/lib64" ]]; then
 		export LD_LIBRARY_PATH=$1/lib64:$LD_LIBRARY_PATH
 		export LIBRARY_PATH=$1/lib64:$LIBRARY_PATH
 		export CPATH=$1/include:$CPATH
 	fi
 }
 try_use_cuda_home /usr/local/cuda
-try_use_cuda_home /opt/cuda
+try_use_cuda_home /opt/cuda		# ArchLinux
 try_use_cudnn /usr/local/cudnn
 
 export MAKEFLAGS="-j"
 export CXXFLAGS="-Wall -Wextra"
 export NODE_PATH=$HOME/.local/lib/node_modules/
-safe_source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-. $HOME/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 [[ -s ~/.config/python/.startup.py ]] && export PYTHONSTARTUP=~/.config/python/.startup.py
 
 export EDITOR=vim
@@ -501,16 +498,17 @@ safe_source $HOME/.zsh/extract.zsh
 safe_source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 safe_source $HOME/.zsh/history-substring-search.zsh
 safe_source $HOME/.zsh/cdnav.zsh
+safe_source $HOME/.zsh/transfer.sh
+safe_source "$HOME/.rvm/scripts/rvm"		# Load RVM into a shell session *as a function*
 HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS="I"			# sensitive search
 
 if [ $commands[fasd] ]; then
 	fasd_cache="$HOME/.vimtmp/fasd-cache"
 	eval "$(fasd --init posix-alias zsh-hook zsh-wcomp zsh-wcomp-install)"
-	#eval "$(fasd --init zsh-wcomp zsh-wcomp-install)"	 # this should be enabled periodically
 	alias o='f -e xdg-open'
 	alias fv='f -e vim'
 	alias j='fasd_cd -d'
-	alias jj='fasd_cd -d -i'
+	alias jj='fasd_cd -d -i'	# interactive
 	unalias s
 	unalias d
 	bindkey '^X^O' fasd-complete

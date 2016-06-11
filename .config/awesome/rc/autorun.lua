@@ -1,6 +1,6 @@
 local autorun_items = {
     "compton --config ~/.compton.conf",
-    "mkdir -p /tmp/t",
+    "mkdir -p /tmp/t && mkdir /t/mnt && mkdir /t/mnt2",
 	 "dunst -config ~/.dunstrc",
     "fcitx-autostart",
     "sogou-qimpanel",
