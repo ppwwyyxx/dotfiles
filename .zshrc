@@ -17,6 +17,7 @@ export SSH_ASKPASS=
 
 function safe_export_path() { [[ -d $1 ]] && export PATH=$1:$PATH }
 function safe_source() { [[ -s $1 ]] && source $1 }
+safe_source $HOME/.profile
 
 safe_export_path $HOME/bin
 safe_export_path $HOME/.local/bin
@@ -81,7 +82,7 @@ export NODE_PATH=$HOME/.local/lib/node_modules/
 
 export EDITOR=vim
 export BROWSER=chromium
-export PAGER="/usr/bin/less -s"
+export PAGER="/usr/bin/less -r"
 export LESS_TERMCAP_mb=$YELLOW
 export LESS_TERMCAP_md=$'\E[01;31m'
 export LESS_TERMCAP_me=$'\E[0m'
@@ -464,7 +465,7 @@ special_command(){
 user-ret(){
 	path_parse
 	special_command
-	RPS1= zle reset-prompt	# reset rps1 of last command
+	#RPS1= zle reset-prompt	# reset rps1 of last command
 	#BUFFER=${BUFFER/mms:\/\/officetv/rtsp:\/\/officetv}		# mms IPTV urls in China are actually in rtsp!
 	zle accept-line
 }

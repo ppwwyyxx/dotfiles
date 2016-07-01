@@ -40,6 +40,8 @@
   old = red bold
   new = green bold
   frag = magenta bold
+[pager]
+	diff = diff-highlight | less
 [alias]
 	a   = add
 	b   = branch

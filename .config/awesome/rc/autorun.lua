@@ -7,7 +7,7 @@ local autorun_items = {
     "conky",
     "sleep 100 && conky -c /home/wyx/.conkyrc-cal",
     "xcape -e 'Control_L=Escape;Hyper_L=XF86Mail'",
-    "wicd-client -t",
+    --"wicd-client -t",
 
     "sleep 40 && zeal",
     "termite",

@@ -44,6 +44,7 @@ which ag NN && {
 } || alias -g G='|grep'
 
 alias awk-sum="awk '{if (\$1+0!=\$1) { print \"Fail! \"\$0, NR; exit; }; s+=\$1} END {print s, s / NR}' "
+alias awk-last="awk '{print \$NF}'"
 # rm moves things to trash
 function rm() {
 	for file in $@; do
@@ -264,8 +265,13 @@ alias mathc='/opt/Mathematica/Executables/math'
 alias mathematica='/opt/Mathematica/Executables/Mathematica -nosplash'
 which matlab NN || {
   [[ -d /opt/Matlab ]] && alias matlab='/opt/Matlab/bin/matlab'
+} && {
+	alias matlabc='matlab -nodisplay -r clc '
+
+	# fix matlab on archlinux
+	export J2D_D3D="false"
+	[[ -d /usr/lib/jvm/java-8-openjdk/jre ]] && export MATLAB_JAVA=/usr/lib/jvm/java-8-openjdk/jre
 }
-alias matlabc='matlab -nodisplay -r clc '
 alias rstudio='/opt/RStudio/lib/rstudio/bin/rstudio'
 alias maple='/opt/Maple/bin/xmaple'
 alias idea='/opt/idea-IC-129.713/bin/idea.sh'
@@ -346,16 +352,6 @@ function web() {
   #ruby -run -e httpd "$1" -p "${2:-8000}"
 }
 alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --user -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install --user -U"
-function theano() {
-	if [[ "$1" == gpu* ]] ; then
-		device="$1"
-		args=("${@: 2}")
-	else
-		device=gpu$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | nl | sort -n -k2 | awk '{print $1-1; exit}')
-		args=("${@: 1}")
-	fi
-	OMP_NUM_THREADS=1 THEANO_FLAGS="device=$device,floatX=float32,allow_gc=False,linker=cvm_nogc,warn_float64=warn" $args
-}
 alias unquote='python2 -c "import sys, urllib as ul; [sys.stdout.write(ul.unquote(l)) for l in sys.stdin]"'
 
 # package
@@ -406,4 +402,31 @@ which apt-get NN && {
 		alias pQo='yum whatprovides'
 		alias pQl='rpm -ql'
 	}
+}
+
+
+# weird stuff
+function theano() {
+	if [[ "$1" == gpu* ]] ; then
+		device="$1"
+		args=("${@: 2}")
+	else
+		device=gpu$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | nl | sort -n -k2 | awk '{print $1-1; exit}')
+		args=("${@: 1}")
+	fi
+	OMP_NUM_THREADS=1 THEANO_FLAGS="device=$device,floatX=float32,allow_gc=False,linker=cvm_nogc,warn_float64=warn" $args
+}
+
+function tpgrep() {
+# a function to grep tensorpack logs
+# $1: string to grep
+# $2+: dirs
+	[[ -n $1 ]] || return 1
+	local pat=$1
+	local cmd="paste"
+	for d in ${@:2}; do
+		[[ -d $d ]] || return 1
+		cmd="$cmd <(cat "$d/log.log" | grep '$pat' | awk-last)"
+	done
+	eval $cmd
 }
