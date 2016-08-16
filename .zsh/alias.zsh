@@ -45,6 +45,20 @@ which ag NN && {
 
 alias awk-sum="awk '{if (\$1+0!=\$1) { print \"Fail! \"\$0, NR; exit; }; s+=\$1} END {print s, s / NR}' "
 alias awk-last="awk '{print \$NF}'"
+alias awk-transpose="awk '
+{
+	for (i=1; i<=NF; i++)
+		a[NR,i] = \$i;
+}
+(NF>p) {p = NF}
+END {
+for(j=1; j<=p; j++) {
+	str=a[1,j];
+	for(i=2; i<=NR; i++)
+		str=str\"\t\"a[i,j];
+	print str
+}}'"
+
 # rm moves things to trash
 function rm() {
 	for file in $@; do
@@ -184,7 +198,7 @@ alias which='which -a'
 alias ibus-daemon='ibus-daemon --xim'
 alias zh-CN="LC_ALL='zh_CN.UTF-8'"
 alias manzh="LC_ALL='zh_CN.UTF-8' man"
-alias free='free -m'
+alias free='free -hw'
 which dfc NN && alias df='dfc' || alias df='df -Th'
 alias convmv='convmv -f GBK -t UTF-8 --notest -r'
 alias window='wmctrl -a '
@@ -238,11 +252,11 @@ function usbon () {
 	echo -n "USB power state now: "
 	cat $powerf
 }
-alias __nvq='nvidia-smi --query-gpu=temperature.gpu,clocks.current.sm,power.draw,utilization.gpu,utilization.memory,memory.free --format=csv'
+alias __nvq='nvidia-smi --query-gpu=temperature.gpu,clocks.current.sm,power.draw,utilization.gpu,utilization.memory,memory.free --format=csv | tail -n+2'
 which nl NN && {
-	alias nvq='__nvq | column -t -s , | nl -v -1'
+	alias nvq='(echo "temp, clocks, power, util.GPU, util.MEM, freeMEM" && __nvq) | column -t -s , | nl -v -1'
 } || {
-	alias nvq='__nvq | column -t -s ,'
+	alias nvq='(echo "temp, clocks, power, util.GPU, util.MEM, freeMEM" && __nvq) | column -t -s ,'
 }
 alias nvp="nvidia-smi | awk '/PID/ { seen=1 } seen {print} ' | tail -n+3 | head -n-1  |  awk '{print \$2, \$(NF-1), \$3}' | awk '{ cmd=(\"ps -ho pid,command \" \$3); cmd | getline v; close(cmd); \$3=v; print }'"
 alias nsmi='watch -n 0.5 nvidia-smi'
@@ -338,6 +352,30 @@ function killz() {
 	kill -SIGHUP $ppid
 }
 function waitpid() { while test -d "/proc/$1"; do sleep 1; done }
+function retry() {
+# Usage: retry <max-number> <command>
+# or: retry <command>
+	case $1 in
+		''|*[!0-9]*)
+				local cmd="${@}"
+				while true; do
+					eval $cmd && break || {
+						echo "Retry $cmd ..."; sleep 0.1
+					}
+				done
+			;;
+		*)
+			local cmd="${@: 2}"
+			local n=1
+			until [[ $n -ge $1 ]]; do
+				eval $cmd && break || {
+					((n++))
+					echo "Retry No.$n $cmd ..."; sleep 0.1
+				}
+			done
+			;;
+	esac
+}
 
 # python
 alias py='PYTHONPATH=$HOME/.config/python:$PYTHONPATH python2'
@@ -420,13 +458,16 @@ function theano() {
 function tpgrep() {
 # a function to grep tensorpack logs
 # $1: string to grep
-# $2+: dirs
+# $2+: dirs or logs
 	[[ -n $1 ]] || return 1
 	local pat=$1
 	local cmd="paste"
 	for d in ${@:2}; do
-		[[ -d $d ]] || return 1
-		cmd="$cmd <(cat "$d/log.log" | grep '$pat' | awk-last)"
+		[[ -d $d ]] && {
+			cmd="$cmd <(cat "$d/log.log" | grep '$pat' | awk-last)"
+		} || {
+			cmd="$cmd <(cat "$d" | grep '$pat' | awk-last)"
+		}
 	done
 	eval $cmd
 }

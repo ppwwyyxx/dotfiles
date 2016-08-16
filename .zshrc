@@ -156,16 +156,21 @@ function precmd() {
 	local START_BOLD=$'\e[1m'		# bold on
 	local END_BOLD=$'\e[22m'		# bold off
 
-	#local INDICATOR="\$"
-	local INDICATOR="❱"
+	local INDICATOR="\$"
+	#local INDICATOR="❱"
 	#local INDICATOR="%{$fg_bold[red]%}❮%{$reset_color%}%{$fg[red]%}❮❮%{$reset_color%}"
 	[[ -n "$VIRTUAL_ENV" ]] && VIRTUAL="(`basename $VIRTUAL_ENV`)"
 	# my magic prompt
+	#export PROMPT="$START_BOLD$CYAN╭─${VIRTUAL}${PROMPT_PART}\
+#$TIMECOLOR [%D{%H:%M}] \
+#$YELLOWGREEN%$pwdlen<...<%~%<< \
+#%{$reset_color%}$git_status%{$CYAN%}
+#╰─%{$reset_color%}🐻%{$CYAN%}%(?..%{$fg[red]%})$INDICATOR%{$reset_color%}"
 	export PROMPT="$START_BOLD$CYAN╭─${VIRTUAL}${PROMPT_PART}\
 $TIMECOLOR [%D{%H:%M}] \
 $YELLOWGREEN%$pwdlen<...<%~%<< \
 %{$reset_color%}$git_status%{$CYAN%}
-╰─%{$reset_color%}🐻 %{$CYAN%}%(?..%{$fg[red]%})$INDICATOR%{$reset_color%}"
+╰─%{$reset_color%}%{$CYAN%}%(?..%{$fg[red]%})$INDICATOR%{$reset_color%}"
 
 	#local return_status="%{$fg[red]%}%(?..%?⏎)%{$reset_color%}"	# return code is useless
 	local return_status="%{$fg[red]%}%(?..⏎)%{$reset_color%}"

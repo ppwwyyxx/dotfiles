@@ -31,7 +31,8 @@ def debughook(type, value, tb):
             banner1=termcolor.colored(
                 "Custom Debug IPython Shell:\n", 'red'))
         sh.confirm_exit = False
-        sh.mainloop(local_ns=frame.f_locals, global_ns=frame.f_globals)
+        #sh.mainloop(local_ns=frame.f_locals, global_ns=frame.f_globals)
+        sh.mainloop(local_ns=frame.f_locals)
 
         # ...then start the debugger in post-mortem mode.
         #import pdb; pdb.pm()

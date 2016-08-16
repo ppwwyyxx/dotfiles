@@ -116,7 +116,6 @@
 	main-view = date author:display=full,width=11 commit-title:graph=v2,refs=true
 [tig "bind"]
 	stage = <Enter> :/^@@
-	diff = <Enter> :/^@@
 	main = G none
 	generic = G move-last-line
 	generic = g none
