@@ -6,10 +6,10 @@ if [[ ! "$HOST" -eq "KeepLearning" ]]; then
 	echo "Not at Laptop!"
 	exit 1
 fi
-rm .zshrc .bashrc .zsh -rfv
+rm .tmux .zshrc .bashrc .zsh -rfv
 rm .config/awesome -rfv
 rm .config/python
-cp ~/.tmux.conf ./ -rvH
+cp ~/.tmux.conf ~/.tmux ./ -rvH
 cp ~/.zshrc ~/.zsh ~/.bashrc ./ -rvH
 cp ~/.config/awesome ./.config -rvH
 cp ~/.config/python ./.config -rvH
