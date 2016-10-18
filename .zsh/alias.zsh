@@ -118,7 +118,7 @@ function linkto() {
 # network
 alias p='ping'
 alias meow='ping'
-alias p6='ping6'
+alias p6='ping -6'
 alias pc='proxychains4'
 alias iwc='iwconfig wlp2s0; ifconfig wlp2s0'
 alias port='sudo netstat -ntlpu'

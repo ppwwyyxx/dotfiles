@@ -148,7 +148,7 @@ function precmd() {
 	fi
 
 	# to calculate length
-	local git_status=$(git_super_status)
+	local git_status="$(git_super_status)"
 	local prompt_nodir="-----$(date +%H:%M)---$git_status$PROMPT_PART"
 	local zero='%([BSUbfksu]|([FB]|){*})'	# used to calculate length withou control sequence
 	local part_length=${#${(S%%)prompt_nodir//$~zero/}}
@@ -191,7 +191,7 @@ $YELLOWGREEN%$pwdlen<...<%~%<< \
 
 # alias
 safe_source $HOME/.zsh/alias.zsh
-alias -s pdf=foxitreader
+alias -s pdf=mupdf
 alias -s djvu=djview4
 alias -s obj=meshlab
 alias -s pcd=~/tmp/modeling/bin/pcd_viewer
@@ -208,7 +208,7 @@ stty stop undef
 setopt NO_FLOW_CONTROL		# disable Ctrl+s
 setopt NOTIFY				# show bg jobs status immediately
 limit coredumpsize 0		# disable core dumps
-WORDCHARS='*?[]~=&;!#$%^(){}<>'
+WORDCHARS='*?[]~!#$%^(){}<>'
 setopt EXTENDED_GLOB
 #unsetopt CASE_GLOB
 setopt correctall

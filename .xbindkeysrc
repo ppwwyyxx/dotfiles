@@ -1,7 +1,7 @@
 # app keys..
 #"chromium"
 
-"chromium --force-device-scale-factor=1.1"
+"chromium --force-device-scale-factor=1.1 --no-proxy-server"
   Mod4 + c
 "firefox"
   Mod4 + f
