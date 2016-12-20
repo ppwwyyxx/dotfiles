@@ -13,7 +13,7 @@ in_array() {
 # common command
 alias cdl='cd'
 alias dc='cd'
-alias mv='nocorrect mv -i'
+alias mv='nocorrect mv -iv'
 alias mkdir='nocorrect mkdir'
 alias cp='nocorrect cp -rvi'
 alias cpv="rsync -pogh -e /dev/null -P --"	# cp with progress
@@ -24,6 +24,7 @@ alias l.='ls -d .* --color=auto'
 alias ls='ls -F --color=auto --quoting-style=literal'
 alias sl='ls -F --color=auto --quoting-style=literal'
 alias lss='ls -F --color=auto --quoting-style=literal'
+alias lsf='ls -1f'	# fast ls
 alias lll='ls++'
 function ll(){
 	ls -AhlXF --color=auto --time-style="+[33m[[32m%g-%m-%d [35m%k:%M[33m][m" $@
@@ -91,7 +92,7 @@ alias grep='grep -IE --color=auto --exclude=.tags --exclude-dir="node_modules" -
 alias tmuxa='tmux a || tmux'
 alias sort='LC_ALL=C sort'
 alias du='du -sh'
-alias strace='strace -y'
+alias strace='strace -yy'
 alias tail='tail -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
 alias head='head -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
 function sdu () {	# human-readable sorted du
@@ -427,7 +428,7 @@ which apt-get NN && {
 			alias pSy='sudo aptitude update'
 			alias pSu='sudo aptitude upgrade'
 		}
-		alias pQo='apt-file'
+		alias pQo='apt-file search'
 		alias pQl='dpkg-query -L'
 		#alias pQl2='apt-file list'
 		alias pU='sudo dpkg -i'

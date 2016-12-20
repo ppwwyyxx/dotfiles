@@ -1,4 +1,3 @@
-
 local vicious = require("vicious")
 local wibox = require("wibox")
 
@@ -7,11 +6,13 @@ local sepopen = wibox.widget.imagebox()
 sepopen:set_image(beautiful.icons .. "/widgets/left.png")
 local sepclose = wibox.widget.imagebox()
 sepclose:set_image(beautiful.icons .. "/widgets/right.png")
-local spacer = wibox.widget.imagebox()
-spacer:set_image(beautiful.icons .. "/widgets/spacer.png")
+--local spacer = wibox.widget.imagebox()
+--spacer:set_image(beautiful.icons .. "/widgets/spacer.png")
 
 -- Simple Widgets
-local my_textclock = awful.widget.textclock("%m-%d %H:%M:%S %a", 1)
+local my_textclock = awful.widget.textclock(
+"<span foreground=\"#bc5374\"> </span>" ..
+"<span foreground=\"#bc5374\" font_weight=\"bold\"> %m-%d %H:%M:%S %a </span>", 1)
 my_textclock:buttons(
     awful.button({}, 1, function() sexec(browser .. "http://calendar.google.com") end)
 )
@@ -218,7 +219,7 @@ for s = 1, screen.count() do
     left_layout:add(sepclose)
 
     local right_layout = wibox.layout.fixed.horizontal()
-    right_layout:add(sepopen)
+    --right_layout:add(sepopen)
     right_layout:add(cpugraph)
     right_layout:add(temp_widget)
     right_layout:add(mem_widget)
@@ -229,8 +230,10 @@ for s = 1, screen.count() do
     if s == 1 then     -- add systray to the first screen
         right_layout:add(wibox.widget.systray())
     end
-    right_layout:add(sepclose)
+    --right_layout:add(sepclose)
     right_layout:add(my_textclock)
+
+   --right_layout:add(powerline_widget)
 
     local layout = wibox.layout.align.horizontal()
     layout:set_left(left_layout)

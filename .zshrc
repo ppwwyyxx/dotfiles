@@ -61,7 +61,7 @@ function try_use_cuda_home() {
 		export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 		export LIBRARY_PATH=$CUDA_HOME/lib64:$LIBRARY_PATH
 		export CPATH=$CUDA_HOME/include
-		safe_export_path $CUDA_HOME/bin
+		export PATH=$PATH:$CUDA_HOME/bin
 	fi
 }
 function try_use_cudnn() {
