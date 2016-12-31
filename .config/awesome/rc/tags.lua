@@ -1,15 +1,14 @@
 
 -- Tags
 -- Define a tag table which hold all screen tags.
+
 local tag_name = { "1", "2", "chat", "0"}
 last_tag = #tag_name
-tags, revtags = {}, {}
-for s = 1, screen.count() do
+tags = {}   -- tags: screen -> tags
+
+awful.screen.connect_for_each_screen(function(s)
     tags[s] = awful.tag(tag_name, s, awful.layout.suit.floating)
-    for i, t in ipairs(tags[s]) do
-        revtags[t] = i
-    end
-end
+end)
 
 local function register_tagkey(key, index)
 	config.global = join(
@@ -27,21 +26,22 @@ local function register_tagkey(key, index)
 		   end
 	   end),
 	awful.key({ modkey, "Shift"   }, key, function()        -- move but not jump
-		   if client.focus and tags[client.focus.screen][index] then
-			   awful.client.movetotag(tags[client.focus.screen][index])
+         local screen = client.focus.screen
+		   if client.focus and tags[screen][index] then
+			   awful.client.movetotag(tags[screen][index])
 		   end
 	   end),
 	awful.key({ modkey, "Control", "Shift" }, key, function()
-		   if client.focus and tags[client.focus.screen][index] then
-			   awful.client.toggletag(tags[client.focus.screen][index])
+         local screen = client.focus.screen
+		   if client.focus and tags[screen][index] then
+			   awful.client.toggletag(tags[screen][index])
 		   end
 	   end)
 	)
 end
-do
-	local keynumber = last_tag - 1
-	for key = 1, keynumber do
-		register_tagkey(key, key)
-	end
-	register_tagkey(0, last_tag)
+
+local keynumber = last_tag - 1
+for key = 1, keynumber do
+   register_tagkey(key, key)
 end
+register_tagkey(0, last_tag)

@@ -216,15 +216,10 @@ config.clientkeys = join(
    awful.key({ modkey, }, "o",    function(c)
       if screen.count() == 1 then return end
       awful.client.movetoscreen(c)
-      c.maximized_horizontal = not c.maximized_horizontal
-      c.maximized_vertical=  not c.maximized_vertical
-      c.maximized_horizontal = not c.maximized_horizontal
-      c.maximized_vertical=  not c.maximized_vertical
    end),
 	awful.key({ modkey, }, "s",    function(c) c.sticky = not c.sticky end),
 
 	awful.key({ altkey, }, "F11",  function(c) c.fullscreen = not c.fullscreen  end),
-	--awful.key({ modkey, }, "F4",   function(c) c:kill()                         end),
 	awful.key({ altkey, }, "F4",   function(c) c:kill()                         end),
 	awful.key({ altkey, }, "F12",  function(c) c.above = not c.above            end),
 	awful.key({ altkey, }, "F9",   function(c) c.minimized = true end),

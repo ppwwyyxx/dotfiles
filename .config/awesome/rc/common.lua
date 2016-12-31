@@ -28,13 +28,11 @@ function sendkey(c, key)		-- send key in xdotool format
 end
 
 function rexec(cmd)
-    return awful.util.pread(cmd)
-    --[[
-    [local f = io.popen(cmd)
-    [local ret = f:read('*all')
-    [f:close()
-    [return ret
-    ]]
+    --return awful.util.pread(cmd)
+ local f = io.popen(cmd)
+ local ret = f:read('*all')
+ f:close()
+ return ret
 end
 
 function moveresize_abs(x, y, w, h, c)

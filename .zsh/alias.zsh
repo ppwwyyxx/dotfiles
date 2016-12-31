@@ -95,6 +95,7 @@ alias du='du -sh'
 alias strace='strace -yy'
 alias tail='tail -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
 alias head='head -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
+alias rf='readlink -f'
 function sdu () {	# human-readable sorted du
   [[ "$#" -eq 1 && -d "$1" ]] && cd "$1"
 	du -sh {*,.*} | sort -h
@@ -150,6 +151,7 @@ function gmtr() {
 		  };
 		  { print $2"\t"$3"\t"$6/1000"ms\t"geo($3) }'
 }
+alias mtr='mtr -y 2'
 function proxy() {
 	p="$1"
 	https_proxy=$p http_proxy=$p ${@: 2}
@@ -224,6 +226,16 @@ function agenda() {
 	gcalcli --details=length agenda '12am' $(date --date="${1:-1} day" +"%Y%m%d")
 }
 alias calw='gcalcli calw'
+function systemd-run-env() {
+	# env vars that need do be passed to the process
+	local names=('PATH' 'LD_LIBRARY_PATH' 'TENSORPACK_DATASET'
+							 'CPATH' 'PYTHONPATH' 'LIBRARY_PATH')
+	local earg=""
+	for i in $names; do
+		earg="$earg --setenv $i=${(P)i}"
+	done
+	systemd-run -t --user ${=earg} $@
+}
 
 # hardware
 function km() {	# only for my laptop
@@ -384,6 +396,8 @@ alias ipy='ipython2'
 function pydbg () { ipython --pdb -c "%run $1" }
 alias bp2='bpython2'
 alias piu='pip2 install --user'
+alias piu2='pip2 install --user'
+alias piu3='pip3 install --user'
 alias pyftp='python2 -m pyftpdlib'
 function pytwistd() { twistd web --path "$1" -p "${2:-8000}" }
 function web() {

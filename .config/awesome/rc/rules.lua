@@ -20,6 +20,7 @@ awful.rules.rules = {
 		focus = true,
 		keys = config.clientkeys,
 		buttons = config.clientbuttons,
+      placement = awful.placement.no_overlap+awful.placement.no_offscreen,
 	}
 }, {
     rule = { class = "Chromium" },
@@ -66,13 +67,11 @@ awful.rules.rules = {
 }, {
 	rule_any = {
 		class = {
-			'MPlayer', 'feh', 'Display', 'Gimp', 'Wireshark',
-			'Screenkey', 'Dia', 'Pavucontrol', 'Stardict', 'XEyes', 'Skype',
+			'MPlayer', 'feh', 'Screenkey', 'Skype',
 		},
 		name = {
 			'文件传输', 'Firefox 首选项', '暂存器', 'Keyboard', TMP_TERM
 		},
-		instance = { 'MATLAB', },
 	},
 	properties = { floating = true, }
 }, {
@@ -89,9 +88,8 @@ awful.rules.rules = {
 }, {
     rule_any = { name = {'Telegram', 'plaidchat', 'WeChat', 'Nocturn'} },
     callback = function(c)
-        awful.client.movetotag(tags[1][3], c)
+        awful.client.movetotag(tags[screen[1]][3], c)
         local g = c:geometry()
-        local scr = screen[c.screen].workarea
         if c.name == "Nocturn" then
            moveresize_abs(-400, 0, 400, 1, c)
         elseif c.name:find("WeChat") ~= nil then
@@ -100,22 +98,19 @@ awful.rules.rules = {
            moveresize_abs(-1200, -800, 1000, 800, c)
         end
     end
-}, {
-    rule = { name = 'sogou-qimpanel'},
-    callback = function(c)
-        notify("here")
-    end
 }
 }
 
 client.connect_signal(
 	"manage",
 	function(c, startup)
-        if c.name and c.name:match('新词锐词') then
-            ad_blocked = ad_blocked + 1
-            notify("Ad Blocked " .. ad_blocked .. c.name)
-            c:kill()
-        end
+        --[[
+           [if c.name and c.name:match('新词锐词') then
+           [    ad_blocked = ad_blocked + 1
+           [    notify("Ad Blocked " .. ad_blocked .. c.name)
+           [    c:kill()
+           [end
+           ]]
 		-- Enable sloppy focus
 		c:connect_signal("mouse::leave",
 			 function(c)
@@ -129,13 +124,7 @@ client.connect_signal(
 			 end
 		 end)
 
-		if not startup then
-			-- Put windows in a smart way, only if they does not set an initial position.
-			if not c.size_hints.user_position and not c.size_hints.program_position then
-				awful.placement.no_overlap(c)
-				awful.placement.no_offscreen(c)
-			end
-      else
+		if startup then
          awful.rules.apply(c)
 		end
 	end)
