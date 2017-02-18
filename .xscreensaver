@@ -1,11 +1,11 @@
 # XScreenSaver Preferences File
-# Written by xscreensaver-demo 5.34 for wyx on Wed Apr 27 22:08:29 2016.
-# http://www.jwz.org/xscreensaver/
+# Written by xscreensaver-demo 5.36 for wyx on Tue Feb 14 18:41:51 2017.
+# https://www.jwz.org/xscreensaver/
 
-timeout:	0:10:00
+timeout:	0:15:00
 cycle:		0:03:00
 lock:		True
-lockTimeout:	0:13:00
+lockTimeout:	0:20:00
 passwdTimeout:	0:00:30
 visualID:	default
 installColormap:    True
@@ -260,6 +260,16 @@ programs:								      \
   GL: 				winduprobot -root			    \n\
 - GL: 				splitflap -root -speed 5.9359		    \n\
 -				testx11 -root				    \n\
+  GL: 				dymaxionmap -root			    \n\
+  GL: 				energystream -root			    \n\
+  GL: 				hydrostat -root				    \n\
+  GL: 				raverhoop -root				    \n\
+  GL: 				unicrud -root				    \n\
+  GL: 				cubestack -root				    \n\
+  GL: 				cubetwist -root				    \n\
+  GL: 				discoball -root				    \n\
+  GL: 				hexstrut -root				    \n\
+  GL: 				splodesic -root				    \n\
 
 
 pointerPollTime:    0:00:05

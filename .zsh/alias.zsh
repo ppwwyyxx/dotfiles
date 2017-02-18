@@ -151,7 +151,6 @@ function gmtr() {
 		  };
 		  { print $2"\t"$3"\t"$6/1000"ms\t"geo($3) }'
 }
-alias mtr='mtr -y 2'
 function proxy() {
 	p="$1"
 	https_proxy=$p http_proxy=$p ${@: 2}
@@ -248,10 +247,14 @@ alias dmesg='dmesg -H || dmesg | less'
 alias keyb='xinput disable $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*")'
 alias unkeyb='xinput enable $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*")'
 function modulegraph() { lsmod | perl -e 'print "digraph \"lsmod\" {";<>;while(<>){@_=split/\s+/; print "\"$_[0]\" -> \"$_\"\n" for split/,/,$_[3]}print "}"' | dot -Tpng | feh -; }
+alias lsblk="lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT,LABEL,VENDOR,MODEL"
 
 function usbon () {
-# usage: $1 is the first 4 characters of id in `lsusb`
 	id=$1
+	if [[ -z $1 ]]; then
+		echo 'usage: $1 is the first 4 characters of id in `lsusb`'
+		return
+	fi
 	for i in $(find -L /sys/bus/usb/devices -maxdepth 2 -name idVendor); do
 		if [[ $(cat $i) == $id ]]; then
 			f=$i
@@ -265,13 +268,17 @@ function usbon () {
 	echo -n "USB power state now: "
 	cat $powerf
 }
-alias __nvq='nvidia-smi --query-gpu=temperature.gpu,clocks.current.sm,power.draw,utilization.gpu,utilization.memory,memory.free --format=csv | tail -n+2'
+alias __nvq='nvidia-smi --query-gpu=temperature.gpu,clocks.current.sm,pstate,power.draw,utilization.gpu,utilization.memory,memory.free --format=csv | tail -n+2'
 which nl NN && {
-	alias nvq='(echo "temp, clocks, power, util.GPU, util.MEM, freeMEM" && __nvq) | column -t -s , | nl -v -1'
+	alias nvq='(echo "GPU,temp, clocks, pstate, power, util.GPU, util.MEM, freeMEM" && __nvq | nl -s, -w1) | column -t -s,'
 } || {
 	alias nvq='(echo "temp, clocks, power, util.GPU, util.MEM, freeMEM" && __nvq) | column -t -s ,'
 }
-alias nvp="nvidia-smi | awk '/PID/ { seen=1 } seen {print} ' | tail -n+3 | head -n-1  |  awk '{print \$2, \$(NF-1), \$3}' | awk '{ cmd=(\"ps -ho pid,command \" \$3); cmd | getline v; close(cmd); \$3=v; print }'"
+alias __nvp="nvidia-smi | awk '/PID/ { seen=1 } seen {print} ' \
+	| tail -n+3 | head -n-1  |  awk '{print \$2, \$(NF-1), \$3}' \
+	| grep -v '^No' \
+	| awk 'BEGIN{OFS=\"\\t\"} { cmd=(\"ps -ho '%a' \" \$3); cmd | getline v; close(cmd); \$4=v; print }'"
+alias nvp="(echo \"GPU\tMEM\tPID\tCOMMAND\" && __nvp) | column -t -s $'\t'"
 alias nsmi='watch -n 0.5 nvidia-smi'
 
 function b(){
