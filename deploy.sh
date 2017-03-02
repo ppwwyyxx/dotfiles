@@ -11,6 +11,7 @@ fi
 
 rm ~/.zsh -rf
 cp .zsh .zshrc .bashrc .gitconfig .profile ~/ -rvf
+cp .xbindkeysrc .toprc .xinitrc .Xmodmap .Xresources ~/ -rvf
 
 cat << EOT >> .tmux.conf
 set -g status-bg green

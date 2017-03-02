@@ -25,6 +25,9 @@ if screen.count() == 2 then
 end
 
 function changewp()
+    if #wp_files == 0 then
+       return
+    end
     wp_index = wp_index % #wp_files + 1
     gears.wallpaper.maximized(wp_files[wp_index], 1, true)
 end
