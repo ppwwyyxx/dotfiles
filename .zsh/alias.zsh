@@ -270,7 +270,7 @@ function usbon () {
 }
 alias __nvq='nvidia-smi --query-gpu=temperature.gpu,clocks.current.sm,pstate,power.draw,utilization.gpu,utilization.memory,memory.free --format=csv | tail -n+2'
 which nl NN && {
-	alias nvq='(echo "GPU,temp, clocks, pstate, power, util.GPU, util.MEM, freeMEM" && __nvq | nl -s, -w1) | column -t -s,'
+	alias nvq='(echo "GPU,temp, clocks, pstate, power, util.GPU, util.MEM, freeMEM" && __nvq | nl -s, -w1 -v0) | column -t -s,'
 } || {
 	alias nvq='(echo "temp, clocks, power, util.GPU, util.MEM, freeMEM" && __nvq) | column -t -s ,'
 }
@@ -342,9 +342,10 @@ alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_r
 m_sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "/usr/share/fonts/wenquanyi/wqy-microhei/wqy-microhei.ttc"'
 m_avc_param="-oac mp3lame -lameopts fast:preset=medium -ovc x264 -x264encopts subq=5:8x8dct:frameref=2:bframes=3:weight_b:threads=auto"
 f_avc_param_old="-c:v libx264 -preset slow -crf 22 -c:a libmp3lame"
-f_avc_param="-c:v libx265 -preset medium -x265-params crf=28 -c:a aac -strict experimental -b:a 128k"
-function ffmpeg_compress() { ffmpeg -i $1 `echo $f_avc_param` $1.mp4 }
-function mencoder_compress() { mencoder $1 -o $1.avi `echo $m_avc_param` }
+f_avc_param="-map 0 -c:v libx265 -preset medium -x265-params crf=28 -c:a aac -strict experimental -b:a 128k"
+function ffmpeg_compress() { ffmpeg -i "$1" `echo $f_avc_param` -vf subtitles=$1 $1.mp4 }
+function mencoder_compress() { mencoder "$1" -o $1.avi `echo $m_avc_param` }
+function ffmpeg_audio() { ffmpeg -i "$1" -vn "${1%.*}".mp3}
 function colormap(){
 	for i in {0..255}; do
 		print -Pn "%{$reset_color%}$i: "
@@ -360,9 +361,9 @@ function pstack() { =gdb -q -nx -p $1 <<< 't a a bt' | sed -ne '/^#/p' }
 
 local top_version=$(=top -h 2>/dev/null | head -n1 | grep -o '[0-9]*$')
 if [[ "$top_version" -ge 10 ]]; then
-	alias top='top -d 0.5 -o %CPU'
+	alias top='top -d 0.5 -o %CPU -c'
 else
-	alias top='top -d 0.5'
+	alias top='top -d 0.5 -c'
 fi
 alias topme='top -u $USER'
 alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -n | tail -n20"
@@ -426,8 +427,9 @@ which pacman NN && {
 	alias pSu='pacaur -Syu'
 	alias pQl='pacman -Ql'
 	alias paur='pacman -Qm'
-	alias pacman-size="paste <(pacman -Q | awk '{ print \$1; }' | xargs pacman -Qi | grep 'Size' | awk '{ print \$4\$5; }') <(pacman -Q | awk '{print \$1; }') | sort -h | column -t"
-	function pacmanorphan() {
+	#alias pacman-size="paste <(pacman -Q | awk '{ print \$1; }' | xargs pacman -Qi | grep 'Size' | awk '{ print \$4\$5; }') <(pacman -Q | awk '{print \$1; }') | sort -h | column -t"
+	alias pacman-size="expac -H M '%m\t%n' | sort -h"
+	function pacman-orphan() {
 	  if [[ ! -n $(pacman -Qdt) ]]; then
 			echo "No orphans to remove."
 	  else

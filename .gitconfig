@@ -4,6 +4,7 @@
 [core]
 	autocrlf = input
 	editor = vim
+	excludesfile = /home/wyx/.gitignore
 [advice]
 	statusHints = false
 [merge]
@@ -85,6 +86,9 @@
 
 	gcc = gc --aggressive --prune=now
 
+	# from CIA
+	aliases = !git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /' | sort
+
 	pulll = pull --rebase
 	pullll = pull --rebase
 	pulllll = pull --rebase
@@ -105,9 +109,9 @@
 	pullllllllllllllllllll = pull --rebase
 	pulllllllllllllllllllll = pull --rebase
 [http]
-	proxy=http://localhost:7777
+	;proxy=http://localhost:7777
 [https]
-	proxy=http://localhost:7777
+	;proxy=http://localhost:7777
 [init]
 	templatedir = /home/wyx/.git-templates
 [tig]

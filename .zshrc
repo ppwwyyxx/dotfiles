@@ -75,7 +75,7 @@ try_use_cuda_home /usr/local/cuda
 try_use_cuda_home /opt/cuda		# ArchLinux
 try_use_cudnn /usr/local/cudnn
 
-export MAKEFLAGS="-j"
+export MAKEFLAGS="-j8"
 export CXXFLAGS="-Wall -Wextra"
 export NODE_PATH=$HOME/.local/lib/node_modules/
 [[ -s ~/.config/python/.startup.py ]] && export PYTHONSTARTUP=~/.config/python/.startup.py

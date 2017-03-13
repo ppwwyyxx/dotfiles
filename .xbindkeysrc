@@ -3,8 +3,6 @@
 
 "chromium --force-device-scale-factor=1.1 --no-proxy-server"
   Mod4 + c
-"firefox"
-  Mod4 + f
 "~/bin/background/screenshot"
   Mod4 + a
 "termite"
@@ -23,8 +21,8 @@
   Mod4 + z
 "chromium --profile-directory=Default --app-id=hmjkmjkepdijhoojdojkdfohbdgmmhki"
   Mod4 + g
-"~/bin/background/email-client"
-  Mod4 + e
+#"~/bin/background/email-client"
+  #Mod4 + e
 "xscreensaver-command -activate"
   Control+Alt+Shift+l
 "xkill"
