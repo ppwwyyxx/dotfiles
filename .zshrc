@@ -4,6 +4,9 @@
 # ^foo^bar^:G  global substitution on last command, !?str?:s^foo^bar^:G, on last command containing str
 #http://lilydjwg.is-programmer.com/2012/3/19/thress-zsh-line-editor-tips.32549.html
 
+if [[ $(uname) == "Darwin" ]]; then
+	source /etc/profile
+fi
 
 [[ -d $HOME/.zsh/Completion ]] && fpath=($HOME/.zsh/Completion $fpath)
 
@@ -334,7 +337,7 @@ zstyle ':completion:*' squeeze-shlashes 'yes'
 zstyle ':completion::complete:*' '\\'
 
 # Colorful Completion
-eval $(dircolors -b)
+which dircolors NN && eval $(dircolors -b)
 export ZLSCOLORS="${LS_COLORS}"
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 export LS_COLORS="$LS_COLORS*.f4v=01;35:*.pdf=01;35:*.djvu=01;35:"		# add custom ls_color
@@ -523,9 +526,13 @@ fi
 safe_source $HOME/.zshrc.local
 
 # dedup paths
-which awk NN && {
-	LD_LIBRARY_PATH=$(echo -n "$LD_LIBRARY_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
-	PATH=$(echo -n "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
-	CPATH=$(echo -n "$CPATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
-	PKG_CONFIG_PATH=$(echo -n "$PKG_CONFIG_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
-}
+if [[ $(uname) == "Darwin" ]]; then
+	echo
+else
+	which awk NN && {
+		LD_LIBRARY_PATH=$(echo -n "$LD_LIBRARY_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
+		PATH=$(echo -n "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
+		CPATH=$(echo -n "$CPATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
+		PKG_CONFIG_PATH=$(echo -n "$PKG_CONFIG_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
+	}
+fi

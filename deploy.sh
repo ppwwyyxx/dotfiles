@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 # File: deploy.sh
 # Date: Wed Jul 08 22:10:24 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
@@ -9,7 +9,7 @@ if [[ "$HOST" == "KeepMoving" ]]; then
 	exit 1
 fi
 
-rm ~/.zsh -rf
+rm ~/.zsh -rf 
 cp .zsh .zshrc .bashrc .gitconfig .profile ~/ -rvf
 cp .xbindkeysrc .toprc .xinitrc .Xmodmap .Xresources ~/ -rvf
 
