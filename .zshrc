@@ -23,6 +23,7 @@ function safe_export_path() { [[ -d $1 ]] && export PATH=$1:$PATH }
 function safe_source() { [[ -s $1 ]] && source $1 }
 safe_source $HOME/.profile
 
+[[ -n $_CFG_ON_MAC ]] && safe_export_path /usr/local/opt/coreutils/libexec/gnubin
 safe_export_path $HOME/bin
 safe_export_path $HOME/.local/bin
 safe_export_path $HOME/.zsh/bin
@@ -133,12 +134,7 @@ safe_source $HOME/.zsh/git-prompt/zshrc.sh
 } || { function  git_super_status() {} }
 
 function preexec() {
-if [[ -n $_CFG_ON_MAC ]]; then
-	local date=gdate
-else
-	local date=date
-fi
-COMMAND_TIMER=${COMMAND_TIMER:-$((SECONDS + $($date "+%N") / 1000000000.0))}
+COMMAND_TIMER=${COMMAND_TIMER:-$((SECONDS + $(date "+%N") / 1000000000.0))}
 }
 function precmd() {
 	local separator1=
@@ -264,6 +260,7 @@ autoload zkbd
 [[ -n ${key[Down]} ]] && bindkey "${key[Down]}" down-line-or-search
 [[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
 [[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
+
 
 # Move along shell argument, aka 'Big Word' (defined as separate by spaces)
 zsh-word-movement () {
@@ -532,11 +529,9 @@ fi
 safe_source $HOME/.zshrc.local
 
 # dedup paths
-if [[ -z $_CFG_ON_MAC ]]; then
-	which awk NN && {
-		LD_LIBRARY_PATH=$(echo -n "$LD_LIBRARY_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
-		PATH=$(echo -n "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
-		CPATH=$(echo -n "$CPATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
-		PKG_CONFIG_PATH=$(echo -n "$PKG_CONFIG_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
-	}
-fi
+which awk NN && {
+	LD_LIBRARY_PATH=$(echo -n "$LD_LIBRARY_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
+	PATH=$(echo -n "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
+	CPATH=$(echo -n "$CPATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
+	PKG_CONFIG_PATH=$(echo -n "$PKG_CONFIG_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
+}

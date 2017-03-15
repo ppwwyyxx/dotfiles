@@ -19,25 +19,15 @@ alias cp='nocorrect cp -rvi'
 alias cpv="rsync -pogh -e /dev/null -P --"	# cp with progress
 alias watch='watch '	# allow watching an alias
 
-if [[ -n $_CFG_ON_MAC ]]; then
-	local ls=gls
-else
-	local ls=ls
-fi
-alias l="$ls -F --color=auto --quoting-style=literal"
-alias l.="$ls -d .* --color=auto"
-alias ls="$ls -F --color=auto --quoting-style=literal"
-alias sl="$ls -F --color=auto --quoting-style=literal"
-alias lss="$ls -F --color=auto --quoting-style=literal"
-alias lsf="$ls -1f"	# fast ls
+alias l="ls -F --color=auto --quoting-style=literal"
+alias l.="ls -d .* --color=auto"
+alias ls="ls -F --color=auto --quoting-style=literal"
+alias sl="ls -F --color=auto --quoting-style=literal"
+alias lss="ls -F --color=auto --quoting-style=literal"
+alias lsf="ls -1f"	# fast ls
 alias lll='ls++'
 function ll(){
-	if [[ -n $_CFG_ON_MAC ]]; then
-		local ls=gls
-	else
-		local ls=ls
-	fi
-	$ls -AhlXF --color=auto --time-style="+[34m[[32m%g-%m-%d [35m%k:%M[33m][m" $@
+	ls -AhlXF --color=auto --time-style="+[34m[[32m%g-%m-%d [35m%k:%M[33m][m" $@
 	[[ "$*" == "$1" ]] && echo -e " $GREEN  --[$LIGHTBLUE  Dir:    $CYAN`ls -Al $@ | grep '^drw' | wc -l`$LIGHTGREEN|$YELLOW \
 	 File: $GREEN`ls -Al $@ | grep -v '^drw' | grep -v total | wc -l` ]-- $WHITE"
 }
