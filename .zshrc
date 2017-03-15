@@ -5,6 +5,7 @@
 #http://lilydjwg.is-programmer.com/2012/3/19/thress-zsh-line-editor-tips.32549.html
 
 if [[ $(uname) == "Darwin" ]]; then
+	export _CFG_ON_MAC=1
 	source /etc/profile
 fi
 
@@ -132,7 +133,12 @@ safe_source $HOME/.zsh/git-prompt/zshrc.sh
 } || { function  git_super_status() {} }
 
 function preexec() {
-COMMAND_TIMER=${COMMAND_TIMER:-$((SECONDS + $(date "+%N") / 1000000000.0))}
+if [[ -n $_CFG_ON_MAC ]]; then
+	local date=gdate
+else
+	local date=date
+fi
+COMMAND_TIMER=${COMMAND_TIMER:-$((SECONDS + $($date "+%N") / 1000000000.0))}
 }
 function precmd() {
 	local separator1=
@@ -526,9 +532,7 @@ fi
 safe_source $HOME/.zshrc.local
 
 # dedup paths
-if [[ $(uname) == "Darwin" ]]; then
-	echo
-else
+if [[ -z $_CFG_ON_MAC ]]; then
 	which awk NN && {
 		LD_LIBRARY_PATH=$(echo -n "$LD_LIBRARY_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
 		PATH=$(echo -n "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
