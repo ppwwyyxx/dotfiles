@@ -127,7 +127,7 @@ alias port='sudo netstat -ntlpu'
 alias listen='lsof -P -i -n'
 alias scp='scp -r'
 alias rsync='rsync -avP'
-alias speedtest='wget -O /dev/null http://speedtest-nyc3.digitalocean.com/10mb.test'
+alias speedtest='wget -O /dev/null http://speedtest-sfo1.digitalocean.com/100mb.test'
 alias m_rsync='rsync --progress --partial --delete --size-only -rlv --bwlimit=5m'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 function view-email() { mhonarc -single $1 | w3m -dump -T text/html }

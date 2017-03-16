@@ -210,6 +210,7 @@ setopt autocd				# cd without 'cd'
 setopt braceccl				# ls {a-e.1}
 unsetopt hup				# don't close background program when exiting shell
 stty stop undef
+setopt transient_rprompt      # clear rprompt
 setopt NO_FLOW_CONTROL		# disable Ctrl+s
 setopt NOTIFY				# show bg jobs status immediately
 limit coredumpsize 0		# disable core dumps
