@@ -435,32 +435,41 @@ which pacman NN && {
 	  fi
 	}
 } || {
-which apt-get NN && {
-		which apt NN && {
-		  alias pS='sudo apt install'
-			alias pR='sudo apt remove'
-			alias pSs='apt search'
-			alias pSy='sudo apt update'
-			alias pSu='sudo apt upgrade'
+
+[[ -n $_CFG_ON_MAC ]] && {
+	alias pS='brew install'
+	alias pSs='brew search'
+	alias pSu='brew upgrade'
+	alias pR='brew uninstall'
+	alias pQl='brew list'
+} || {
+	which apt-get NN && {
+			which apt NN && {
+			  alias pS='sudo apt install'
+				alias pR='sudo apt remove'
+				alias pSs='apt search'
+				alias pSy='sudo apt update'
+				alias pSu='sudo apt upgrade'
+			} || {
+				alias pS='sudo aptitude install'
+				alias pR='sudo aptitude purge'
+				alias pSs='aptitude search'
+				alias pSy='sudo aptitude update'
+				alias pSu='sudo aptitude upgrade'
+			}
+			alias pQo='apt-file search'
+			alias pQl='dpkg-query -L'
+			#alias pQl2='apt-file list'
+			alias pU='sudo dpkg -i'
 		} || {
-			alias pS='sudo aptitude install'
-			alias pR='sudo aptitude purge'
-			alias pSs='aptitude search'
-			alias pSy='sudo aptitude update'
-			alias pSu='sudo aptitude upgrade'
+			alias pS='sudo yum install'
+			alias pR='sudo yum remove'
+			alias pSy='sudo yum check-update'
+			alias pSu='sudo yum update'
+			alias pSs='yum search'
+			alias pQo='yum whatprovides'
+			alias pQl='rpm -ql'
 		}
-		alias pQo='apt-file search'
-		alias pQl='dpkg-query -L'
-		#alias pQl2='apt-file list'
-		alias pU='sudo dpkg -i'
-	} || {
-		alias pS='sudo yum install'
-		alias pR='sudo yum remove'
-		alias pSy='sudo yum check-update'
-		alias pSu='sudo yum update'
-		alias pSs='yum search'
-		alias pQo='yum whatprovides'
-		alias pQl='rpm -ql'
 	}
 }
 
