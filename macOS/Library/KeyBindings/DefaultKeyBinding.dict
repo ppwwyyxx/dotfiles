@@ -1,0 +1,74 @@
+/* ~/Library/KeyBindings/DefaultKeyBinding.dict */
+/* The original bindings are from Mike Ferris of lorax.com as shipped
+ * with his TextExtras package.  They were further modified by Mishka Gorodnitzky
+ * (misaka@pobox.com), Patrick Linskey, and Llew Mason.
+ *
+ * Last modified by: Nilesh Kapadia (http://www.nileshk.com/)
+ *
+ * Place this file in ~/Library/KeyBindings
+ */
+{
+    "~f"      = "moveWordForward:";              /* M-f */
+    "~b"      = "moveWordBackward:";             /* M-b */
+    "~<"      = "moveToBeginningOfDocument:";    /* M-< */
+    "~>"      = "moveToEndOfDocument:";          /* M-> */
+		/*
+     *"~v"      = "pageUp:";                       [> M-v <]
+     *"^v"      = "pageDown:";                     [> C-v <]
+		 */
+    "~d"      = "deleteWordForward:";            /* M-d */
+    "^w"     = "deleteWordBackward:";
+    "~\010"   = "deleteWordBackward:";           /* M-backspace */
+    "~\177"   = "deleteWordBackward:";           /* M-delete */
+		/*
+     *"~\UF728" = "deleteWordForward:";            [> delete <]
+		 */
+    "\UF729"  = "moveToBeginningOfDocument:";    /* home */
+    "\UF72B"  = "moveToEndOfDocument:";          /* end */
+    "@\UF729" = "moveToBeginningOfParagraph:";   /* A-home */
+    "@\UF72B" = "moveToEndOfParagraph:";         /* A-end */
+    "@\UF700" = "moveToBeginningOfDocument:";    /* A-up */
+    "@\UF701" = "moveToEndOfDocument:";          /* A-down */
+    "^\UF700" = "pageUp:";                       /* C-up */
+    "^\UF701" = "pageDown:";                     /* C-down */
+    "\UF72C"  = "pageUp:";                       /* page-up */
+    "\UF72D"  = "pageDown:";                     /* page-down */
+    "^z"      = "undo:";                         /* C-/ */
+		/*
+     *"^_"      = "undo:";                         [> C-_ */ /* Added by me <]
+     *"~c"      = "capitalizeWord:";               [> M-c <]
+     *"~u"      = "uppercaseWord:";                [> M-u <]
+     *"~l"      = "lowercaseWord:";                [> M-l <]
+     *"^t"      = "transpose:";                    [> C-t <]
+     *"~t"      = "transposeWords:";               [> M-t <]
+     *"~/"      = "complete:";                     [> M-/ <]
+     *"^g"      = "_cancelKey:";                   [> C-g <]
+		 */
+    "^a"      = "moveToBeginningOfLine:";        /* C-a */
+    "^e"      = "moveToEndOfLine:";              /* C-e */
+
+    "^x" = {
+        "^x"  = "swapWithMark:";                 /* C-x C-x */
+        "^m"  = "selectToMark:";                 /* C-x C-m */
+        "^s"  = "save:";                         /* C-x C-s */
+        "^w"  = "saveAs:";                       /* C-x C-w */
+        "k"   = "performClose:";                 /* C-x C-k */
+    };
+
+    /* Mark-point stuff (Emacs-style mark and point bindings are
+     * implemented but not bound by default.  In the text system the
+     * mark and point are ranges, not just locations.  The "point" is
+     * the selected range.)
+     */
+    "^@" = "setMark:";                           /* C-@ */
+    "^ " = "setMark:";                           /* C-space */
+    "^w" = "deleteToMark:";                      /* C-w */
+    "~w" = "copy:";                              /* A-w */ /* Added by me */
+
+    /* Incremental search. */
+/* Uncomment these lines If Incremental Search IM is installed */
+/*  "^s"        = "ISIM_incrementalSearch:";        /* C-s          Incremental search */
+/*  "^r"        = "ISIM_reverseIncrementalSearch:"; /* C-r          Reverse incremental search */
+/*  "^g"        = "abort:";                         /* C-g          Abort */
+
+}
