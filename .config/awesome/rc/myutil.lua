@@ -11,22 +11,22 @@ function myutil.notify(title, text, urgency)	-- normal, low, critical
 	title = tostring(title)
 	text = tostring(text)
 	if not urgency then urgency = 'normal' end
-	exec('notify-send -u ' .. urgency .. ' "'.. title .. '" "'.. text .. '"')
+	myutil.exec('notify-send -u ' .. urgency .. ' "'.. title .. '" "'.. text .. '"')
 end
 
 function myutil.run_term(cmd, name)
     if not name then name = TMP_TERM end
-	exec(terminal .. " -name '" .. name .. "' -e bash -c 'source $HOME/.bashrc; " .. cmd .. "'")
+	myutil.exec(terminal .. " -name '" .. name .. "' -e bash -c 'source $HOME/.bashrc; " .. cmd .. "'")
 end
 
 function myutil.net_monitor()
-    run_term('tmux new-session -d "sudo iftop -i "' .. active_net_if .. ' \\; split-window -d "sudo nethogs ' .. active_net_if .. '" \\; attach',
+    myutil.run_term('tmux new-session -d "sudo iftop -i "' .. active_net_if .. ' \\; split-window -d "sudo nethogs ' .. active_net_if .. '" \\; attach',
              'FSTerm')
 end
 
 function myutil.sendkey(c, key)		-- send key in xdotool format
-    exec_sync('sleep 0.1')
-    exec('xdotool key --clearmodifiers ' .. key)
+    myutil.exec_sync('sleep 0.1')
+    myutil.exec('xdotool key --clearmodifiers ' .. key)
 end
 
 function myutil.rexec(cmd)

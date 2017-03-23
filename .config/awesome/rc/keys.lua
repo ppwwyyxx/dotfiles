@@ -1,17 +1,17 @@
 local run_or_raise = require("lib/run_or_raise")
 local myutil = require('rc/myutil')
-join = myutil.join
 require("lib/mouse")
 require("lib/web_cmd")
 
-root.buttons(join(
+root.buttons(myutil.join(
 	awful.button({ }, 1, function() my_mainmenu:hide() end),
 	awful.button({ }, 3, function() my_mainmenu:toggle() end),
 	awful.button({ }, 4, awful.tag.viewprev),
 	awful.button({ }, 5, awful.tag.viewnext)
 ))
 
-config.global = join(
+
+config.global = myutil.join(
 	config.global,
 	awful.key({ modkey }, "n", function() awful.screen.focus_relative(1) end),
 	awful.key({ modkey }, "u", awful.client.urgent.jumpto),
@@ -56,7 +56,7 @@ config.global = join(
             elseif key == 't' then myutil.run_term('top', 'FSTerm')
             elseif key == 'h' then myutil.run_term('htop', 'FSTerm')
             elseif key == 'd' then myutil.run_term('dstat -dnmcl --top-io -Nwlp3s0', 'FSTerm')
-            elseif key == 'n' then net_monitor()
+            elseif key == 'n' then myutil.net_monitor()
             elseif key == 'Shift_L' or key == 'Shift_R' then return
             end
             keygrabber.stop()
@@ -209,7 +209,7 @@ config.global = join(
 
 
 -- Client Keys/Buttons:   f[[
-config.clientkeys = join(
+config.clientkeys = myutil.join(
 	awful.key({ modkey, "Control" }, "Return", function(c) c:swap(awful.client.getmaster()) end),
    awful.key({ modkey, }, "o",    function(c)
       if screen.count() == 1 then return end
@@ -231,7 +231,7 @@ config.clientkeys = join(
    end)
 )
 
-config.clientbuttons = join(
+config.clientbuttons = myutil.join(
 	awful.button({ }, 1, function(c) client.focus = c; c:raise() end),
 	awful.button({ modkey }, 1, awful.mouse.client.move),
    awful.button({ modkey }, 3, function(c)

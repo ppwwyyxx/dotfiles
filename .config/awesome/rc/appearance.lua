@@ -22,7 +22,7 @@ if screen.count() == 2 then
     gears.wallpaper.maximized(wp_path .. "dark.jpg", 2, true)
 end
 
-local function changewp()
+function changewp()
     if #wp_files == 0 then
        return
     end

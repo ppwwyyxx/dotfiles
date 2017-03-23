@@ -3,15 +3,14 @@ awful = require("awful")
 awful.rules = require("awful.rules")
 require("awful.autofocus")
 naughty = require("naughty")
-
 beautiful = require("beautiful")
--- define colours, icons, and wallpapers
+-- Themes define colours, icons, and wallpapers
 beautiful.init(awful.util.getdir("config") .. "/rc/theme.lua")
 
-os.setlocale("C")
+os.setlocale("")
 -- dbus.release_name("session", "org.freedesktop.Notifications")
 
--- Load additional LUA files from rc/.
+-- Simple function to load additional LUA files from rc/.
 function loadrc(name, module)
    local path = awful.util.getdir("config") .. "/rc/" ..  name .. ".lua"
    local success
@@ -44,6 +43,7 @@ modkey            = "Mod4"
 altkey            = "Mod1"
 home              = os.getenv("HOME")
 
+--loadrc("common")
 loadrc("error")
 
 loadrc("autorun")

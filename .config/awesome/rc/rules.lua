@@ -1,14 +1,14 @@
 -- Text Edit Keys
-local myutil = require('rc/myutil')
 local run_or_raise = require("lib/run_or_raise")
-local text_edit_key = join(
-	awful.key({altkey}, 'f',         function(c) myutil.sendkey(c, 'ctrl+Right') end),
-	awful.key({altkey}, 'b',         function(c) myutil.sendkey(c, 'ctrl+Left') end),
-	awful.key({'Control'}, 'd',      function(c) myutil.sendkey(c, 'Home') end),
-	awful.key({'Control'}, 'e',      function(c) myutil.sendkey(c, 'End') end)
+local myutil = require('rc/myutil')
+local text_edit_key = myutil.join(
+	awful.key({altkey}, 'f',         function(c) sendkey(c, 'ctrl+Right') end),
+	awful.key({altkey}, 'b',         function(c) sendkey(c, 'ctrl+Left') end),
+	awful.key({'Control'}, 'd',      function(c) sendkey(c, 'Home') end),
+	awful.key({'Control'}, 'e',      function(c) sendkey(c, 'End') end)
 )
 local function bind_text_key(client)
-	client:keys(join(client:keys(), text_edit_key))
+	client:keys(myutil.join(client:keys(), text_edit_key))
 end
 
 local ad_blocked = 0
@@ -26,12 +26,12 @@ awful.rules.rules = {
 }, {
     rule = { class = "Chromium" },
     callback = function(c)
-       c:keys(join(c:keys(),
-         awful.key({'Control'}, 'q', function(c)
-                   myutil.exec_sync('sleep 0.3')
-                   myutil.sendkey(c, 'Tab Escape Ctrl+w')
-               end)
-     ))
+        c:keys(myutil.join(c:keys(),
+            awful.key({'Control'}, 'q', function(c)
+                      exec_sync('sleep 0.3')
+                      sendkey(c, 'Tab Escape Ctrl+w')
+                  end)
+        ))
     end
 }, {
 	rule = { instance = 'FSTerm' },

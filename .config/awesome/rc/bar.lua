@@ -1,7 +1,6 @@
 local vicious = require("vicious")
 local wibox = require("wibox")
 local myutil = require('rc/myutil')
-join = myutil.join
 
 -- Separators
 local sepopen = wibox.widget.imagebox()
@@ -31,13 +30,11 @@ vicious.register(cpugraph, vicious.widgets.cpu, "$1")
 local temp_widget = wibox.widget.textbox()
 vicious.register(temp_widget, vicious.widgets.thermal,
                  function(widget, args)
-                     local t = tonumber(args[1])   -- doesn't work with dell
-                     return string.format("%d", t).. "℃"
-                     --[[
-                        [local t = myutil.rexec("sensors | grep -Po 'Package.*?C' | awk '{print $NF}' | cut -c 2-3")
-                        [t = t:sub(1,-2) .. '℃'
-                        [return t
-                        ]]
+                     --local t = args[1] .. ℃    -- doesn't work with dell
+                     --return string.format("%s", t)
+                     local t = myutil.rexec("sensors | grep -Po 'Physical .*?C' | awk '{print $NF}' | cut -c 2-3")
+                     t = t:sub(1,-2) .. '℃'
+                     return t
                  end, 20, "thermal_zone1")
 
 local mem_widget = wibox.widget.textbox()
@@ -148,7 +145,7 @@ volumectl()
 local volume_clock = timer({ timeout = 60 })
 volume_clock:connect_signal("timeout", function() volumectl() end)
 volume_clock:start()
-volume_widget:buttons(join(
+volume_widget:buttons(myutil.join(
     awful.button({ }, 4, function() volumectl("up") end),
     awful.button({ }, 5, function() volumectl("down") end),
     awful.button({ }, 3, function() myutil.exec("pavucontrol") end),
@@ -159,7 +156,7 @@ volume_widget:buttons(join(
 -- tag, task
 
 local my_taglist = {}
-my_taglist.buttons = join(
+my_taglist.buttons = myutil.join(
     awful.button({ }, 1, awful.tag.viewonly),
     awful.button({ modkey }, 1, awful.client.movetotag),
     awful.button({ }, 3, awful.tag.viewtoggle),
@@ -170,7 +167,7 @@ my_taglist.buttons = join(
 
 local task_list = {}
 local instance
-task_list.buttons = join(
+task_list.buttons = myutil.join(
 	awful.button({ }, 1, function(c)
 			  if c == client.focus and not c.minimized then
                   c.minimized = true
@@ -204,7 +201,7 @@ my_promptbox = {}
 local my_layoutbox = {}
 for s = 1, screen.count() do
     my_layoutbox[s] = awful.widget.layoutbox(s)
-    my_layoutbox[s]:buttons(join(
+    my_layoutbox[s]:buttons(myutil.join(
         awful.button({ }, 1, function() awful.layout.inc(config.layouts, 1) end),
         awful.button({ }, 3, function() awful.layout.inc(config.layouts, -1) end),
         awful.button({ }, 4, function() awful.layout.inc(config.layouts, 1) end),
