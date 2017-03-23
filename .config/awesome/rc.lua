@@ -2,11 +2,11 @@
 awful = require("awful")
 awful.rules = require("awful.rules")
 require("awful.autofocus")
-naughty = require("naughty")
-
 beautiful = require("beautiful")
+naughty = require("naughty")
 -- Themes define colours, icons, and wallpapers
 beautiful.init(awful.util.getdir("config") .. "/rc/theme.lua")
+
 
 os.setlocale("")
 -- dbus.release_name("session", "org.freedesktop.Notifications")

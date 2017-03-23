@@ -2,7 +2,6 @@
 local myutil = {
 exec              = awful.util.spawn,
 sexec             = awful.util.spawn_with_shell,
-exec_sync         = awful.util.pread,
 join              = awful.util.table.join,
 }
 
@@ -20,18 +19,12 @@ function myutil.run_term(cmd, name)
 	myutil.exec("urxvt -name '" .. name .. "' -e bash -c 'source $HOME/.bashrc; " .. cmd .. "'")
 end
 
-function myutil.net_monitor()
-    myutil.run_term('tmux new-session -d "sudo iftop -i "' .. active_net_if .. ' \\; split-window -d "sudo nethogs ' .. active_net_if .. '" \\; attach',
-             'FSTerm')
-end
-
 function myutil.sendkey(c, key)		-- send key in xdotool format
     myutil.exec_sync('sleep 0.1')
     myutil.exec('xdotool key --clearmodifiers ' .. key)
 end
 
 function myutil.rexec(cmd)
-    --return awful.util.pread(cmd)
     local f = io.popen(cmd)
     local ret = f:read('*all')
     f:close()
@@ -66,6 +59,19 @@ function myutil.split(str, sep)
       table.insert(result, each)
    end
    return result
+end
+
+function myutil.get_active_iface()
+     local f = io.open('/proc/net/route')
+     local netif
+     for line in f:lines() do
+         netif = line:match('^(%w+)%s+00000000%s')
+         if netif then
+             break
+         end
+     end
+     f:close()
+     return netif
 end
 
 

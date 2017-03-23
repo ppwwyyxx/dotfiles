@@ -59,7 +59,6 @@ ROOT_KEYS = myutil.join(
             elseif key == 't' then myutil.run_term('top', 'FSTerm')
             elseif key == 'h' then myutil.run_term('htop', 'FSTerm')
             elseif key == 'd' then myutil.run_term('dstat -dnmcl --top-io -Nwlp3s0', 'FSTerm')
-            elseif key == 'n' then myutil.net_monitor()
             elseif key == 'Shift_L' or key == 'Shift_R' then return
             end
             keygrabber.stop()
@@ -84,6 +83,11 @@ ROOT_KEYS = myutil.join(
                 myutil.notify("Conf Syntax Error!", check)
             end
        end),
+
+   awful.key({altkey, "Control", 'Shift'}, 'd', function()
+      naughty.notify("TESTTTTTTTTTTT", "AAA",
+      naughty.config.presets.critical)
+   end),
 
 	-- Switching tags
 	awful.key({ modkey }, "Left",   awful.tag.viewprev       ),

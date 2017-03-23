@@ -1,8 +1,16 @@
 local vicious = require("vicious")
 local wibox = require("wibox")
 local myutil = require('lib/myutil')
+local const = require('rc/const')
 
--- Separators
+local function colored_text(text, color, extra_attr)
+   assert(color)
+   extra_attr = extra_attr or ""
+   return string.format(
+      "<span foreground=\"%s\" %s>%s</span>", color, extra_attr, text)
+end
+
+-- Separators & Icons
 local sepopen = wibox.widget.imagebox()
 sepopen:set_image(beautiful.icons .. "/widgets/left.png")
 local sepclose = wibox.widget.imagebox()
@@ -10,27 +18,29 @@ sepclose:set_image(beautiful.icons .. "/widgets/right.png")
 --local spacer = wibox.widget.imagebox()
 --spacer:set_image(beautiful.icons .. "/widgets/spacer.png")
 
--- Simple Widgets
-local my_textclock = awful.widget.textclock(
-"<span foreground=\"#bc5374\"> </span>" ..
-"<span foreground=\"#bc5374\" font_weight=\"bold\"> %m-%d %H:%M:%S %a </span>", 1)
-my_textclock:buttons(
-    awful.button({}, 1, function() myutil.sexec(browser .. "http://calendar.google.com") end)
-)
 
-local cpugraph = awful.widget.graph()
-cpugraph:set_width(40):set_height(16)
-cpugraph:set_background_color("#00000033")
-cpugraph:set_color({ type = "linear",
+local textclock = wibox.widget.textclock(
+colored_text(" %m-%d %H:%M:%S %a ", "#bc5374", 'font_weight="bold"'),
+1)
+textclock:buttons(awful.button({}, 1, function()
+    myutil.sexec(const.browser .. "http://calendar.google.com")
+end))
+
+local cpu_widget = wibox.widget.graph()
+cpu_widget:set_width(40):set_height(16)
+cpu_widget:set_background_color("#00000033")
+cpu_widget:set_color({ type = "linear",
                    from = { 0, 0 }, to = { 10,0 },
                    stops = { {0, "#FF5656"}, {0.5, "#88A175"}, {1, "#AECF96" }}})
-cpugraph:buttons(awful.button({}, 1, function() myutil.run_term('htop', 'FSTerm') end))
-vicious.register(cpugraph, vicious.widgets.cpu, "$1")
+cpu_widget:buttons(awful.button({}, 1, function()
+   myutil.run_term('htop', 'FSTerm')
+end))
+vicious.register(cpu_widget, vicious.widgets.cpu, "$1")
 
-local temp_widget = wibox.widget.textbox()
-vicious.register(temp_widget, vicious.widgets.thermal,
+local thermal_widget = wibox.widget.textbox()
+vicious.register(thermal_widget, vicious.widgets.thermal,
                  function(widget, args)
-                     local t = tonumber(args[1])   -- doesn't work with dell
+                     local t = tonumber(args[1])
                      return string.format("%d", t).. "℃"
                      --[[
                         [local t = myutil.rexec("sensors | grep -Po 'Package.*?C' | awk '{print $NF}' | cut -c 2-3")
@@ -40,58 +50,11 @@ vicious.register(temp_widget, vicious.widgets.thermal,
                  end, 20, "thermal_zone1")
 
 local mem_widget = wibox.widget.textbox()
-vicious.register(mem_widget, vicious.widgets.mem, '<span color="#90ee90"> M$1%</span>')
-mem_widget:buttons(awful.button({}, 1, function() myutil.run_term('top -o %MEM -d 1', 'FSTerm') end))
-
--- Network f[[
-local net_widget = wibox.widget.textbox()
---[[
-   [local netgraph = awful.widget.graph()
-   [netgraph:set_width(40):set_height(16)
-   [netgraph:set_stack(true):set_scale(true)
-   [netgraph:set_stack_colors({ "#c2ba62", "#5798d9" })
-   [netgraph:set_background_color("#00000033")
-   ]]
-vicious.register(net_widget, vicious.widgets.net, function(widget, args)
-        local f = io.open('/proc/net/route')
-        local netif
-        for line in f:lines() do
-            netif = line:match('^(%w+)%s+00000000%s')
-            if netif then
-                break
-            end
-        end
-        f:close()
-        active_net_if = netif
-        if active_net_if == nil then
-            return '<span color="#5798d9">No Network</span>'
-        end
-
-        local up, down, iface = 0, 0
-        -- sum up/down value for all interfaces
-        for name, value in pairs(args) do
-           iface = name:match("^{(%S+) down_b}$")
-           if iface == active_net_if then down = down + value end
-           iface = name:match("^{(%S+) up_b}$")
-           if iface == active_net_if then up = up + value end
-        end
-        --[[
-           [netgraph:add_value(up, 1)
-           [netgraph:add_value(down, 2)
-           ]]
-        local function format(val)
-            -- no network
-            if val > 500000000 then return "0" end
-            if val > 500000 then return string.format("%.1fM", val/1000000.)
-            else return string.format("%.0fK", val/1000.) end
-        end
-        return string.format('<span color="#5798d9">↓%s</span><span color="#c2ba62">↑%s</span>',
-                       format(down), format(up))
-    end, 3)
-net_widget:buttons(
-    awful.button({}, 1, myutil.net_monitor)
-)
--- f]]
+vicious.register(mem_widget, vicious.widgets.mem,
+   colored_text(" M$1% ", "#90ee90"), 10)
+mem_widget:buttons(awful.button({}, 1, function()
+   myutil.run_term('top -o %MEM -d 1', 'FSTerm')
+end))
 
 --Battery f[[
 local bat_widget = wibox.widget.textbox()
@@ -103,54 +66,101 @@ vicious.register(bat_widget, vicious.widgets.bat, function(widget, args)
 				local current = args[2]
 				if current < 25 and args[1] == '−' then
 					if current ~= bat_widget.lastwarn then
-						myutil.notify("Low Battery", "Battery: " .. current .. "%.\n" .. args[3] .. " left.", 'critical')
+						myutil.notify(
+                     "Low Battery",
+                     "Battery: " .. current .. "%.\n" .. args[3] .. " left.", 'critical')
 						bat_widget.lastwarn = current
 					end
 				end
-				return string.format('<span color="' .. color .. '">B%s%d%%</span>', args[1], current)
+				return colored_text(string.format('B%s%d%%', args[1], current), color)
 			end,
 			59, "BAT0")
-bat_widget:buttons(awful.button({}, 1, function() myutil.run_term("sudo powertop", 'FSTerm') end))
+bat_widget:buttons(awful.button({}, 1, function()
+   myutil.run_term("sudo powertop", 'FSTerm')
+end))
+-- f]]
+
+-- Network f[[
+local net_widget = wibox.widget.textbox()
+--[[
+   [local netgraph = awful.widget.graph()
+   [netgraph:set_width(40):set_height(16)
+   [netgraph:set_stack(true):set_scale(true)
+   [netgraph:set_stack_colors({ "#c2ba62", "#5798d9" })
+   [netgraph:set_background_color("#00000033")
+   ]]
+
+local net_if
+vicious.register(net_widget, vicious.widgets.net, function(widget, args)
+        net_if = myutil.get_active_iface()
+        if net_if == nil then
+            return colored_text("No Network", "#5798d9")
+        end
+
+        local up, down, iface = 0, 0
+        down = down + args[string.format("{%s down_kb}", net_if)] or 0
+        up = up + args[string.format("{%s up_kb}", net_if)] or 0
+        --[[
+           [netgraph:add_value(up, 1)
+           [netgraph:add_value(down, 2)
+           ]]
+        local function format(val)
+            if val > 1000000 then return "0" end    -- >1GB, some error, no network
+            if val > 500 then return string.format("%.1fM", val/1000.)
+            else return string.format("%.0fK", val) end
+        end
+        return colored_text("↓" .. format(down), "#5798d9")
+               .. colored_text("↑" .. format(up), "#c2ba62")
+    end, 3)
+net_widget:buttons(awful.button({}, 1, function()
+    myutil.run_term(
+      'tmux new-session -d "sudo iftop -i "'
+      .. net_if .. ' \\; split-window -d "sudo nethogs '
+      .. net_if .. '" \\; attach', 'FSTerm')
+end))
 -- f]]
 
 --Volume f[[
 local volume_widget = wibox.widget.textbox()
-function volumectl(mode)
+local function volumectl(mode)
+   -- mode: update, up, down, mute
+   function update_cb() volumectl("update") end
+
    if mode == "update" then
       local volume = myutil.rexec("pamixer --get-volume")
       if not tonumber(volume) then
-         volume_widget:set_markup("<span color='red'>ERR</span>")
-         return
-      end
-      local muted = myutil.rexec("pamixer --get-mute"):sub(1,4)  -- rstrip
-      if muted == "true" then
-         volume = "<span color='red'>♫M</span>"
+         volume_widget:set_markup(colored_text('ERR', 'red'))
       else
-         volume = '♫' .. volume
+         local muted = myutil.rexec("pamixer --get-mute"):sub(1,4)  -- rstrip
+         if muted == "true" then
+            volume = colored_text('♫M', 'red')
+         else
+            volume = '♫' .. volume
+         end
+         volume_widget:set_markup(volume)
       end
-      volume_widget:set_markup(volume)
       return
    elseif mode == "up" then
       local volume = tonumber(myutil.rexec("pamixer --get-volume"))
       if volume < 120 then
-         myutil.exec("pamixer --allow-boost --increase 5")
+         awful.spawn.easy_async("pamixer --allow-boost --increase 5", update_cb)
       end
    elseif mode == "down" then
-      myutil.exec("pamixer --allow-boost --decrease 5")
+      awful.spawn.easy_async("pamixer --allow-boost --decrease 5", update_cb)
    elseif mode == "mute" then
-      myutil.exec("pamixer --set-volume 20")
-      myutil.exec("pamixer --toggle-mute")
+      awful.spawn.easy_async("pamixer --set-volume 20 --toggle-mute", update_cb)
+   else
+      notify("Unknown volumectl mode: ".. mode)
    end
-   volumectl("update")
 end
-volumectl()
+volumectl("update")
 local volume_clock = timer({ timeout = 60 })
-volume_clock:connect_signal("timeout", function() volumectl() end)
+volume_clock:connect_signal("timeout", function() volumectl("update") end)
 volume_clock:start()
 volume_widget:buttons(myutil.join(
     awful.button({ }, 4, function() volumectl("up") end),
     awful.button({ }, 5, function() volumectl("down") end),
-    awful.button({ }, 3, function() myutil.exec("pavucontrol") end),
+    awful.button({ }, 3, function() awful.spawn("pavucontrol") end),
     awful.button({ }, 1, function() volumectl("mute") end)
 ))
 -- f]]
@@ -223,18 +233,18 @@ for s = 1, screen.count() do
 
     local right_layout = wibox.layout.fixed.horizontal()
     --right_layout:add(sepopen)
-    right_layout:add(cpugraph)
-    right_layout:add(temp_widget)
+    right_layout:add(cpu_widget)
+    right_layout:add(thermal_widget)
     right_layout:add(mem_widget)
     right_layout:add(bat_widget)
-    --right_layout:add(netgraph)
+    -- right_layout:add(netgraph)
     right_layout:add(net_widget)
     right_layout:add(volume_widget)
     if s == 1 then     -- add systray to the first screen
         right_layout:add(wibox.widget.systray())
     end
     --right_layout:add(sepclose)
-    right_layout:add(my_textclock)
+    right_layout:add(textclock)
 
    --right_layout:add(powerline_widget)
 
