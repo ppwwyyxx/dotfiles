@@ -13,7 +13,7 @@ cp ~/.tmux.conf ~/.tmux ./ -rvH
 cp ~/.zshrc ~/.zsh ~/.bashrc ./ -rvH
 cp ~/.config/awesome ./.config -rvH
 cp ~/.config/python ./.config -rvH
-cp ~/.gitconfig ./ -rvf
+#cp ~/.gitconfig ./ -rvf
 cp ~/.xbindkeysrc ./ -fv
 cp ~/.cvimrc ./
 

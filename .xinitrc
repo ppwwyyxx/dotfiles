@@ -4,16 +4,28 @@
 #
 # Executed by startx (run your window manager from here)
 
-echo $1 > /tmp/session.log
+if [ -d /etc/X11/xinit/xinitrc.d ] ; then
+ for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
+  [ -x "$f" ] && . "$f"
+ done
+ unset f
+fi
+export BROWSER=xdg-open
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
 
 xrdb ~/.Xresources
 xmodmap ~/.Xmodmap
-xrandr --output VGA1 --right-of LVDS1
+xrandr --output HDMI1 --scale 1x1 --right-of eDP1
 xbindkeys
 xset -b
 xset r rate 200 40
-xflux -z 15213
 
-[[ -z "$1" ]] && exit
+#export $(dbus-launch)
+
+# to work with slim login-cmd
+# [[ -z "$1" ]] && exit
+
+mkdir -p ~/.cache/awesome
 exec awesome >> ~/.cache/awesome/stdout 2>> ~/.cache/awesome/stderr
-#exec $1
