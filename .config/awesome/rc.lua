@@ -29,11 +29,6 @@ function loadrc(name, module)
 end
 
 config = {}
-config.layouts = {
-    awful.layout.suit.floating,
-    awful.layout.suit.spiral,
-    awful.layout.suit.magnifier,
-}
 
 ROOT_KEYS = {}
 
@@ -42,7 +37,7 @@ require("rc/autorun")
 appearance = require("rc/appearance")
 menu = require("rc/menu")
 tags = require("rc/tags")  -- screen -> table of tags
-loadrc("bar")
+bar = require("rc/bar")
 loadrc("keys")
 loadrc("rules")
 

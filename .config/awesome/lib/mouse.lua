@@ -56,5 +56,4 @@ return function()
              keygrabber.stop()
          end
       end)
-
 end

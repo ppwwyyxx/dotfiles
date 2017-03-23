@@ -23,4 +23,11 @@ local main_menu = awful.menu({ items = {
 local menubar = require("menubar")
 menubar.utils.terminal = terminal
 
+root.buttons(awful.util.table.join(
+	awful.button({}, 1, function() main_menu:hide() end),
+	awful.button({}, 3, function() main_menu:toggle() end),
+	awful.button({}, 4, awful.tag.viewprev),
+	awful.button({}, 5, awful.tag.viewnext)
+))
+
 return {main_menu = main_menu}

@@ -4,33 +4,29 @@ local const = require('rc/const')
 local modkey = const.modkey
 local altkey = const.altkey
 local mouse_control = require("lib/mouse")
-require("lib/web_cmd")
-
-root.buttons(myutil.join(
-	awful.button({ }, 1, function() menu.main_menu:hide() end),
-	awful.button({ }, 3, function() menu.main_menu:toggle() end),
-	awful.button({ }, 4, awful.tag.viewprev),
-	awful.button({ }, 5, awful.tag.viewnext)
-))
-
+-- require("lib/web_cmd")
 
 ROOT_KEYS = myutil.join(
 	ROOT_KEYS,
-	awful.key({ modkey }, "n", function() awful.screen.focus_relative(1) end),
-	awful.key({ modkey }, "u", awful.client.urgent.jumpto),
+	awful.key({modkey}, "n", function() awful.screen.focus_relative(1) end),
+	awful.key({modkey}, "u", awful.client.urgent.jumpto),
 
 	-- Layout manipulation for tiling
-	awful.key({ modkey, }, "space", function() awful.layout.inc(config.layouts,  1) end),
-	awful.key({ modkey, "Shift" }, "space", function() awful.layout.inc(config.layouts, -1) end),
-	awful.key({ modkey }, "l",     function() awful.tag.incmwfact( 0.05)    end),
-	awful.key({ modkey }, "h",     function() awful.tag.incmwfact(-0.05)    end),
+	awful.key({modkey}, "space", function() awful.layout.inc(const.available_layouts,  1) end),
+	awful.key({modkey, "Shift"}, "space", function() awful.layout.inc(const.available_layouts, -1) end),
+	awful.key({modkey}, "l",     function() awful.tag.incmwfact( 0.05)    end),
+	awful.key({modkey}, "h",     function() awful.tag.incmwfact(-0.05)    end),
 
-	awful.key({ modkey }, "Next",  function () awful.client.moveresize( 20,  20, -40, -40) end),
-    awful.key({ modkey }, "Prior", function () awful.client.moveresize(-20, -20,  40,  40) end),
-
+  -- snap window around
 	awful.key({modkey, }, "'", function() myutil.moveresize_abs(-0.5, 0, 0.5, 1, client.focus) end),
 	awful.key({modkey, }, ";", function() myutil.moveresize_abs(0, 0, 0.5, 1, client.focus) end),
 
+
+  -- page up/down to resize
+	awful.key({modkey}, "Next",  function () awful.client.moveresize( 20,  20, -40, -40) end),
+  awful.key({modkey}, "Prior", function () awful.client.moveresize(-20, -20,  40,  40) end),
+
+  -- interactive move & resize
 	awful.key({modkey, "Shift"}, "'", function()
 		keygrabber.run(function(mod, key, event)
 		     if event == "release" then return end
@@ -48,31 +44,25 @@ ROOT_KEYS = myutil.join(
 		end)
 	end),
 
-    awful.key({modkey, "Shift"}, "t", function()
-        keygrabber.run(function(mod, key, event)
-            if event == 'release' then return
-            elseif key == 'Return' then myutil.exec(const.terminal)
-            elseif key == 'p' then myutil.run_term('bpython2')
-            elseif key == 'P' then myutil.run_term('bpython')
-            elseif key == 'r' then myutil.run_term('pry')
-            elseif key == 'c' then myutil.run_term('coffee')
-            elseif key == 't' then myutil.run_term('top', 'FSTerm')
-            elseif key == 'h' then myutil.run_term('htop', 'FSTerm')
-            elseif key == 'd' then myutil.run_term('dstat -dnmcl --top-io -Nwlp3s0', 'FSTerm')
-            elseif key == 'Shift_L' or key == 'Shift_R' then return
-            end
-            keygrabber.stop()
-        end)
-    end),
+  -- all kinds of terminal
+  awful.key({modkey, "Shift"}, "t", function()
+      keygrabber.run(function(mod, key, event)
+          if event == 'release' then return
+          elseif key == 'Return' then myutil.exec(const.terminal)
+          elseif key == 'p' then myutil.run_term('bpython')
+          elseif key == 'P' then myutil.run_term('bpython2')
+          elseif key == 'c' then myutil.run_term('coffee')
+          elseif key == 't' then myutil.run_term('top', 'FSTerm')
+          elseif key == 'h' then myutil.run_term('htop', 'FSTerm')
+          elseif key == 'd' then myutil.run_term('dstat -dnmcl --top-io -Nwlp3s0', 'FSTerm')
+          elseif key == 'Shift_L' or key == 'Shift_R' then return
+          end
+          keygrabber.stop()
+      end)
+  end),
 
-    awful.key({modkey }, "m", mouse_control),
-
-	-- toggle sticky for unfocusable object under mouse
-	awful.key({ modkey, "Shift"   }, "s",
-		function()
-			local c = mouse.object_under_pointer()
-			if c then c.sticky = not c.sticky end
-		end),
+  -- move mouse with keyboard
+  awful.key({modkey }, "m", mouse_control),
 
 	-- big things
 	awful.key({ altkey, "Control", "Shift"}, "r", function()

@@ -13,9 +13,9 @@ end
 
 -- Separators & Icons
 local sepopen = wibox.widget.imagebox()
-sepopen:set_image(beautiful.icons .. "/widgets/left.png")
+sepopen:set_image(beautiful.my_icons .. "/widgets/left.png")
 local sepclose = wibox.widget.imagebox()
-sepclose:set_image(beautiful.icons .. "/widgets/right.png")
+sepclose:set_image(beautiful.my_icons .. "/widgets/right.png")
 --local spacer = wibox.widget.imagebox()
 --spacer:set_image(beautiful.icons .. "/widgets/spacer.png")
 
@@ -210,10 +210,10 @@ TASK_LIST_BUTTONS = awful.util.table.join(
 )
 
 local LAYOUT_BOX_BUTTONS = awful.util.table.join(
-    awful.button({}, 1, function() awful.layout.inc(config.layouts, 1) end),
-    awful.button({}, 3, function() awful.layout.inc(config.layouts, -1) end),
-    awful.button({}, 4, function() awful.layout.inc(config.layouts, 1) end),
-    awful.button({}, 5, function() awful.layout.inc(config.layouts, -1) end)
+    awful.button({}, 1, function() awful.layout.inc(const.available_layouts, 1) end),
+    awful.button({}, 3, function() awful.layout.inc(const.available_layouts, -1) end),
+    awful.button({}, 4, function() awful.layout.inc(const.available_layouts, 1) end),
+    awful.button({}, 5, function() awful.layout.inc(const.available_layouts, -1) end)
 )
 
 local systray = wibox.widget.systray()
@@ -242,7 +242,9 @@ awful.screen.connect_for_each_screen(function(s)
     -- right_layout:add(netgraph)
     right_layout:add(net_widget)
     right_layout:add(volume_widget)
-    right_layout:add(systray)
+    if s.index == 1 then
+      right_layout:add(systray)
+    end
     -- myutil.notify(s.index)
     right_layout:add(textclock)
 
@@ -255,3 +257,5 @@ awful.screen.connect_for_each_screen(function(s)
 
     my_wibox:set_widget(layout)
 end)
+
+return {}

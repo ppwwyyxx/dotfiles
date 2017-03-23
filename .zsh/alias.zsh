@@ -220,7 +220,7 @@ alias iotop='sudo iotop'
 alias iftop='sudo iftop -B'
 alias powertop='sudo powertop'
 alias sy='sudo systemctl'
-alias dstat='dstat -dnmcl --socket --top-io -N eth0,enp0s25,eth1,wlan0,wlp3s0,eno1'
+alias dstat='dstat -dnmcl --socket --top-io -N wlp2s0'
 function agenda() {
 	gcalcli --details=length agenda '12am' $(date --date="${1:-1} day" +"%Y%m%d")
 }
