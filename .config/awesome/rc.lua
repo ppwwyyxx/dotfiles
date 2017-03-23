@@ -34,15 +34,16 @@ config.layouts = {
     awful.layout.suit.spiral,
     awful.layout.suit.magnifier,
 }
-config.global = {}
+
+ROOT_KEYS = {}
 
 require("rc/error")
 require("rc/autorun")
 appearance = require("rc/appearance")
-loadrc("tags")
-loadrc("menu")
+menu = require("rc/menu")
+tags = require("rc/tags")  -- screen -> table of tags
 loadrc("bar")
 loadrc("keys")
 loadrc("rules")
 
-root.keys(config.global)
+root.keys(ROOT_KEYS)

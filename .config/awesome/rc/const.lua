@@ -1,5 +1,6 @@
 
 local const = {
+default_layout    = awful.layout.suit.floating,
 terminal          = "urxvt",
 -- TMP_TERM	      = "TMP_TERMINAL",
 browser           = "chromium ",

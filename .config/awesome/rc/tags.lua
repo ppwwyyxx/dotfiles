@@ -1,40 +1,29 @@
-
--- Tags
--- Define a tag table which hold all screen tags.
-
 local myutil = require('lib/myutil')
 local const = require('rc/const')
-modkey = const.modkey
-local tag_name = { "1", "2", "chat", "0"}
-last_tag = #tag_name
-tags = {}   -- tags: screen -> tags
 
-awful.screen.connect_for_each_screen(function(s)
-    tags[s] = awful.tag(tag_name, s, awful.layout.suit.floating)
-end)
-
+-- register key "mod + key" to tag "index"
 local function register_tagkey(key, index)
-	config.global = myutil.join(
-		config.global,
-		awful.key({ modkey }, key, function()      -- view only
+	ROOT_KEYS = myutil.join(
+		ROOT_KEYS,
+		awful.key({ const.modkey }, key, function()      -- view only
 			local screen = mouse.screen
 			if tags[screen][index] then
 				awful.tag.viewonly(tags[screen][index])
 			end
 		end),
-	awful.key({ modkey, "Control" }, key, function()    -- toggle view
+	awful.key({ const.modkey, "Control" }, key, function()    -- toggle view
 		   local screen = mouse.screen
 		   if tags[screen][index] then
 			   awful.tag.viewtoggle(tags[screen][index])
 		   end
 	   end),
-	awful.key({ modkey, "Shift"   }, key, function()        -- move but not jump
+	awful.key({ const.modkey, "Shift"   }, key, function()        -- move but not jump
          local screen = client.focus.screen
 		   if client.focus and tags[screen][index] then
 			   awful.client.movetotag(tags[screen][index])
 		   end
 	   end),
-	awful.key({ modkey, "Control", "Shift" }, key, function()
+	awful.key({ const.modkey, "Control", "Shift" }, key, function()  -- add to new tag
          local screen = client.focus.screen
 		   if client.focus and tags[screen][index] then
 			   awful.client.toggletag(tags[screen][index])
@@ -43,8 +32,17 @@ local function register_tagkey(key, index)
 	)
 end
 
-local keynumber = last_tag - 1
-for key = 1, keynumber do
+
+local tag_name = { "1", "2", "chat", "0"}
+local tags = {}   -- tags: screen -> table of tags
+awful.screen.connect_for_each_screen(function(s)
+    tags[s] = awful.tag(tag_name, s, const.default_layout)
+end)
+
+-- because 0 is on the right of keyboard
+for key = 1, #tag_name - 1 do
    register_tagkey(key, key)
 end
-register_tagkey(0, last_tag)
+register_tagkey(0, #tag_name)
+
+return tags

@@ -7,15 +7,15 @@ require("lib/mouse")
 require("lib/web_cmd")
 
 root.buttons(myutil.join(
-	awful.button({ }, 1, function() my_mainmenu:hide() end),
-	awful.button({ }, 3, function() my_mainmenu:toggle() end),
+	awful.button({ }, 1, function() menu.main_menu:hide() end),
+	awful.button({ }, 3, function() menu.main_menu:toggle() end),
 	awful.button({ }, 4, awful.tag.viewprev),
 	awful.button({ }, 5, awful.tag.viewnext)
 ))
 
 
-config.global = myutil.join(
-	config.global,
+ROOT_KEYS = myutil.join(
+	ROOT_KEYS,
 	awful.key({ modkey }, "n", function() awful.screen.focus_relative(1) end),
 	awful.key({ modkey }, "u", awful.client.urgent.jumpto),
 

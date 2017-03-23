@@ -253,3 +253,4 @@ xdgmenu = {
     {"System Tools", menuee69799670a33f75d45c57d1d1cd0ab3},
 }
 
+return xdgmenu
