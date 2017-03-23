@@ -1,27 +1,19 @@
 local gears = require("gears")
 local myutil = require('lib/myutil')
 
-local function split(str, sep)
-   local result = {}
-   local regex = ("([^%s]+)"):format(sep)
-   for each in str:gmatch(regex) do
-      table.insert(result, each)
-   end
-   return result
-end
-
 -- configuration -
-local wp_index = 1
 local wp_timeout  = 180
 local wp_path = awful.util.getdir("config") .. "/wallpaper/"
 local wp_files = myutil.rexec("find -L " .. wp_path .. " -maxdepth 2 -type f | shuf")
-wp_files = split(wp_files, "\n")
+wp_files = myutil.split(wp_files, "\n")
 
--- use dark.png for second screen
+-- use dark for second screen
 if screen.count() == 2 then
     gears.wallpaper.maximized(wp_path .. "dark.jpg", 2, true)
 end
 
+
+local wp_index = 1
 function changewp()
     if #wp_files == 0 then
        return
@@ -33,8 +25,9 @@ end
 local wp_timer = timer({ timeout = wp_timeout })
 wp_timer:connect_signal("timeout", changewp)
 wp_timer:start()
-changewp()
+changewp()  -- run at start up
 
-
--- for fcitx-chttrans
+-- for fcitx-chttrans ?
 table.insert(naughty.config.icon_dirs, '/usr/share/icons/hicolor/48x48/status/')
+
+return {change_wallpaper = changewp }

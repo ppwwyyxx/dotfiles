@@ -15,7 +15,8 @@ function myutil.notify(title, text, urgency)	-- normal, low, critical
 end
 
 function myutil.run_term(cmd, name)
-    if not name then name = TMP_TERM end
+   local TMP_TERM = 'TODO'
+   if not name then name = TMP_TERM end
 	myutil.exec("urxvt -name '" .. name .. "' -e bash -c 'source $HOME/.bashrc; " .. cmd .. "'")
 end
 
@@ -56,5 +57,16 @@ function myutil.moveresize_abs(x, y, w, h, c)
 	awful.client.moveresize(-g.x + scr.x + x, -g.y + scr.y + y,
 						-g.width + w, -g.height + h, c)
 end
+
+-- string split by sep
+function myutil.split(str, sep)
+   local result = {}
+   local regex = ("([^%s]+)"):format(sep)
+   for each in str:gmatch(regex) do
+      table.insert(result, each)
+   end
+   return result
+end
+
 
 return myutil

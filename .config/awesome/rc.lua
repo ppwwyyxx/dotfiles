@@ -36,9 +36,9 @@ config.layouts = {
 }
 config.global = {}
 
-loadrc("error")
-loadrc("autorun")
-loadrc("appearance")
+require("rc/error")
+require("rc/autorun")
+appearance = require("rc/appearance")
 loadrc("tags")
 loadrc("menu")
 loadrc("bar")

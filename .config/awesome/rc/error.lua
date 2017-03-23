@@ -1,10 +1,10 @@
-
 local naughty = require("naughty")
 -- Copy from example config
 if awesome.startup_errors then
-    naughty.notify({ preset = naughty.config.presets.critical,
-                     title = "Oops, there were errors during startup!",
-                     text = awesome.startup_errors })
+    naughty.notify({
+        preset = naughty.config.presets.critical,
+        title = "Oops, there were errors during startup!",
+        text = awesome.startup_errors })
 end
 -- Handle runtime errors after startup
 do

@@ -1,8 +1,7 @@
 
 local const = {
-
 terminal          = "urxvt",
-TMP_TERM	      = "TMP_TERMINAL",
+-- TMP_TERM	      = "TMP_TERMINAL",
 browser           = "chromium ",
 editor            = "gvim ",
 modkey            = "Mod4",

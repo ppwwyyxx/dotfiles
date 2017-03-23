@@ -24,7 +24,10 @@ local autorun_items = {
     --"sleep 100 && dropbox",
     --"sleep 100 && nocturn",
 }
+
 local runonce = require("lib/runonce")
-for _, item in ipairs(autorun_items) do
-    runonce.run(item)
+do
+   for _, item in ipairs(autorun_items) do
+       runonce.run(item)
+   end
 end
