@@ -183,7 +183,7 @@ $YELLOWGREEN%$pwdlen<...<%~%<< \
 	if [ $COMMAND_TIMER ]; then
 		local diff=$((SECONDS + $(date "+%N") / 1000000000.0 - COMMAND_TIMER))
 		diff=`printf "%.2f" $diff`
-		if [ $(echo "$diff > 1" | bc -l) -eq 1 ]; then
+		if [[ $diff > 1 ]]; then
 			RPROMPT=$RPROMPT"$PINK${diff}s %{$reset_color%}"
 		fi
 		unset COMMAND_TIMER

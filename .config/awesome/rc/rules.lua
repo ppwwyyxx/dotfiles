@@ -1,10 +1,11 @@
 -- Text Edit Keys
+local myutil = require('rc/myutil')
 local run_or_raise = require("lib/run_or_raise")
 local text_edit_key = join(
-	awful.key({altkey}, 'f',         function(c) sendkey(c, 'ctrl+Right') end),
-	awful.key({altkey}, 'b',         function(c) sendkey(c, 'ctrl+Left') end),
-	awful.key({'Control'}, 'd',      function(c) sendkey(c, 'Home') end),
-	awful.key({'Control'}, 'e',      function(c) sendkey(c, 'End') end)
+	awful.key({altkey}, 'f',         function(c) myutil.sendkey(c, 'ctrl+Right') end),
+	awful.key({altkey}, 'b',         function(c) myutil.sendkey(c, 'ctrl+Left') end),
+	awful.key({'Control'}, 'd',      function(c) myutil.sendkey(c, 'Home') end),
+	awful.key({'Control'}, 'e',      function(c) myutil.sendkey(c, 'End') end)
 )
 local function bind_text_key(client)
 	client:keys(join(client:keys(), text_edit_key))
@@ -25,12 +26,12 @@ awful.rules.rules = {
 }, {
     rule = { class = "Chromium" },
     callback = function(c)
-        c:keys(join(c:keys(),
-            awful.key({'Control'}, 'q', function(c)
-                      exec_sync('sleep 0.3')
-                      sendkey(c, 'Tab Escape Ctrl+w')
-                  end)
-        ))
+       c:keys(join(c:keys(),
+         awful.key({'Control'}, 'q', function(c)
+                   myutil.exec_sync('sleep 0.3')
+                   myutil.sendkey(c, 'Tab Escape Ctrl+w')
+               end)
+     ))
     end
 }, {
 	rule = { instance = 'FSTerm' },
@@ -60,7 +61,7 @@ awful.rules.rules = {
         bind_text_key(c)
         if c.name and c.name:match('^腾讯') and c.above then
             ad_blocked = ad_blocked + 1
-            notify("Ad Blocked " .. ad_blocked, "One window blocked, title: ".. c.name)
+            myutil.notify("Ad Blocked " .. ad_blocked, "One window blocked, title: ".. c.name)
             c:kill()
         end
     end
@@ -91,11 +92,11 @@ awful.rules.rules = {
         awful.client.movetotag(tags[screen[1]][3], c)
         local g = c:geometry()
         if c.name == "Nocturn" then
-           moveresize_abs(-400, 0, 400, 1, c)
+           myutil.moveresize_abs(-400, 0, 400, 1, c)
         elseif c.name:find("WeChat") ~= nil then
-           moveresize_abs(0, 0, 900, 0.8, c)
+           myutil.moveresize_abs(0, 0, 900, 0.8, c)
         elseif c.name:find("Telegram") ~= nil then
-           moveresize_abs(-1200, -800, 1000, 800, c)
+           myutil.moveresize_abs(-1200, -800, 1000, 800, c)
         end
     end
 }

@@ -1,41 +1,43 @@
 
-exec              = awful.util.spawn
-sexec             = awful.util.spawn_with_shell
-exec_sync         = awful.util.pread
-join              = awful.util.table.join
+local myutil = {
+exec              = awful.util.spawn,
+sexec             = awful.util.spawn_with_shell,
+exec_sync         = awful.util.pread,
+join              = awful.util.table.join,
+}
 
-
-function notify(title, text, urgency)	-- normal, low, critical
+-- TODO use naughty
+function myutil.notify(title, text, urgency)	-- normal, low, critical
 	title = tostring(title)
 	text = tostring(text)
 	if not urgency then urgency = 'normal' end
 	exec('notify-send -u ' .. urgency .. ' "'.. title .. '" "'.. text .. '"')
 end
 
-function run_term(cmd, name)
+function myutil.run_term(cmd, name)
     if not name then name = TMP_TERM end
 	exec(terminal .. " -name '" .. name .. "' -e bash -c 'source $HOME/.bashrc; " .. cmd .. "'")
 end
 
-function net_monitor()
+function myutil.net_monitor()
     run_term('tmux new-session -d "sudo iftop -i "' .. active_net_if .. ' \\; split-window -d "sudo nethogs ' .. active_net_if .. '" \\; attach',
              'FSTerm')
 end
 
-function sendkey(c, key)		-- send key in xdotool format
+function myutil.sendkey(c, key)		-- send key in xdotool format
     exec_sync('sleep 0.1')
     exec('xdotool key --clearmodifiers ' .. key)
 end
 
-function rexec(cmd)
+function myutil.rexec(cmd)
     --return awful.util.pread(cmd)
- local f = io.popen(cmd)
- local ret = f:read('*all')
- f:close()
- return ret
+    local f = io.popen(cmd)
+    local ret = f:read('*all')
+    f:close()
+    return ret
 end
 
-function moveresize_abs(x, y, w, h, c)
+function myutil.moveresize_abs(x, y, w, h, c)
    -- set the pos/size of a client
    -- x, y: should be in pixel, can be negative (couting from right or bottom)
    -- w, h: can be in [0,1] for ratio or in pixel, or 0 to keep unchanged
@@ -55,3 +57,4 @@ function moveresize_abs(x, y, w, h, c)
 						-g.width + w, -g.height + h, c)
 end
 
+return myutil

@@ -1,5 +1,7 @@
 local vicious = require("vicious")
 local wibox = require("wibox")
+local myutil = require('rc/myutil')
+join = myutil.join
 
 -- Separators
 local sepopen = wibox.widget.imagebox()
@@ -14,7 +16,7 @@ local my_textclock = awful.widget.textclock(
 "<span foreground=\"#bc5374\"> </span>" ..
 "<span foreground=\"#bc5374\" font_weight=\"bold\"> %m-%d %H:%M:%S %a </span>", 1)
 my_textclock:buttons(
-    awful.button({}, 1, function() sexec(browser .. "http://calendar.google.com") end)
+    awful.button({}, 1, function() myutil.sexec(browser .. "http://calendar.google.com") end)
 )
 
 local cpugraph = awful.widget.graph()
@@ -23,22 +25,24 @@ cpugraph:set_background_color("#00000033")
 cpugraph:set_color({ type = "linear",
                    from = { 0, 0 }, to = { 10,0 },
                    stops = { {0, "#FF5656"}, {0.5, "#88A175"}, {1, "#AECF96" }}})
-cpugraph:buttons(awful.button({}, 1, function() run_term('htop', 'FSTerm') end))
+cpugraph:buttons(awful.button({}, 1, function() myutil.run_term('htop', 'FSTerm') end))
 vicious.register(cpugraph, vicious.widgets.cpu, "$1")
 
 local temp_widget = wibox.widget.textbox()
 vicious.register(temp_widget, vicious.widgets.thermal,
                  function(widget, args)
-                     --local t = args[1] .. ℃    -- doesn't work with dell
-                     --return string.format("%s", t)
-                     local t = rexec("sensors | grep -Po 'Physical .*?C' | awk '{print $NF}' | cut -c 2-3")
-                     t = t:sub(1,-2) .. '℃'
-                     return t
+                     local t = tonumber(args[1])   -- doesn't work with dell
+                     return string.format("%d", t).. "℃"
+                     --[[
+                        [local t = myutil.rexec("sensors | grep -Po 'Package.*?C' | awk '{print $NF}' | cut -c 2-3")
+                        [t = t:sub(1,-2) .. '℃'
+                        [return t
+                        ]]
                  end, 20, "thermal_zone1")
 
 local mem_widget = wibox.widget.textbox()
 vicious.register(mem_widget, vicious.widgets.mem, '<span color="#90ee90"> M$1%</span>')
-mem_widget:buttons(awful.button({}, 1, function() run_term('top -o %MEM -d 1', 'FSTerm') end))
+mem_widget:buttons(awful.button({}, 1, function() myutil.run_term('top -o %MEM -d 1', 'FSTerm') end))
 
 -- Network f[[
 local net_widget = wibox.widget.textbox()
@@ -86,7 +90,7 @@ vicious.register(net_widget, vicious.widgets.net, function(widget, args)
                        format(down), format(up))
     end, 3)
 net_widget:buttons(
-    awful.button({}, 1, net_monitor)
+    awful.button({}, 1, myutil.net_monitor)
 )
 -- f]]
 
@@ -100,26 +104,26 @@ vicious.register(bat_widget, vicious.widgets.bat, function(widget, args)
 				local current = args[2]
 				if current < 25 and args[1] == '−' then
 					if current ~= bat_widget.lastwarn then
-						notify("Low Battery", "Battery: " .. current .. "%.\n" .. args[3] .. " left.", 'critical')
+						myutil.notify("Low Battery", "Battery: " .. current .. "%.\n" .. args[3] .. " left.", 'critical')
 						bat_widget.lastwarn = current
 					end
 				end
 				return string.format('<span color="' .. color .. '">B%s%d%%</span>', args[1], current)
 			end,
 			59, "BAT0")
-bat_widget:buttons(awful.button({}, 1, function() run_term("sudo powertop", 'FSTerm') end))
+bat_widget:buttons(awful.button({}, 1, function() myutil.run_term("sudo powertop", 'FSTerm') end))
 -- f]]
 
 --Volume f[[
 local volume_widget = wibox.widget.textbox()
 function volumectl(mode)
    if mode == "update" then
-      local volume = rexec("pamixer --get-volume")
+      local volume = myutil.rexec("pamixer --get-volume")
       if not tonumber(volume) then
          volume_widget:set_markup("<span color='red'>ERR</span>")
          return
       end
-      local muted = rexec("pamixer --get-mute"):sub(1,4)  -- rstrip
+      local muted = myutil.rexec("pamixer --get-mute"):sub(1,4)  -- rstrip
       if muted == "true" then
          volume = "<span color='red'>♫M</span>"
       else
@@ -128,15 +132,15 @@ function volumectl(mode)
       volume_widget:set_markup(volume)
       return
    elseif mode == "up" then
-      local volume = tonumber(rexec("pamixer --get-volume"))
+      local volume = tonumber(myutil.rexec("pamixer --get-volume"))
       if volume < 120 then
-         exec("pamixer --allow-boost --increase 5")
+         myutil.exec("pamixer --allow-boost --increase 5")
       end
    elseif mode == "down" then
-      exec("pamixer --allow-boost --decrease 5")
+      myutil.exec("pamixer --allow-boost --decrease 5")
    elseif mode == "mute" then
-      exec("pamixer --set-volume 20")
-      exec("pamixer --toggle-mute")
+      myutil.exec("pamixer --set-volume 20")
+      myutil.exec("pamixer --toggle-mute")
    end
    volumectl("update")
 end
@@ -147,7 +151,7 @@ volume_clock:start()
 volume_widget:buttons(join(
     awful.button({ }, 4, function() volumectl("up") end),
     awful.button({ }, 5, function() volumectl("down") end),
-    awful.button({ }, 3, function() exec("pavucontrol") end),
+    awful.button({ }, 3, function() myutil.exec("pavucontrol") end),
     awful.button({ }, 1, function() volumectl("mute") end)
 ))
 -- f]]

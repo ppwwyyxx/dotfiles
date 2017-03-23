@@ -1,4 +1,11 @@
 
+local naughty = require("naughty")
+-- Copy from example config
+if awesome.startup_errors then
+    naughty.notify({ preset = naughty.config.presets.critical,
+                     title = "Oops, there were errors during startup!",
+                     text = awesome.startup_errors })
+end
 -- Handle runtime errors after startup
 do
     local in_error = false
@@ -7,11 +14,12 @@ do
         if in_error then return end
         in_error = true
 
-        stacktrace = debug.traceback()
+        local stacktrace = debug.traceback()
 
-        notify("An uncaught error happened!",
+        naughty.notify("An uncaught error happened!",
                tostring(err) .. ", " .. tostring(stacktrace),
-               'critical')
+               naughty.config.presets.critical
+               )
         in_error = false
     end)
 end

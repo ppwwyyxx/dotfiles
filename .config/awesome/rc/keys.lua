@@ -1,4 +1,6 @@
 local run_or_raise = require("lib/run_or_raise")
+local myutil = require('rc/myutil')
+join = myutil.join
 require("lib/mouse")
 require("lib/web_cmd")
 
@@ -8,10 +10,6 @@ root.buttons(join(
 	awful.button({ }, 4, awful.tag.viewprev),
 	awful.button({ }, 5, awful.tag.viewnext)
 ))
-
-local function t_exec(cmd)
-
-end
 
 config.global = join(
 	config.global,
@@ -27,8 +25,8 @@ config.global = join(
 	awful.key({ modkey }, "Next",  function () awful.client.moveresize( 20,  20, -40, -40) end),
     awful.key({ modkey }, "Prior", function () awful.client.moveresize(-20, -20,  40,  40) end),
 
-	awful.key({modkey, }, "'", function() moveresize_abs(-0.5, 0, 0.5, 1, client.focus) end),
-	awful.key({modkey, }, ";", function() moveresize_abs(0, 0, 0.5, 1, client.focus) end),
+	awful.key({modkey, }, "'", function() myutil.moveresize_abs(-0.5, 0, 0.5, 1, client.focus) end),
+	awful.key({modkey, }, ";", function() myutil.moveresize_abs(0, 0, 0.5, 1, client.focus) end),
 
 	awful.key({modkey, "Shift"}, "'", function()
 		keygrabber.run(function(mod, key, event)
@@ -50,14 +48,14 @@ config.global = join(
     awful.key({modkey, "Shift"}, "t", function()
         keygrabber.run(function(mod, key, event)
             if event == 'release' then return
-            elseif key == 'Return' then exec(terminal)
-            elseif key == 'p' then run_term('bpython2')
-            elseif key == 'P' then run_term('bpython')
-            elseif key == 'r' then run_term('pry')
-            elseif key == 'c' then run_term('coffee')
-            elseif key == 't' then run_term('top', 'FSTerm')
-            elseif key == 'h' then run_term('htop', 'FSTerm')
-            elseif key == 'd' then run_term('dstat -dnmcl --top-io -Nwlp3s0', 'FSTerm')
+            elseif key == 'Return' then myutil.exec(terminal)
+            elseif key == 'p' then myutil.run_term('bpython2')
+            elseif key == 'P' then myutil.run_term('bpython')
+            elseif key == 'r' then myutil.run_term('pry')
+            elseif key == 'c' then myutil.run_term('coffee')
+            elseif key == 't' then myutil.run_term('top', 'FSTerm')
+            elseif key == 'h' then myutil.run_term('htop', 'FSTerm')
+            elseif key == 'd' then myutil.run_term('dstat -dnmcl --top-io -Nwlp3s0', 'FSTerm')
             elseif key == 'n' then net_monitor()
             elseif key == 'Shift_L' or key == 'Shift_R' then return
             end
@@ -76,11 +74,11 @@ config.global = join(
 
 	-- big things
 	awful.key({ altkey, "Control", "Shift"}, "r", function()
-            check = rexec("awesome -k 2>&1")
+            check = myutil.rexec("awesome -k 2>&1")
             if string.find(check, 'syntax OK') then
                 awesome.restart()
             else
-                notify("Conf Syntax Error!", check)
+                myutil.notify("Conf Syntax Error!", check)
             end
        end),
 
@@ -179,7 +177,7 @@ config.global = join(
 		end
 		_old_word = new_word
 
-		local ans = rexec("sdcv -n --utf8-output '"..new_word.."'")
+		local ans = myutil.rexec("sdcv -n --utf8-output '"..new_word.."'")
 		_dict_notify = naughty.notify({ text = ans, timeout = 5, width = 1020 })
 	end),
 
@@ -188,7 +186,7 @@ config.global = join(
 				   function(words)
 					   _old_word = words
 					   naughty.notify({ text = words, timeout = 5, width = 1020 })
-					   local ans = rexec("sdcv -n --utf8-output '" .. words .. "'")
+					   local ans = myutil.rexec("sdcv -n --utf8-output '" .. words .. "'")
 					   _dict_notify = naughty.notify({ text = ans, timeout = 5, width = 1020 })
 				   end)
 	end),
@@ -198,7 +196,7 @@ config.global = join(
 		   awful.prompt.run({ prompt = "Web: " }, my_promptbox[mouse.screen].widget,
 					  function(command)
                           local url = web_cmd(command)
-						  sexec(browser .. '"' .. url .. '"')
+						  myutil.sexec(browser .. '"' .. url .. '"')
 					  end)
 	   end),
 

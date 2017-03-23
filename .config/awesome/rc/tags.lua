@@ -2,6 +2,7 @@
 -- Tags
 -- Define a tag table which hold all screen tags.
 
+local myutil = require('rc/myutil')
 local tag_name = { "1", "2", "chat", "0"}
 last_tag = #tag_name
 tags = {}   -- tags: screen -> tags
@@ -11,7 +12,7 @@ awful.screen.connect_for_each_screen(function(s)
 end)
 
 local function register_tagkey(key, index)
-	config.global = join(
+	config.global = myutil.join(
 		config.global,
 		awful.key({ modkey }, key, function()      -- view only
 			local screen = mouse.screen
