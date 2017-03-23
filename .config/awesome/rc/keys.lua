@@ -1,5 +1,8 @@
 local run_or_raise = require("lib/run_or_raise")
-local myutil = require('rc/myutil')
+local myutil = require('lib/myutil')
+local const = require('rc/const')
+modkey = const.modkey
+altkey = const.altkey
 require("lib/mouse")
 require("lib/web_cmd")
 
@@ -48,7 +51,7 @@ config.global = myutil.join(
     awful.key({modkey, "Shift"}, "t", function()
         keygrabber.run(function(mod, key, event)
             if event == 'release' then return
-            elseif key == 'Return' then myutil.exec(terminal)
+            elseif key == 'Return' then myutil.exec(const.terminal)
             elseif key == 'p' then myutil.run_term('bpython2')
             elseif key == 'P' then myutil.run_term('bpython')
             elseif key == 'r' then myutil.run_term('pry')
@@ -160,11 +163,15 @@ config.global = myutil.join(
 	awful.key({ modkey,   }, "q", function()
 		local c = client.focus
 		if not c then return end
-		if c.instance == 'FSTerm' or c.instance == TMP_TERM then
-			awful.client.movetotag(tags[c.screen][last_tag], c)
-        else
+      --[[
+			[if c.instance == 'FSTerm' or c.instance == TMP_TERM then
+			[   awful.client.movetotag(tags[c.screen][last_tag], c)
+         [  else
+         ]]
 			c:kill()
-		end
+      --[[
+			[end
+         ]]
 	end),
 
 	-- sdcv

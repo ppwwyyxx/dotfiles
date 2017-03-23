@@ -1,6 +1,6 @@
 -- Text Edit Keys
 local run_or_raise = require("lib/run_or_raise")
-local myutil = require('rc/myutil')
+local myutil = require('lib/myutil')
 local text_edit_key = myutil.join(
 	awful.key({altkey}, 'f',         function(c) sendkey(c, 'ctrl+Right') end),
 	awful.key({altkey}, 'b',         function(c) sendkey(c, 'ctrl+Left') end),
@@ -71,7 +71,8 @@ awful.rules.rules = {
 			'MPlayer', 'feh', 'Screenkey', 'Skype',
 		},
 		name = {
-			'文件传输', 'Firefox 首选项', '暂存器', 'Keyboard', TMP_TERM
+			'文件传输', 'Firefox 首选项', '暂存器', 'Keyboard',
+         --TMP_TERM
 		},
 	},
 	properties = { floating = true, }

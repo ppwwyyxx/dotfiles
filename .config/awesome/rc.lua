@@ -3,6 +3,7 @@ awful = require("awful")
 awful.rules = require("awful.rules")
 require("awful.autofocus")
 naughty = require("naughty")
+
 beautiful = require("beautiful")
 -- Themes define colours, icons, and wallpapers
 beautiful.init(awful.util.getdir("config") .. "/rc/theme.lua")
@@ -35,17 +36,7 @@ config.layouts = {
 }
 config.global = {}
 
-terminal          = "urxvt"
-TMP_TERM	      = "TMP_TERMINAL"
-browser           = "chromium "
-editor            = "gvim "
-modkey            = "Mod4"
-altkey            = "Mod1"
-home              = os.getenv("HOME")
-
---loadrc("common")
 loadrc("error")
-
 loadrc("autorun")
 loadrc("appearance")
 loadrc("tags")

@@ -16,7 +16,7 @@ end
 
 function myutil.run_term(cmd, name)
     if not name then name = TMP_TERM end
-	myutil.exec(terminal .. " -name '" .. name .. "' -e bash -c 'source $HOME/.bashrc; " .. cmd .. "'")
+	myutil.exec("urxvt -name '" .. name .. "' -e bash -c 'source $HOME/.bashrc; " .. cmd .. "'")
 end
 
 function myutil.net_monitor()

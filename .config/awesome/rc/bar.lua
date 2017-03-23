@@ -1,6 +1,6 @@
 local vicious = require("vicious")
 local wibox = require("wibox")
-local myutil = require('rc/myutil')
+local myutil = require('lib/myutil')
 
 -- Separators
 local sepopen = wibox.widget.imagebox()
@@ -30,11 +30,13 @@ vicious.register(cpugraph, vicious.widgets.cpu, "$1")
 local temp_widget = wibox.widget.textbox()
 vicious.register(temp_widget, vicious.widgets.thermal,
                  function(widget, args)
-                     --local t = args[1] .. ℃    -- doesn't work with dell
-                     --return string.format("%s", t)
-                     local t = myutil.rexec("sensors | grep -Po 'Physical .*?C' | awk '{print $NF}' | cut -c 2-3")
-                     t = t:sub(1,-2) .. '℃'
-                     return t
+                     local t = tonumber(args[1])   -- doesn't work with dell
+                     return string.format("%d", t).. "℃"
+                     --[[
+                        [local t = myutil.rexec("sensors | grep -Po 'Package.*?C' | awk '{print $NF}' | cut -c 2-3")
+                        [t = t:sub(1,-2) .. '℃'
+                        [return t
+                        ]]
                  end, 20, "thermal_zone1")
 
 local mem_widget = wibox.widget.textbox()

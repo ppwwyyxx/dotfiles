@@ -2,7 +2,9 @@
 -- Tags
 -- Define a tag table which hold all screen tags.
 
-local myutil = require('rc/myutil')
+local myutil = require('lib/myutil')
+local const = require('rc/const')
+modkey = const.modkey
 local tag_name = { "1", "2", "chat", "0"}
 last_tag = #tag_name
 tags = {}   -- tags: screen -> tags

@@ -2,16 +2,17 @@
 
 require('lib/xdgmenu')
 menubar = require("menubar")
+const = require('rc/const')
 
 local my_awesomemenu = {
-   { "编辑配置 (&E)", editor .. awesome.conffile },
+   { "编辑配置 (&E)", const.editor .. awesome.conffile },
    { "重新加载 (&R)", awesome.restart, '/usr/share/icons/gnome/16x16/actions/stock_refresh.png' },
    { "注销 (&L)", awesome.quit },
 }
 
 my_mainmenu = awful.menu({ items = {
           { "Awesome", my_awesomemenu, beautiful.awesome_icon },
-          { "终端 (&T)", terminal, '/usr/share/icons/gnome/32x32/apps/utilities-terminal.png' },
+          { "终端 (&T)", const.terminal, '/usr/share/icons/gnome/32x32/apps/utilities-terminal.png' },
           { "G&VIM", "gvim", '/usr/share/pixmaps/gvim.png' },
           { "&Chromium", "chromium", '/usr/share/icons/hicolor/32x32/apps/chromium.png' },
           { "&Wallpaper", changewp},

@@ -1,5 +1,5 @@
 local gears = require("gears")
-local myutil = require('rc/myutil')
+local myutil = require('lib/myutil')
 
 local function split(str, sep)
    local result = {}
