@@ -3,7 +3,7 @@ local myutil = require('lib/myutil')
 local const = require('rc/const')
 modkey = const.modkey
 altkey = const.altkey
-require("lib/mouse")
+mouse_control = require("lib/mouse")
 require("lib/web_cmd")
 
 root.buttons(myutil.join(
