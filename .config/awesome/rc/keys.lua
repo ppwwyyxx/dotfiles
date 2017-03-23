@@ -1,9 +1,9 @@
 local run_or_raise = require("lib/run_or_raise")
 local myutil = require('lib/myutil')
 local const = require('rc/const')
-modkey = const.modkey
-altkey = const.altkey
-mouse_control = require("lib/mouse")
+local modkey = const.modkey
+local altkey = const.altkey
+local mouse_control = require("lib/mouse")
 require("lib/web_cmd")
 
 root.buttons(myutil.join(
@@ -192,24 +192,26 @@ ROOT_KEYS = myutil.join(
 		_dict_notify = naughty.notify({ text = ans, timeout = 5, width = 1020 })
 	end),
 
-	awful.key({ altkey, "Shift"}, "F3", function()
-		awful.prompt.run({ prompt = "Dictionary: " }, my_promptbox[mouse.screen].widget,
-				   function(words)
-					   _old_word = words
-					   naughty.notify({ text = words, timeout = 5, width = 1020 })
-					   local ans = myutil.rexec("sdcv -n --utf8-output '" .. words .. "'")
-					   _dict_notify = naughty.notify({ text = ans, timeout = 5, width = 1020 })
-				   end)
-	end),
-
-	-- yubnub. g;wp;gfl;gi;gm;yt;py;python(search);pypi;rdoc;cppdoc;dbm
-	awful.key({ modkey }, "w", function()
-		   awful.prompt.run({ prompt = "Web: " }, my_promptbox[mouse.screen].widget,
-					  function(command)
-                          local url = web_cmd(command)
-						  myutil.sexec(browser .. '"' .. url .. '"')
-					  end)
-	   end),
+--[[
+	 [  awful.key({ altkey, "Shift"}, "F3", function()
+	 [    awful.prompt.run({ prompt = "Dictionary: " }, my_promptbox[mouse.screen].widget,
+	 [           function(words)
+	 [             _old_word = words
+	 [             naughty.notify({ text = words, timeout = 5, width = 1020 })
+	 [             local ans = myutil.rexec("sdcv -n --utf8-output '" .. words .. "'")
+	 [             _dict_notify = naughty.notify({ text = ans, timeout = 5, width = 1020 })
+	 [           end)
+	 [  end),
+   [
+	 [  -- yubnub. g;wp;gfl;gi;gm;yt;py;python(search);pypi;rdoc;cppdoc;dbm
+	 [  awful.key({ modkey }, "w", function()
+	 [       awful.widget.prompt.run({ prompt = "Web: " }, my_promptbox[mouse.screen].widget,
+	 [            function(command)
+   [                      local url = web_cmd(command)
+	 [              myutil.sexec(const.browser .. '"' .. url .. '"')
+	 [            end)
+	 [     end),
+   ]]
 
 	-- Volume
 	awful.key({ }, 'XF86AudioRaiseVolume', function() volumectl("up") end),

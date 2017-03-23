@@ -2,6 +2,7 @@ local vicious = require("vicious")
 local wibox = require("wibox")
 local myutil = require('lib/myutil')
 local const = require('rc/const')
+local modkey = const.modkey
 
 local function colored_text(text, color, extra_attr)
    assert(color)
@@ -157,82 +158,83 @@ volumectl("update")
 local volume_clock = timer({ timeout = 60 })
 volume_clock:connect_signal("timeout", function() volumectl("update") end)
 volume_clock:start()
-volume_widget:buttons(myutil.join(
-    awful.button({ }, 4, function() volumectl("up") end),
-    awful.button({ }, 5, function() volumectl("down") end),
-    awful.button({ }, 3, function() awful.spawn("pavucontrol") end),
-    awful.button({ }, 1, function() volumectl("mute") end)
+volume_widget:buttons(awful.util.table.join(
+    awful.button({}, 4, function() volumectl("up") end),
+    awful.button({}, 5, function() volumectl("down") end),
+    awful.button({}, 3, function() awful.spawn("pavucontrol") end),
+    awful.button({}, 1, function() volumectl("mute") end)
 ))
 -- f]]
 
 -- tag, task
-
-local my_taglist = {}
-my_taglist.buttons = myutil.join(
-    awful.button({ }, 1, awful.tag.viewonly),
-    awful.button({ modkey }, 1, awful.client.movetotag),
-    awful.button({ }, 3, awful.tag.viewtoggle),
-    awful.button({ modkey }, 3, awful.client.toggletag),
-    awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
-    awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
+local TAG_LIST_BUTTONS = awful.util.table.join(
+    awful.button({}, 1, awful.tag.viewonly),
+    awful.button({const.modkey, 'Shift'}, 1, awful.client.movetotag),
+    awful.button({}, 3, awful.tag.viewtoggle),
+    awful.button({const.modkey, 'Shift'}, 3, awful.client.toggletag),
+    awful.button({}, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
+    awful.button({}, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
 )
 
-local task_list = {}
-local instance
-task_list.buttons = myutil.join(
-	awful.button({ }, 1, function(c)
-			  if c == client.focus and not c.minimized then
-                  c.minimized = true
-              else
-                  client.focus = c
-                  c:raise()
-              end
-          end),
-    awful.button({ }, 2, function(c) c:kill() end),
-
-    awful.button({ }, 3, function()
-                 if instance then
-                     instance:hide()
-                     instance = nil
-                 else
-                     instance = awful.menu.clients({ width=250 })
-                 end
-             end),
-    awful.button({ }, 4, function()
+local task_menu_instance
+TASK_LIST_BUTTONS = awful.util.table.join(
+	  awful.button({}, 1, function(c)
+      if task_menu_instance then
+          task_menu_instance:hide()
+          task_menu_instance = nil
+      end
+      if c == client.focus and not c.minimized then
+          c.minimized = true
+      else
+          client.focus = c
+          c:raise()
+      end
+    end),
+    awful.button({}, 2, function(c) c:kill() end),
+    awful.button({}, 3, function()
+      if task_menu_instance then
+          task_menu_instance:hide()
+          task_menu_instance = nil
+      else
+          task_menu_instance = awful.menu.clients({ width=250 })
+      end
+    end),
+    awful.button({}, 4, function()
                  awful.client.focus.byidx(1)
                  if client.focus then client.focus:raise() end
              end),
-    awful.button({ }, 5, function()
+    awful.button({}, 5, function()
                  awful.client.focus.byidx(-1)
                  if client.focus then client.focus:raise() end
              end)
-    )
+)
 
-local my_wibox = {}
-my_promptbox = {}
-local my_layoutbox = {}
-for s = 1, screen.count() do
-    my_layoutbox[s] = awful.widget.layoutbox(s)
-    my_layoutbox[s]:buttons(myutil.join(
-        awful.button({ }, 1, function() awful.layout.inc(config.layouts, 1) end),
-        awful.button({ }, 3, function() awful.layout.inc(config.layouts, -1) end),
-        awful.button({ }, 4, function() awful.layout.inc(config.layouts, 1) end),
-        awful.button({ }, 5, function() awful.layout.inc(config.layouts, -1) end)
-        ))
-    my_taglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, my_taglist.buttons)
-    task_list[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, task_list.buttons)
-    my_wibox[s] = awful.wibox({ position = "top", screen = s, height = 20 })
-    my_promptbox[s] = awful.widget.prompt()
+local LAYOUT_BOX_BUTTONS = awful.util.table.join(
+    awful.button({}, 1, function() awful.layout.inc(config.layouts, 1) end),
+    awful.button({}, 3, function() awful.layout.inc(config.layouts, -1) end),
+    awful.button({}, 4, function() awful.layout.inc(config.layouts, 1) end),
+    awful.button({}, 5, function() awful.layout.inc(config.layouts, -1) end)
+)
+
+local systray = wibox.widget.systray()
+awful.screen.connect_for_each_screen(function(s)
+    local layout_box = awful.widget.layoutbox(s.index)
+    layout_box:buttons(LAYOUT_BOX_BUTTONS)
+
+    local tag_list = awful.widget.taglist(s, awful.widget.taglist.filter.all, TAG_LIST_BUTTONS)
+    local task_list = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, TASK_LIST_BUTTONS)
+
+    local my_wibox = awful.wibox({ position = "top", screen = s, height = 20 })
+    --my_promptbox[s] = awful.widget.prompt()
 
     local left_layout = wibox.layout.fixed.horizontal()
-    left_layout:add(my_layoutbox[s])
+    left_layout:add(layout_box)
     left_layout:add(sepopen)
-    left_layout:add(my_taglist[s])
-    left_layout:add(my_promptbox[s])
+    left_layout:add(tag_list)
     left_layout:add(sepclose)
+    --left_layout:add(my_promptbox[s])
 
     local right_layout = wibox.layout.fixed.horizontal()
-    --right_layout:add(sepopen)
     right_layout:add(cpu_widget)
     right_layout:add(thermal_widget)
     right_layout:add(mem_widget)
@@ -240,18 +242,16 @@ for s = 1, screen.count() do
     -- right_layout:add(netgraph)
     right_layout:add(net_widget)
     right_layout:add(volume_widget)
-    if s == 1 then     -- add systray to the first screen
-        right_layout:add(wibox.widget.systray())
-    end
-    --right_layout:add(sepclose)
+    right_layout:add(systray)
+    -- myutil.notify(s.index)
     right_layout:add(textclock)
 
    --right_layout:add(powerline_widget)
 
     local layout = wibox.layout.align.horizontal()
     layout:set_left(left_layout)
-    layout:set_middle(task_list[s])
+    layout:set_middle(task_list)
     layout:set_right(right_layout)
 
-    my_wibox[s]:set_widget(layout)
-end
+    my_wibox:set_widget(layout)
+end)

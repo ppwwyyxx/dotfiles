@@ -1,4 +1,4 @@
-local exec = awful.util.spawn
+local exec = awful.spawn
 
 local function movemouse_rel(x, y)
     mouse.coords{x = mouse.coords().x + x, y = mouse.coords().y + y}

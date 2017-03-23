@@ -23,7 +23,9 @@
   Mod4 + g
 #"~/bin/background/email-client"
   #Mod4 + e
-"xscreensaver-command -activate"
+#"xscreensaver-command -activate"
+
+"slock"
   Control+Alt+Shift+l
 "xkill"
   Control+Alt+Shift+k
