@@ -189,7 +189,7 @@ local function toggle_maximize(c)
     c.maximized_vertical   = not c.maximized_vertical
 end
 -- Client Keys/Buttons:   f[[
-CLIENT_KEYS = awful.util.table.join(
+local CLIENT_KEYS = awful.util.table.join(
 	awful.key({modkey, "Control"}, "Return", function(c) c:swap(awful.client.getmaster()) end),
   awful.key({modkey}, "o", function(c)
       if screen.count() == 1 then return end
@@ -205,7 +205,7 @@ CLIENT_KEYS = awful.util.table.join(
   awful.key({modkey}, "Up",  toggle_maximize)
 )
 
-CLIENT_BUTTONS = awful.util.table.join(
+local CLIENT_BUTTONS = awful.util.table.join(
 	awful.button({}, 1, function(c) client.focus = c; c:raise() end),
 	awful.button({modkey}, 1, awful.mouse.client.move),
   awful.button({modkey}, 3, function(c)
@@ -215,3 +215,7 @@ CLIENT_BUTTONS = awful.util.table.join(
   end))
 -- f]]
 
+return {
+  client_keys = CLIENT_KEYS,
+  client_buttons = CLIENT_BUTTONS
+}

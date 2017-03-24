@@ -11,86 +11,58 @@ local function bind_text_key(client)
 	client:keys(myutil.join(client:keys(), text_edit_key))
 end
 
-local ad_blocked = 0
-
 awful.rules.rules = {
 { rule = { },     -- default
 	properties = {
 		border_width = beautiful.border_width,
 		border_color = beautiful.border_normal,
 		focus = true,
-		keys = CLIENT_KEYS,
-		buttons = CLIENT_BUTTONS,
-      placement = awful.placement.no_overlap+awful.placement.no_offscreen,
-	}
-}, {
-    rule = { class = "Chromium" },
-    callback = function(c)
-        c:keys(myutil.join(c:keys(),
-            awful.key({'Control'}, 'q', function(c)
-                      exec_sync('sleep 0.3')
-                      sendkey(c, 'Tab Escape Ctrl+w')
-                  end)
-        ))
-    end
-}, {
-	rule = { instance = 'FSTerm' },
-	properties = {
-		maximized_horizontal = true,
-		maximized_vertical = true,
-	}
-}, {
-	rule = { instance = 'EMAIL' },
-	properties = {
-		maximized_horizontal = true,
-		maximized_vertical = true,
-	},
-    callback = function(c)
-        awful.client.movetotag(tags[screen.count()][3], c)
-    end
-}, {
-	rule_any = {
-		instance = {'TM.exe', 'QQ.exe'},
-	},
-	properties = {
-		focusable = false,
-		floating = true,
-		border_width = 0,
-	},
-    callback = function(c)
-        bind_text_key(c)
-        if c.name and c.name:match('^腾讯') and c.above then
-            ad_blocked = ad_blocked + 1
-            myutil.notify("Ad Blocked " .. ad_blocked, "One window blocked, title: ".. c.name)
-            c:kill()
-        end
-    end
-}, {
-	rule_any = {
-		class = {
-			'MPlayer', 'feh', 'Screenkey', 'Skype',
-		},
-		name = {
-			'文件传输', 'Firefox 首选项', '暂存器', 'Keyboard',
+		keys = keys.client_keys,
+		buttons = keys.client_buttons,
+    placement = awful.placement.no_overlap+awful.placement.no_offscreen,
+	}},
+
+{ rule = { class = "Chromium" },
+  properties = {
+    keys = awful.util.table.join(
+      keys.client_keys,
+      awful.key({'Control'}, 'q', function(c)
+        myutil.rexec('sleep 0.3')
+        myutil.sendkey(c, 'Tab Escape Ctrl+w')
+      end))
+  }},
+
+--[[
+   [{ rule = { instance = 'FSTerm' },
+	 [  properties = {
+	 [    maximized_horizontal = true,
+	 [    maximized_vertical = true,
+	 [  } },
+   ]]
+
+-- floating:
+{ rule_any = {
+		class = { 'MPlayer', 'feh', 'Screenkey', 'Skype' },
+		name = { '文件传输', 'Firefox 首选项', '暂存器', 'Keyboard',
          --TMP_TERM
 		},
 	},
 	properties = { floating = true, }
-}, {
-	rule_any = {
+},
+
+-- always above:
+{ rule_any = {
 		class = {'MPlayer', 'feh'},
 	},
 	properties = { above = true, }
-}, {
-    rule = {instance = 'gimp'},
-    properties = { border_width = 3 }
-}, {
-    rule = { class = 'rdesktop'},
-    properties = { screen = 1 }
-}, {
-    rule_any = { name = {'Telegram', 'plaidchat', 'WeChat', 'Nocturn'} },
+},
+
+{ rule = {instance = 'gimp'}, properties = { border_width = 3 } },
+
+-- chat:
+{ rule_any = { name = {'Telegram', 'plaidchat', 'WeChat', 'Nocturn'} },
     callback = function(c)
-        awful.client.movetotag(tags[screen[1]][3], c)
+        awful.client.movetotag(tags[screen.primary][3], c)
         local g = c:geometry()
         if c.name == "Nocturn" then
            myutil.moveresize_abs(-400, 0, 400, 1, c)
@@ -99,20 +71,12 @@ awful.rules.rules = {
         elseif c.name:find("Telegram") ~= nil then
            myutil.moveresize_abs(-1200, -800, 1000, 800, c)
         end
-    end
-}
-}
+    end}
+} -- the end
 
 client.connect_signal(
 	"manage",
 	function(c, startup)
-        --[[
-           [if c.name and c.name:match('新词锐词') then
-           [    ad_blocked = ad_blocked + 1
-           [    notify("Ad Blocked " .. ad_blocked .. c.name)
-           [    c:kill()
-           [end
-           ]]
 		-- Enable sloppy focus
 		c:connect_signal("mouse::leave",
 			 function(c)

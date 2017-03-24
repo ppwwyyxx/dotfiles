@@ -35,17 +35,18 @@ function myutil.run_term(cmd, name)
 	myutil.exec("urxvt -name '" .. name .. "' -e bash -c 'source $HOME/.bashrc; " .. cmd .. "'")
 end
 
-function myutil.sendkey(c, key)		-- send key in xdotool format
-    myutil.exec_sync('sleep 0.1')
-    myutil.exec('xdotool key --clearmodifiers ' .. key)
-end
-
 function myutil.rexec(cmd)
     local f = io.popen(cmd)
     local ret = f:read('*all')
     f:close()
     return ret
 end
+
+function myutil.sendkey(c, key)		-- send key in xdotool format
+    myutil.rexec('sleep 0.1')
+    myutil.exec('xdotool key --clearmodifiers ' .. key)
+end
+
 
 function myutil.moveresize_abs(x, y, w, h, c)
    -- set the pos/size of a client

@@ -11,23 +11,6 @@ beautiful.init(awful.util.getdir("config") .. "/rc/theme.lua")
 os.setlocale("")
 -- dbus.release_name("session", "org.freedesktop.Notifications")
 
--- Simple function to load additional LUA files from rc/.
-function loadrc(name, module)
-   local path = awful.util.getdir("config") .. "/rc/" ..  name .. ".lua"
-   local success
-   local result
-   success, result = pcall(function() return dofile(path) end)
-   if not success then
-      naughty.notify({ title = "Error while loading an RC file",
-		       text = "When loading `" .. name ..
-			  "`, got the following error:\n" .. result,
-		       preset = naughty.config.presets.critical
-		     })
-      return print("E: error loading RC file '" .. name .. "': " .. result)
-   end
-   return result
-end
-
 ROOT_KEYS = {}
 
 require("rc/error")
@@ -37,6 +20,6 @@ menu = require("rc/menu")
 tags = require("rc/tags")  -- screen -> table of tags
 bar = require("rc/bar")
 keys = require("rc/keys")
-loadrc("rules")
+rules = require("rc/rules")
 
 root.keys(ROOT_KEYS)
