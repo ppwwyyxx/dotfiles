@@ -1,4 +1,3 @@
-local gears = require("gears")
 local myutil = require('lib/myutil')
 
 -- configuration -

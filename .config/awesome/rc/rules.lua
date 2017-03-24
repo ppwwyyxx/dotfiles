@@ -1,7 +1,7 @@
 -- Text Edit Keys
 local myutil = require('lib/myutil')
-local gears = require("gears")
 local wibox = require("wibox")
+local gears = require('gears')
 --[[
    [local text_edit_key = myutil.join(
 	 [  awful.key({altkey}, 'f',         function(c) sendkey(c, 'ctrl+Right') end),
@@ -32,7 +32,7 @@ awful.rules.rules = {
 
 { rule = { class = "Chromium" },
   properties = {
-    keys = awful.util.table.join(
+    keys = gears.table.join(
       keys.client_keys,
       awful.key({'Control'}, 'q', function(c)
         awful.spawn.easy_async(
@@ -97,33 +97,24 @@ awful.rules.rules = {
   end}
 } -- the end
 
-client.connect_signal(
-	"manage",
-	function(c, startup)
-		-- Enable sloppy focus
-		c:connect_signal("mouse::leave",
-			 function(c)
-				 if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier then
-					 client_unfocused = c.window
-				 end
-			 end)
-		c:connect_signal("mouse::enter", function(c)
-			 if client_unfocused ~= c.window and awful.layout.get(c.screen) ~= awful.layout.suit.magnifier then
-				 client.focus = c
-			 end
-		 end)
-
-		if startup then
-         awful.rules.apply(c)
-		end
-	end)
+-- sloppy focus
+client.connect_signal("mouse::enter", function(c)
+  if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier then
+    client.focus = c
+  end
+  local s = c.screen
+  s.my_systray:set_screen(s)  -- dyanmic systray location
+end)
 
 client.connect_signal("focus", function(c)
   c.border_color = beautiful.border_focus
 end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+client.connect_signal("unfocus", function(c)
+  c.border_color = beautiful.border_normal
+end)
 
-local titlebar_buttons = awful.util.table.join(
+-- Title bar f[[
+local titlebar_buttons = gears.table.join(
   awful.button({ }, 1, function()
     client.focus = c
     c:raise()
@@ -161,4 +152,5 @@ client.connect_signal("request::titlebars", function(c)
     },
     layout = wibox.layout.align.horizontal
   }
-  end)
+end)
+-- f]]

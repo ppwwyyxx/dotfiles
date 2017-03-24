@@ -1,9 +1,10 @@
 local lgi = require('lgi')
 local Gio = lgi.Gio
+local gears = require('gears')
 local myutil = {
 exec              = awful.spawn,
 sexec             = awful.util.spawn_with_shell,
-join              = awful.util.table.join,
+join              = gears.table.join,
 }
 
 -- string split by sep

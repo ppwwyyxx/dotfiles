@@ -1,4 +1,5 @@
 local myutil = require('lib/myutil')
+local gears = require('gears')
 local const = require('rc/const')
 local modkey = const.modkey
 local altkey = const.altkey
@@ -6,7 +7,7 @@ local mouse_control = require("lib/mouse")
 local sdcv_selection = require("lib/sdcv")
 local web_cmd = require("lib/web_cmd")
 
-ROOT_KEYS = awful.util.table.join(
+ROOT_KEYS = gears.table.join(
 	ROOT_KEYS,
 	awful.key({modkey}, "n", function() awful.screen.focus_relative(1) end),
 	awful.key({modkey}, "u", awful.client.urgent.jumpto),
@@ -82,7 +83,7 @@ ROOT_KEYS = awful.util.table.join(
 
   awful.key({altkey, "Control", 'Shift'}, 'd', function()
     -- debug operation here
-    myutil.notify("debug")
+    naughty.notify{title = "debug", preset = naughty.config.presets.normal}
   end),
 
 	-- switch clients order
@@ -195,7 +196,7 @@ local function toggle_maximize(c)
     c.maximized_vertical   = not c.maximized_vertical
 end
 -- Client Keys/Buttons:   f[[
-local CLIENT_KEYS = awful.util.table.join(
+local CLIENT_KEYS = gears.table.join(
 	awful.key({modkey, "Control"}, "Return", function(c) c:swap(awful.client.getmaster()) end),
   awful.key({modkey}, "o", function(c)
       if screen.count() == 1 then return end
@@ -211,7 +212,7 @@ local CLIENT_KEYS = awful.util.table.join(
   awful.key({modkey}, "Up",  toggle_maximize)
 )
 
-local CLIENT_BUTTONS = awful.util.table.join(
+local CLIENT_BUTTONS = gears.table.join(
 	awful.button({}, 1, function(c) client.focus = c; c:raise() end),
 	awful.button({modkey}, 1, awful.mouse.client.move),
   awful.button({modkey}, 3, function(c)

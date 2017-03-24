@@ -1,4 +1,5 @@
 local vicious = require("vicious")
+local gears = require('gears')
 local wibox = require("wibox")
 local myutil = require('lib/myutil')
 local const = require('rc/const')
@@ -112,7 +113,7 @@ vicious.register(net_widget, vicious.widgets.net, function(widget, args)
             if val > 500 then return string.format("%.1fM", val/1000.)
             else return string.format("%.0fK", val) end
         end
-        return colored_text("↓" .. format(down), "#5798d9")
+        return colored_text(" ↓" .. format(down), "#5798d9")
                .. colored_text("↑" .. format(up), "#c2ba62")
     end, 3)
 net_widget:buttons(awful.button({}, 1, function()
@@ -139,9 +140,9 @@ local function volumectl(mode)
           function(stdout, ...)
             muted = myutil.trim(stdout)
             if muted == "true" then
-               volume = colored_text('♫M', 'red')
+               volume = colored_text(' ♫M', 'red')
             else
-               volume = colored_text('♫' .. volume, 'green')
+               volume = colored_text(' ♫' .. volume, 'green')
             end
             volume_widget:set_markup(volume)
           end)
@@ -163,7 +164,7 @@ volumectl("update") -- at startup
 local volume_clock = timer({ timeout = 60 })
 volume_clock:connect_signal("timeout", function() volumectl("update") end)
 volume_clock:start()
-volume_widget:buttons(awful.util.table.join(
+volume_widget:buttons(gears.table.join(
     awful.button({}, 4, function() volumectl("up") end),
     awful.button({}, 5, function() volumectl("down") end),
     awful.button({}, 3, function() awful.spawn("pavucontrol") end),
@@ -172,7 +173,7 @@ volume_widget:buttons(awful.util.table.join(
 -- f]]
 
 -- tag, task
-local TAG_LIST_BUTTONS = awful.util.table.join(
+local TAG_LIST_BUTTONS = gears.table.join(
     awful.button({}, 1, function(t) t:view_only() end),
     awful.button({const.modkey, 'Shift'}, 1, function(t)
       if client.focus then
@@ -190,9 +191,10 @@ local TAG_LIST_BUTTONS = awful.util.table.join(
 )
 
 local task_menu_instance = nil
-TASK_LIST_BUTTONS = awful.util.table.join(
+TASK_LIST_BUTTONS = gears.table.join(
 	  awful.button({}, 1, function(c)
       task_menu_instance:hide()
+      task_menu_instance = nil
       if c == client.focus and not c.minimized then
           c.minimized = true
       else
@@ -204,10 +206,10 @@ TASK_LIST_BUTTONS = awful.util.table.join(
     awful.button({}, 3, function()
       if not task_menu_instance then
         task_menu_instance = awful.menu.clients({ width=250 })
-        return
+      else
+        task_menu_instance:hide()
+        task_menu_instance = nil
       end
-      task_menu_instance:update()
-      task_menu_instance:toggle()
     end),
     awful.button({}, 4, function()
                  awful.client.focus.byidx(1)
@@ -219,7 +221,7 @@ TASK_LIST_BUTTONS = awful.util.table.join(
              end)
 )
 
-local LAYOUT_BOX_BUTTONS = awful.util.table.join(
+local LAYOUT_BOX_BUTTONS = gears.table.join(
     awful.button({}, 1, function() awful.layout.inc(const.available_layouts, 1) end),
     awful.button({}, 3, function() awful.layout.inc(const.available_layouts, -1) end),
     awful.button({}, 4, function() awful.layout.inc(const.available_layouts, 1) end),
@@ -251,10 +253,9 @@ awful.screen.connect_for_each_screen(function(s)
     -- right_layout:add(netgraph)
     right_layout:add(net_widget)
     right_layout:add(volume_widget)
-    if s.index == 1 then
-      right_layout:add(systray)
-    end
-    -- myutil.notify(s.index)
+
+    right_layout:add(systray)
+    s.my_systray = systray
     right_layout:add(textclock)
 
    --right_layout:add(powerline_widget)

@@ -1,10 +1,11 @@
 local myutil = require('lib/myutil')
+local gears = require('gears')
 local const = require('rc/const')
 local modkey = const.modkey
 
 -- register key "mod + key" to tag "index"
 local function register_tagkey(key, index)
-	ROOT_KEYS = myutil.join(
+	ROOT_KEYS = gears.table.join(
 		ROOT_KEYS,
 		awful.key({modkey}, key, function()      -- view only
 			local screen = awful.screen.focused()
@@ -47,7 +48,7 @@ for key = 1, #tag_name - 1 do
 end
 register_tagkey(0, #tag_name)
 
-ROOT_KEYS = awful.util.table.join(
+ROOT_KEYS = gears.table.join(
   ROOT_KEYS,
 	awful.key({modkey}, "Left",   awful.tag.viewprev       ),
 	awful.key({modkey}, "Right",  awful.tag.viewnext       ),

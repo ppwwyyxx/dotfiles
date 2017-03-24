@@ -5,7 +5,14 @@ local theme = {}
 
 local confdir = awful.util.getdir("config")
 theme.my_icons = confdir .. "/icons"
-theme.font          = "文泉驿正黑 12"
+--theme.font          = "Wenquanyi Micro Hei 13"
+theme.font          = "Microsoft Yahei 12"
+--theme.font          = "Wenquanyi Zen Hei 13"
+--theme.font          = "AntaeusTerminal 14"
+
+--theme.notification_font = "AntaeusTerminal 18"
+--theme.notification_opacity = 0.8
+--theme.prompt_fg   = "#234233"
 
 theme.bg_normal     = "#222222"
 theme.bg_focus      = "#535d6c"
@@ -33,7 +40,7 @@ theme.border_marked = "#91231c"
 -- tooltip_[font|opacity|fg_color|bg_color|border_width|border_color]
 -- mouse_finder_[color|timeout|animate_timeout|radius|factor]
 -- Example:
---theme.taglist_bg_focus = "#ff0000"
+theme.taglist_bg_focus = "#42bcf4"
 
 -- Display the taglist squares
 theme.taglist_squares_sel   = "/usr/share/awesome/themes/default/taglist/squarefw.png"
@@ -43,8 +50,8 @@ theme.taglist_squares_unsel = "/usr/share/awesome/themes/default/taglist/squarew
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
 theme.menu_submenu_icon = "/usr/share/awesome/themes/default/submenu.png"
-theme.menu_height = 15
-theme.menu_width  = 100
+theme.menu_height = 24
+theme.menu_width  = 200
 
 -- You can add as many variables as
 -- you wish and access them by using

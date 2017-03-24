@@ -1,6 +1,7 @@
 -- xdg_menu --format awesome > ~/.config/awesome/lib/xdgmenu.lua
 
-xdgmenu = require('lib/xdgmenu')
+local gears = require('gears')
+local xdgmenu = require('lib/xdgmenu')
 local const = require('rc/const')
 
 local awesome_menu = {
@@ -10,12 +11,12 @@ local awesome_menu = {
 }
 
 local main_menu = awful.menu({ items = {
-          { "Awesome", awesome_menu, beautiful.awesome_icon },
-          { "Terminal", const.terminal, '/usr/share/icons/gnome/32x32/apps/utilities-terminal.png' },
+          { "&Awesome", awesome_menu, beautiful.awesome_icon },
+          { "&Terminal", const.terminal, '/usr/share/icons/gnome/32x32/apps/utilities-terminal.png' },
           { "&Chromium", "chromium", '/usr/share/icons/hicolor/32x32/apps/chromium.png' },
           { "&Wallpaper", appearance.change_wallpaper},
-          { "XDG Menu (&A)", xdgmenu},
-          { "Suspend (&S)", "systemctl suspend" },
+          { "&XDG Menu", xdgmenu},
+          { "&Suspend", "systemctl suspend" },
       }
 })
 
@@ -23,7 +24,7 @@ local main_menu = awful.menu({ items = {
 local menubar = require("menubar")
 menubar.utils.terminal = terminal
 
-root.buttons(awful.util.table.join(
+root.buttons(gears.table.join(
 	awful.button({}, 1, function() main_menu:hide() end),
 	awful.button({}, 3, function() main_menu:toggle() end),
 	awful.button({}, 4, awful.tag.viewprev),
