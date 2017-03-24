@@ -1,5 +1,7 @@
 -- Text Edit Keys
 local myutil = require('lib/myutil')
+local gears = require("gears")
+local wibox = require("wibox")
 --[[
    [local text_edit_key = myutil.join(
 	 [  awful.key({altkey}, 'f',         function(c) sendkey(c, 'ctrl+Right') end),
@@ -11,6 +13,9 @@ local myutil = require('lib/myutil')
 	 [  client:keys(myutil.join(client:keys(), text_edit_key))
    [end
    ]]
+local print_client = function(c)
+  myutil.notify(c.name)
+end
 
 awful.rules.rules = {
 { rule = { },     -- default
@@ -21,6 +26,7 @@ awful.rules.rules = {
 		keys = keys.client_keys,
 		buttons = keys.client_buttons,
     placement = awful.placement.no_overlap+awful.placement.no_offscreen,
+    titlebars_enabled = false,
     screen = awful.screen.preferred,
 	}},
 
@@ -54,7 +60,7 @@ awful.rules.rules = {
          --TMP_TERM
 		},
 	},
-	properties = { floating = true, }
+	properties = { floating = true, },
 },
 
 -- always above:
@@ -116,3 +122,43 @@ client.connect_signal("focus", function(c)
   c.border_color = beautiful.border_focus
 end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+
+local titlebar_buttons = awful.util.table.join(
+  awful.button({ }, 1, function()
+    client.focus = c
+    c:raise()
+    awful.mouse.client.move(c)
+  end),
+  awful.button({ }, 3, function()
+    client.focus = c
+    c:raise()
+    awful.mouse.client.resize(c)
+  end)
+)
+
+client.connect_signal("request::titlebars", function(c)
+  awful.titlebar(c):setup {
+    { -- Left
+      awful.titlebar.widget.iconwidget(c),
+      buttons = titlebar_buttons,
+      layout  = wibox.layout.fixed.horizontal
+    },
+    { -- Middle
+      { -- Title
+        align  = "center",
+        widget = awful.titlebar.widget.titlewidget(c)
+      },
+      buttons = titlebar_buttons,
+      layout  = wibox.layout.flex.horizontal
+    },
+    { -- Right
+      awful.titlebar.widget.floatingbutton (c),
+      awful.titlebar.widget.maximizedbutton(c),
+      awful.titlebar.widget.stickybutton   (c),
+      awful.titlebar.widget.ontopbutton    (c),
+      awful.titlebar.widget.closebutton    (c),
+      layout = wibox.layout.fixed.horizontal()
+    },
+    layout = wibox.layout.align.horizontal
+  }
+  end)
