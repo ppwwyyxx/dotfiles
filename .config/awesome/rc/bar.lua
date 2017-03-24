@@ -170,12 +170,20 @@ volume_widget:buttons(awful.util.table.join(
 
 -- tag, task
 local TAG_LIST_BUTTONS = awful.util.table.join(
-    awful.button({}, 1, awful.tag.viewonly),
-    awful.button({const.modkey, 'Shift'}, 1, awful.client.movetotag),
+    awful.button({}, 1, function(t) t:view_only() end),
+    awful.button({const.modkey, 'Shift'}, 1, function(t)
+      if client.focus then
+        client.focus:move_to_tag(t)
+      end
+    end),
     awful.button({}, 3, awful.tag.viewtoggle),
-    awful.button({const.modkey, 'Shift'}, 3, awful.client.toggletag),
-    awful.button({}, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
-    awful.button({}, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
+    awful.button({const.modkey, 'Shift'}, 3, function(t)
+      if client.focus then
+        client.focus:toggle_tag(t)
+      end
+    end),
+    awful.button({}, 4, function(t) awful.tag.viewnext(t.screen) end),
+    awful.button({}, 5, function(t) awful.tag.viewprev(t.screen) end)
 )
 
 local task_menu_instance = nil
@@ -223,14 +231,14 @@ awful.screen.connect_for_each_screen(function(s)
     local tag_list = awful.widget.taglist(s, awful.widget.taglist.filter.all, TAG_LIST_BUTTONS)
     local task_list = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, TASK_LIST_BUTTONS)
 
-    --my_promptbox[s] = awful.widget.prompt()
+    s.my_prompt_box = awful.widget.prompt()
 
     local left_layout = wibox.layout.fixed.horizontal()
     left_layout:add(layout_box)
     left_layout:add(sepopen)
     left_layout:add(tag_list)
     left_layout:add(sepclose)
-    --left_layout:add(my_promptbox[s])
+    left_layout:add(s.my_prompt_box)
 
     local right_layout = wibox.layout.fixed.horizontal()
     right_layout:add(cpu_widget)
@@ -253,7 +261,7 @@ awful.screen.connect_for_each_screen(function(s)
     layout:set_middle(task_list)
     layout:set_right(right_layout)
 
-    local wibar = awful.wibar({
+    s.my_wibar = awful.wibar({
       position = "top", stretch = true,
       border_width = 0,
       opacity = 0.9,

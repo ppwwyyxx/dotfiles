@@ -5,7 +5,7 @@ local function movemouse_rel(x, y)
 end
 
 local function movemouse_perc(px, py)
-    local g = screen[mouse.screen].workarea
+    local g = screen[awful.screen.focused()].workarea
     mouse.coords{x = g.x + g.width * px, y = g.y + g.height * py}
 end
 

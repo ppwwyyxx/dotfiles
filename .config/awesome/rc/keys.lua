@@ -5,7 +5,7 @@ local modkey = const.modkey
 local altkey = const.altkey
 local mouse_control = require("lib/mouse")
 local sdcv_selection = require("lib/sdcv")
--- require("lib/web_cmd")
+local web_cmd = require("lib/web_cmd")
 
 ROOT_KEYS = awful.util.table.join(
 	ROOT_KEYS,
@@ -164,17 +164,18 @@ ROOT_KEYS = awful.util.table.join(
 	-- sdcv
 	awful.key({altkey}, "F3", sdcv_selection),
 
---[[
-   [
-	 [  -- yubnub. g;wp;gfl;gi;gm;yt;py;python(search);pypi;rdoc;cppdoc;dbm
-	 [  awful.key({ modkey }, "w", function()
-	 [       awful.widget.prompt.run({ prompt = "Web: " }, my_promptbox[mouse.screen].widget,
-	 [            function(command)
-   [                      local url = web_cmd(command)
-	 [              myutil.sexec(const.browser .. '"' .. url .. '"')
-	 [            end)
-	 [     end),
-   ]]
+
+  -- yubnub. g;wp;gfl;gi;gm;yt;py;python(search);pypi;rdoc;cppdoc;dbm
+  awful.key({ modkey }, "w", function()
+     local sc = awful.screen.focused()
+     awful.prompt.run {
+       prompt = "Web: ",
+       textbox = sc.my_prompt_box.widget,
+       exe_callback = function(command)
+         local url = web_cmd(command)
+         myutil.sexec(const.browser .. '"' .. url .. '"')
+       end}
+  end),
 
 	-- Volume
 	awful.key({}, 'XF86AudioRaiseVolume', function() volumectl("up") end),
@@ -193,7 +194,7 @@ local CLIENT_KEYS = awful.util.table.join(
 	awful.key({modkey, "Control"}, "Return", function(c) c:swap(awful.client.getmaster()) end),
   awful.key({modkey}, "o", function(c)
       if screen.count() == 1 then return end
-      awful.client.movetoscreen(c)
+      c:move_to_screen()
   end),
 	awful.key({modkey}, "s", function(c) c.sticky = not c.sticky end),
 

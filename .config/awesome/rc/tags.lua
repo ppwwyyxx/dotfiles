@@ -6,28 +6,29 @@ local modkey = const.modkey
 local function register_tagkey(key, index)
 	ROOT_KEYS = myutil.join(
 		ROOT_KEYS,
-		awful.key({modkey }, key, function()      -- view only
-			local screen = mouse.screen
+		awful.key({modkey}, key, function()      -- view only
+			local screen = awful.screen.focused()
 			if tags[screen][index] then
-				awful.tag.viewonly(tags[screen][index])
+				tags[screen][index]:view_only()
 			end
 		end),
 	awful.key({modkey, "Control" }, key, function()    -- toggle view
-		   local screen = mouse.screen
+		   local screen = awful.screen.focused()
 		   if tags[screen][index] then
 			   awful.tag.viewtoggle(tags[screen][index])
 		   end
 	   end),
-	awful.key({modkey, "Shift"   }, key, function()        -- move but not jump
-         local screen = client.focus.screen
-		   if client.focus and tags[screen][index] then
-			   awful.client.movetotag(tags[screen][index])
+	awful.key({modkey, "Shift"}, key, function()        -- move but not jump
+       local screen = awful.screen.focused()
+       local cur_tag = tags[screen][index]
+		   if client.focus and cur_tag then
+         client.focus:move_to_tag(cur_tag)
 		   end
 	   end),
 	awful.key({modkey, "Control", "Shift" }, key, function()  -- add to new tag
-         local screen = client.focus.screen
+       local screen = awful.screen.focused()
 		   if client.focus and tags[screen][index] then
-			   awful.client.toggletag(tags[screen][index])
+			   client.focus:toggle_tag(tags[screen][index])
 		   end
 	   end)
 	)

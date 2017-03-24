@@ -44,7 +44,7 @@ function run_or_raise(cmd, properties, beforemove)
 		if beforemove then
 			beforemove(c)
 		end
-		awful.client.movetotag(curtag, c)
+		c:move_to_tag(curtag)
 		-- And then focus the client
 		client.focus = c
 		c:raise()
@@ -52,7 +52,7 @@ function run_or_raise(cmd, properties, beforemove)
 		if c.maximized_horizontal and c.maximized_vertical then
 			local geo = c:geometry()
 			local area = geo.width * geo.height
-			local wa = screen[mouse.screen].workarea
+			local wa = screen[awful.screen.focused()].workarea
 			local area_t = wa.width * wa.height
 			-- too large or small?
 			if area < area_t * 0.9 or area > area_t then
@@ -64,7 +64,7 @@ function run_or_raise(cmd, properties, beforemove)
 		end
 		return c
 	end
-	awful.util.spawn(cmd)
+	awful.spawn(cmd)
 end
 
 return run_or_raise

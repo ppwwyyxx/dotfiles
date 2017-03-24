@@ -1,6 +1,6 @@
 
 local myutil = {
-exec              = awful.util.spawn,
+exec              = awful.spawn,
 sexec             = awful.util.spawn_with_shell,
 join              = awful.util.table.join,
 }

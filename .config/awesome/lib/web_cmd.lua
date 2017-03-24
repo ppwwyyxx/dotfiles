@@ -31,3 +31,5 @@ function web_cmd(cmd)
     end
     return template['g']:format(cmd)
 end
+
+return web_cmd

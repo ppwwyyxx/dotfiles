@@ -20,6 +20,7 @@ awful.rules.rules = {
 		keys = keys.client_keys,
 		buttons = keys.client_buttons,
     placement = awful.placement.no_overlap+awful.placement.no_offscreen,
+    screen = awful.screen.preferred
 	}},
 
 { rule = { class = "Chromium" },
@@ -62,7 +63,7 @@ awful.rules.rules = {
 -- chat:
 { rule_any = { name = {'Telegram', 'plaidchat', 'WeChat', 'Nocturn'} },
     callback = function(c)
-        awful.client.movetotag(tags[screen.primary][3], c)
+        c:move_to_tag(tags[screen.primary][3])
         local g = c:geometry()
         if c.name == "Nocturn" then
            myutil.moveresize_abs(-400, 0, 400, 1, c)
@@ -96,16 +97,16 @@ client.connect_signal(
 	end)
 
 client.connect_signal("focus", function(c)
-      c.border_color = beautiful.border_focus
-      if c.instance == 'gimp' then
-          local curtags = awful.tag.selectedlist()
-          for _, curtag in ipairs(curtags) do
-              for _, j in ipairs(curtag:clients()) do
-                  if j.instance == 'gimp' then
-                      j:raise()
-                  end
-              end
-          end
+  c.border_color = beautiful.border_focus
+  if c.instance == 'gimp' then
+    local curtags = awful.tag.selectedlist()
+    for _, curtag in ipairs(curtags) do
+      for _, j in ipairs(curtag:clients()) do
+        if j.instance == 'gimp' then
+          j:raise()
+        end
       end
-  end)
+    end
+  end
+end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
