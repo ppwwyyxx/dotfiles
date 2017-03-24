@@ -23,6 +23,17 @@ function myutil.trim(s)
   return match(s,'^()%s*$') and '' or match(s,'^%s*(.*%S)')
 end
 
+
+function myutil.colored_text(text, color, extra_attr)
+   extra_attr = extra_attr or ""
+   if not color then  -- having span is better for appearance
+     return string.format("<span %s>%s</span>", extra_attr, text)
+   end
+   return string.format(
+      "<span foreground=\"%s\" %s>%s</span>", color, extra_attr, text)
+end
+
+
 -- TODO use naughty
 function myutil.notify(title, text, urgency)	-- normal, low, critical
 	title = tostring(title)

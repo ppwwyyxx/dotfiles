@@ -42,32 +42,15 @@ end
 
 local delayed_call = (type(timer) ~= 'table' and  require("gears.timer").delayed_call)
 
-local view_only_func
-local toggle_tag_func
-local jump_to_func
-
-
-if type(awful.client.object) == 'table' then
-    view_only_func = function (tag) tag:view_only() end
-    toggle_tag_func = function (t, c) c:toggle_tag(t) end
-    jump_to_func = function(c) c:jump_to() end
-else
-    view_only_func = function (tag) awful.tag.viewonly(tag) end
-    toggle_tag_func = function (t, c) awful.client.toggletag(t, c) end
-    jump_to_func = function(c) awful.client.jumpto(c) end
-end
-
-
 local hintbox = {} -- Table of letter wiboxes with characters as the keys
 local hintindex = {} -- Table of visible clients with the hint letter as the keys
 
 local clients = {} --Table of clients to be exposed after fitlering
 local clientData = {} -- table that holds the positions and sizes of floating clients
+local tagData = {}
 
 local revelation = {
-    -- Name of expose tag.
     tag_name = "Revelation",
-
     charorder = "jkluiopyhnmfdsatgvcewqzx1234567890",
 
     -- Match function can be defined by user.
@@ -80,30 +63,27 @@ local revelation = {
         any   = aw_rules.match_any
     },
     property_to_watch={
-        minimized            = false,
-        fullscreen           = false,
-        maximized_horizontal = false,
-        maximized_vertical   = false,
-        sticky               = false,
-        ontop                = false,
-        above                = false,
-        below                = false,
+      minimized            = false,
+      fullscreen           = false,
+      maximized_horizontal = false,
+      maximized_vertical   = false,
+      sticky               = false,
+      ontop                = false,
+      above                = false,
+      below                = false,
     },
-    tags_status = {},
-    is_excluded = false,
     curr_tag_only = false,
-    font = "monospace 20",
-    fg = beautiful.fg_normal or "#DCDCCC",
-    bg = beautiful.bg_normal or "#000000",
+    font = "monospace 30",
+    fg = "#42f4cb",
+    bg = "#000000",
     border_color=beautiful.border_focus or "#DCDCCC",
     border_width=beautiful.border_width or 2,
-    hintsize = (type(beautiful.xresources) == 'table' and beautiful.xresources.apply_dpi(50) or 60)
+    hintsize = (type(beautiful.xresources) == 'table' and beautiful.xresources.apply_dpi(60) or 60)
 }
 
 
 
 -- Executed when user selects a client from expose view.
---
 -- @param restore Function to reset the current tags view.
 local function selectfn(_, t, zt)
     return function(c)
@@ -119,7 +99,7 @@ local function selectfn(_, t, zt)
                 c.minimized = false
             end
 
-            jump_to_func(c)
+            c:jump_to()
         end
     end
 end
@@ -127,11 +107,9 @@ end
 -- Tags all matching clients with tag t
 -- @param rule The rule. Conforms to awful.rules syntax.
 -- @param clients A table of clients to check.
--- @param t The tag to give matching clients.
-local function match_clients(rule, _clients, t, is_excluded)
-
-    local mfc = rule.any and revelation.match.any or revelation.match.exact
-    local mf = is_excluded and function(c,_rule) return not mfc(c,_rule) end or mfc
+-- @param t The tag to put matching clients.
+local function match_clients(rule, _clients, t)
+    local mf = rule.any and revelation.match.any or revelation.match.exact
     local flt
 
     for _, c in pairs(_clients) do
@@ -150,7 +128,7 @@ local function match_clients(rule, _clients, t, is_excluded)
                 clientData[c][k] = c[k]
                 c[k] = v
             end
-            toggle_tag_func(t, c)
+            c:toggle_tag(t)
             if c:isvisible() then
                 table.insert(clients, c)
             end
@@ -166,28 +144,29 @@ end
 function revelation.expose(args)
     args = args or {}
     local rule = args.rule or {}
-    local is_excluded = args.is_excluded or revelation.is_excluded
     local curr_tag_only = args.curr_tag_only or revelation.curr_tag_only
 
-    local t={}
-    local zt={}
+    local t = {}  -- screen idx -> tag
+    local zt = {} -- -> zoomed tag
 
     clients = {}
     clientData = {}
+    local base_tname = revelation.tag_name
 
-    for scr=1,capi.screen.count() do
-        t[scr] = awful.tag.new({revelation.tag_name},
-            scr, awful.layout.suit.fair)[1]
-        zt[scr] = awful.tag.new({revelation.tag_name.."_zoom"},
-            scr, awful.layout.suit.fair)[1]
+    for scr in capi.screen do
+        local tags = awful.tag.new(
+            {base_tname, base_tname .. '_zoom'},
+            scr, awful.layout.suit.fair)
+        t[scr] = tags[1]
+        zt[scr] = tags[2]
 
         if curr_tag_only then
-            match_clients(rule, awful.client.visible(scr), t[scr], is_excluded)
+            match_clients(rule, scr.clients, t[scr])
         else
-            match_clients(rule, capi.client.get(scr), t[scr], is_excluded)
+            match_clients(rule, capi.client.get(scr), t[scr])
         end
 
-        view_only_func(t[scr])
+        t[scr]:view_only()
     end
 
     if type(delayed_call) == 'function' then
@@ -197,7 +176,6 @@ function revelation.expose(args)
     --
     local status, err=pcall(revelation.expose_callback, t, zt, clients)
 
-    --revelation.expose_callback(t, zt)
     if not status then
         debuginfo('Oops!, something is wrong in revelation.expose_callback!')
 
@@ -210,39 +188,39 @@ function revelation.expose(args)
         end
 
         revelation.restore(t, zt)
-
     end
 end
 
 
 function revelation.restore(t, zt)
-    for scr=1, capi.screen.count() do
-        awful.tag.history.restore(scr)
-        t[scr].screen = nil
+    for s in capi.screen do
+        -- TODO doens't work with two extra tags
+        awful.tag.history.restore(s)
+        t[s].screen = nil
     end
 
     capi.keygrabber.stop()
     capi.mousegrabber.stop()
 
-     for _, c in pairs(clients) do
-            if clientData[c] then
-                for k,v in pairs(clientData[c]) do
-                    if v ~= nil then
-                        if k== "geometry" then
-                            c:geometry(v)
-                        elseif k == "floating" then
-                            awful.client.property.set(c, "floating", v)
-                        else
-                            c[k]=v
-                        end
-                    end
-                end
+    for _, c in pairs(clients) do
+      if clientData[c] then
+        for k,v in pairs(clientData[c]) do
+          if v ~= nil then
+            if k== "geometry" then
+              c:geometry(v)
+            elseif k == "floating" then
+              awful.client.property.set(c, "floating", v)
+            else
+              c[k]=v
             end
+          end
+        end
       end
+    end
 
-    for scr=1, capi.screen.count() do
-        t[scr].activated = false
-        zt[scr].activated = false
+    for scr in capi.screen do
+        t[scr]:delete()
+        zt[scr]:delete()
     end
 
     for i,j in pairs(hintindex) do
@@ -299,8 +277,8 @@ function revelation.expose_callback(t, zt, clientlist)
             c = hintindex[key_char]
             if not zoomed and c ~= nil then
                 --debuginfo(c.screen)
-                view_only_func(zt[c.screen.index or c.screen])
-                toggle_tag_func(zt[c.screen.index or c.screen], c)
+                zt[c.screen]:view_only()
+                c:toggle_tag(zt[c.screen])
                 zoomedClient = c
                 key_char_zoomed = key_char
                 zoomed = true
@@ -313,8 +291,8 @@ function revelation.expose_callback(t, zt, clientlist)
 
 
             elseif zoomedClient ~= nil then
-                awful.tag.history.restore(zoomedClient.screen.index or zoomedClient.screen)
-                toggle_tag_func(zt[zoomedClient.screen.index or zoomedClient.screen], zoomedClient)
+                awful.tag.history.restore(zoomedClient.screen)
+                zoomedClient:toggle_tag(zt[zoomedClient.screen])
                 hintbox_display_toggle(key_char_zoomed,  true)
                 if type(delayed_call) == 'function' then
                     capi.awesome.emit_signal("refresh")
@@ -343,7 +321,7 @@ function revelation.expose_callback(t, zt, clientlist)
         if key == "Escape" then
             if zoomedClient ~= nil then
                 awful.tag.history.restore(zoomedClient.screen)
-                toggle_tag_func(zt[zoomedClient.screen.index or zoomedClient.screen], zoomedClient)
+                zoomedClient:toggle_tag(zt[zoomedClient.screen])
                 hintbox_display_toggle(string.lower(key),  true)
                 if type(delayed_call) == 'function' then
                     capi.awesome.emit_signal("refresh")
@@ -407,8 +385,8 @@ function revelation.expose_callback(t, zt, clientlist)
             -- extra variable needed to prevent script from spam-closing windows
             --
             if zoomed == true and zoomedClient ~=nil then
-                awful.tag.history.restore(zoomedClient.screen.index or zoomedClient.screen)
-                toggle_tag_func(zt[zoomedClient.screen.index or zoomedClient.screen], zoomedClient)
+                awful.tag.history.restore(zoomedClient.screen)
+                zoomedClient:toggle_tag(zt[zoomedClient.screen])
             end
             c:kill()
             hintbox[key_char].visible = false
@@ -433,8 +411,8 @@ function revelation.expose_callback(t, zt, clientlist)
             end
         elseif mouse.buttons[3] == true then
             if not zoomed and c ~= nil then
-                view_only_func(zt[c.screen.index or c.screen])
-                toggle_tag_func(zt[c.screen.index or c.screen], c)
+                zt[c.screen]:view_only()
+                c:toggle_tag(zt[c.screen])
                 if key_char ~= nil then
                     hintbox_display_toggle(key_char, false)
                     if type(delayed_call) == 'function' then
@@ -446,8 +424,8 @@ function revelation.expose_callback(t, zt, clientlist)
                 zoomed = true
                 key_char_zoomed = key_char
             elseif zoomedClient ~= nil then
-                awful.tag.history.restore(zoomedClient.screen.index or zoomedClient.screen)
-                toggle_tag_func(zt[zoomedClient.screen.index or zoomedClient.screen], zoomedClient)
+                awful.tag.history.restore(zoomedClient.screen)
+                zoomedClient:toggle_tag(zt[zoomedClient.screen])
                 hintbox_display_toggle(key_char_zoomed, true)
                 if type(delayed_call) == 'function' then
                     capi.awesome.emit_signal("refresh")
@@ -465,40 +443,38 @@ function revelation.expose_callback(t, zt, clientlist)
         --stole it from
         --https://github.com/Elv13/awesome-configs/blob/master/widgets/layout/desktopLayout.lua#L175
     end,"fleur")
-
 end
 
 -- Create the wiboxes, but don't show them
---
 function revelation.init(args)
-    local letterbox = {}
-
     args = args or {}
 
     revelation.tag_name = args.tag_name or revelation.tag_name
     if args.match then
-        revelation.match.exact = args.match.exact or revelation.match.exact
-        revelation.match.any = args.match.any or revelation.match.any
+      revelation.match.exact = args.match.exact or revelation.match.exact
+      revelation.match.any = args.match.any or revelation.match.any
     end
 
     revelation.charorder = args.charorder or revelation.charorder
 
     for i = 1, #revelation.charorder do
-        local char = revelation.charorder:sub(i,i)
-        hintbox[char] = wibox({
-          fg=revelation.fg,
-          bg=revelation.bg,
-          border_color=revelation.border_color,
-          border_width=revelation.border_width
-        })
-        hintbox[char].ontop = true
-        hintbox[char].width = revelation.hintsize
-        hintbox[char].height = revelation.hintsize
-        letterbox[char] = wibox.widget.textbox()
-        letterbox[char]:set_markup(char.upper(char))
-        letterbox[char]:set_font(revelation.font)
-        letterbox[char]:set_align("center")
-        hintbox[char]:set_widget(letterbox[char])
+      local char = revelation.charorder:sub(i, i)
+      local letterbox = wibox.widget.textbox()
+      letterbox:set_markup(char:upper())
+      letterbox:set_font(revelation.font)
+      letterbox:set_align("center")
+
+      hintbox[char] = wibox({
+        fg = revelation.fg,
+        bg = revelation.bg,
+        border_color = revelation.border_color,
+        border_width = revelation.border_width,
+        width = revelation.hintsize,
+        height = revelation.hintsize,
+        ontop = true,
+        widget = letterbox,
+        visible = false,
+      })
     end
 end
 

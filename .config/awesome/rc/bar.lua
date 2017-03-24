@@ -5,15 +5,6 @@ local myutil = require('lib/myutil')
 local const = require('rc/const')
 local modkey = const.modkey
 
-local function colored_text(text, color, extra_attr)
-   extra_attr = extra_attr or ""
-   if not color then  -- having span is better for appearance
-     return string.format("<span %s>%s</span>", extra_attr, text)
-   end
-   return string.format(
-      "<span foreground=\"%s\" %s>%s</span>", color, extra_attr, text)
-end
-
 -- Separators & Icons
 local sepopen = wibox.widget.imagebox()
 sepopen:set_image(beautiful.my_icons .. "/widgets/left.png")
@@ -24,7 +15,7 @@ sepclose:set_image(beautiful.my_icons .. "/widgets/right.png")
 
 
 local textclock = wibox.widget.textclock(
-colored_text(" %m-%d %H:%M:%S %a ", "#bc5374", 'font_weight="bold"'),
+myutil.colored_text(" %m-%d %H:%M:%S %a ", "#bc5374", 'font_weight="bold"'),
 1)
 textclock:buttons(awful.button({}, 1, function()
     myutil.sexec(const.browser .. "http://calendar.google.com")
@@ -55,7 +46,7 @@ vicious.register(thermal_widget, vicious.widgets.thermal,
 
 local mem_widget = wibox.widget.textbox()
 vicious.register(mem_widget, vicious.widgets.mem,
-   colored_text(" M$1% ", "#90ee90"), 10)
+   myutil.colored_text(" M$1% ", "#90ee90"), 10)
 mem_widget:buttons(awful.button({}, 1, function()
    myutil.run_term('top -o %MEM -d 1', 'FSTerm')
 end))
@@ -76,7 +67,7 @@ vicious.register(bat_widget, vicious.widgets.bat, function(widget, args)
 						bat_widget.lastwarn = current
 					end
 				end
-				return colored_text(string.format('B%s%d%%', args[1], current), color)
+				return myutil.colored_text(string.format('B%s%d%%', args[1], current), color)
 			end,
 			59, "BAT0")
 bat_widget:buttons(awful.button({}, 1, function()
@@ -98,7 +89,7 @@ local net_if
 vicious.register(net_widget, vicious.widgets.net, function(widget, args)
         net_if = myutil.get_active_iface()
         if net_if == nil then
-            return colored_text("No Network", "#5798d9")
+            return myutil.colored_text("No Network", "#5798d9")
         end
 
         local up, down, iface = 0, 0
@@ -113,8 +104,8 @@ vicious.register(net_widget, vicious.widgets.net, function(widget, args)
             if val > 500 then return string.format("%.1fM", val/1000.)
             else return string.format("%.0fK", val) end
         end
-        return colored_text(" ↓" .. format(down), "#5798d9")
-               .. colored_text("↑" .. format(up), "#c2ba62")
+        return myutil.colored_text(" ↓" .. format(down), "#5798d9")
+               .. myutil.colored_text("↑" .. format(up), "#c2ba62")
     end, 3)
 net_widget:buttons(awful.button({}, 1, function()
     myutil.run_term(
@@ -133,16 +124,16 @@ local function volumectl(mode)
   local volume = myutil.trim(myutil.rexec("pamixer --get-volume"))
   if mode == "update" then
      if not tonumber(volume) then
-        volume_widget:set_markup(colored_text('ERR', 'red'))
+        volume_widget:set_markup(myutil.colored_text('ERR', 'red'))
      else
         awful.spawn.easy_async(
           "pamixer --get-mute",
           function(stdout, ...)
             muted = myutil.trim(stdout)
             if muted == "true" then
-               volume = colored_text(' ♫M', 'red')
+               volume = myutil.colored_text(' ♫M', 'red')
             else
-               volume = colored_text(' ♫' .. volume, 'green')
+               volume = myutil.colored_text(' ♫' .. volume, 'green')
             end
             volume_widget:set_markup(volume)
           end)
