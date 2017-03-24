@@ -29,10 +29,13 @@ awful.rules.rules = {
     keys = awful.util.table.join(
       keys.client_keys,
       awful.key({'Control'}, 'q', function(c)
-        myutil.rexec('sleep 0.3')
-        awful.key.execute({}, "Tab")
-        awful.key.execute({}, "Escape")
-        awful.key.execute({"Control"}, "w")
+        awful.spawn.easy_async(
+          'sleep 0.3',
+          function(...)
+            awful.key.execute({}, "Tab")
+            awful.key.execute({}, "Escape")
+            awful.key.execute({"Control"}, "w")
+          end)
       end))
   }},
 

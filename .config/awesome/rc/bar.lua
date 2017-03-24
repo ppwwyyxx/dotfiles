@@ -126,37 +126,40 @@ end))
 --Volume f[[
 local volume_widget = wibox.widget.textbox()
 local function volumectl(mode)
-   -- mode: update, up, down, mute
-   function update_cb() volumectl("update") end
+  -- mode: update, up, down, mute
+  function update_cb() volumectl("update") end
 
-   if mode == "update" then
-      local volume = myutil.trim(myutil.rexec("pamixer --get-volume"))
-      if not tonumber(volume) then
-         volume_widget:set_markup(colored_text('ERR', 'red'))
-      else
-         local muted = myutil.rexec("pamixer --get-mute"):sub(1,4)  -- rstrip
-         if muted == "true" then
-            volume = colored_text('♫M', 'red')
-         else
-            volume = colored_text('♫' .. volume, 'green')
-         end
-         volume_widget:set_markup(volume)
-      end
-      return
-   elseif mode == "up" then
-      local volume = tonumber(myutil.rexec("pamixer --get-volume"))
-      if volume < 120 then
-         awful.spawn.easy_async("pamixer --allow-boost --increase 5", update_cb)
-      end
-   elseif mode == "down" then
-      awful.spawn.easy_async("pamixer --allow-boost --decrease 5", update_cb)
-   elseif mode == "mute" then
-      awful.spawn.easy_async("pamixer --set-volume 20 --toggle-mute", update_cb)
-   else
-      notify("Unknown volumectl mode: ".. mode)
-   end
+  local volume = myutil.trim(myutil.rexec("pamixer --get-volume"))
+  if mode == "update" then
+     if not tonumber(volume) then
+        volume_widget:set_markup(colored_text('ERR', 'red'))
+     else
+        awful.spawn.easy_async(
+          "pamixer --get-mute",
+          function(stdout, ...)
+            muted = myutil.trim(stdout)
+            if muted == "true" then
+               volume = colored_text('♫M', 'red')
+            else
+               volume = colored_text('♫' .. volume, 'green')
+            end
+            volume_widget:set_markup(volume)
+          end)
+     end
+  elseif mode == "up" then
+    volume = tonumber(volume)
+    if volume and volume < 120 then
+       awful.spawn.easy_async("pamixer --allow-boost --increase 5", update_cb)
+    end
+  elseif mode == "down" then
+     awful.spawn.easy_async("pamixer --allow-boost --decrease 5", update_cb)
+  elseif mode == "mute" then
+     awful.spawn.easy_async("pamixer --set-volume 20 --toggle-mute", update_cb)
+  else
+     notify("Unknown volumectl mode: ".. mode)
+  end
 end
-volumectl("update")
+volumectl("update") -- at startup
 local volume_clock = timer({ timeout = 60 })
 volume_clock:connect_signal("timeout", function() volumectl("update") end)
 volume_clock:start()

@@ -1,4 +1,5 @@
-
+local lgi = require('lgi')
+local Gio = lgi.Gio
 local myutil = {
 exec              = awful.spawn,
 sexec             = awful.util.spawn_with_shell,
@@ -36,16 +37,21 @@ function myutil.run_term(cmd, name)
 end
 
 function myutil.rexec(cmd)
+  return Gio.Async.call(function()
     local f = io.popen(cmd)
     local ret = f:read('*all')
     f:close()
     return ret
+  end)()
 end
 
 function myutil.sendkey(c, key)		-- send key in xdotool format
-    -- just use awful.key.execute
-    myutil.rexec('sleep 0.1')
-    myutil.exec('xdotool key --clearmodifiers ' .. key)
+  -- just use awful.key.execute
+  awful.spawn.easy_async{
+    cmd = 'sleep 0.1',
+    callback = function()
+      awful.spawn('xdotool key --clearmodifiers ' .. key)
+    end}
 end
 
 
@@ -85,6 +91,5 @@ function myutil.get_active_iface()
      f:close()
      return netif
 end
-
 
 return myutil
