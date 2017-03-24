@@ -1,4 +1,3 @@
-local run_or_raise = require("lib/run_or_raise")
 local myutil = require('lib/myutil')
 local const = require('rc/const')
 local modkey = const.modkey
@@ -19,28 +18,34 @@ ROOT_KEYS = awful.util.table.join(
 	awful.key({modkey}, "h",     function() awful.tag.incmwfact(-0.05)    end),
 
   -- snap window around
-	awful.key({modkey, }, "'", function() myutil.moveresize_abs(-0.5, 0, 0.5, 1, client.focus) end),
-	awful.key({modkey, }, ";", function() myutil.moveresize_abs(0, 0, 0.5, 1, client.focus) end),
+	awful.key({modkey, }, "'", function() myutil.moveresize_abs(-0.5, 0, 0.5, 1) end),
+	awful.key({modkey, }, ";", function() myutil.moveresize_abs(0, 0, 0.5, 1) end),
 
 
   -- page up/down to resize
-	awful.key({modkey}, "Next",  function () awful.client.moveresize( 20,  20, -40, -40) end),
-  awful.key({modkey}, "Prior", function () awful.client.moveresize(-20, -20,  40,  40) end),
+	awful.key({modkey}, "Next",  function ()
+    if client.focus then client.focus:relative_move( 20,  20, -40, -40) end
+  end),
+  awful.key({modkey}, "Prior", function ()
+    if client.focus then client.focus:relative_move(-20, -20,  40,  40) end
+  end),
 
   -- interactive move & resize
 	awful.key({modkey, "Shift"}, "'", function()
 		keygrabber.run(function(mod, key, event)
 		     if event == "release" then return end
-		     if     key == 'k'    then awful.client.moveresize(0, -10, 0, 0)
-		     elseif key == 'j'    then awful.client.moveresize(0, 10, 0, 0)
-		     elseif key == 'l'    then awful.client.moveresize(10, 0, 0, 0)
-		     elseif key == 'h'    then awful.client.moveresize(-10, 0, 0, 0)
-		     elseif key == ','    then awful.client.moveresize(-30, 0, 0, 0)
-		     elseif key == '.'    then awful.client.moveresize(30, 0, 0, 0)
-		     elseif key == 'Up'   then awful.client.moveresize(0, -20, 0, 40)
-		     elseif key == 'Down' then awful.client.moveresize(0, 10, 0, -20)
-		     elseif key == 'Right'then awful.client.moveresize(-20, 0, 40, 0)
-		     elseif key == 'Left' then awful.client.moveresize(10, 0, -20, 0)
+         local c = client.focus
+         if not c then return end
+		     if     key == 'k'    then c:relative_move(0, -10, 0, 0)
+		     elseif key == 'j'    then c:relative_move(0, 10, 0, 0)
+		     elseif key == 'l'    then c:relative_move(10, 0, 0, 0)
+		     elseif key == 'h'    then c:relative_move(-10, 0, 0, 0)
+		     elseif key == ','    then c:relative_move(-30, 0, 0, 0)
+		     elseif key == '.'    then c:relative_move(30, 0, 0, 0)
+		     elseif key == 'Up'   then c:relative_move(0, -20, 0, 40)
+		     elseif key == 'Down' then c:relative_move(0, 10, 0, -20)
+		     elseif key == 'Right'then c:relative_move(-20, 0, 40, 0)
+		     elseif key == 'Left' then c:relative_move(10, 0, -20, 0)
 		     else keygrabber.stop() end
 		end)
 	end),

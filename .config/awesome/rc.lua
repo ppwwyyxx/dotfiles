@@ -7,9 +7,8 @@ naughty = require("naughty")
 -- Themes define colours, icons, and wallpapers
 beautiful.init(awful.util.getdir("config") .. "/rc/theme.lua")
 
-
 os.setlocale("")
--- dbus.release_name("session", "org.freedesktop.Notifications")
+dbus.release_name("session", "org.freedesktop.Notifications")
 
 ROOT_KEYS = {}
 

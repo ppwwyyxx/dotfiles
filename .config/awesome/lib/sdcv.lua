@@ -13,6 +13,9 @@ return function()
   end
   _old_word = word
 
-  local ans = myutil.rexec("sdcv -n --utf8-output '"..word.."'")
-  _dict_notify = naughty.notify({text = ans, timeout = 5, width = 1020})
+  awful.spawn.easy_async(
+    "sdcv -n --utf8-output '"..word.."'",
+    function(stdout, stderr, exitreason, exitcode)
+      _dict_notify = naughty.notify({text = stdout, timeout = 5, width = 1020})
+    end)
 end

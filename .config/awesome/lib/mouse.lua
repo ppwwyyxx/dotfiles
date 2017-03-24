@@ -41,6 +41,7 @@ return function()
          elseif key == 'p' then movemouse_perc(0.85, 0.2)
          elseif key == '.' then movemouse_perc(0.85, 0.8)
 
+         -- TODO root.fake_input
          elseif key == ' ' then       -- TODO how to click properly??
              exec("xdotool click 1")
          elseif key == 'r' then

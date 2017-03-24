@@ -67,4 +67,4 @@ function run_or_raise(cmd, properties, beforemove)
 	awful.spawn(cmd)
 end
 
-return run_or_raise
+  return run_or_raise

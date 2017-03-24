@@ -1,15 +1,16 @@
 -- Text Edit Keys
-local run_or_raise = require("lib/run_or_raise")
 local myutil = require('lib/myutil')
-local text_edit_key = myutil.join(
-	awful.key({altkey}, 'f',         function(c) sendkey(c, 'ctrl+Right') end),
-	awful.key({altkey}, 'b',         function(c) sendkey(c, 'ctrl+Left') end),
-	awful.key({'Control'}, 'd',      function(c) sendkey(c, 'Home') end),
-	awful.key({'Control'}, 'e',      function(c) sendkey(c, 'End') end)
-)
-local function bind_text_key(client)
-	client:keys(myutil.join(client:keys(), text_edit_key))
-end
+--[[
+   [local text_edit_key = myutil.join(
+	 [  awful.key({altkey}, 'f',         function(c) sendkey(c, 'ctrl+Right') end),
+	 [  awful.key({altkey}, 'b',         function(c) sendkey(c, 'ctrl+Left') end),
+	 [  awful.key({'Control'}, 'd',      function(c) sendkey(c, 'Home') end),
+	 [  awful.key({'Control'}, 'e',      function(c) sendkey(c, 'End') end)
+   [)
+   [local function bind_text_key(client)
+	 [  client:keys(myutil.join(client:keys(), text_edit_key))
+   [end
+   ]]
 
 awful.rules.rules = {
 { rule = { },     -- default
@@ -20,7 +21,7 @@ awful.rules.rules = {
 		keys = keys.client_keys,
 		buttons = keys.client_buttons,
     placement = awful.placement.no_overlap+awful.placement.no_offscreen,
-    screen = awful.screen.preferred
+    screen = awful.screen.preferred,
 	}},
 
 { rule = { class = "Chromium" },
@@ -29,7 +30,9 @@ awful.rules.rules = {
       keys.client_keys,
       awful.key({'Control'}, 'q', function(c)
         myutil.rexec('sleep 0.3')
-        myutil.sendkey(c, 'Tab Escape Ctrl+w')
+        awful.key.execute({}, "Tab")
+        awful.key.execute({}, "Escape")
+        awful.key.execute({"Control"}, "w")
       end))
   }},
 
@@ -58,21 +61,31 @@ awful.rules.rules = {
 	properties = { above = true, }
 },
 
-{ rule = {instance = 'gimp'}, properties = { border_width = 3 } },
+{ rule = {instance = 'gimp'},
+  properties = { border_width = 3 },
+  -- bring up all other gimp
+  callback = function(c)
+    for _, j in ipairs(client.get()) do
+      if j.instance == 'gimp' then
+        j:raise()
+      end
+    end
+  end
+},
 
 -- chat:
 { rule_any = { name = {'Telegram', 'plaidchat', 'WeChat', 'Nocturn'} },
-    callback = function(c)
-        c:move_to_tag(tags[screen.primary][3])
-        local g = c:geometry()
-        if c.name == "Nocturn" then
-           myutil.moveresize_abs(-400, 0, 400, 1, c)
-        elseif c.name:find("WeChat") ~= nil then
-           myutil.moveresize_abs(0, 0, 900, 0.8, c)
-        elseif c.name:find("Telegram") ~= nil then
-           myutil.moveresize_abs(-1200, -800, 1000, 800, c)
-        end
-    end}
+  properties = { tag = "chat" },
+  callback = function(c)
+    local g = c:geometry()
+    if c.name == "Nocturn" then
+       myutil.moveresize_abs(-400, 0, 400, 1, c)
+    elseif c.name:find("WeChat") ~= nil then
+       myutil.moveresize_abs(0, 0, 900, 0.8, c)
+    elseif c.name:find("Telegram") ~= nil then
+       myutil.moveresize_abs(-1200, -800, 1000, 800, c)
+    end
+  end}
 } -- the end
 
 client.connect_signal(
@@ -98,15 +111,5 @@ client.connect_signal(
 
 client.connect_signal("focus", function(c)
   c.border_color = beautiful.border_focus
-  if c.instance == 'gimp' then
-    local curtags = awful.tag.selectedlist()
-    for _, curtag in ipairs(curtags) do
-      for _, j in ipairs(curtag:clients()) do
-        if j.instance == 'gimp' then
-          j:raise()
-        end
-      end
-    end
-  end
 end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
