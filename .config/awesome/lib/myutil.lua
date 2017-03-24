@@ -5,6 +5,22 @@ sexec             = awful.util.spawn_with_shell,
 join              = awful.util.table.join,
 }
 
+-- string split by sep
+function myutil.split(str, sep)
+   local result = {}
+   local regex = ("([^%s]+)"):format(sep)
+   for each in str:gmatch(regex) do
+      table.insert(result, each)
+   end
+   return result
+end
+
+-- http://lua-users.org/wiki/StringTrim
+local match = string.match
+function myutil.trim(s)
+  return match(s,'^()%s*$') and '' or match(s,'^%s*(.*%S)')
+end
+
 -- TODO use naughty
 function myutil.notify(title, text, urgency)	-- normal, low, critical
 	title = tostring(title)
@@ -49,16 +65,6 @@ function myutil.moveresize_abs(x, y, w, h, c)
    if y < 0 then y = scr.height + y end
 	awful.client.moveresize(-g.x + scr.x + x, -g.y + scr.y + y,
 						-g.width + w, -g.height + h, c)
-end
-
--- string split by sep
-function myutil.split(str, sep)
-   local result = {}
-   local regex = ("([^%s]+)"):format(sep)
-   for each in str:gmatch(regex) do
-      table.insert(result, each)
-   end
-   return result
 end
 
 function myutil.get_active_iface()

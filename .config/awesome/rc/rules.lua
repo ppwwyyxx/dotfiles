@@ -19,8 +19,8 @@ awful.rules.rules = {
 		border_width = beautiful.border_width,
 		border_color = beautiful.border_normal,
 		focus = true,
-		keys = config.clientkeys,
-		buttons = config.clientbuttons,
+		keys = CLIENT_KEYS,
+		buttons = CLIENT_BUTTONS,
       placement = awful.placement.no_overlap+awful.placement.no_offscreen,
 	}
 }, {

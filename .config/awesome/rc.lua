@@ -28,8 +28,6 @@ function loadrc(name, module)
    return result
 end
 
-config = {}
-
 ROOT_KEYS = {}
 
 require("rc/error")
@@ -38,7 +36,7 @@ appearance = require("rc/appearance")
 menu = require("rc/menu")
 tags = require("rc/tags")  -- screen -> table of tags
 bar = require("rc/bar")
-loadrc("keys")
+keys = require("rc/keys")
 loadrc("rules")
 
 root.keys(ROOT_KEYS)
