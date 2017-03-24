@@ -5,8 +5,10 @@ local const = require('rc/const')
 local modkey = const.modkey
 
 local function colored_text(text, color, extra_attr)
-   assert(color)
    extra_attr = extra_attr or ""
+   if not color then  -- having span is better for appearance
+     return string.format("<span %s>%s</span>", extra_attr, text)
+   end
    return string.format(
       "<span foreground=\"%s\" %s>%s</span>", color, extra_attr, text)
 end
@@ -128,7 +130,7 @@ local function volumectl(mode)
    function update_cb() volumectl("update") end
 
    if mode == "update" then
-      local volume = myutil.rexec("pamixer --get-volume")
+      local volume = myutil.trim(myutil.rexec("pamixer --get-volume"))
       if not tonumber(volume) then
          volume_widget:set_markup(colored_text('ERR', 'red'))
       else
@@ -136,7 +138,7 @@ local function volumectl(mode)
          if muted == "true" then
             volume = colored_text('♫M', 'red')
          else
-            volume = '♫' .. volume
+            volume = colored_text('♫' .. volume, 'green')
          end
          volume_widget:set_markup(volume)
       end
@@ -176,13 +178,10 @@ local TAG_LIST_BUTTONS = awful.util.table.join(
     awful.button({}, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
 )
 
-local task_menu_instance
+local task_menu_instance = nil
 TASK_LIST_BUTTONS = awful.util.table.join(
 	  awful.button({}, 1, function(c)
-      if task_menu_instance then
-          task_menu_instance:hide()
-          task_menu_instance = nil
-      end
+      task_menu_instance:hide()
       if c == client.focus and not c.minimized then
           c.minimized = true
       else
@@ -192,12 +191,12 @@ TASK_LIST_BUTTONS = awful.util.table.join(
     end),
     awful.button({}, 2, function(c) c:kill() end),
     awful.button({}, 3, function()
-      if task_menu_instance then
-          task_menu_instance:hide()
-          task_menu_instance = nil
-      else
-          task_menu_instance = awful.menu.clients({ width=250 })
+      if not task_menu_instance then
+        task_menu_instance = awful.menu.clients({ width=250 })
+        return
       end
+      task_menu_instance:update()
+      task_menu_instance:toggle()
     end),
     awful.button({}, 4, function()
                  awful.client.focus.byidx(1)
@@ -224,7 +223,6 @@ awful.screen.connect_for_each_screen(function(s)
     local tag_list = awful.widget.taglist(s, awful.widget.taglist.filter.all, TAG_LIST_BUTTONS)
     local task_list = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, TASK_LIST_BUTTONS)
 
-    local my_wibox = awful.wibox({ position = "top", screen = s, height = 20 })
     --my_promptbox[s] = awful.widget.prompt()
 
     local left_layout = wibox.layout.fixed.horizontal()
@@ -255,7 +253,14 @@ awful.screen.connect_for_each_screen(function(s)
     layout:set_middle(task_list)
     layout:set_right(right_layout)
 
-    my_wibox:set_widget(layout)
+    local wibar = awful.wibar({
+      position = "top", stretch = true,
+      border_width = 0,
+      opacity = 0.9,
+      ontop = false, screen = s,
+      height = s.geometry.height * 0.017,
+      widget = layout
+    })
 end)
 
 return {}
