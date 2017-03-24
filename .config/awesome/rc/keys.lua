@@ -7,6 +7,9 @@ local mouse_control = require("lib/mouse")
 local sdcv_selection = require("lib/sdcv")
 local web_cmd = require("lib/web_cmd")
 
+local revelation = require('revelation')  -- https://github.com/guotsuan/awesome-revelation
+revelation.init()
+
 ROOT_KEYS = gears.table.join(
 	ROOT_KEYS,
 	awful.key({modkey}, "n", function() awful.screen.focus_relative(1) end),
@@ -124,6 +127,8 @@ ROOT_KEYS = gears.table.join(
        end)
 	end),
 
+  awful.key({'Control'}, 'Up', revelation),
+
   -- toggle show desktop
 	awful.key({modkey}, "d", function()
 		local curtags = awful.tag.selectedlist()
@@ -209,7 +214,9 @@ local CLIENT_KEYS = gears.table.join(
 	awful.key({altkey}, "F12",  function(c) c.above = not c.above            end),
 	awful.key({altkey}, "F9",   function(c) c.minimized = true end),
   awful.key({altkey}, "F10",  toggle_maximize),
-  awful.key({modkey}, "Up",  toggle_maximize)
+  awful.key({modkey}, "Up",  function(c)
+    myutil.moveresize_abs(0, 0, 1, 1, c)
+  end)
 )
 
 local CLIENT_BUTTONS = gears.table.join(
