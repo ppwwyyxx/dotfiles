@@ -26,7 +26,7 @@ awful.rules.rules = {
 		keys = keys.client_keys,
 		buttons = keys.client_buttons,
     placement = awful.placement.no_overlap+awful.placement.no_offscreen,
-    titlebars_enabled = false,
+    titlebars_enabled = true,
     screen = awful.screen.preferred,
 	}},
 
@@ -128,7 +128,7 @@ local titlebar_buttons = gears.table.join(
 )
 
 client.connect_signal("request::titlebars", function(c)
-  awful.titlebar(c):setup {
+  awful.titlebar(c, {size = 20}):setup {
     { -- Left
       awful.titlebar.widget.iconwidget(c),
       buttons = titlebar_buttons,
@@ -152,5 +152,6 @@ client.connect_signal("request::titlebars", function(c)
     },
     layout = wibox.layout.align.horizontal
   }
+  awful.titlebar.hide(c)
 end)
 -- f]]

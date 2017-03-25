@@ -7,7 +7,9 @@ local mouse_control = require("lib/mouse")
 local sdcv_selection = require("lib/sdcv")
 local web_cmd = require("lib/web_cmd")
 
-local revelation = require('revelation')  -- https://github.com/guotsuan/awesome-revelation
+-- https://github.com/guotsuan/awesome-revelation
+-- forked at 03/24/2017
+local revelation = require('revelation')
 revelation.init()
 
 ROOT_KEYS = gears.table.join(

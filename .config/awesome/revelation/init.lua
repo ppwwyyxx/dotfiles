@@ -12,6 +12,7 @@
 --
 
 
+local myutil = require("lib/myutil")
 local beautiful    = require("beautiful")
 local wibox        = require("wibox")
 local awful        = require('awful')
@@ -40,10 +41,12 @@ local function debuginfo(message)
     nid = naughty.notify({ text = tostring(message), timeout = 10 })
 end
 
-local delayed_call = (type(timer) ~= 'table' and  require("gears.timer").delayed_call)
+local refresh_awesome = function()
+  capi.awesome.emit_signal("refresh")
+end
 
-local hintbox = {} -- Table of letter wiboxes with characters as the keys
-local hintindex = {} -- Table of visible clients with the hint letter as the keys
+local hintbox = {} -- char -> wibox
+local hintindex = {} -- char -> client
 
 local clients = {} --Table of clients to be exposed after fitlering
 local clientData = {} -- table that holds the positions and sizes of floating clients
@@ -53,15 +56,6 @@ local revelation = {
     tag_name = "Revelation",
     charorder = "jkluiopyhnmfdsatgvcewqzx1234567890",
 
-    -- Match function can be defined by user.
-    -- Must accept a `rule` and `client` and return `boolean`.
-    -- The rule forms follow `awful.rules` syntax except we also check the
-    -- special `rule.any` key. If its true, then we use the `match.any` function
-    -- for comparison.
-    match = {
-        exact = aw_rules.match,
-        any   = aw_rules.match_any
-    },
     property_to_watch={
       minimized            = false,
       fullscreen           = false,
@@ -71,6 +65,7 @@ local revelation = {
       ontop                = false,
       above                = false,
       below                = false,
+      floating             = false,
     },
     curr_tag_only = false,
     font = "monospace 30",
@@ -108,95 +103,29 @@ end
 -- @param rule The rule. Conforms to awful.rules syntax.
 -- @param clients A table of clients to check.
 -- @param t The tag to put matching clients.
-local function match_clients(rule, _clients, t)
-    local mf = rule.any and revelation.match.any or revelation.match.exact
-    local flt
-
-    for _, c in pairs(_clients) do
-        if mf(c, rule) then
-            -- Store geometry before setting their tags
-            clientData[c] = {}
-            clientData[c]["geometry"] = c:geometry()
-            flt = awful.client.property.get(c, "floating")
-            if flt ~= nil then
-                clientData[c]["floating"] = flt
-                awful.client.property.set(c, "floating", false)
-            end
-
-
-            for k,v in pairs(revelation.property_to_watch) do
-                clientData[c][k] = c[k]
-                c[k] = v
-            end
-            c:toggle_tag(t)
-            if c:isvisible() then
-                table.insert(clients, c)
-            end
-        end
-    end
-
-end
-
-
--- Implement Exposé (ala Mac OS X).
---
--- @param rule A table with key and value to match. [{class=""}]
-function revelation.expose(args)
-    args = args or {}
-    local rule = args.rule or {}
-    local curr_tag_only = args.curr_tag_only or revelation.curr_tag_only
-
-    local t = {}  -- screen idx -> tag
-    local zt = {} -- -> zoomed tag
-
-    clients = {}
-    clientData = {}
-    local base_tname = revelation.tag_name
-
-    for scr in capi.screen do
-        local tags = awful.tag.new(
-            {base_tname, base_tname .. '_zoom'},
-            scr, awful.layout.suit.fair)
-        t[scr] = tags[1]
-        zt[scr] = tags[2]
-
-        if curr_tag_only then
-            match_clients(rule, scr.clients, t[scr])
-        else
-            match_clients(rule, capi.client.get(scr), t[scr])
+local function match_clients(rule, available_clients, t)
+    local match_func = rule.any and awful.rules.match_any or awful.rules.match
+    for _, c in pairs(available_clients) do
+      if match_func(c, rule) then
+        clientData[c] = {}
+        clientData[c]["geometry"] = c:geometry()
+        for k, v in pairs(revelation.property_to_watch) do
+          clientData[c][k] = c[k]
+          c[k] = v
         end
 
-        t[scr]:view_only()
-    end
-
-    if type(delayed_call) == 'function' then
-        capi.awesome.emit_signal("refresh")
-    end
-    -- No need for awesome WM 3.5.6: capi.awesome.emit_signal("refresh")
-    --
-    local status, err=pcall(revelation.expose_callback, t, zt, clients)
-
-    if not status then
-        debuginfo('Oops!, something is wrong in revelation.expose_callback!')
-
-        if err.msg then
-            debuginfo(err.msg)
-        end
-
-        if err.code then
-            debuginfo('error code is '.. tostring(err.code))
-        end
-
-        revelation.restore(t, zt)
+        c:toggle_tag(t)
+        table.insert(clients, c)
+      end
     end
 end
+
 
 
 function revelation.restore(t, zt)
     for s in capi.screen do
         -- TODO doens't work with two extra tags
         awful.tag.history.restore(s)
-        t[s].screen = nil
     end
 
     capi.keygrabber.stop()
@@ -208,8 +137,6 @@ function revelation.restore(t, zt)
           if v ~= nil then
             if k== "geometry" then
               c:geometry(v)
-            elseif k == "floating" then
-              awful.client.property.set(c, "floating", v)
             else
               c[k]=v
             end
@@ -218,28 +145,21 @@ function revelation.restore(t, zt)
       end
     end
 
-    for scr in capi.screen do
-        t[scr]:delete()
-        zt[scr]:delete()
-    end
-
     for i,j in pairs(hintindex) do
         hintbox[i].visible = false
     end
+    for scr in capi.screen do
+        zt[scr]:delete()
+        t[scr]:delete()
+    end
 end
 
-local function hintbox_display_toggle(c, show)
-    for char, thisclient in pairs(hintindex) do
-        if char and char ~= c then
-            hintindex[char] = thisclient
-            if show then
-                hintbox[char].visible = true
-            else
-                hintbox[char].visible = false
-            end
-
-        end
+local function hintbox_display_toggle(except_c, show)
+  for char, thisclient in pairs(hintindex) do
+    if char ~= except_c then
+      hintbox[char].visible = show
     end
+  end
 end
 
 local function hintbox_pos(char)
@@ -249,199 +169,149 @@ local function hintbox_pos(char)
     hintbox[char].y = math.floor(geom.y + geom.height/2 - revelation.hintsize/2)
 end
 
+local function hide_all_boxes()
+  for _, b in pairs(hintbox) do
+    b.visible = false
+  end
+end
 
-function revelation.expose_callback(t, zt, clientlist)
-
+local function expose_callback(t, zt, clientlist)
+    -- draw wiboxes
     hintindex = {}
-    for i,thisclient in pairs(clientlist) do
-        -- Move wiboxes to center of visible windows and populate hintindex
-        local char = revelation.charorder:sub(i,i)
-        if char and char ~= '' then
-            hintindex[char] = thisclient
-            hintbox_pos(char)
-            hintbox[char].visible = true
-            hintbox[char].screen = thisclient.screen
-        end
+    for i, cur_client in pairs(clientlist) do
+      local char = revelation.charorder:sub(i,i)
+      if char and char ~= '' then
+        hintindex[char] = cur_client
+        local cur_wibox = hintbox[char]
+        hintbox_pos(char)
+        cur_wibox.visible = true
+        cur_wibox.screen = cur_client.screen
+      end
     end
 
     local zoomed = false
-    local zoomedClient = nil
+    local zoomed_client = nil
     local key_char_zoomed = nil
 
     capi.keygrabber.run(function (mod, key, event)
-        local c
+        -- avoid handling shift and release
         if event == "release" then return true end
+        if key == "Shift_L" or key == "Shift_R" then return true end
 
+        -- handle upper case: either zoom or unzoom
         if awful.util.table.hasitem(mod, "Shift") then
             key_char = string.lower(key)
-            c = hintindex[key_char]
+            local c = hintindex[key_char]
+
+            -- not zoom -> zoom
             if not zoomed and c ~= nil then
-                --debuginfo(c.screen)
                 zt[c.screen]:view_only()
                 c:toggle_tag(zt[c.screen])
-                zoomedClient = c
+                zoomed_client = c
                 key_char_zoomed = key_char
                 zoomed = true
-                -- update the position of this hintbox, since it is zoomed
-                if type(delayed_call) == 'function' then
-                    capi.awesome.emit_signal("refresh")
-                end
+                -- refresh the clients, since it is moved
+                refresh_awesome()
                 hintbox_pos(key_char)
                 hintbox_display_toggle(key_char, false)
-
-
-            elseif zoomedClient ~= nil then
-                awful.tag.history.restore(zoomedClient.screen)
-                zoomedClient:toggle_tag(zt[zoomedClient.screen])
-                hintbox_display_toggle(key_char_zoomed,  true)
-                if type(delayed_call) == 'function' then
-                    capi.awesome.emit_signal("refresh")
-                end
+            -- zoom -> not zoom.
+            elseif zoomed_client ~= nil then
+                awful.tag.history.restore(zoomed_client.screen)
+                zoomed_client:toggle_tag(zt[zoomed_client.screen])
+                hintbox_display_toggle(key_char_zoomed, true)
+                refresh_awesome()
                 hintbox_pos(key_char_zoomed)
 
-                zoomedClient = nil
+                zoomed_client = nil
                 zoomed = false
                 key_char_zoomed = nil
             end
+            return true
         end
 
+        -- handle selection
         if hintindex[key] then
-            --client.focus = hintindex[key]
-            --hintindex[key]:raise()
-
-            selectfn(restore,t, zt)(hintindex[key])
-
-            for i,j in pairs(hintindex) do
-                hintbox[i].visible = false
-            end
-
-            return false
+          selectfn(restore, t, zt)(hintindex[key])
+          hide_all_boxes()
+          return false
         end
 
-        if key == "Escape" then
-            if zoomedClient ~= nil then
-                awful.tag.history.restore(zoomedClient.screen)
-                zoomedClient:toggle_tag(zt[zoomedClient.screen])
-                hintbox_display_toggle(string.lower(key),  true)
-                if type(delayed_call) == 'function' then
-                    capi.awesome.emit_signal("refresh")
-                end
-                hintbox_pos(key_char_zoomed)
+        -- any all other keys are cancel
+        if zoomed_client ~= nil then
+            awful.tag.history.restore(zoomed_client.screen)
+            zoomed_client:toggle_tag(zt[zoomed_client.screen])
+            hintbox_display_toggle(string.lower(key),  true)
+            refresh_awesome()
+            hintbox_pos(key_char_zoomed)
 
-                zoomedClient = nil
-                zoomed = false
-            else
-                for i,j in pairs(hintindex) do
-                    hintbox[i].visible = false
-                end
-                revelation.restore(t, zt)
-                return false
-            end
+            zoomed_client = nil
+            zoomed = false
+            return true
+        else
+          hide_all_boxes()
+          revelation.restore(t, zt)
+          return false
         end
-
-        return true
     end)
+    -- end of keyboard
 
     local pressedMiddle = false
-
+    local pressedRight = false
     local lastClient = nil
     capi.mousegrabber.run(function(mouse)
-        local c
-
-        if type(awful.client.object) == 'table' then
-            c = capi.mouse.current_client
-        else
-            c = awful.mouse.client_under_pointer()
-        end
+        local c = capi.mouse.current_client
         if c then
-          lastClient = c
+          lastClient = c  -- continuous caching state
         else
           local current_wibox = capi.mouse.current_wibox
           if current_wibox then
-            for i = 1, #revelation.charorder do
-              local char = revelation.charorder:sub(i,i)
-              if hintbox[char] == current_wibox then
-                c = lastClient
-                break
-              end
-            end
+            local check_this_wibox = awful.util.table.hasitem(hintbox, current_wibox)
+            if check_this_wibox then c = lastClient end
           end
         end
-        local key_char = awful.util.table.hasitem(hintindex, c)
-        if mouse.buttons[1] == true then
-            if c ~= nil then
-                selectfn(restore, t, zt)(c)
 
-                for i,j in pairs(hintindex) do
-                    hintbox[i].visible = false
-                end
-                return false
-            else
-                return true
-            end
+        -- c can be nil
+        local key_char = awful.util.table.hasitem(hintindex, c)
+
+        if mouse.buttons[1] == true then
+          if c ~= nil then
+            selectfn(restore, t, zt)(c)
+            hide_all_boxes()
+            return false
+          else
+            return true
+          end
         elseif mouse.buttons[2] == true and pressedMiddle == false and c ~= nil then
-            -- is true whenever the button is down.
             pressedMiddle = true
-            -- extra variable needed to prevent script from spam-closing windows
-            --
-            if zoomed == true and zoomedClient ~=nil then
-                awful.tag.history.restore(zoomedClient.screen)
-                zoomedClient:toggle_tag(zt[zoomedClient.screen])
-            end
+
             c:kill()
             hintbox[key_char].visible = false
             hintindex[key_char] = nil
             local pos = awful.util.table.hasitem(clients, c)
             table.remove(clients, pos)
 
-
-            if zoomed == true and zoomedClient ~=nil then
+            -- unzoom
+            if zoomed == true and zoomed_client ~=nil then
+                -- zoomed_client might have been killed
+                awful.tag.history.restore(zoomed_client.screen)
+                zoomed_client:toggle_tag(zt[zoomed_client.screen])
                 hintbox_display_toggle(key_char_zoomed, true)
-                zoomedClient = nil
+                zoomed_client = nil
                 zoomed = false
                 key_char_zoomed = nil
             end
-
             return true
-
         elseif mouse.buttons[2] == false and pressedMiddle == true then
             pressedMiddle = false
             for key, _ in pairs(hintindex) do
                 hintbox_pos(key)
             end
-        elseif mouse.buttons[3] == true then
-            if not zoomed and c ~= nil then
-                zt[c.screen]:view_only()
-                c:toggle_tag(zt[c.screen])
-                if key_char ~= nil then
-                    hintbox_display_toggle(key_char, false)
-                    if type(delayed_call) == 'function' then
-                        capi.awesome.emit_signal("refresh")
-                    end
-                    hintbox_pos(key_char)
-                end
-                zoomedClient = c
-                zoomed = true
-                key_char_zoomed = key_char
-            elseif zoomedClient ~= nil then
-                awful.tag.history.restore(zoomedClient.screen)
-                zoomedClient:toggle_tag(zt[zoomedClient.screen])
-                hintbox_display_toggle(key_char_zoomed, true)
-                if type(delayed_call) == 'function' then
-                    capi.awesome.emit_signal("refresh")
-                end
-                hintbox_pos(key_char_zoomed)
-
-                zoomedClient = nil
-                zoomed = false
-                key_char_zoomed = nil
-            end
+            return true
         end
 
         return true
         --Strange but on my machine only fleur worked as a string.
-        --stole it from
-        --https://github.com/Elv13/awesome-configs/blob/master/widgets/layout/desktopLayout.lua#L175
+        --stole it from https://github.com/Elv13/awesome-configs/blob/master/widgets/layout/desktopLayout.lua#L175
     end,"fleur")
 end
 
@@ -450,11 +320,6 @@ function revelation.init(args)
     args = args or {}
 
     revelation.tag_name = args.tag_name or revelation.tag_name
-    if args.match then
-      revelation.match.exact = args.match.exact or revelation.match.exact
-      revelation.match.any = args.match.any or revelation.match.any
-    end
-
     revelation.charorder = args.charorder or revelation.charorder
 
     for i = 1, #revelation.charorder do
@@ -475,6 +340,48 @@ function revelation.init(args)
         widget = letterbox,
         visible = false,
       })
+    end
+end
+
+
+-- @param rule A table with key and value to match. [{class=""}]
+function revelation.expose(args)
+    args = args or {}
+    local rule = args.rule or {}
+    local curr_tag_only = args.curr_tag_only or revelation.curr_tag_only
+
+    local t = {}  -- screen -> tag
+    local zt = {} -- -> zoomed tag
+
+    clients = {}
+    clientData = {}
+    local base_tname = revelation.tag_name
+
+    for scr in capi.screen do
+        local tags = awful.tag.new(
+            {base_tname, base_tname .. '_zoom'},
+            scr, awful.layout.suit.fair)
+        t[scr] = tags[1]
+        zt[scr] = tags[2]
+
+        if curr_tag_only then
+            match_clients(rule, scr.clients, t[scr])
+        else
+            match_clients(rule, scr.all_clients, t[scr])
+        end
+
+        t[scr]:view_only()
+    end
+
+    refresh_awesome()
+
+    local status, err = pcall(expose_callback, t, zt, clients)
+
+    if not status then
+      debuginfo('Oops!, something is wrong in revelation.expose_callback!')
+      if err.msg then debuginfo(err.msg) end
+      if err.code then debuginfo('error code is '.. tostring(err.code)) end
+      revelation.restore(t, zt)
     end
 end
 
