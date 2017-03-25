@@ -189,8 +189,6 @@ local function expose_callback(t, zt, clientlist)
       end
     end
 
-    local zoomed = false
-    local zoomed_client = nil
     local key_char_zoomed = nil
 
     capi.keygrabber.run(function (mod, key, event)
@@ -204,29 +202,27 @@ local function expose_callback(t, zt, clientlist)
             local c = hintindex[key_char]
 
             -- not zoom -> zoom
-            if not zoomed and c ~= nil then
+            if not key_char_zoomed and c ~= nil then
                 zt[c.screen]:view_only()
                 c:toggle_tag(zt[c.screen])
-                zoomed_client = c
                 key_char_zoomed = key_char
-                zoomed = true
                 -- refresh the clients, since it is moved
                 refresh_awesome()
                 hintbox_pos(key_char)
                 hintbox_display_toggle(key_char, false)
+                return true
             -- zoom -> not zoom.
-            elseif zoomed_client ~= nil then
+            elseif key_char_zoomed ~= nil then
+                local zoomed_client = hintindex[key_char_zoomed]
                 awful.tag.history.restore(zoomed_client.screen)
                 zoomed_client:toggle_tag(zt[zoomed_client.screen])
                 hintbox_display_toggle(key_char_zoomed, true)
                 refresh_awesome()
                 hintbox_pos(key_char_zoomed)
 
-                zoomed_client = nil
-                zoomed = false
                 key_char_zoomed = nil
+                return true
             end
-            return true
         end
 
         -- handle selection
@@ -237,15 +233,15 @@ local function expose_callback(t, zt, clientlist)
         end
 
         -- any all other keys are cancel
-        if zoomed_client ~= nil then
+        if key_char_zoomed ~= nil then
+            local zoomed_client = hintindex[key_char_zoomed]
             awful.tag.history.restore(zoomed_client.screen)
             zoomed_client:toggle_tag(zt[zoomed_client.screen])
-            hintbox_display_toggle(string.lower(key),  true)
+            hintbox_display_toggle(string.lower(key), true)
             refresh_awesome()
             hintbox_pos(key_char_zoomed)
 
-            zoomed_client = nil
-            zoomed = false
+            key_char_zoomed = nil
             return true
         else
           hide_all_boxes()
@@ -255,10 +251,22 @@ local function expose_callback(t, zt, clientlist)
     end)
     -- end of keyboard
 
-    local pressedMiddle = false
-    local pressedRight = false
+    local pressing_middle = false
     local lastClient = nil
     capi.mousegrabber.run(function(mouse)
+        -- state machine of "first press event"
+        local on_press_middle = (mouse.buttons[2] == true and pressing_middle == false)
+        local on_release_middle = (mouse.buttons[2] == false and pressing_middle == true)
+        if on_press_middle then pressing_middle = true end
+        if on_release_middle then -- allow release happen anywhere
+          pressing_middle = false
+          for key, _ in pairs(hintindex) do
+              hintbox_pos(key)
+          end
+          return true
+        end
+
+        -- get the chosen client
         local c = capi.mouse.current_client
         if c then
           lastClient = c  -- continuous caching state
@@ -269,46 +277,33 @@ local function expose_callback(t, zt, clientlist)
             if check_this_wibox then c = lastClient end
           end
         end
-
-        -- c can be nil
         local key_char = awful.util.table.hasitem(hintindex, c)
 
+        -- if (mouse.buttons[1] or mouse.buttons[2]) and (not c) then return false end  -- click on nothing
         if mouse.buttons[1] == true then
-          if c ~= nil then
-            selectfn(restore, t, zt)(c)
-            hide_all_boxes()
-            return false
-          else
-            return true
-          end
-        elseif mouse.buttons[2] == true and pressedMiddle == false and c ~= nil then
-            pressedMiddle = true
+          selectfn(restore, t, zt)(c)
+          hide_all_boxes()
+          return false
+        elseif on_press_middle then
+          c:kill()
+          hintbox[key_char].visible = false
+          hintindex[key_char] = nil
+          local pos = awful.util.table.hasitem(clients, c)
+          table.remove(clients, pos)
 
-            c:kill()
-            hintbox[key_char].visible = false
-            hintindex[key_char] = nil
-            local pos = awful.util.table.hasitem(clients, c)
-            table.remove(clients, pos)
-
-            -- unzoom
-            if zoomed == true and zoomed_client ~=nil then
-                -- zoomed_client might have been killed
+          -- unzoom
+          if key_char_zoomed ~= nil then
+              -- zoomed_client might have been killed
+              local zoomed_client = hintbox[key_char_zoomed]
+              if zoomed_client ~= nil then
                 awful.tag.history.restore(zoomed_client.screen)
                 zoomed_client:toggle_tag(zt[zoomed_client.screen])
-                hintbox_display_toggle(key_char_zoomed, true)
-                zoomed_client = nil
-                zoomed = false
-                key_char_zoomed = nil
-            end
-            return true
-        elseif mouse.buttons[2] == false and pressedMiddle == true then
-            pressedMiddle = false
-            for key, _ in pairs(hintindex) do
-                hintbox_pos(key)
-            end
-            return true
+              end
+              hintbox_display_toggle(key_char_zoomed, true)
+              key_char_zoomed = nil
+          end
+          return true
         end
-
         return true
         --Strange but on my machine only fleur worked as a string.
         --stole it from https://github.com/Elv13/awesome-configs/blob/master/widgets/layout/desktopLayout.lua#L175
