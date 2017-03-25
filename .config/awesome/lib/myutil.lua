@@ -104,4 +104,16 @@ function myutil.get_active_iface()
      return netif
 end
 
+function myutil.refresh_awesome()
+  awesome.emit_signal("refresh")
+end
+
+function myutil.remove_by_value(tbl, val)
+  local pos = awful.util.table.hasitem(tbl, val)
+  if pos then
+    table.remove(tbl, pos)
+  end
+  return pos
+end
+
 return myutil

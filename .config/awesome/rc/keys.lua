@@ -100,7 +100,26 @@ ROOT_KEYS = gears.table.join(
 	awful.key({altkey}, "Tab", function()
         local nowc = client.focus
         awful.client.focus.history.previous()
-        if client.focus then client.focus:raise() end
+        local newc = client.focus
+        if newc then newc:raise()
+        else return end
+
+        -- get all clients to iterate
+        local tags = newc.screen.selected_tags
+        local all_c = {}
+        for _, t in ipairs(tags) do
+          all_c = gears.table.join(all_c, t:clients())
+        end
+        -- put nowc and newc at the beginning
+        myutil.remove_by_value(all_c, newc)
+        table.insert(all_c, 1, newc)
+        if nowc then
+          myutil.remove_by_value(all_c, nowc)
+          table.insert(all_c, 1, nowc)
+        end
+        -- start the loop from the third, skipping nowc & newc
+        local next_to_focus = (3-1) % #all_c + 1
+
         keygrabber.run(function(mod, key, event)
             if event == 'release' then
               if key == 'Alt_L' then
@@ -109,13 +128,26 @@ ROOT_KEYS = gears.table.join(
                       awful.client.focus.history.add(client.focus)
                   end
                   keygrabber.stop()
+                  return true
+              elseif key == 'Tab' then
+                return true
               end
             else
               if key == 'Tab' then
-                awful.client.focus.byidx(1)
-                if client.focus then client.focus:raise() end
+                local next_c = all_c[next_to_focus]
+                if not next_c.valid then  -- windows get closed during alt-tab
+                  -- otherwise history might get empty? leads to failure
+                  awful.client.focus.history.add(client.focus)
+                  keygrabber.stop()
+                else
+                  client.focus = next_c
+                  client.focus:raise()
+                  next_to_focus = next_to_focus % #all_c + 1
+                end
+                return true
               end
             end
+            keygrabber.stop()
        end)
 	end),
 
@@ -198,6 +230,8 @@ local CLIENT_KEYS = gears.table.join(
   awful.key({modkey}, "o", function(c)
       if screen.count() == 1 then return end
       c:move_to_screen()
+      myutil.refresh_awesome()
+      c:jump_to()
   end),
 	awful.key({modkey}, "s", function(c) c.sticky = not c.sticky end),
 

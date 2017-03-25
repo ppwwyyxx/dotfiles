@@ -97,6 +97,15 @@ awful.rules.rules = {
   end}
 } -- the end
 
+client.connect_signal("unmanage", function(c)
+  awful.client.focus.history.delete(c)
+  local newc = awful.client.focus.history.get(c.screen, 0)
+
+  if newc then
+    newc:jump_to()
+  end
+end)
+
 -- sloppy focus
 client.connect_signal("mouse::enter", function(c)
   if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier then

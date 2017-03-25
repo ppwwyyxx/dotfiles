@@ -23,10 +23,8 @@ local capi         = {
   mouse          = mouse,
   screen         = screen
 }
-
-local refresh_awesome = function()
-  capi.awesome.emit_signal("refresh")
-end
+local myutil = require('lib/myutil')
+local refresh_awesome = myutil.refresh_awesome
 
 local hint_box = {} -- char -> wibox
 local hint_client = {} -- char -> client
