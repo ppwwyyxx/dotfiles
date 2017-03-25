@@ -78,7 +78,13 @@ local revelation = {
     hintsize = (type(beautiful.xresources) == 'table' and beautiful.xresources.apply_dpi(60) or 60)
 }
 
-
+local function hintbox_vis(vis, except_c)
+  for char, box in pairs(hintbox) do
+    if char ~= except_c then
+      box.visible = vis
+    end
+  end
+end
 
 -- Executed when user selects a client from expose view.
 local function selectfn()
@@ -129,9 +135,9 @@ function revelation.restore()
 
     for _, c in pairs(clients) do
       if clientData[c] then
-        for k,v in pairs(clientData[c]) do
+        for k, v in pairs(clientData[c]) do
           if v ~= nil then
-            if k== "geometry" then
+            if k == "geometry" then
               c:geometry(v)
             else
               c[k]=v
@@ -141,44 +147,30 @@ function revelation.restore()
       end
     end
 
-    for i,j in pairs(hintindex) do
-        hintbox[i].visible = false
-    end
+    hintbox_vis(false, nil)
     for scr in capi.screen do
         rvl_tag_zoom[scr]:delete()
         rvl_tag[scr]:delete()
     end
 end
 
-local function hintbox_display_toggle(except_c, show)
-  for char, thisclient in pairs(hintindex) do
-    if char ~= except_c then
-      hintbox[char].visible = show
-    end
-  end
-end
-
 local function hintbox_pos(char)
-    local client = hintindex[char]
-    local geom = client:geometry()
-    hintbox[char].x = math.floor(geom.x + geom.width/2 - revelation.hintsize/2)
-    hintbox[char].y = math.floor(geom.y + geom.height/2 - revelation.hintsize/2)
-end
-
-local function hide_all_boxes()
-  for _, b in pairs(hintbox) do
-    b.visible = false
-  end
+  local client = hintindex[char]
+  local geom = client:geometry()
+  hintbox[char].x = math.floor(geom.x + geom.width/2 - revelation.hintsize/2)
+  hintbox[char].y = math.floor(geom.y + geom.height/2 - revelation.hintsize/2)
 end
 
 local function zoom_client(char)
   local c = hintindex[char]
-  rvl_tag_zoom[c.screen]:view_only()
-  c:toggle_tag(rvl_tag_zoom[c.screen])
-  -- refresh the clients, since it is moved
-  refresh_awesome()
-  hintbox_pos(char)
-  hintbox_display_toggle(char, false)
+  if c then
+    rvl_tag_zoom[c.screen]:view_only()
+    c:toggle_tag(rvl_tag_zoom[c.screen])
+    -- refresh the clients, since it is moved
+    refresh_awesome()
+    hintbox_pos(char)
+  end
+  hintbox_vis(false, char)
   return true
 end
 
@@ -188,11 +180,11 @@ local function unzoom_client(char)
     awful.tag.history.restore(c.screen)
     c:toggle_tag(rvl_tag_zoom[c.screen])
   end
-  hintbox_display_toggle(char, true)
   if c then
     refresh_awesome()
     hintbox_pos(char)
   end
+  hintbox_vis(true, char)
 end
 
 local function expose_callback(clientlist)
@@ -218,26 +210,23 @@ local function expose_callback(clientlist)
 
         -- handle upper case: either zoom or unzoom
         if awful.util.table.hasitem(mod, "Shift") then
-            key_char = string.lower(key)
-            local c = hintindex[key_char]
+          local real_key = string.lower(key)
 
+          -- zoom -> not zoom.
+          if key_char_zoomed ~= nil then
+            unzoom_client(key_char_zoomed)
+            key_char_zoomed = nil
             -- not zoom -> zoom
-            if not key_char_zoomed and c ~= nil then
-              zoom_client(key_char)
-              key_char_zoomed = key_char
-              return true
-              -- zoom -> not zoom.
-            elseif key_char_zoomed ~= nil then
-              unzoom_client(key_char_zoomed)
-              key_char_zoomed = nil
-              return true
-            end
+          else
+            zoom_client(real_key)
+            key_char_zoomed = real_key
+          end
+          return true
         end
 
         -- handle selection
         if hintindex[key] then
           selectfn()(hintindex[key])
-          hide_all_boxes()
           return false
         end
 
@@ -247,7 +236,6 @@ local function expose_callback(clientlist)
           key_char_zoomed = nil
           return true
         else
-          hide_all_boxes()
           revelation.restore()
           return false
         end
@@ -285,7 +273,6 @@ local function expose_callback(clientlist)
         -- if (mouse.buttons[1] or mouse.buttons[2]) and (not c) then return false end  -- click on nothing
         if mouse.buttons[1] == true then
           selectfn()(c)
-          hide_all_boxes()
           return false
         elseif on_press_middle then
           c:kill()
