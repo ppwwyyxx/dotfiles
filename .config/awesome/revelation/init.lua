@@ -50,7 +50,9 @@ local hintindex = {} -- char -> client
 
 local clients = {} --Table of clients to be exposed after fitlering
 local clientData = {} -- table that holds the positions and sizes of floating clients
-local tagData = {}
+
+local rvl_tag = {}  -- screen -> tag
+local rvl_tag_zoom = {} -- screen -> zoomed tag
 
 local revelation = {
     tag_name = "Revelation",
@@ -79,24 +81,18 @@ local revelation = {
 
 
 -- Executed when user selects a client from expose view.
--- @param restore Function to reset the current tags view.
-local function selectfn(_, t, zt)
-    return function(c)
-        revelation.restore(t, zt)
-        -- Focus and raise
-        --
-        if type(delayed_call) == 'function' then
-            capi.awesome.emit_signal("refresh")
-        end
+local function selectfn()
+  return function(c)
+    revelation.restore()
 
-        if awful.util.table.hasitem(hintindex, c) then
-            if c.minimized then
-                c.minimized = false
-            end
+    refresh_awesome()
 
-            c:jump_to()
-        end
+    if awful.util.table.hasitem(hintindex, c) then
+      -- bring up
+      c.minimized = false
+      c:jump_to()
     end
+  end
 end
 
 -- Tags all matching clients with tag t
@@ -122,7 +118,7 @@ end
 
 
 
-function revelation.restore(t, zt)
+function revelation.restore()
     for s in capi.screen do
         -- TODO doens't work with two extra tags
         awful.tag.history.restore(s)
@@ -149,8 +145,8 @@ function revelation.restore(t, zt)
         hintbox[i].visible = false
     end
     for scr in capi.screen do
-        zt[scr]:delete()
-        t[scr]:delete()
+        rvl_tag_zoom[scr]:delete()
+        rvl_tag[scr]:delete()
     end
 end
 
@@ -175,7 +171,31 @@ local function hide_all_boxes()
   end
 end
 
-local function expose_callback(t, zt, clientlist)
+local function zoom_client(char)
+  local c = hintindex[char]
+  rvl_tag_zoom[c.screen]:view_only()
+  c:toggle_tag(rvl_tag_zoom[c.screen])
+  -- refresh the clients, since it is moved
+  refresh_awesome()
+  hintbox_pos(char)
+  hintbox_display_toggle(char, false)
+  return true
+end
+
+local function unzoom_client(char)
+  local c = hintindex[char]
+  if c then -- client might have closed during the zoom
+    awful.tag.history.restore(c.screen)
+    c:toggle_tag(rvl_tag_zoom[c.screen])
+  end
+  hintbox_display_toggle(char, true)
+  if c then
+    refresh_awesome()
+    hintbox_pos(char)
+  end
+end
+
+local function expose_callback(clientlist)
     -- draw wiboxes
     hintindex = {}
     for i, cur_client in pairs(clientlist) do
@@ -203,49 +223,32 @@ local function expose_callback(t, zt, clientlist)
 
             -- not zoom -> zoom
             if not key_char_zoomed and c ~= nil then
-                zt[c.screen]:view_only()
-                c:toggle_tag(zt[c.screen])
-                key_char_zoomed = key_char
-                -- refresh the clients, since it is moved
-                refresh_awesome()
-                hintbox_pos(key_char)
-                hintbox_display_toggle(key_char, false)
-                return true
-            -- zoom -> not zoom.
+              zoom_client(key_char)
+              key_char_zoomed = key_char
+              return true
+              -- zoom -> not zoom.
             elseif key_char_zoomed ~= nil then
-                local zoomed_client = hintindex[key_char_zoomed]
-                awful.tag.history.restore(zoomed_client.screen)
-                zoomed_client:toggle_tag(zt[zoomed_client.screen])
-                hintbox_display_toggle(key_char_zoomed, true)
-                refresh_awesome()
-                hintbox_pos(key_char_zoomed)
-
-                key_char_zoomed = nil
-                return true
+              unzoom_client(key_char_zoomed)
+              key_char_zoomed = nil
+              return true
             end
         end
 
         -- handle selection
         if hintindex[key] then
-          selectfn(restore, t, zt)(hintindex[key])
+          selectfn()(hintindex[key])
           hide_all_boxes()
           return false
         end
 
         -- any all other keys are cancel
         if key_char_zoomed ~= nil then
-            local zoomed_client = hintindex[key_char_zoomed]
-            awful.tag.history.restore(zoomed_client.screen)
-            zoomed_client:toggle_tag(zt[zoomed_client.screen])
-            hintbox_display_toggle(string.lower(key), true)
-            refresh_awesome()
-            hintbox_pos(key_char_zoomed)
-
-            key_char_zoomed = nil
-            return true
+          unzoom_client(key_char_zoomed)
+          key_char_zoomed = nil
+          return true
         else
           hide_all_boxes()
-          revelation.restore(t, zt)
+          revelation.restore()
           return false
         end
     end)
@@ -281,7 +284,7 @@ local function expose_callback(t, zt, clientlist)
 
         -- if (mouse.buttons[1] or mouse.buttons[2]) and (not c) then return false end  -- click on nothing
         if mouse.buttons[1] == true then
-          selectfn(restore, t, zt)(c)
+          selectfn()(c)
           hide_all_boxes()
           return false
         elseif on_press_middle then
@@ -293,14 +296,8 @@ local function expose_callback(t, zt, clientlist)
 
           -- unzoom
           if key_char_zoomed ~= nil then
-              -- zoomed_client might have been killed
-              local zoomed_client = hintbox[key_char_zoomed]
-              if zoomed_client ~= nil then
-                awful.tag.history.restore(zoomed_client.screen)
-                zoomed_client:toggle_tag(zt[zoomed_client.screen])
-              end
-              hintbox_display_toggle(key_char_zoomed, true)
-              key_char_zoomed = nil
+            unzoom_client(key_char_zoomed)
+            key_char_zoomed = nil
           end
           return true
         end
@@ -345,9 +342,6 @@ function revelation.expose(args)
     local rule = args.rule or {}
     local curr_tag_only = args.curr_tag_only or revelation.curr_tag_only
 
-    local t = {}  -- screen -> tag
-    local zt = {} -- -> zoomed tag
-
     clients = {}
     clientData = {}
     local base_tname = revelation.tag_name
@@ -356,27 +350,27 @@ function revelation.expose(args)
         local tags = awful.tag.new(
             {base_tname, base_tname .. '_zoom'},
             scr, awful.layout.suit.fair)
-        t[scr] = tags[1]
-        zt[scr] = tags[2]
+        rvl_tag[scr] = tags[1]
+        rvl_tag_zoom[scr] = tags[2]
 
         if curr_tag_only then
-            match_clients(rule, scr.clients, t[scr])
+            match_clients(rule, scr.clients, rvl_tag[scr])
         else
-            match_clients(rule, scr.all_clients, t[scr])
+            match_clients(rule, scr.all_clients, rvl_tag[scr])
         end
 
-        t[scr]:view_only()
+        rvl_tag[scr]:view_only()
     end
 
     refresh_awesome()
 
-    local status, err = pcall(expose_callback, t, zt, clients)
+    local status, err = pcall(expose_callback, clients)
 
     if not status then
       debuginfo('Oops!, something is wrong in revelation.expose_callback!')
       if err.msg then debuginfo(err.msg) end
       if err.code then debuginfo('error code is '.. tostring(err.code)) end
-      revelation.restore(t, zt)
+      revelation.restore()
     end
 end
 
