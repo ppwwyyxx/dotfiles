@@ -46,9 +46,8 @@ local refresh_awesome = function()
 end
 
 local hintbox = {} -- char -> wibox
-local hintindex = {} -- char -> client
+local hint_client = {} -- char -> client
 
-local clients = {} --Table of clients to be exposed after fitlering
 local clientData = {} -- table that holds the positions and sizes of floating clients
 
 local rvl_tag = {}  -- screen -> tag
@@ -87,17 +86,12 @@ local function hintbox_vis(vis, except_c)
 end
 
 -- Executed when user selects a client from expose view.
-local function selectfn()
-  return function(c)
-    revelation.restore()
+local function select_client(c)
+  revelation.restore()
 
-    refresh_awesome()
-
-    if awful.util.table.hasitem(hintindex, c) then
-      -- bring up
-      c.minimized = false
-      c:jump_to()
-    end
+  if awful.util.table.hasitem(hint_client, c) then
+    c.minimized = false
+    c:jump_to()
   end
 end
 
@@ -106,63 +100,65 @@ end
 -- @param clients A table of clients to check.
 -- @param t The tag to put matching clients.
 local function match_clients(rule, available_clients, t)
-    local match_func = rule.any and awful.rules.match_any or awful.rules.match
-    for _, c in pairs(available_clients) do
-      if match_func(c, rule) then
-        clientData[c] = {}
-        clientData[c]["geometry"] = c:geometry()
-        for k, v in pairs(revelation.property_to_watch) do
-          clientData[c][k] = c[k]
-          c[k] = v
-        end
-
-        c:toggle_tag(t)
-        table.insert(clients, c)
+  local clients = {}
+  local match_func = rule.any and awful.rules.match_any or awful.rules.match
+  for _, c in pairs(available_clients) do
+    if match_func(c, rule) then
+      clientData[c] = {}
+      clientData[c]["geometry"] = c:geometry()
+      for k, v in pairs(revelation.property_to_watch) do
+        clientData[c][k] = c[k]
+        c[k] = v
       end
+
+      c:toggle_tag(t)
+      table.insert(clients, c)
     end
+  end
+  return clients
 end
 
 
 
 function revelation.restore()
-    for s in capi.screen do
-        -- TODO doens't work with two extra tags
-        awful.tag.history.restore(s)
-    end
+  for s in capi.screen do
+    -- TODO doens't work with two extra tags
+    awful.tag.history.restore(s)
+  end
 
-    capi.keygrabber.stop()
-    capi.mousegrabber.stop()
+  capi.keygrabber.stop()
+  capi.mousegrabber.stop()
 
-    for _, c in pairs(clients) do
-      if clientData[c] then
-        for k, v in pairs(clientData[c]) do
-          if v ~= nil then
-            if k == "geometry" then
-              c:geometry(v)
-            else
-              c[k]=v
-            end
+  for c, cdata in pairs(clientData) do
+    if c ~= nil then
+      for k, v in pairs(cdata) do
+        if v ~= nil then
+          if k == "geometry" then
+            c:geometry(v)
+          else
+            c[k]=v
           end
         end
       end
     end
+  end
 
-    hintbox_vis(false, nil)
-    for scr in capi.screen do
-        rvl_tag_zoom[scr]:delete()
-        rvl_tag[scr]:delete()
-    end
+  hintbox_vis(false, nil)
+  for scr in capi.screen do
+    rvl_tag_zoom[scr]:delete()
+    rvl_tag[scr]:delete()
+  end
 end
 
 local function hintbox_pos(char)
-  local client = hintindex[char]
+  local client = hint_client[char]
   local geom = client:geometry()
   hintbox[char].x = math.floor(geom.x + geom.width/2 - revelation.hintsize/2)
   hintbox[char].y = math.floor(geom.y + geom.height/2 - revelation.hintsize/2)
 end
 
 local function zoom_client(char)
-  local c = hintindex[char]
+  local c = hint_client[char]
   if c then
     rvl_tag_zoom[c.screen]:view_only()
     c:toggle_tag(rvl_tag_zoom[c.screen])
@@ -175,7 +171,7 @@ local function zoom_client(char)
 end
 
 local function unzoom_client(char)
-  local c = hintindex[char]
+  local c = hint_client[char]
   if c then -- client might have closed during the zoom
     awful.tag.history.restore(c.screen)
     c:toggle_tag(rvl_tag_zoom[c.screen])
@@ -187,20 +183,7 @@ local function unzoom_client(char)
   hintbox_vis(true, char)
 end
 
-local function expose_callback(clientlist)
-    -- draw wiboxes
-    hintindex = {}
-    for i, cur_client in pairs(clientlist) do
-      local char = revelation.charorder:sub(i,i)
-      if char and char ~= '' then
-        hintindex[char] = cur_client
-        local cur_wibox = hintbox[char]
-        hintbox_pos(char)
-        cur_wibox.visible = true
-        cur_wibox.screen = cur_client.screen
-      end
-    end
-
+local function expose_callback()
     local key_char_zoomed = nil
 
     capi.keygrabber.run(function (mod, key, event)
@@ -225,8 +208,8 @@ local function expose_callback(clientlist)
         end
 
         -- handle selection
-        if hintindex[key] then
-          selectfn()(hintindex[key])
+        if hint_client[key] then
+          select_client(hint_client[key])
           return false
         end
 
@@ -243,7 +226,6 @@ local function expose_callback(clientlist)
     -- end of keyboard
 
     local pressing_middle = false
-    local lastClient = nil
     capi.mousegrabber.run(function(mouse)
         -- state machine of "first press event"
         local on_press_middle = (mouse.buttons[2] == true and pressing_middle == false)
@@ -251,7 +233,7 @@ local function expose_callback(clientlist)
         if on_press_middle then pressing_middle = true end
         if on_release_middle then -- allow release happen anywhere
           pressing_middle = false
-          for key, _ in pairs(hintindex) do
+          for key, _ in pairs(hint_client) do
               hintbox_pos(key)
           end
           return true
@@ -259,27 +241,23 @@ local function expose_callback(clientlist)
 
         -- get the chosen client
         local c = capi.mouse.current_client
-        if c then
-          lastClient = c  -- continuous caching state
-        else
+        if not c then
           local current_wibox = capi.mouse.current_wibox
           if current_wibox then
-            local check_this_wibox = awful.util.table.hasitem(hintbox, current_wibox)
-            if check_this_wibox then c = lastClient end
+            local char = awful.util.table.hasitem(hintbox, current_wibox)
+            if char then c = hint_client[char] end
           end
         end
-        local key_char = awful.util.table.hasitem(hintindex, c)
+        local key_char = awful.util.table.hasitem(hint_client, c)
 
         -- if (mouse.buttons[1] or mouse.buttons[2]) and (not c) then return false end  -- click on nothing
         if mouse.buttons[1] == true then
-          selectfn()(c)
+          select_client(c)
           return false
         elseif on_press_middle then
           c:kill()
           hintbox[key_char].visible = false
-          hintindex[key_char] = nil
-          local pos = awful.util.table.hasitem(clients, c)
-          table.remove(clients, pos)
+          hint_client[key_char] = nil
 
           -- unzoom
           if key_char_zoomed ~= nil then
@@ -325,40 +303,55 @@ end
 
 -- @param rule A table with key and value to match. [{class=""}]
 function revelation.expose(args)
-    args = args or {}
-    local rule = args.rule or {}
-    local curr_tag_only = args.curr_tag_only or revelation.curr_tag_only
+  args = args or {}
+  local rule = args.rule or {}
+  local curr_tag_only = args.curr_tag_only or revelation.curr_tag_only
 
-    clients = {}
-    clientData = {}
-    local base_tname = revelation.tag_name
+  local clients = {}
+  clientData = {}
+  local base_tname = revelation.tag_name
 
-    for scr in capi.screen do
-        local tags = awful.tag.new(
-            {base_tname, base_tname .. '_zoom'},
-            scr, awful.layout.suit.fair)
-        rvl_tag[scr] = tags[1]
-        rvl_tag_zoom[scr] = tags[2]
+  -- build new tags and switch
+  for scr in capi.screen do
+      local tags = awful.tag.new(
+          {base_tname, base_tname .. '_zoom'},
+          scr, awful.layout.suit.fair)
+      rvl_tag[scr] = tags[1]
+      rvl_tag_zoom[scr] = tags[2]
 
-        if curr_tag_only then
-            match_clients(rule, scr.clients, rvl_tag[scr])
-        else
-            match_clients(rule, scr.all_clients, rvl_tag[scr])
-        end
+      local candidate_clients = curr_tag_only and scr.clients or scr.all_clients
 
-        rvl_tag[scr]:view_only()
+      for _, c in ipairs(
+          match_clients(rule, candidate_clients, rvl_tag[scr])) do
+        table.insert(clients, c)
+      end
+
+      rvl_tag[scr]:view_only()
+  end
+
+  refresh_awesome()
+
+  -- show wiboxes
+  hint_client = {}
+  for i, cur_client in pairs(clients) do
+    local char = revelation.charorder:sub(i,i)
+    if char and char ~= '' then
+      hint_client[char] = cur_client
+      local cur_wibox = hintbox[char]
+      hintbox_pos(char)
+      cur_wibox.visible = true
+      cur_wibox.screen = cur_client.screen
     end
+  end
 
-    refresh_awesome()
+  local status, err = pcall(expose_callback)
 
-    local status, err = pcall(expose_callback, clients)
-
-    if not status then
-      debuginfo('Oops!, something is wrong in revelation.expose_callback!')
-      if err.msg then debuginfo(err.msg) end
-      if err.code then debuginfo('error code is '.. tostring(err.code)) end
-      revelation.restore()
-    end
+  if not status then
+    debuginfo('Oops!, something is wrong in revelation.expose_callback!')
+    if err.msg then debuginfo(err.msg) end
+    if err.code then debuginfo('error code is '.. tostring(err.code)) end
+    revelation.restore()
+  end
 end
 
 setmetatable(revelation, { __call = function(_, ...) return revelation.expose(...) end })
