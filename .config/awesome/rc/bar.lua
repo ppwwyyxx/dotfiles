@@ -30,7 +30,7 @@ cpu_widget:set_color({ type = "linear",
 cpu_widget:buttons(awful.button({}, 1, function()
    myutil.run_term('htop', 'FSTerm')
 end))
-vicious.register(cpu_widget, vicious.widgets.cpu, "$1")
+vicious.register(cpu_widget, vicious.widgets.cpu, "$1", 7)
 
 local thermal_widget = wibox.widget.textbox()
 vicious.register(thermal_widget, vicious.widgets.thermal,
@@ -42,11 +42,11 @@ vicious.register(thermal_widget, vicious.widgets.thermal,
                         [t = t:sub(1,-2) .. '℃'
                         [return t
                         ]]
-                 end, 20, "thermal_zone1")
+                 end, 19, "thermal_zone1")
 
 local mem_widget = wibox.widget.textbox()
 vicious.register(mem_widget, vicious.widgets.mem,
-   myutil.colored_text(" M$1% ", "#90ee90"), 10)
+   myutil.colored_text(" M$1% ", "#90ee90"), 11)
 mem_widget:buttons(awful.button({}, 1, function()
    myutil.run_term('top -o %MEM -d 1', 'FSTerm')
 end))
@@ -184,8 +184,10 @@ local TAG_LIST_BUTTONS = gears.table.join(
 local task_menu_instance = nil
 TASK_LIST_BUTTONS = gears.table.join(
 	  awful.button({}, 1, function(c)
-      task_menu_instance:hide()
-      task_menu_instance = nil
+      if task_menu_instance then
+        task_menu_instance:hide()
+        task_menu_instance = nil
+      end
       if c == client.focus and not c.minimized then
           c.minimized = true
       else
@@ -261,7 +263,7 @@ awful.screen.connect_for_each_screen(function(s)
       border_width = 0,
       opacity = 0.9,
       ontop = false, screen = s,
-      height = s.geometry.height * 0.017,
+      height = s.geometry.height * 0.02,
       widget = layout
     })
 end)

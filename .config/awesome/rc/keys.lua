@@ -76,16 +76,6 @@ ROOT_KEYS = gears.table.join(
   -- move mouse with keyboard
   awful.key({modkey }, "m", mouse_control),
 
-	-- big things
-	awful.key({ altkey, "Control", "Shift"}, "r", function()
-            check = myutil.rexec("awesome -k 2>&1")
-            if string.find(check, 'syntax OK') then
-                awesome.restart()
-            else
-                myutil.notify("Conf Syntax Error!", check)
-            end
-  end),
-
   awful.key({altkey, "Control", 'Shift'}, 'd', function()
     -- debug operation here
     naughty.notify{title = "debug", preset = naughty.config.presets.normal}

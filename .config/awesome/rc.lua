@@ -3,10 +3,9 @@ awful = require("awful")
 awful.rules = require("awful.rules")
 gears = require('gears')
 gears.table = awful.util.table  -- TODO wait for update
-require("awful.autofocus")
-beautiful = require("beautiful")
 naughty = require("naughty")
--- Themes define colours, icons, and wallpapers
+
+beautiful = require("beautiful")
 beautiful.init(awful.util.getdir("config") .. "/rc/theme.lua")
 
 os.setlocale("")

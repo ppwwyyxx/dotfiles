@@ -6,7 +6,7 @@ local theme = {}
 local confdir = awful.util.getdir("config")
 theme.my_icons = confdir .. "/icons"
 --theme.font          = "Wenquanyi Micro Hei 13"
-theme.font          = "Microsoft Yahei 12"
+theme.font          = "Microsoft Yahei 11"
 --theme.font          = "Wenquanyi Zen Hei 13"
 --theme.font          = "AntaeusTerminal 14"
 

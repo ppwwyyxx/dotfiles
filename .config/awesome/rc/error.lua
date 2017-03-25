@@ -6,6 +6,7 @@ if awesome.startup_errors then
         title = "Oops, there were errors during startup!",
         text = awesome.startup_errors })
 end
+
 -- Handle runtime errors after startup
 local in_error = false
 awesome.connect_signal("debug::error", function (err)
@@ -23,7 +24,6 @@ awesome.connect_signal("debug::error", function (err)
     in_error = false
 end)
 
-
 awesome.connect_signal("debug::deprecation", function (hint)
     naughty.notify({
       title = "Deprecation Warning",
@@ -32,4 +32,19 @@ awesome.connect_signal("debug::deprecation", function (hint)
     })
 end)
 
+
+-- add restart early
+local myutil = require('lib/myutil')
+local const = require('rc/const')
+ROOT_KEYS = awful.util.table.join(
+  ROOT_KEYS,
+	awful.key({const.altkey, "Control", "Shift"}, "r", function()
+    local check = myutil.rexec("awesome -k 2>&1")
+    if string.find(check, 'syntax OK') then
+        awesome.restart()
+    else
+        myutil.notify("Conf Syntax Error!", check)
+    end
+  end))
+root.keys(ROOT_KEYS)
 return {}
