@@ -1,15 +1,29 @@
 [options]
-font = Fantasque Sans Mono 12
-font = WenQuanYi Micro Hei Mono 11
-font = Symbola 10
-font = Monospace 11
+#font = WenQuanYi Micro Hei Mono 13
+#font = Fantasque Sans Mono 16
+#font = AntaeusConsole 18
+#font = Symbola 13
+font = Monospace 16
 
 mouse_autohide = true
 allow_bold = true
 dynamic_title = true
 clickable_url = true
+browser = xdg-open
+cursor_shape = ibeam
 
 
 [colors]
-background = rgba(0, 0, 0, 0.90)
-cursor = #113FFF
+background = rgba(10, 0, 10, 0.90)
+#cursor = #113FFF
+cursor = #be5160
+#cursor = #4aff00
+color1 = #ff2200
+color7 = #eeeeee
+color15 = #eeeeee
+color4 = #2277dd
+color12 = #2277dd
+
+[hints]
+roundness = 3
+padding = 2

@@ -23,3 +23,4 @@ cp /etc/X11/xorg.conf.d/50-synaptics.conf ./etc/X11/xorg.conf.d/ -rvH
 cp ~/.config/gtk-2.0/* ./.config/gtk-2.0/ -fv
 cp ~/.config/gtk-3.0/* ./.config/gtk-3.0/ -fv
 cp ~/.gtkrc* ./ -fv
+cp ~/.config/termite/config ./.config/termite/ -fv
