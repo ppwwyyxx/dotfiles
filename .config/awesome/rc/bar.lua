@@ -87,6 +87,7 @@ local net_widget = wibox.widget.textbox()
 
 local net_if
 vicious.register(net_widget, vicious.widgets.net, function(widget, args)
+        -- TODO update if less frequently
         net_if = myutil.get_active_iface()
         if net_if == nil then
             return myutil.colored_text("No Network", "#5798d9")
@@ -104,8 +105,9 @@ vicious.register(net_widget, vicious.widgets.net, function(widget, args)
             if val > 500 then return string.format("%.1fM", val/1000.)
             else return string.format("%.0fK", val) end
         end
-        return myutil.colored_text(" ↓" .. format(down), "#5798d9")
-               .. myutil.colored_text("↑" .. format(up), "#c2ba62")
+        -- ↓↑
+        return myutil.colored_text(format(down), "#8aa862")
+               .. myutil.colored_text(format(up), "#be5160")
     end, 3)
 net_widget:buttons(awful.button({}, 1, function()
     myutil.run_term(
@@ -113,6 +115,13 @@ net_widget:buttons(awful.button({}, 1, function()
       .. net_if .. ' \\; split-window -d "sudo nethogs '
       .. net_if .. '" \\; attach', 'FSTerm')
 end))
+
+local net_down_icon = wibox.widget.imagebox(beautiful.my_icons .. '/widgets/net_down.png')
+local net_up_icon = wibox.widget.imagebox(beautiful.my_icons .. '/widgets/net_up.png')
+local net_widget_group = wibox.layout.fixed.horizontal()
+net_widget_group:add(net_down_icon)
+net_widget_group:add(net_widget)
+net_widget_group:add(net_up_icon)
 -- f]]
 
 --Volume f[[
@@ -244,7 +253,8 @@ awful.screen.connect_for_each_screen(function(s)
     right_layout:add(mem_widget)
     right_layout:add(bat_widget)
     -- right_layout:add(netgraph)
-    right_layout:add(net_widget)
+    right_layout:add(net_widget_group)
+
     right_layout:add(volume_widget)
 
     right_layout:add(systray)
