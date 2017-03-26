@@ -1,10 +1,15 @@
 [Default Applications]
-text/html=chrome.desktop
-text/plain=gvim.desktop
+x-scheme-handler/http=chromium.desktop;
+x-scheme-handler/https=chromium.desktop;
+x-scheme-handler/ftp=chromium.desktop;
 
-x-scheme-handler/http=chrome.desktop
-x-scheme-handler/https=chrome.desktop
-x-scheme-handler/about=chrome.desktop
+inode/directory=pantheon-files.desktop
+x-scheme-handler/trash=pantheon-files.desktop
+
+[Added Associations]
+inode/directory=pantheon-files.desktop;
+x-scheme-handler/trash=pantheon-files.desktop;
+x-scheme-handler/tg=telegramdesktop.desktop
 
 application/pdf=FoxitReader.desktop
 application/ppdf=FoxitReader.desktop
