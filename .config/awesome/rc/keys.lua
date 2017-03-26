@@ -14,8 +14,25 @@ revelation.init()
 
 ROOT_KEYS = gears.table.join(
 	ROOT_KEYS,
-	awful.key({modkey}, "n", function() awful.screen.focus_relative(1) end),
 	awful.key({modkey}, "u", awful.client.urgent.jumpto),
+	awful.key({modkey}, "n", function() awful.screen.focus_relative(1) end),
+  awful.key({modkey, "Shift"}, 'o', function()
+    if screen:count() == 1 then return end
+    local dest = screen[1]
+    for s in screen do
+      for _, c in ipairs(s.all_clients) do
+        if c.screen.index ~= 1 then
+          c:move_to_screen(dest)
+          local oldtags = c:tags()
+          local newtags = {}
+          for _, t in ipairs(oldtags) do
+            table.insert(newtags, dest.tags[t.index])
+          end
+          c:tags(newtags)
+        end
+      end
+    end
+  end),
 
 	-- Layout manipulation for tiling
 	awful.key({modkey}, "space", function() awful.layout.inc(const.available_layouts,  1) end),
@@ -98,27 +115,36 @@ ROOT_KEYS = gears.table.join(
   -- alt-tab switch
   -- better use a queue to implement this
 	awful.key({altkey}, "Tab", function()
-        local nowc = client.focus
-        awful.client.focus.history.previous()
-        local newc = client.focus
-        if newc then newc:raise()
-        else return end
-
         -- get all clients to iterate
-        local tags = newc.screen.selected_tags
+        local tags = mouse.screen.selected_tags
         local all_c = {}
         for _, t in ipairs(tags) do
           all_c = gears.table.join(all_c, t:clients())
         end
-        -- put nowc and newc at the beginning
-        myutil.remove_by_value(all_c, newc)
-        table.insert(all_c, 1, newc)
-        if nowc then
+        if #all_c == 0 then return end
+
+        local nowc = client.focus
+        if not nowc then
+          nowc = mouse.current_client
+        end -- can be nil
+
+        -- the preferred next client (closest in history)
+        local newc = awful.client.focus.history.get(mouse.screen, 0)
+        if newc == nowc then newc = nil end   -- no preferred client
+
+        local next_to_focus = 1
+        if newc then  -- put preferred at the beginning
+          myutil.remove_by_value(all_c, newc)
+          table.insert(all_c, 1, newc)
+        end
+        if nowc then -- the current client is the least-preferred one
           myutil.remove_by_value(all_c, nowc)
           table.insert(all_c, 1, nowc)
+          next_to_focus = next_to_focus % #all_c + 1
         end
-        -- start the loop from the third, skipping nowc & newc
-        local next_to_focus = (3-1) % #all_c + 1
+        -- start the loop skipping the least-preferred
+        all_c[next_to_focus]:jump_to()
+        next_to_focus = next_to_focus % #all_c + 1
 
         keygrabber.run(function(mod, key, event)
             if event == 'release' then
@@ -140,8 +166,7 @@ ROOT_KEYS = gears.table.join(
                   awful.client.focus.history.add(client.focus)
                   keygrabber.stop()
                 else
-                  client.focus = next_c
-                  client.focus:raise()
+                  next_c:jump_to()
                   next_to_focus = next_to_focus % #all_c + 1
                 end
                 return true
@@ -228,10 +253,10 @@ end
 local CLIENT_KEYS = gears.table.join(
 	awful.key({modkey, "Control"}, "Return", function(c) c:swap(awful.client.getmaster()) end),
   awful.key({modkey}, "o", function(c)
-      if screen.count() == 1 then return end
-      c:move_to_screen()
-      myutil.refresh_awesome()
-      c:jump_to()
+    if screen:count() == 1 then return end
+    c:move_to_screen()
+    myutil.refresh_awesome()
+    c:jump_to()
   end),
 	awful.key({modkey}, "s", function(c) c.sticky = not c.sticky end),
 
