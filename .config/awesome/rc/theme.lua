@@ -88,22 +88,24 @@ theme.titlebar_maximized_button_focus_active  = "/usr/share/awesome/themes/defau
 theme.wallpaper = "/usr/share/awesome/themes/default/background.png"
 
 -- You can use your own layout icons like this:
-theme.layout_fairh = "/usr/share/awesome/themes/default/layouts/fairhw.png"
-theme.layout_fairv = "/usr/share/awesome/themes/default/layouts/fairvw.png"
-theme.layout_floating  = "/usr/share/awesome/themes/default/layouts/floatingw.png"
-theme.layout_magnifier = "/usr/share/awesome/themes/default/layouts/magnifierw.png"
-theme.layout_max = "/usr/share/awesome/themes/default/layouts/maxw.png"
-theme.layout_fullscreen = "/usr/share/awesome/themes/default/layouts/fullscreenw.png"
-theme.layout_tilebottom = "/usr/share/awesome/themes/default/layouts/tilebottomw.png"
-theme.layout_tileleft   = "/usr/share/awesome/themes/default/layouts/tileleftw.png"
-theme.layout_tile = "/usr/share/awesome/themes/default/layouts/tilew.png"
-theme.layout_tiletop = "/usr/share/awesome/themes/default/layouts/tiletopw.png"
-theme.layout_spiral  = "/usr/share/awesome/themes/default/layouts/spiralw.png"
-theme.layout_dwindle = "/usr/share/awesome/themes/default/layouts/dwindlew.png"
-theme.layout_cornernw = "/usr/share/awesome/themes/default/layouts/cornernww.png"
 theme.layout_cornerne = "/usr/share/awesome/themes/default/layouts/cornernew.png"
-theme.layout_cornersw = "/usr/share/awesome/themes/default/layouts/cornersww.png"
+theme.layout_cornernw = "/usr/share/awesome/themes/default/layouts/cornernww.png"
 theme.layout_cornerse = "/usr/share/awesome/themes/default/layouts/cornersew.png"
+theme.layout_cornersw = "/usr/share/awesome/themes/default/layouts/cornersww.png"
+
+local my_icons = theme.my_icons
+theme.layout_dwindle = my_icons .. "/layouts/multicolor/dwindle.png"
+theme.layout_fairh = my_icons .. "/layouts/multicolor/fairh.png"
+theme.layout_fairv = my_icons .. "/layouts/multicolor/fairv.png"
+theme.layout_floating  = my_icons .. "/layouts/multicolor/floating.png"
+theme.layout_fullscreen = my_icons .. "/layouts/multicolor/fullscreen.png"
+theme.layout_magnifier = my_icons .. "/layouts/multicolor/magnifier.png"
+theme.layout_max = my_icons .. "/layouts/multicolor/max.png"
+theme.layout_spiral  = my_icons .. "/layouts/multicolor/spiral.png"
+theme.layout_tile = my_icons .. "/layouts/multicolor/tile.png"
+theme.layout_tilebottom = my_icons .. "/layouts/multicolor/tilebottom.png"
+theme.layout_tileleft   = my_icons .. "/layouts/multicolor/tileleft.png"
+theme.layout_tiletop = my_icons .. "/layouts/multicolor/tiletop.png"
 
 theme.awesome_icon = "/usr/share/awesome/icons/awesome16.png"
 

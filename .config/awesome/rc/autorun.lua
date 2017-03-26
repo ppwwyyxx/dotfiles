@@ -1,28 +1,28 @@
 local autorun_items = {
-    "compton --config ~/.compton.conf",
-    "mkdir -p /tmp/t && mkdir /t/mnt{,2,3}",
-	 "dunst -config ~/.dunstrc",
-    "fcitx-autostart",
-    "sogou-qimpanel",
-    "conky",
-    -- "sleep 100 && conky -c /home/wyx/.conkyrc-cal",
-    "xcape -e 'Control_L=Escape;Hyper_L=XF86Mail'",
-    "wicd-client -t",
+  "compton --config ~/.compton.conf",
+  "mkdir -p /tmp/t && mkdir /t/mnt{,2,3}",
+	"dunst -config ~/.dunstrc",
+  "fcitx-autostart",
+  "sogou-qimpanel",
+  "conky",
+  -- "sleep 100 && conky -c /home/wyx/.conkyrc-cal",
+  "xcape -e 'Control_L=Escape;Hyper_L=XF86Mail'",
+  -- "wicd-client -t",
 
-    "sleep 40 && zeal",
-    "termite",
-    "sleep 10 && redshift-gtk",
-    "xscreensaver -nosplash",
-    "nvidia-smi",
+  "sleep 40 && zeal",
+  "termite",
+  "sleep 10 && redshift-gtk",
+  "xscreensaver -nosplash",
+  "nvidia-smi",
 
-    --"/home/wyx/bin/cvim-server.py",
-    "/home/wyx/bin/background/notify-daemon.py",
+  --"/home/wyx/bin/cvim-server.py",
+  "/home/wyx/bin/background/notify-daemon.py",
 
-    "sleep 30 && telegram-desktop",
-    -- "sleep 80 && /home/wyx/.local/bin/plaidchat",
+  "sleep 30 && telegram-desktop",
+  -- "sleep 80 && /home/wyx/.local/bin/plaidchat",
 
-    --"sleep 100 && dropbox",
-    --"sleep 100 && nocturn",
+  --"sleep 100 && dropbox",
+  --"sleep 100 && nocturn",
 }
 
 local runonce = require("lib/runonce")
