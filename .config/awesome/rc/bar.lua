@@ -14,9 +14,13 @@ sepclose:set_image(beautiful.my_icons .. "/widgets/right.png")
 --spacer:set_image(beautiful.icons .. "/widgets/spacer.png")
 
 
-local textclock = wibox.widget.textclock(
-myutil.colored_text(" %m-%d %H:%M:%S %a ", "#bc5374", 'font_weight="bold"'),
+local clock_text = wibox.widget.textclock(
+  myutil.colored_text("%m-%d %H:%M:%S %a", "#bc5374", 'font_weight="bold"'),
 1)
+local clock_icon = wibox.widget.imagebox(beautiful.my_icons .. '/widgets/clock.png')
+local textclock = wibox.layout.fixed.horizontal()
+textclock:add(clock_text)
+textclock:add(clock_icon)
 textclock:buttons(awful.button({}, 1, function()
     myutil.sexec(const.browser .. "http://calendar.google.com")
 end))
@@ -46,10 +50,14 @@ vicious.register(thermal_widget, vicious.widgets.thermal,
 
 local mem_widget = wibox.widget.textbox()
 vicious.register(mem_widget, vicious.widgets.mem,
-   myutil.colored_text(" M$1% ", "#90ee90"), 11)
+   myutil.colored_text("$1% ", "#90ee90"), 11)
 mem_widget:buttons(awful.button({}, 1, function()
    myutil.run_term('top -o %MEM -d 1', 'FSTerm')
 end))
+local mem_icon = wibox.widget.imagebox(beautiful.my_icons .. '/widgets/mem.png')
+local mem_widget_group = wibox.layout.fixed.horizontal()
+mem_widget_group:add(mem_icon)
+mem_widget_group:add(mem_widget)
 
 --Battery f[[
 local bat_widget = wibox.widget.textbox()
@@ -67,10 +75,14 @@ vicious.register(bat_widget, vicious.widgets.bat, function(widget, args)
 						bat_widget.lastwarn = current
 					end
 				end
-				return myutil.colored_text(string.format('B%s%d%%', args[1], current), color)
+				return myutil.colored_text(string.format('%s%d%%', args[1], current), color)
 			end,
 			59, "BAT0")
-bat_widget:buttons(awful.button({}, 1, function()
+local bat_icon = wibox.widget.imagebox(beautiful.my_icons .. '/widgets/bat.png')
+local bat_widget_group = wibox.layout.fixed.horizontal()
+bat_widget_group:add(bat_icon)
+bat_widget_group:add(bat_widget)
+bat_widget_group:buttons(awful.button({}, 1, function()
    myutil.run_term("sudo powertop", 'FSTerm')
 end))
 -- f]]
@@ -109,19 +121,19 @@ vicious.register(net_widget, vicious.widgets.net, function(widget, args)
         return myutil.colored_text(format(down), "#8aa862")
                .. myutil.colored_text(format(up), "#be5160")
     end, 3)
-net_widget:buttons(awful.button({}, 1, function()
-    myutil.run_term(
-      'tmux new-session -d "sudo iftop -i "'
-      .. net_if .. ' \\; split-window -d "sudo nethogs '
-      .. net_if .. '" \\; attach', 'FSTerm')
-end))
-
 local net_down_icon = wibox.widget.imagebox(beautiful.my_icons .. '/widgets/net_down.png')
 local net_up_icon = wibox.widget.imagebox(beautiful.my_icons .. '/widgets/net_up.png')
 local net_widget_group = wibox.layout.fixed.horizontal()
 net_widget_group:add(net_down_icon)
 net_widget_group:add(net_widget)
 net_widget_group:add(net_up_icon)
+net_widget_group:buttons(awful.button({}, 1, function()
+    myutil.run_term(
+      'tmux new-session -d "sudo iftop -i "'
+      .. net_if .. ' \\; split-window -d "sudo nethogs '
+      .. net_if .. '" \\; attach', 'FSTerm')
+end))
+
 -- f]]
 
 --Volume f[[
@@ -140,9 +152,9 @@ local function volumectl(mode)
           function(stdout, ...)
             muted = myutil.trim(stdout)
             if muted == "true" then
-               volume = myutil.colored_text(' ♫M', 'red')
+               volume = myutil.colored_text('♫M', 'red')
             else
-               volume = myutil.colored_text(' ♫' .. volume, 'green')
+               volume = myutil.colored_text('♫' .. volume, 'green')
             end
             volume_widget:set_markup(volume)
           end)
@@ -191,7 +203,7 @@ local TAG_LIST_BUTTONS = gears.table.join(
 )
 
 local task_menu_instance = nil
-TASK_LIST_BUTTONS = gears.table.join(
+local TASK_LIST_BUTTONS = gears.table.join(
 	  awful.button({}, 1, function(c)
       if task_menu_instance then
         task_menu_instance:hide()
@@ -250,8 +262,8 @@ awful.screen.connect_for_each_screen(function(s)
     local right_layout = wibox.layout.fixed.horizontal()
     right_layout:add(cpu_widget)
     right_layout:add(thermal_widget)
-    right_layout:add(mem_widget)
-    right_layout:add(bat_widget)
+    right_layout:add(mem_widget_group)
+    right_layout:add(bat_widget_group)
     -- right_layout:add(netgraph)
     right_layout:add(net_widget_group)
 
@@ -259,6 +271,7 @@ awful.screen.connect_for_each_screen(function(s)
 
     right_layout:add(systray)
     s.my_systray = systray
+
     right_layout:add(textclock)
 
    --right_layout:add(powerline_widget)
