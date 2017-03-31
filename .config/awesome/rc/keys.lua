@@ -129,7 +129,7 @@ ROOT_KEYS = gears.table.join(
         end -- can be nil
 
         -- the preferred next client (closest in history)
-        local newc = awful.client.focus.history.get(mouse.screen, 0)
+        local newc = awful.client.focus.history.get(mouse.screen, 1)
         if newc == nowc then newc = nil end   -- no preferred client
 
         local next_to_focus = 1
@@ -162,8 +162,6 @@ ROOT_KEYS = gears.table.join(
               if key == 'Tab' then
                 local next_c = all_c[next_to_focus]
                 if not next_c.valid then  -- windows get closed during alt-tab
-                  -- otherwise history might get empty? leads to failure
-                  awful.client.focus.history.add(client.focus)
                   keygrabber.stop()
                 else
                   next_c:jump_to()
@@ -238,9 +236,9 @@ ROOT_KEYS = gears.table.join(
   end),
 
 	-- Volume
-	awful.key({}, 'XF86AudioRaiseVolume', function() volumectl("up") end),
-	awful.key({}, 'XF86AudioLowerVolume', function() volumectl("down") end),
-	awful.key({}, 'XF86AudioMute', function() volumectl("mute") end)
+	awful.key({}, 'XF86AudioRaiseVolume', function() bar.volumectl("up") end),
+	awful.key({}, 'XF86AudioLowerVolume', function() bar.volumectl("down") end),
+	awful.key({}, 'XF86AudioMute', function() bar.volumectl("mute") end)
 )
 
 

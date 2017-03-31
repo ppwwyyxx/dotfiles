@@ -196,14 +196,11 @@ $YELLOWGREEN%$pwdlen<...<%~%<< \
 
 # alias
 safe_source $HOME/.zsh/alias.zsh
-alias -s pdf=mupdf
+alias -s pdf jpg png gif html mhtml=xdg-open
 alias -s djvu=djview4
 alias -s obj=meshlab
-alias -s pcd=~/tmp/modeling/bin/pcd_viewer
 for i in wmv mkv mp4 mp3 avi rm rmvb flv; alias -s $i=mpv
-for i in jpg png gif; alias -s $i=feh
 for i in xls xlsx doc docx ppt pptx; alias -s $i=libreoffice
-for i in html,mhtml; alias -s $i=chromium
 
 # Basic
 setopt autocd				# cd without 'cd'

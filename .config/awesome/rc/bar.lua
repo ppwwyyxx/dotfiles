@@ -285,10 +285,10 @@ awful.screen.connect_for_each_screen(function(s)
       position = "top", stretch = true,
       border_width = 0,
       opacity = 0.9,
-      ontop = false, screen = s,
-      height = s.geometry.height * 0.02,
+        ontop = false, screen = s,
+      height = s.geometry.height * 0.025,
       widget = layout
     })
 end)
 
-return {}
+return {volumectl = volumectl}
