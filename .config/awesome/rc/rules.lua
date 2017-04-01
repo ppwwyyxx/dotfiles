@@ -99,11 +99,6 @@ awful.rules.rules = {
 
 client.connect_signal("unmanage", function(c)
   awful.client.focus.history.delete(c)
-  local newc = awful.client.focus.history.get(c.screen, 0)
-
-  if newc then
-    newc:jump_to()
-  end
 end)
 
 -- sloppy focus

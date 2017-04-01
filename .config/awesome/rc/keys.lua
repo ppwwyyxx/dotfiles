@@ -253,8 +253,6 @@ local CLIENT_KEYS = gears.table.join(
   awful.key({modkey}, "o", function(c)
     if screen:count() == 1 then return end
     c:move_to_screen()
-    myutil.refresh_awesome()
-    c:jump_to()
   end),
 	awful.key({modkey}, "s", function(c) c.sticky = not c.sticky end),
 
