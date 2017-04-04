@@ -85,6 +85,7 @@
 	sbi = submodule update --recursive
 
 	gcc = gc --aggressive --prune=now
+	lastchange = log -p --follow -n 1
 
 	# from CIA
 	aliases = !git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /' | sort
