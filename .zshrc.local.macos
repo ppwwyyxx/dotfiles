@@ -1,0 +1,8 @@
+safe_export_path $HOME/Library/Python/3.6/bin
+safe_export_path $HOME/Library/Python/2.7/bin
+safe_export_path /usr/local/Cellar/gnu-sed/4.4/libexec/gnubin/
+
+alias top='htop'
+export PYTHONPATH=$PYTHONPATH:$HOME/Work/DL/tensorpack
+#
+#
