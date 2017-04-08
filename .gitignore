@@ -7,3 +7,4 @@ doc/tags
 
 *.sqlite
 wallpaper
+__pycache__
