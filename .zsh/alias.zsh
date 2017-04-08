@@ -397,13 +397,16 @@ function retry() {
 }
 
 # python
-alias py='PYTHONPATH=$HOME/.config/python:$PYTHONPATH python2'
-alias ipy='ipython2'
+alias py='PYTHONPATH=$HOME/.config/python:$PYTHONPATH python3'
+alias ipy='ipython'
 function pydbg () { ipython --pdb -c "%run $1" }
 alias bp2='bpython2'
-alias piu='pip2 install --user'
+alias piu='pip install --user'
+alias piuu='pip install --user -U'
 alias piu2='pip2 install --user'
+alias piuu2='pip2 install --user -U'
 alias piu3='pip3 install --user'
+alias piuu3='pip3 install --user -U'
 alias pyftp='python2 -m pyftpdlib'
 function pytwistd() { twistd web --path "$1" -p "${2:-8000}" }
 function web() {

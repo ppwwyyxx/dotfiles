@@ -3,7 +3,7 @@ local autorun_items = {
   "xcape -e 'Control_L=Escape;Hyper_L=XF86Mail'",
   -- "wicd-client -t",
 
-  "compton --config ~/.compton.conf",
+  "sleep 3 && compton --config ~/.compton.conf",  -- https://github.com/awesomeWM/awesome/issues/1660
 	"dunst -config ~/.dunstrc",
   "xscreensaver -nosplash",
   "fcitx-autostart",
