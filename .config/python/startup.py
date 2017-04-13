@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# File: .startup.py
+# File: startup.py
 # Date: Wed Apr 01 16:49:16 2015 +0800
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
@@ -32,9 +32,10 @@ else:
     import pickle
 
 try:
-    import scipy
     import numpy as np
+    np.set_printoptions(linewidth=120)
     import cv2
+    import scipy
     from cv2 import imread, imwrite, imshow
     import h5py
 except:
