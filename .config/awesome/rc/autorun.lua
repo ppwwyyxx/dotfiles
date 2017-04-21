@@ -1,5 +1,5 @@
 local autorun_items = {
-  "mkdir -p /tmp/t && mkdir /t/mnt{,2,3}",
+  "mkdir -p /tmp/t && mkdir /t/mnt{,2,3} /t/mac",
   "xcape -e 'Control_L=Escape;Hyper_L=XF86Mail'",
   -- "wicd-client -t",
 
