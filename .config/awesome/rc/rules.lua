@@ -94,7 +94,23 @@ awful.rules.rules = {
     elseif c.name:find("Telegram") ~= nil then
        myutil.moveresize_abs(-1200, -800, 1000, 800, c)
     end
-  end}
+  end},
+
+  -- for the vizdoom demo @ICLR17
+  { rule = { class = "vizdoom" },
+    callback = function(c)
+      if c.width == 1024 then
+        myutil.moveresize_abs(-1024, -768, 1024, 768, c)
+      else
+        for _, cc in ipairs(mouse.screen.clients) do
+          if cc ~= c and cc.width == 512 and cc.y ~= 384 then
+            myutil.moveresize_abs(0, 384, 512, 384, c)
+            return
+          end
+        end
+      end
+    end
+  },
 } -- the end
 
 client.connect_signal("unmanage", function(c)

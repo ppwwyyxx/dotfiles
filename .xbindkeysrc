@@ -1,5 +1,4 @@
 # app keys..
-#"chromium"
 
 "chromium --force-device-scale-factor=1.1 --no-proxy-server"
   Mod4 + c
@@ -21,9 +20,9 @@
   Mod4 + z
 "chromium --profile-directory=Default --app-id=hmjkmjkepdijhoojdojkdfohbdgmmhki"
   Mod4 + g
+
 #"~/bin/background/email-client"
   #Mod4 + e
-#"xscreensaver-command -activate"
 
 "slock"
   Control+Alt+Shift+l
@@ -61,7 +60,3 @@
 
 "sleep .04 && xdotool key --clearmodifiers Delete"
   shift + BackSpace
-
-"ssh T460 'export DISPLAY=:0.0; xinput enable 9'"
-	Mod4 + y
-

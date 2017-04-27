@@ -46,7 +46,7 @@ vicious.register(thermal_widget, vicious.widgets.thermal,
                         [t = t:sub(1,-2) .. '℃'
                         [return t
                         ]]
-                 end, 19, "thermal_zone1")
+                 end, 19, "thermal_zone0")
 
 local mem_widget = wibox.widget.textbox()
 vicious.register(mem_widget, vicious.widgets.mem,
