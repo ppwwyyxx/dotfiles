@@ -1,6 +1,6 @@
 set scalehints
 set noautofocus
-"set showtabindices
+set noshowtabindices
 "set defaultnewtabpage
 let mapleader = ","
 let highlight = '#d28ce3'

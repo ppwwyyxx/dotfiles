@@ -408,7 +408,7 @@ alias piuu2='pip2 install --user -U'
 alias piu3='pip3 install --user'
 alias piuu3='pip3 install --user -U'
 alias pyftp='python2 -m pyftpdlib'
-function pytwistd() { twistd web --path "$1" -p "${2:-8000}" }
+function pytwistd() { twistd web --path "$1" -p tcp:"${2:-8000}" }
 function web() {
 	pytwistd
   #ruby -run -e httpd "$1" -p "${2:-8000}"
