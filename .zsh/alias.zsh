@@ -39,10 +39,16 @@ function cless() { ccat $1 | less -r }
 alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
 alias -g N='>/dev/null'
 alias -g NN='>/dev/null 2>&1'
-which ag NN && {
-	alias -g G='|ag'
-	alias agp='ag --python'
-} || alias -g G='|grep'
+which rg NN && {
+	alias -g G='|rg'
+	alias ag='rg -i'
+	alias agp='rg -i -tpy'
+} || {
+	which ag NN && {
+		alias -g G='|ag'
+		alias agp='ag --python'
+	} || alias -g G='|grep'
+}
 
 alias awk-sum="awk '{if (\$1+0!=\$1) { print \"Fail! \"\$0, NR; exit; }; s+=\$1} END {print s, s / NR}' "
 alias awk-last="awk '{print \$NF}'"
@@ -127,7 +133,7 @@ alias port='sudo netstat -ntlpu'
 alias listen='lsof -P -i -n'
 alias scp='scp -r'
 alias rsync='rsync -avP'
-alias speedtest='wget -O /dev/null http://speedtest-sfo1.digitalocean.com/100mb.test'
+alias speedtest='wget -O /dev/null http://speedtest-sfo2.digitalocean.com/100mb.test'
 alias m_rsync='rsync --progress --partial --delete --size-only -rlv --bwlimit=5m'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 function view-email() { mhonarc -single $1 | w3m -dump -T text/html }
