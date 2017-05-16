@@ -15,7 +15,7 @@ revelation.init()
 ROOT_KEYS = gears.table.join(
 	ROOT_KEYS,
 	awful.key({modkey}, "u", awful.client.urgent.jumpto),
-	awful.key({modkey}, "n", function() awful.screen.focus_relative(1) end),
+	awful.key({modkey}, "n", function() pcall(awful.screen.focus_relative, 1) end),
   awful.key({modkey, "Shift"}, 'o', function()
     if screen:count() == 1 then return end
     local dest = screen[1]
