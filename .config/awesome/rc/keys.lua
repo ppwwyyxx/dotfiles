@@ -129,8 +129,10 @@ ROOT_KEYS = gears.table.join(
         end -- can be nil
 
         -- the preferred next client (closest in history)
-        local newc = awful.client.focus.history.get(mouse.screen, 1)
-        if newc == nowc then newc = nil end   -- no preferred client
+        local status, newc
+        -- might fail when the latest client was closed
+        status, newc = pcall(awful.client.focus.history.get, mouse.screen, 1)
+        if not status or newc == nowc then newc = nil end   -- no preferred client
 
         local next_to_focus = 1
         if newc then  -- put preferred at the beginning
