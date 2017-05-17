@@ -302,7 +302,7 @@
       <key>keybindings/global/show_hide</key>
       <schema_key>/schemas/apps/guake/keybindings/global/show_hide</schema_key>
       <value>
-        <string>F12</string>
+        <string>F4</string>
       </value>
     </entry>
     <entry>

@@ -281,12 +281,15 @@ awful.screen.connect_for_each_screen(function(s)
     layout:set_middle(task_list)
     layout:set_right(right_layout)
 
+    local bar_height = s.geometry.height * 0.025
+    if bar_height > 30 then bar_height = 30 end
+
     s.my_wibar = awful.wibar({
       position = "top", stretch = true,
       border_width = 0,
       opacity = 0.9,
         ontop = false, screen = s,
-      height = s.geometry.height * 0.025,
+      height = bar_height,
       widget = layout
     })
 end)
