@@ -5,7 +5,8 @@ local autorun_items = {
 
   "sleep 3 && compton --config ~/.compton.conf",  -- https://github.com/awesomeWM/awesome/issues/1660
 	"dunst -config ~/.dunstrc",
-  "xscreensaver -nosplash",
+  -- "xscreensaver -nosplash",
+  "gnome-screensaver",
   "fcitx-autostart",
   "sogou-qimpanel",
   "conky",
@@ -24,7 +25,7 @@ local autorun_items = {
   --"sleep 100 && nocturn",
 
   "sleep 10 && redshift-gtk",
-  "sleep 15 && workrave"
+  -- "sleep 15 && workrave"
 }
 
 local runonce = require("lib/runonce")

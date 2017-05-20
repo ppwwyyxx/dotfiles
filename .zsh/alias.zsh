@@ -92,11 +92,11 @@ which nvim NN && {
 }
 alias sv='sudo vim'
 
-alias wcl='wc -l'
+alias sort='LC_ALL=C sort'
+alias uniq='LC_ALL=C uniq'
 alias cls='clear'
 alias grep='grep -IE --color=auto --exclude=.tags --exclude-dir="node_modules" --exclude-dir=".git" --exclude-dir=".env"'
 alias tmuxa='tmux a || tmux'
-alias sort='LC_ALL=C sort'
 alias du='du -sh'
 alias strace='strace -yy'
 alias tail='tail -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'

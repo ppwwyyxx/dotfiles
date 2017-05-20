@@ -18,10 +18,11 @@ ROOT_KEYS = gears.table.join(
 	awful.key({modkey}, "n", function() pcall(awful.screen.focus_relative, 1) end),
   awful.key({modkey, "Shift"}, 'o', function()
     if screen:count() == 1 then return end
-    local dest = screen[1]
+    local cur_screen = mouse.screen.index
+    local dest = screen[3 - cur_screen]
     for s in screen do
       for _, c in ipairs(s.all_clients) do
-        if c.screen.index ~= 1 then
+        if c.screen ~= dest then
           c:move_to_screen(dest)
           local oldtags = c:tags()
           local newtags = {}

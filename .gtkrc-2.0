@@ -2,7 +2,7 @@
 # Any customization should be done in ~/.gtkrc-2.0.mine instead.
 
 include "/home/wyx/.gtkrc-2.0.mine"
-gtk-theme-name="Breeze"
+gtk-theme-name="Flat-Plat"
 gtk-icon-theme-name="breeze"
 gtk-font-name="Cantarell 11"
 gtk-cursor-theme-name="Breeze_Default"

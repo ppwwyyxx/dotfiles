@@ -24,7 +24,8 @@
 #"~/bin/background/email-client"
   #Mod4 + e
 
-"slock"
+#"slock"
+"gnome-screensaver-command --lock"
   Control+Alt+Shift+l
 "xkill"
   Control+Alt+Shift+k
