@@ -13,6 +13,7 @@ fi
 export BROWSER=xdg-open
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
+export QT_STYLE_OVERRIDE=gtk2
 export XMODIFIERS=@im=fcitx
 
 xrdb ~/.Xresources

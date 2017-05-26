@@ -404,3 +404,4 @@ links
 android-tools
 xscreensaver
 foxitreader
+xcursor-themes arc-gtk-theme breeze breeze-qt4 breeze-default-cursor-theme breeze-gtk lxappearance flatplat-theme qtconfig-qt4 qt5-styleplugins
