@@ -1,6 +1,6 @@
 #!/bin/bash -e
 # File: deploy.sh
-# Date: Wed Jul 08 22:10:24 2015 +0800
+# Date: Fri Jun 09 06:16:47 2017 +0000
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 # avoid mistakenly deploy on laptop
@@ -9,7 +9,7 @@ if [[ "$HOST" == "KeepMoving" ]]; then
 	exit 1
 fi
 
-rm ~/.zsh -rf 
+rm ~/.zsh -rf
 cp .zsh .zshrc .bashrc .gitconfig .profile ~/ -rvf
 cp .xbindkeysrc .toprc .xinitrc .Xmodmap .Xresources ~/ -rvf
 
@@ -20,5 +20,6 @@ set -g prefix C-a
 bind C-a send-prefix
 EOT
 cp .tmux.conf ~/ -vf
+cp .tmux ~/ -rvf
 
 chmod 755 ~/.zsh ~/.zsh/Completion
