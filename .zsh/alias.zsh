@@ -215,6 +215,7 @@ alias screenkey='screenkey -s small -t 0.8 --opacity 0.3'
 alias adate='for i in Asia/Shanghai US/{Eastern,Pacific}; do printf %-22s "$i ";TZ=:$i date +"%F %a %T %Z";done'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias clean-trash='=rm /ssd_home/.Trash/{.,}* -rf; =rm ~/.Trash/{.,}* -rf'
+alias sacct='sacct -o User,JobID,Jobname,partition,state,MaxRss,MaxVMSize,avediskread,nnodes,ncpus,nodelist,start,end,elapsed'
 
 alias win='cd; virtualbox --startvm win7 & ; cd -'
 alias osx='cd; virtualbox --startvm osx & ; cd -'
