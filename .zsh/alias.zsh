@@ -460,7 +460,7 @@ which pacman NN && {
 				alias pR='sudo apt remove'
 				alias pSs='apt search'
 				alias pSy='sudo apt update'
-				alias pSu='sudo apt upgrade'
+				alias pSu='sudo apt update; sudo apt upgrade'
 			} || {
 				alias pS='sudo aptitude install'
 				alias pR='sudo aptitude purge'
