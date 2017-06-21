@@ -79,6 +79,20 @@ function rm() {
 	done
 }
 
+function colorline() {
+	local cols
+	cols=($fg[green] $fg[white] $fg[blue] $fg[white] $fg[cyan] $fg[white]
+		$fg[magenta] $fg[white] "\e[38;05;154m" $fg[white])
+	local ncol=${#cols}
+	local i=1
+	while IFS= read line; do
+		echo $cols[$i]
+		echo -n "$line"
+		i=$(( $i % $ncol + 1 ))
+	done
+	echo $reset_color
+}
+
 
 which nvim NN && {
 	alias v='nvim'
@@ -215,9 +229,11 @@ alias screenkey='screenkey -s small -t 0.8 --opacity 0.3'
 alias adate='for i in Asia/Shanghai US/{Eastern,Pacific}; do printf %-22s "$i ";TZ=:$i date +"%F %a %T %Z";done'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias clean-trash='=rm /ssd_home/.Trash/{.,}* -rf; =rm ~/.Trash/{.,}* -rf'
-alias sacct='sacct -a -o User%10,JobID,Jobname,state,MaxRss,MaxVMSize,avediskread,nnodes,ncpus,nodelist,start,end,elapsed'
-alias sacct-me='=sacct -o jobid,jobname%30,alloccpus,state,exitcode,nodelist'
-alias squeue='squeue -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t'
+
+alias sacct='=sacct -o jobid,jobname%30,alloccpus,state,exitcode,nodelist | colorline'
+alias sacct-all='=sacct -a -o User%10,JobID,Jobname,state,MaxRss,MaxVMSize,avediskread,nnodes,ncpus,nodelist,start,end,elapsed | colorline'
+alias squeue='=squeue -u $(whoami) -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | colorline'
+alias squeue-all='=squeue -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | colorline'
 
 alias win='cd; virtualbox --startvm win7 & ; cd -'
 alias osx='cd; virtualbox --startvm osx & ; cd -'
