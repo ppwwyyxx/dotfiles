@@ -1,7 +1,10 @@
+
+# mac paths
 safe_export_path $HOME/Library/Python/3.6/bin
 safe_export_path $HOME/Library/Python/2.7/bin
 safe_export_path /usr/local/Cellar/openssh/7.5p1/bin
 safe_export_path /usr/local/Cellar/gnu-sed/4.4/libexec/gnubin/
+safe_export_path /usr/local/Cellar/ctags/5.8_1/bin/
 
 export PYTHONPATH=${PYTHONPATH:+$PYTHONPATH:}$HOME/Work/DL/tensorpack
 
