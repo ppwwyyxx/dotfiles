@@ -64,6 +64,9 @@ function try_use_cuda_home() {
 	if [[ -d "$1/lib64" ]]; then
 		export CUDA_HOME="$1"
 		export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+		if [[ -d "$CUDA_HOME/extras/CUPTI/lib64" ]]; then
+			export LD_LIBRARY_PATH=$CUDA_HOME/extras/CUPTI/lib64:$LD_LIBRARY_PATH
+		fi
 		export LIBRARY_PATH=$CUDA_HOME/lib64:$LIBRARY_PATH
 		export CPATH=$CUDA_HOME/include
 		export PATH=$PATH:$CUDA_HOME/bin
