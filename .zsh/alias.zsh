@@ -86,11 +86,11 @@ function colorline() {
 	local ncol=${#cols}
 	local i=1
 	while IFS= read line; do
-		echo $cols[$i]
-		echo -n "$line"
+		echo -n $cols[$i]
+		echo "$line"
 		i=$(( $i % $ncol + 1 ))
 	done
-	echo $reset_color
+	echo -n $reset_color
 }
 
 
@@ -230,10 +230,11 @@ alias adate='for i in Asia/Shanghai US/{Eastern,Pacific}; do printf %-22s "$i ";
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias clean-trash='=rm /ssd_home/.Trash/{.,}* -rf; =rm ~/.Trash/{.,}* -rf'
 
-alias sacct='=sacct -o jobid,jobname%30,alloccpus,state,exitcode,nodelist | colorline'
-alias sacct-all='=sacct -a -o User%10,JobID,Jobname,state,MaxRss,MaxVMSize,avediskread,nnodes,ncpus,nodelist,start,end,elapsed | colorline'
+alias sacct='=sacct -S $(date +"%m/%d" -d "-2days") -o jobid,jobname%30,alloccpus%3,state%6,exitcode%4,nodelist,start%16,end%16,elapsed%5 | colorline'
+alias sacct-all='=sacct -S $(date +"%m/%d" -d "-2days") -a -o User%10,JobID,Jobname,state%5,MaxRss,MaxVMSize,avediskread,nnodes%3,ncpus%3,nodelist,start%16,end%16,elapsed%5 | colorline'
 alias squeue='=squeue -u $(whoami) -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | colorline'
 alias squeue-all='=squeue -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | colorline'
+alias slurm-gpu-per-user="=squeue -o %u:%b | tail -n+2 | awk -F ':' '{a[\$1]+=\$3} END {for (i in a) print i, a[i];}' | sort -n -k2 | column -t"
 
 alias win='cd; virtualbox --startvm win7 & ; cd -'
 alias osx='cd; virtualbox --startvm osx & ; cd -'
@@ -520,11 +521,11 @@ function tpgrep() {
 # a function to grep tensorpack logs
 # $1: string to grep
 # $2+: dirs or logs
-	[[ -n $1 ]] || return 1
+	[[ -n "$1" ]] || return 1
 	local pat=$1
 	local cmd="paste"
 	for d in ${@:2}; do
-		[[ -d $d ]] && {
+		[[ -d "$d" ]] && {
 			cmd="$cmd <(cat "$d/log.log" | grep '$pat' | awk-last)"
 		} || {
 			cmd="$cmd <(cat "$d" | grep '$pat' | awk-last)"
