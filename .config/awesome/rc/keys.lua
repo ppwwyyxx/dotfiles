@@ -234,7 +234,7 @@ ROOT_KEYS = gears.table.join(
        textbox = sc.my_prompt_box.widget,
        exe_callback = function(command)
          local url = web_cmd(command)
-         myutil.sexec(const.browser .. '"' .. url .. '"')
+         awful.spawn.with_shell(const.browser .. '"' .. url .. '"')
        end}
   end),
 

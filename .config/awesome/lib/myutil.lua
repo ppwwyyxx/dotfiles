@@ -3,7 +3,6 @@ local Gio = lgi.Gio
 local gears = require('gears')
 local myutil = {
 exec              = awful.spawn,
-sexec             = awful.util.spawn_with_shell,
 join              = gears.table.join,
 }
 

@@ -22,7 +22,7 @@ local textclock = wibox.layout.fixed.horizontal()
 textclock:add(clock_text)
 textclock:add(clock_icon)
 textclock:buttons(awful.button({}, 1, function()
-    myutil.sexec(const.browser .. "http://calendar.google.com")
+    awful.spawn.with_shell(const.browser .. "http://calendar.google.com")
 end))
 
 local cpu_widget = wibox.widget.graph()
