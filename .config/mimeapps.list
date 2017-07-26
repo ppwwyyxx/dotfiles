@@ -10,6 +10,4 @@ application/octet-stream=FoxitReader.desktop
 image/png=feh.desktop
 image/jpeg=feh.desktop
 image/gif=feh.desktop
-
-[Added Associations]
-image/jpeg=gimp.desktop;
+x-scheme-handler/mailto=exo-mail-reader.desktop

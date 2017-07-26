@@ -2,7 +2,7 @@
 awful = require("awful")
 awful.rules = require("awful.rules")
 require('awful.autofocus')
-gears = require('gears')
+local gears = require('gears')
 gears.table = awful.util.table  -- TODO wait for update
 naughty = require("naughty")
 

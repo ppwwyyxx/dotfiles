@@ -1,4 +1,5 @@
 local myutil = require('lib/myutil')
+local gears = require('gears')
 
 -- configuration -
 local wp_timeout  = 180
@@ -22,7 +23,7 @@ function changewp()
     gears.wallpaper.maximized(wp_files[wp_index], 1, true)
 end
 
-local wp_timer = timer({ timeout = wp_timeout })
+local wp_timer = gears.timer({ timeout = wp_timeout })
 wp_timer:connect_signal("timeout", changewp)
 wp_timer:start()
 

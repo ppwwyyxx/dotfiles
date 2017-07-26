@@ -10,7 +10,7 @@ let blacklists = ["*://mail.google.com/*"]
 map gm :tabnew mail.google.com&<CR>
 let barposition = "bottom"
 let nextmatchpattern = "((?!first)(next|more|>|›|»|forward|后页|下一页)+)"
-map <Space> :buffer<Space>
+" map <Space> :buffer<Space>
 
 map K previousTab
 map J nextTab

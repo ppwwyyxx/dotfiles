@@ -39,14 +39,15 @@ vicious.register(cpu_widget, vicious.widgets.cpu, "$1", 7)
 local thermal_widget = wibox.widget.textbox()
 vicious.register(thermal_widget, vicious.widgets.thermal,
                  function(widget, args)
-                     local t = tonumber(args[1])
-                     return string.format("%d", t).. "℃"
                      --[[
-                        [local t = myutil.rexec("sensors | grep -Po 'Package.*?C' | awk '{print $NF}' | cut -c 2-3")
-                        [t = t:sub(1,-2) .. '℃'
-                        [return t
+                        [local t = tonumber(args[1])
+                        [return string.format("%d", t).. "℃"
                         ]]
-                 end, 19, "thermal_zone0")
+                     local t = myutil.rexec("sensors | grep -Po 'Package.*?C' | awk '{print $NF}' | cut -c 2-3")
+                     -- filter out the new line
+                     t = t:sub(1,-2) .. '℃'
+                     return t
+                 end, 19, {"thermal_zone0", "sys"})
 
 local mem_widget = wibox.widget.textbox()
 vicious.register(mem_widget, vicious.widgets.mem,
@@ -173,7 +174,7 @@ local function volumectl(mode)
   end
 end
 volumectl("update") -- at startup
-local volume_clock = timer({ timeout = 60 })
+local volume_clock = gears.timer({ timeout = 60 })
 volume_clock:connect_signal("timeout", function() volumectl("update") end)
 volume_clock:start()
 volume_widget:buttons(gears.table.join(
