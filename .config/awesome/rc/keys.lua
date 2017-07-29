@@ -181,7 +181,7 @@ ROOT_KEYS = gears.table.join(
 
   -- toggle show desktop
 	awful.key({modkey}, "d", function()
-		local curtags = awful.tag.selectedlist()
+    local curtags = mouse.screen.selected_tags
     local all_minimized = function()
       for _, curtag in ipairs(curtags) do
         for _, c in ipairs(curtag:clients()) do
