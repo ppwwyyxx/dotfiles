@@ -211,15 +211,12 @@ ROOT_KEYS = gears.table.join(
 	awful.key({modkey}, "q", function()
 		local c = client.focus
 		if not c then return end
-      --[[
-			[if c.instance == 'FSTerm' or c.instance == TMP_TERM then
-			[   awful.client.movetotag(tags[c.screen][last_tag], c)
-         [  else
-         ]]
-    c:kill()
-      --[[
-			[end
-         ]]
+    if c.instance == 'FSTerm' or c.instance == const.TMP_TERM then
+      local nr_tag = #tags[c.screen]
+      c:move_to_tag(tags[c.screen][nr_tag])
+    else
+      c:kill()
+    end
 	end),
 
 	-- sdcv

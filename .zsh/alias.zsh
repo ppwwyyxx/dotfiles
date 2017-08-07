@@ -151,9 +151,11 @@ alias speedtest='wget -O /dev/null http://speedtest-sfo2.digitalocean.com/100mb.
 alias m_rsync='rsync --progress --partial --delete --size-only -rlv --bwlimit=5m'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 function view-email() { mhonarc -single $1 | w3m -dump -T text/html }
+
 alias chromium-socks='chromium --proxy-server=socks5://localhost:8080'
 alias chromium-http='chromium --proxy-server=localhost:7777'
 alias google-keep='chromium --profile-directory=Default --app-id=hmjkmjkepdijhoojdojkdfohbdgmmhki'
+alias wunderlist='chromium --profile-directory=Default --app-id=ojcflmmmcfpacggndoaaflkmcoblhnbh'
 alias gg='google -r'
 alias gl='google -o'
 alias weather='curl -s http://wttr.in/\?m | head -n-1'
@@ -425,7 +427,6 @@ function retry() {
 }
 
 # python
-alias py='PYTHONPATH=$HOME/.config/python:$PYTHONPATH python3'
 alias ipy='ipython'
 function pydbg () { ipython --pdb -c "%run $1" }
 alias bp2='bpython2'

@@ -1,6 +1,7 @@
 local lgi = require('lgi')
 local Gio = lgi.Gio
 local gears = require('gears')
+local const = require('rc/const')
 local myutil = {
 exec              = awful.spawn,
 join              = gears.table.join,
@@ -42,9 +43,8 @@ function myutil.notify(title, text, urgency)	-- normal, low, critical
 end
 
 function myutil.run_term(cmd, name)
-   local TMP_TERM = 'TODO'
-   if not name then name = TMP_TERM end
-	myutil.exec("urxvt -name '" .. name .. "' -e bash -c 'source $HOME/.bashrc; " .. cmd .. "'")
+   if not name then name = const.TMP_TERM end
+	 myutil.exec("urxvt -name '" .. name .. "' -e bash -c 'source $HOME/.bashrc; " .. cmd .. "'")
 end
 
 function myutil.rexec(cmd)
