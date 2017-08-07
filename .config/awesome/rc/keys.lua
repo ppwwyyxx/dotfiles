@@ -82,9 +82,9 @@ ROOT_KEYS = gears.table.join(
           elseif key == 'p' then myutil.run_term('bpython')
           elseif key == 'P' then myutil.run_term('bpython2')
           elseif key == 'c' then myutil.run_term('coffee')
-          elseif key == 't' then myutil.run_term('top', 'FSTerm')
-          elseif key == 'h' then myutil.run_term('htop', 'FSTerm')
-          elseif key == 'd' then myutil.run_term('dstat -dnmcl --top-io -Nwlp3s0', 'FSTerm')
+          elseif key == 't' then myutil.run_term('top')
+          elseif key == 'h' then myutil.run_term('htop')
+          elseif key == 'd' then myutil.run_term('dstat -dnmcl --top-io -Nwlp3s0', 'dstat')
           elseif key == 'Shift_L' or key == 'Shift_R' then return
           end
           keygrabber.stop()
@@ -211,7 +211,8 @@ ROOT_KEYS = gears.table.join(
 	awful.key({modkey}, "q", function()
 		local c = client.focus
 		if not c then return end
-    if c.instance == 'FSTerm' or c.instance == const.TMP_TERM then
+    local hide = string.find(c.instance, const.TMP_TERM)
+    if hide ~= nil then
       local nr_tag = #tags[c.screen]
       c:move_to_tag(tags[c.screen][nr_tag])
     else

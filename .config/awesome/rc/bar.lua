@@ -32,7 +32,7 @@ cpu_widget:set_color({ type = "linear",
                    from = { 0, 0 }, to = { 10,0 },
                    stops = { {0, "#FF5656"}, {0.5, "#88A175"}, {1, "#AECF96" }}})
 cpu_widget:buttons(awful.button({}, 1, function()
-   myutil.run_term('htop', 'FSTerm')
+   myutil.run_term('htop')
 end))
 vicious.register(cpu_widget, vicious.widgets.cpu, "$1", 7)
 
@@ -53,7 +53,7 @@ local mem_widget = wibox.widget.textbox()
 vicious.register(mem_widget, vicious.widgets.mem,
    myutil.colored_text("$1% ", "#90ee90"), 11)
 mem_widget:buttons(awful.button({}, 1, function()
-   myutil.run_term('top -o %MEM -d 1', 'FSTerm')
+   myutil.run_term('top -o %MEM -d 1', 'top')
 end))
 local mem_icon = wibox.widget.imagebox(beautiful.my_icons .. '/widgets/mem.png')
 local mem_widget_group = wibox.layout.fixed.horizontal()
@@ -84,7 +84,7 @@ local bat_widget_group = wibox.layout.fixed.horizontal()
 bat_widget_group:add(bat_icon)
 bat_widget_group:add(bat_widget)
 bat_widget_group:buttons(awful.button({}, 1, function()
-   myutil.run_term("sudo powertop", 'FSTerm')
+   myutil.run_term("sudo powertop", 'powertop')
 end))
 -- f]]
 
@@ -132,7 +132,7 @@ net_widget_group:buttons(awful.button({}, 1, function()
     myutil.run_term(
       'tmux new-session -d "sudo iftop -i "'
       .. net_if .. ' \\; split-window -d "sudo nethogs '
-      .. net_if .. '" \\; attach', 'FSTerm')
+      .. net_if .. '" \\; attach', 'iftop')
 end))
 
 -- f]]
@@ -244,6 +244,9 @@ local LAYOUT_BOX_BUTTONS = gears.table.join(
 )
 
 local systray = wibox.widget.systray()
+-- this two lines could fix tray icon background
+systray.forced_width = 140
+systray.opacity = 1
 awful.screen.connect_for_each_screen(function(s)
     local layout_box = awful.widget.layoutbox(s.index)
     layout_box:buttons(LAYOUT_BOX_BUTTONS)

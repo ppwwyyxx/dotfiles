@@ -43,8 +43,13 @@ function myutil.notify(title, text, urgency)	-- normal, low, critical
 end
 
 function myutil.run_term(cmd, name)
-   if not name then name = const.TMP_TERM end
-	 myutil.exec("urxvt -name '" .. name .. "' -e bash -c 'source $HOME/.bashrc; " .. cmd .. "'")
+   if not name then name = cmd end
+   name = name .. const.TMP_TERM
+   cmd = "urxvt -name '" .. name .. "' -e bash -c 'source $HOME/.bashrc; " .. cmd .. "'"
+   local matcher = function(c)
+     return c.instance == name
+   end
+   awful.client.run_or_raise(cmd, matcher)
 end
 
 function myutil.rexec(cmd)
