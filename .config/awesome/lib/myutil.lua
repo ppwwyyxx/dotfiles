@@ -47,7 +47,7 @@ function myutil.run_term(cmd, name)
    name = name .. const.TMP_TERM
    cmd = "urxvt -name '" .. name .. "' -e bash -c 'source $HOME/.bashrc; " .. cmd .. "'"
    local matcher = function(c)
-     return c.instance == name
+     return (c.instance == name)
    end
    awful.client.run_or_raise(cmd, matcher)
 end

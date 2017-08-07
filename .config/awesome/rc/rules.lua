@@ -45,20 +45,10 @@ awful.rules.rules = {
       end))
   }},
 
---[[
-   [{ rule = { instance = 'FSTerm' },
-	 [  properties = {
-	 [    maximized_horizontal = true,
-	 [    maximized_vertical = true,
-	 [  } },
-   ]]
-
 -- floating:
 { rule_any = {
 		class = { 'MPlayer', 'feh', 'Screenkey', 'Skype' },
-		name = { '文件传输', 'Firefox 首选项', '暂存器', 'Keyboard',
-         --TMP_TERM
-		},
+		name = { '文件传输', 'Firefox 首选项', '暂存器', 'Keyboard' },
 	},
 	properties = { floating = true, },
 },
@@ -97,20 +87,22 @@ awful.rules.rules = {
   end},
 
   -- for the vizdoom demo @ICLR17
-  { rule = { class = "vizdoom" },
-    callback = function(c)
-      if c.width == 1024 then
-        myutil.moveresize_abs(-1024, -768, 1024, 768, c)
-      else
-        for _, cc in ipairs(mouse.screen.clients) do
-          if cc ~= c and cc.width == 512 and cc.y ~= 384 then
-            myutil.moveresize_abs(0, 384, 512, 384, c)
-            return
-          end
-        end
-      end
-    end
-  },
+  --[[
+     [{ rule = { class = "vizdoom" },
+     [  callback = function(c)
+     [    if c.width == 1024 then
+     [      myutil.moveresize_abs(-1024, -768, 1024, 768, c)
+     [    else
+     [      for _, cc in ipairs(mouse.screen.clients) do
+     [        if cc ~= c and cc.width == 512 and cc.y ~= 384 then
+     [          myutil.moveresize_abs(0, 384, 512, 384, c)
+     [          return
+     [        end
+     [      end
+     [    end
+     [  end
+     [},
+     ]]
 } -- the end
 
 client.connect_signal("unmanage", function(c)
