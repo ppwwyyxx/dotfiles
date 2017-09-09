@@ -448,8 +448,8 @@ path_parse(){
 	if [[ $BUFFER = "." ]]; then
 		BUFFER="cd ../"
 		return
-	elif [[ $BUFFER =~ ".* \.\.\..*" ]] ;then	# expand ...
-		BUFFER=`echo "$BUFFER" |sed 's/ \.\.\./ \.\.\/\.\./g'`
+	elif [[ $BUFFER =~ " \.\.\." || $BUFFER =~ "^\.\.\." ]] ;then	# expand ...
+		BUFFER=`echo "$BUFFER" |sed 's/ \.\.\./ \.\.\/\.\./g;s/^\.\.\./\.\.\/\.\./g'`
 		path_parse
 	elif [[ $BUFFER =~ "^\.\..*" ]]; then		# auto add cd to the beginning of ...
 		if [[ -d `echo "$BUFFER" |sed 's/\\\ /\ /g; s/l$//g; s/ls$//g'` ]]; then
