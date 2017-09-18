@@ -233,10 +233,10 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias clean-trash='=rm /ssd_home/.Trash/{.,}* -rf; =rm ~/.Trash/{.,}* -rf'
 
 alias sacct='=sacct -S $(date +"%m/%d" -d "-2days") -o jobid,jobname%30,alloccpus%3,state%6,exitcode%4,nodelist,start%16,end%16,elapsed%5 | colorline'
-alias sacct-all='=sacct -S $(date +"%m/%d" -d "-2days") -a -o User%10,JobID,Jobname,state%5,MaxRss,MaxVMSize,avediskread,nnodes%3,ncpus%3,nodelist,start%16,end%16,elapsed%5 | colorline'
+alias sacct-all='=sacct -S $(date +"%m/%d" -d "-5hours") -a -o User%10,JobID,Jobname,state%5,MaxRss,MaxVMSize,avediskread,nnodes%3,ncpus%3,nodelist,start%16,end%16,elapsed%5 | colorline'
 alias squeue='=squeue -u $(whoami) -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | colorline'
 alias squeue-all='=squeue -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | colorline'
-alias slurm-gpu-per-user="=squeue -o %u:%b | tail -n+2 | awk -F ':' '{a[\$1]+=\$3} END {for (i in a) print i, a[i];}' | sort -n -k2 | column -t"
+alias slurm-gpu-per-user="=squeue -o %u:%D:%b | tail -n+2 | awk -F ':' '{a[\$1]+=\$2*\$4} END {for (i in a) {print i, a[i]; s+=a[i];} print \"Total\", s}' | sort -n -k2 | column -t"
 
 alias win='cd; virtualbox --startvm win7 & ; cd -'
 alias osx='cd; virtualbox --startvm osx & ; cd -'
@@ -308,7 +308,7 @@ alias __nvp="nvidia-smi | awk '/PID/ { seen=1 } seen {print} ' \
 	| tail -n+3 | head -n-1  |  awk '{print \$2, \$(NF-1), \$3}' \
 	| grep -v '^No' \
 	| awk 'BEGIN{OFS=\"\\t\"} { cmd=(\"ps -ho '%a' \" \$3); cmd | getline v; close(cmd); \$4=v; print }'"
-alias nvp="(echo \"GPU\tMEM\tPID\tCOMMAND\" && __nvp) | column -t -s $'\t'"
+alias nvp="(echo \"GPU\tMEM\tPID\tCOMMAND\" && __nvp) | column -t -s $'\t' | cut -c 1-$(tput cols)"
 alias nsmi='watch -n 0.5 nvidia-smi'
 
 function b(){
