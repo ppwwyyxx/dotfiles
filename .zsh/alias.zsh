@@ -159,6 +159,11 @@ alias wunderlist='chromium --profile-directory=Default --app-id=ojcflmmmcfpacggn
 alias gg='google -r'
 alias gl='google -o'
 alias weather='curl -s http://wttr.in/\?m | head -n-1'
+function pasteimage() {
+	local url=$(curl -F "name=@$1" https://img.vim-cn.com)
+	echo $url
+	echo $url | xclip -i -selection clipboard
+}
 
 alias ssh-reverse='ssh -R 6333:localhost:22 -ServerAliveInterval=60'
 function st() { ssh "$1" -t 'tmux a -d || tmux' }
