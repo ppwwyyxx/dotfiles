@@ -217,6 +217,12 @@ function cdp () {
 		echo "'$PWD' is not git repos"
 	fi
 }
+function gitdate () {
+	local date=$(date --date="$1")
+	echo $date
+	shift
+	GIT_AUTHOR_DATE=$date GIT_COMMITTER_DATE=$date git $@
+}
 
 
 # tools
@@ -399,6 +405,7 @@ else
 	alias top='top -d 0.5 -c'
 fi
 alias topme='top -u $USER'
+alias htopme='htop -u $USER'
 alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -n | tail -n20"
 memgrep() { grep VmHWM /proc/$(pgrep -d '/status /proc/' "$1")/status; }
 function killz() {
@@ -472,7 +479,6 @@ which pacman NN && {
 	  fi
 	}
 } || {
-
 [[ -n $_CFG_ON_MAC ]] && {
 	alias pS='brew install'
 	alias pSs='brew search'
@@ -480,34 +486,37 @@ which pacman NN && {
 	alias pR='brew uninstall'
 	alias pQl='brew list'
 } || {
-	which apt-get NN && {
-			which apt NN && {
-			  alias pS='sudo apt install'
-				alias pR='sudo apt remove'
-				alias pSs='apt search'
-				alias pSy='sudo apt update'
-				alias pSu='sudo apt update; sudo apt upgrade'
-			} || {
-				alias pS='sudo aptitude install'
-				alias pR='sudo aptitude purge'
-				alias pSs='aptitude search'
-				alias pSy='sudo aptitude update'
-				alias pSu='sudo aptitude upgrade'
-			}
-			alias pQo='apt-file search'
-			alias pQl='dpkg-query -L'
-			#alias pQl2='apt-file list'
-			alias pU='sudo dpkg -i'
+which apt-get NN && {
+		which apt NN && {
+			alias pS='sudo apt install'
+			alias pR='sudo apt remove'
+			alias pSs='apt search'
+			alias pSy='sudo apt update'
+			alias pSu='sudo apt update; sudo apt upgrade'
 		} || {
-			alias pS='sudo yum install'
-			alias pR='sudo yum remove'
-			alias pSy='sudo yum check-update'
-			alias pSu='sudo yum update'
-			alias pSs='yum search'
-			alias pQo='yum whatprovides'
-			alias pQl='rpm -ql'
+			alias pS='sudo aptitude install'
+			alias pR='sudo aptitude purge'
+			alias pSs='aptitude search'
+			alias pSy='sudo aptitude update'
+			alias pSu='sudo aptitude upgrade'
 		}
-	}
+		which apt-file NN && {
+			alias pQo='apt-file search'
+		} || {
+			alias pQo='dpkg -S'		# only works for already-installed packages
+		}
+		alias pQl='dpkg-query -L'
+		alias pU='sudo dpkg -i'
+} || {
+	alias pS='sudo yum install'
+	alias pR='sudo yum remove'
+	alias pSy='sudo yum check-update'
+	alias pSu='sudo yum update'
+	alias pSs='yum search'
+	alias pQo='yum whatprovides'
+	alias pQl='rpm -ql'
+}
+}
 }
 
 
