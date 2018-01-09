@@ -70,7 +70,7 @@ for(j=1; j<=p; j++) {
 function rm() {
 	for file in $@; do
 		local FILE_LOC="`readlink -f $file`"
-		if [[ $FILE_LOC == /home/* ]]; then
+		if [[ $FILE_LOC == $HOME/* ]]; then
 			mkdir -p $HOME/.Trash
 			mv "$file" $HOME/.Trash/ --backup=numbered -fv
 		else
@@ -243,9 +243,9 @@ alias adate='for i in Asia/Shanghai US/{Eastern,Pacific}; do printf %-22s "$i ";
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias clean-trash='=rm /ssd_home/.Trash/{.,}* -rf; =rm ~/.Trash/{.,}* -rf'
 
-alias sacct='=sacct -S $(date +"%m/%d" -d "-2days") -o jobid,jobname%30,alloccpus%3,state%6,exitcode%4,nodelist,start%16,end%16,elapsed%5 | colorline'
+alias sacct='=sacct -S $(date +"%m/%d" -d "-4days") -o jobid,jobname%30,alloccpus%3,state%6,exitcode%4,nodelist,start%16,end%16,elapsed%5 | colorline'
 alias sacct-all='=sacct -S $(date +"%m/%d" -d "-5hours") -a -o User%10,JobID,Jobname,state%5,MaxRss,MaxVMSize,avediskread,nnodes%3,ncpus%3,nodelist,start%16,end%16,elapsed%5 | colorline'
-alias squeue='=squeue -u $(whoami) -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | colorline'
+alias squeue='=squeue -u $(whoami) -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | sort -n -k 1 | colorline'
 alias squeue-all='=squeue -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | colorline'
 alias slurm-gpu-per-user="=squeue -o %u:%D:%b | tail -n+2 | awk -F ':' '{a[\$1]+=\$2*\$4} END {for (i in a) {print i, a[i]; s+=a[i];} print \"Total\", s}' | sort -n -k2 | column -t"
 
