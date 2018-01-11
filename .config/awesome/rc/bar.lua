@@ -245,8 +245,8 @@ local LAYOUT_BOX_BUTTONS = gears.table.join(
 
 local systray = wibox.widget.systray()
 -- this two lines could fix tray icon background
-systray.forced_width = 140
-systray.opacity = 0
+--systray.forced_width = 140
+--systray.opacity = 0
 awful.screen.connect_for_each_screen(function(s)
     local layout_box = awful.widget.layoutbox(s.index)
     layout_box:buttons(LAYOUT_BOX_BUTTONS)
@@ -273,17 +273,20 @@ awful.screen.connect_for_each_screen(function(s)
 
     right_layout:add(volume_widget)
 
-    s.remove_systray = function()
-      right_layout:remove_widgets(systray)
-    end
-    s.show_systray = function()
-      local idx = right_layout:index(systray)
-      if idx == nil then
-        right_layout:insert(7, systray)
-      end
-      systray:set_screen(s)
-    end
+    --[[
+       [s.remove_systray = function()
+       [  right_layout:remove_widgets(systray)
+       [end
+       [s.show_systray = function()
+       [  local idx = right_layout:index(systray)
+       [  if idx == nil then
+       [    right_layout:insert(7, systray)
+       [  end
+       [  systray:set_screen(s)
+       [end
+       ]]
 
+    right_layout:add(systray)
     right_layout:add(textclock)
 
    --right_layout:add(powerline_widget)

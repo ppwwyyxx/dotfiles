@@ -114,13 +114,15 @@ client.connect_signal("mouse::enter", function(c)
   if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier then
     client.focus = c
   end
-  for s in screen do
-    if s ~= c.screen then
-      s.remove_systray()
-    end
-  end
-  local s = c.screen
-  s.show_systray()
+  --[[
+     [for s in screen do
+     [  if s ~= c.screen then
+     [    s.remove_systray()
+     [  end
+     [end
+     [local s = c.screen
+     [s.show_systray()
+     ]]
 end)
 
 client.connect_signal("focus", function(c)
