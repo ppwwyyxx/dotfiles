@@ -202,8 +202,8 @@ safe_source $HOME/.zsh/alias.zsh
 alias -s pdf jpg png gif html mhtml=xdg-open
 alias -s djvu=djview4
 alias -s obj=meshlab
-for i in wmv mkv mp4 mp3 avi rm rmvb flv; alias -s $i=mpv
-for i in xls xlsx doc docx ppt pptx; alias -s $i=libreoffice
+alias -s wmv mkv mp4 mp3 avi rm rmvb flv=mpv
+alias -s xls xlsx doc docx ppt pptx=libreoffice
 
 # Basic
 setopt autocd				# cd without 'cd'
@@ -448,8 +448,8 @@ path_parse(){
 	if [[ $BUFFER = "." ]]; then
 		BUFFER="cd ../"
 		return
-	elif [[ $BUFFER =~ " \.\.\." || $BUFFER =~ "^\.\.\." ]] ;then	# expand ...
-		BUFFER=`echo "$BUFFER" |sed 's/ \.\.\./ \.\.\/\.\./g;s/^\.\.\./\.\.\/\.\./g'`
+	elif [[ $BUFFER =~ ".*\.\.\..*" ]] ;then	# expand ...
+		BUFFER=`echo "$BUFFER" |sed 's/\.\.\./\.\.\/\.\./g'`
 		path_parse
 	elif [[ $BUFFER =~ "^\.\..*" ]]; then		# auto add cd to the beginning of ...
 		if [[ -d `echo "$BUFFER" |sed 's/\\\ /\ /g; s/l$//g; s/ls$//g'` ]]; then
