@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 """
 complete path by acronym of pinyin initials
@@ -262,13 +262,13 @@ if __name__ == '__main__':
         try:
             tmp = reply[index - 1]
             tmp = filter_escape(tmp)
-            print tmp
+            # print tmp
         except IndexError:
             # return the last candidate when index is out of range
             if reply :
                 tmp = reply[-1]
                 tmp = filter_escape(tmp)
-                print tmp
+                # print tmp
     else:
         for i in range(0,len(reply)):
             reply[i] = filter_escape(reply[i])

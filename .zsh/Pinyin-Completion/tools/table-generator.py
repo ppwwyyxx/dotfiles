@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # vim: set fileencoding=utf-8 :
 
 from collections import defaultdict
@@ -20,10 +20,10 @@ for line in lines :
     pinyin_initial[char].extend(list(initials))
 
 # now generate an python module containing pinyin table
-print  "# vim: set fileencoding=utf-8 :"
-print  "\n" * 3
-print  "pinyin_initial = {"
+print("# vim: set fileencoding=utf-8 :")
+print("\n" * 3)
+print("pinyin_initial = {")
 for key in pinyin_initial.keys():
-    print "u'%s' : %s ," % (key.encode("utf-8"),  pinyin_initial[key] )
-print "}"
+    print("u'%s' : %s ," % (key.encode("utf-8"),  pinyin_initial[key] ))
+print("}")
 
