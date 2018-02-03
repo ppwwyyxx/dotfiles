@@ -185,6 +185,23 @@ volume_widget:buttons(gears.table.join(
 ))
 -- f]]
 
+local btc_widget = wibox.widget.textbox()
+local function btcupdate()
+  awful.spawn.easy_async_with_shell(
+  "curl https://api.coindesk.com/v1/bpi/currentprice.json | jq '.bpi.USD.rate_float' | xargs printf %d",
+  function(stdout, stderr, ...)
+    local message = "$B: " .. stdout
+    message = myutil.colored_text(message, "#cc99ff")
+    btc_widget:set_markup(message)
+  end)
+end
+
+btcupdate()
+local btc_clock = gears.timer({ timeout = 300 })
+btc_clock:connect_signal("timeout", function() btcupdate() end)
+btc_clock:start()
+
+
 -- tag, task
 local TAG_LIST_BUTTONS = gears.table.join(
     awful.button({}, 1, function(t) t:view_only() end),
@@ -264,6 +281,7 @@ awful.screen.connect_for_each_screen(function(s)
     left_layout:add(s.my_prompt_box)
 
     local right_layout = wibox.layout.fixed.horizontal()
+    right_layout:add(btc_widget)
     right_layout:add(cpu_widget)
     right_layout:add(thermal_widget)
     right_layout:add(mem_widget_group)
