@@ -81,9 +81,9 @@ DOUBLE_WIDTH = {
 # fuzzy pinyin
 FUZZY = {}
 try:
-    FUZZY = eval( os.getenv("FUZZY") )
+    FUZZY = eval(os.getenv("FUZZY"))
     FUZZY.keys()
-except StandardError:
+except Exception:
     FUZZY = {}
 
 def transform_double_width(uni_char):
@@ -140,11 +140,10 @@ def get_acronym(text):
 
 def unicodelize(text):
     "try to convert string into unicode string."
-    if not isinstance(text, unicode):
-        try:
-            return unicode(text, default_encoding)
-        except UnicodeDecodeError:
-            pass
+    try:
+        text = text.decode(default_encoding)
+    except Exception:
+        pass
 
     return text
 
