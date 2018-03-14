@@ -58,6 +58,7 @@ if [[ -d /opt/intel/mkl ]]; then
 	export MKLROOT=/opt/intel/mkl
 	export LD_LIBRARY_PATH=`readlink -f $MKLROOT/../compiler/lib/intel64`:$MKLROOT/lib/intel64:$LD_LIBRARY_PATH;
 	export LIBRARY_PATH=`readlink -f $MKLROOT/../compiler/lib/intel64`:$MKLROOT/lib/intel64:$LIBRARY_PATH;
+	#export CPATH=$MKLROOT/include/:$CPATH
 fi
 function try_use_cuda_home() {
 	if [[ -d "$1/lib64" ]]; then
@@ -67,6 +68,7 @@ function try_use_cuda_home() {
 			export LD_LIBRARY_PATH=$CUDA_HOME/extras/CUPTI/lib64:$LD_LIBRARY_PATH
 		fi
 		export LIBRARY_PATH=$CUDA_HOME/lib64:$LIBRARY_PATH
+		#export CPATH=$CUDA_HOME/include
 		export PATH=$PATH:$CUDA_HOME/bin
 	fi
 }
@@ -74,6 +76,7 @@ function try_use_cudnn() {
 	if [[ -d "$1/lib64" ]]; then
 		export LD_LIBRARY_PATH=$1/lib64:$LD_LIBRARY_PATH
 		export LIBRARY_PATH=$1/lib64:$LIBRARY_PATH
+		#export CPATH=$1/include:$CPATH
 	fi
 }
 try_use_cuda_home /usr/local/cuda
@@ -246,7 +249,10 @@ bindkey '^f' forward-word
 bindkey '^w' backward-delete-word
 bindkey ' ' magic-space		# history expansion + space
 autoload zkbd
-[[ -f $HOME/.zsh/zkbd/$TERM ]] && source $HOME/.zsh/zkbd/$TERM || zkbd
+[[ -f $HOME/.zsh/zkbd/$TERM ]] && source $HOME/.zsh/zkbd/$TERM || {
+	echo "Did not find '$HOME/.zkbd'. You might be using incomplete dotfiles."
+	zkbd
+}
 [[ -n ${key[Backspace]} ]] && bindkey "${key[Backspace]}" backward-delete-char
 [[ -n ${key[Insert]} ]] && bindkey "${key[Insert]}" overwrite-mode
 [[ -n ${key[Home]} ]] && bindkey "${key[Home]}" beginning-of-line

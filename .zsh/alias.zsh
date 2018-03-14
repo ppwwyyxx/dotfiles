@@ -108,7 +108,6 @@ alias sv='sudo vim'
 
 alias sort='LC_ALL=C sort'
 alias uniq='LC_ALL=C uniq'
-alias cls='clear'
 alias grep='grep -IE --color=auto --exclude=.tags --exclude-dir="node_modules" --exclude-dir=".git" --exclude-dir=".env"'
 alias tmuxa='tmux a || tmux'
 alias du='du -sh'
@@ -140,17 +139,14 @@ function linkto() {
 # network
 alias p='ping'
 alias meow='ping'
-alias p6='ping -6'
-alias pc='proxychains4'
 alias iwc='iwconfig wlp2s0; ifconfig wlp2s0'
 alias port='sudo netstat -ntlpu'
 alias listen='lsof -P -i -n'
 alias scp='scp -r'
 alias rsync='rsync -avP'
 alias speedtest='wget -O /dev/null http://speedtest-sfo2.digitalocean.com/100mb.test'
-alias m_rsync='rsync --progress --partial --delete --size-only -rlv --bwlimit=5m'
+alias m_rsync='rsync --progress --partial --delete --size-only -rlv'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
-function view-email() { mhonarc -single $1 | w3m -dump -T text/html }
 
 alias chromium-socks='chromium --proxy-server=socks5://localhost:8080'
 alias chromium-http='chromium --proxy-server=localhost:7777'
@@ -183,7 +179,6 @@ function proxy() {
 	https_proxy=$p http_proxy=$p ${@: 2}
 }
 alias vnc-quick='vncviewer -QualityLevel=0 -CompressLevel=3 -PreferredEncoding=ZRLE -FullScreen=1 -Shared=1'
-alias rdesktop-nana='rdesktop-vrdp -K -u wyx -p - 59.66.131.64:3389'
 
 
 # develop utils
@@ -194,7 +189,6 @@ which ccache NN && {
 	alias mk='CXX="ccache g++" make'
 } || { alias mk='make' }
 alias mr='make run'
-alias mc='make clean'
 alias mkc='make clean'
 alias cmk='mkdir -p build; cd build; cmake ..; make; cd ..'
 alias gits='git s'
@@ -202,11 +196,11 @@ alias gsh='git -c color.status=always status | head -n20'
 alias gcl='git clone --recursive'
 alias indent='indent -linux -l80'
 alias gdb='gdb -q'
-alias R='R --vanilla'
 alias ctags='ctags -R -f .tags --c++-kinds=+p --fields=+iaS --extra=+q'
 alias valgrind='valgrind --leak-check=full --track-origins=yes --show-possibly-lost=yes'
 which colordiff NN && alias diff='colordiff'
 alias googlelink='python2 -c "import urlparse, sys; print urlparse.parse_qs(urlparse.urlparse(sys.argv[1]).query)[\"url\"][0]"'
+alias disasm='objdump -d -M att -r -C'
 # cd to git repo root
 function cdp () {
 	dir=$(git rev-parse --show-toplevel 2>/dev/null)
