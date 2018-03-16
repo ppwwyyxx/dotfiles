@@ -229,7 +229,7 @@ alias zh-CN="LC_ALL='zh_CN.UTF-8'"
 alias manzh="LC_ALL='zh_CN.UTF-8' man"
 alias free='free -hw'
 which dfc NN && alias df='dfc' || alias df='df -Th'
-alias convmv='convmv -f GBK -t UTF-8 --notest -r'
+alias convmv-gbk2utf8='convmv -f GBK -t UTF-8 --notest -r'
 alias window='wmctrl -a '
 alias cp2clip='xclip -i -selection clipboard'
 alias screenkey='screenkey -s small -t 0.8 --opacity 0.3'
@@ -237,11 +237,13 @@ alias adate='for i in Asia/Shanghai US/{Eastern,Pacific}; do printf %-22s "$i ";
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias clean-trash='=rm /ssd_home/.Trash/{.,}* -rf; =rm ~/.Trash/{.,}* -rf'
 
-alias sacct='=sacct -S $(date +"%m/%d" -d "-4days") -o jobid,jobname%30,alloccpus%3,state%6,exitcode%4,nodelist,start%16,end%16,elapsed%5 | colorline'
-alias sacct-all='=sacct -S $(date +"%m/%d" -d "-5hours") -a -o User%10,JobID,Jobname,state%5,MaxRss,MaxVMSize,avediskread,nnodes%3,ncpus%3,nodelist,start%16,end%16,elapsed%5 | colorline'
-alias squeue='=squeue -u $(whoami) -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | sort -n -k 1 | colorline'
-alias squeue-all='=squeue -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | colorline'
-alias slurm-gpu-per-user="=squeue -o %u:%D:%b | tail -n+2 | awk -F ':' '{a[\$1]+=\$2*\$4} END {for (i in a) {print i, a[i]; s+=a[i];} print \"Total\", s}' | sort -n -k2 | column -t"
+which squeue NN && {
+	alias sacct='=sacct -S $(date +"%m/%d" -d "-4days") -o jobid,jobname%30,alloccpus%3,state%6,exitcode%4,nodelist,start%16,end%16,elapsed%5 | colorline'
+	alias sacct-all='=sacct -S $(date +"%m/%d" -d "-5hours") -a -o User%10,JobID,Jobname,state%5,MaxRss,MaxVMSize,avediskread,nnodes%3,ncpus%3,nodelist,start%16,end%16,elapsed%5 | colorline'
+	alias squeue='=squeue -u $(whoami) -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | sort -n -k 1 | colorline'
+	alias squeue-all='=squeue -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | colorline'
+	alias slurm-gpu-per-user="=squeue -o %u:%D:%b | tail -n+2 | awk -F ':' '{a[\$1]+=\$2*\$4} END {for (i in a) {print i, a[i]; s+=a[i];} print \"Total\", s}' | sort -n -k2 | column -t"
+}
 
 alias win='cd; virtualbox --startvm win7 & ; cd -'
 alias osx='cd; virtualbox --startvm osx & ; cd -'
@@ -263,7 +265,7 @@ alias calw='gcalcli calw'
 function systemd-run-env() {
 	# env vars that need do be passed to the process
 	local names=('PATH' 'LD_LIBRARY_PATH' 'TENSORPACK_DATASET'
-							 'CPATH' 'PYTHONPATH' 'LIBRARY_PATH')
+							 'PYTHONPATH' 'LIBRARY_PATH')
 	local earg=""
 	for i in $names; do
 		earg="$earg --setenv $i=${(P)i}"
@@ -279,8 +281,6 @@ function km() {	# only for my laptop
 	#xinput set-button-map $(xinput | grep -o "TouchPad.*id=[0-9]*" | grep -o "[0-9]*") 1 0 0
 }
 alias dmesg='dmesg -H || dmesg | less'
-alias keyb='xinput disable $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*")'
-alias unkeyb='xinput enable $(xinput | grep -o "TouchPad.*id=[0-9]*" |grep -o "[0-9]*")'
 function modulegraph() { lsmod | perl -e 'print "digraph \"lsmod\" {";<>;while(<>){@_=split/\s+/; print "\"$_[0]\" -> \"$_\"\n" for split/,/,$_[3]}print "}"' | dot -Tpng | feh -; }
 alias lsblk="lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT,LABEL,VENDOR,MODEL"
 
@@ -303,25 +303,26 @@ function usbon () {
 	echo -n "USB power state now: "
 	cat $powerf
 }
-alias __nvq='nvidia-smi --query-gpu=temperature.gpu,clocks.current.sm,pstate,power.draw,utilization.gpu,utilization.memory,memory.free --format=csv | tail -n+2'
-which nl NN && {
-	alias nvq='(echo "GPU,temp, clocks, pstate, power, util.GPU, util.MEM, freeMEM" && __nvq | nl -s, -w1 -v0) | column -t -s,'
-} || {
-	alias nvq='(echo "temp, clocks, power, util.GPU, util.MEM, freeMEM" && __nvq) | column -t -s ,'
+which nvidia-smi NN && {
+	alias __nvq='nvidia-smi --query-gpu=temperature.gpu,clocks.current.sm,pstate,power.draw,utilization.gpu,utilization.memory,memory.free --format=csv | tail -n+2'
+	which nl NN && {
+		alias nvq='(echo "GPU,temp, clocks, pstate, power, util.GPU, util.MEM, freeMEM" && __nvq | nl -s, -w1 -v0) | column -t -s,'
+	} || {
+		alias nvq='(echo "temp, clocks, power, util.GPU, util.MEM, freeMEM" && __nvq) | column -t -s ,'
+	}
+	alias __nvp="nvidia-smi | awk '/PID/ { seen=1 } seen {print} ' \
+		| tail -n+3 | head -n-1  |  awk '{print \$2, \$(NF-1), \$3}' \
+		| grep -v '^No' \
+		| awk 'BEGIN{OFS=\"\\t\"} { cmd=(\"ps -ho '%a' \" \$3); cmd | getline v; close(cmd); \$4=v; print }'"
+	alias nvp="(echo \"GPU\tMEM\tPID\tCOMMAND\" && __nvp) | column -t -s $'\t' | cut -c 1-$(tput cols)"
+	alias nsmi='watch -n 0.5 nvidia-smi'
 }
-alias __nvp="nvidia-smi | awk '/PID/ { seen=1 } seen {print} ' \
-	| tail -n+3 | head -n-1  |  awk '{print \$2, \$(NF-1), \$3}' \
-	| grep -v '^No' \
-	| awk 'BEGIN{OFS=\"\\t\"} { cmd=(\"ps -ho '%a' \" \$3); cmd | getline v; close(cmd); \$4=v; print }'"
-alias nvp="(echo \"GPU\tMEM\tPID\tCOMMAND\" && __nvp) | column -t -s $'\t' | cut -c 1-$(tput cols)"
-alias nsmi='watch -n 0.5 nvidia-smi'
 
 function b(){
 	=acpi -V | head -n1
 	sensors | grep Physical
 	sensors | grep RPM
 	cat /proc/acpi/ibm/fan | head -n3 |tail -n1
-	#echo "Graphic Card:  `nvidia-settings -q gpucoretemp |grep "Keep" |grep -o "\ [0-9]+" `  °C "
 	for ((i=0; i<1; i++)); do
 		echo -n "cpu$i : "
 		cat "/sys/devices/system/cpu/cpu$i/cpufreq/scaling_governor"
@@ -330,7 +331,6 @@ function b(){
 }
 
 # softwares
-alias mathc='/opt/Mathematica/Executables/math'
 alias mathematica='/opt/Mathematica/Executables/Mathematica -nosplash'
 which matlab NN || {
   [[ -d /opt/Matlab ]] && alias matlab='/opt/Matlab/bin/matlab'
@@ -354,9 +354,7 @@ local f=${1:-gource}
     #| avconv -y -r 30 -f image2pipe -vcodec ppm -i - -b 65536K movie.mp4
 }
 export PYCHARM_JDK=/opt/java-oracle
-export RUBYMINE_JDK=/opt/java-oracle
 export IDEA_JDK=/opt/java-oracle
-export WEBIDE_JDK=/opt/java-oracle
 
 alias wine32='WINEARCH=win32 LC_ALL=zh_CN.utf-8 WINEPREFIX=~/.wine32 wine'
 alias net9='luit -encoding gb18030 -- ssh ppwwyyxx@bbs.net9.org'
@@ -401,7 +399,7 @@ fi
 alias topme='top -u $USER'
 alias htopme='htop -u $USER'
 alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -n | tail -n20"
-memgrep() { grep VmHWM /proc/$(pgrep -d '/status /proc/' "$1")/status; }
+function memgrep() { grep VmHWM /proc/$(pgrep -d '/status /proc/' "$1")/status; }
 function killz() {
 	ppid=$(ps -oppid $1 | tail -n1)
 	kill -SIGHUP $ppid
@@ -444,10 +442,6 @@ alias piu3='pip3 install --user'
 alias piuu3='pip3 install --user -U'
 alias pyftp='python2 -m pyftpdlib'
 function pytwistd() { twistd web --path "$1" -p tcp:"${2:-8000}" }
-function web() {
-	pytwistd
-  #ruby -run -e httpd "$1" -p "${2:-8000}"
-}
 alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --user -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install --user -U"
 alias unquote='python2 -c "import sys, urllib as ul; [sys.stdout.write(ul.unquote(l)) for l in sys.stdin]"'
 
