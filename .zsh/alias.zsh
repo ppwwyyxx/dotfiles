@@ -275,6 +275,7 @@ function systemd-run-env() {
 
 # hardware
 function km() {	# only for my laptop
+	killall xcape
 	xmodmap ~/.Xmodmap
 	xset r rate 200 40
 	xcape -e "Control_L=Escape;Hyper_L=XF86Mail"

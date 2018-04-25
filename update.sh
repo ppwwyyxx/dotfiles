@@ -1,6 +1,6 @@
 #!/bin/bash
 # File: update.sh
-# Date: Wed Jul 01 19:58:58 2015 +0800
+# Date: Wed Apr 25 11:00:05 2018 -0700
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 if [[ ! "$HOST" -eq "KeepLearning" ]]; then
 	echo "Not at Laptop!"
@@ -25,3 +25,4 @@ cp ~/.config/gtk-3.0/* ./.config/gtk-3.0/ -fv
 cp ~/.gtkrc* ./ -fv
 cp ~/.config/termite/config ./.config/termite/ -fv
 cp ~/.config/mimeapps.list ./.config/
+cp ~/.config/doom ./.config/ -rvH

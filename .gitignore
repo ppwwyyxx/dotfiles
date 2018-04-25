@@ -4,6 +4,7 @@ doc/tags
 .tags
 *.so
 *.o
+*.elc
 
 *.sqlite
 wallpaper
