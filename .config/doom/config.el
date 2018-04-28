@@ -1,20 +1,38 @@
 ;;; -*- lexical-binding: t -*-
 ;;; -*- no-byte-compile: t -*-
 
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+(setq evil-mc-key-map nil)  ; don't pollute keys
+(map!
+ "C-x C-b" #'ibuffer
+
+ (:after counsel
+   :n "C-p" #'counsel-projectile-find-file)
+
+ (:after evil
+   :n ";" #'evil-ex)
+
+ (:after evil-surround
+  :map evil-surround-mode-map
+  :v "s" 'evil-surround-region)   ; originally was snipe
+
+
+ (:leader
+   (:prefix "c"
+     :desc "Commentary" :v "c" #'evil-commentary
+                        :n "c" #'evil-commentary-line
+     )
+   (:prefix "f"
+     :desc "File Manager" :n "m" #'+neotree/open
+     )
+  )
+)
 
 (after! evil
-  ; https://github.com/hlissner/doom-emacs/issues/552
-  (setq evil-split-window-below t)
-  (setq evil-vsplit-window-right t)
+  (global-evil-surround-mode 1)
   (evil-ex-define-cmd "vsp" 'evil-window-vsplit)
 )
 
 (after! ivy
-  (map! :n "C-p" #'counsel-projectile-find-file)
-  ;(ivy-add-actions 'ivy-switch-buffer '(("z" switch-to-buffer-other-window "test")))
-  ;(ivy-add-actions 'counsel-find-file' (("z" switch-to-buffer-other-window "test")))
-
   ;(defun switch-to-buffer-new-window (buffer-or-name side)
   ;  "Switch to BUFFER-OR-NAME in a new window, based on SIDE."
   ;  (select-window (split-window nil nil side))
