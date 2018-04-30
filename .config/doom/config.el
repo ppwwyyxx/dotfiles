@@ -1,30 +1,11 @@
 ;;; -*- lexical-binding: t -*-
 ;;; -*- no-byte-compile: t -*-
 
+(use-package counsel)       ; greedy load, to enable mappings
+(use-package evil-surround)
 (setq evil-mc-key-map nil)  ; don't pollute keys
-(map!
- "C-x C-b" #'ibuffer
-
- (:after counsel
-   :n "C-p" #'counsel-projectile-find-file)
-
- (:after evil
-   :n ";" #'evil-ex)
-
- (:after evil-surround
-  :map evil-surround-mode-map
-  :v "s" 'evil-surround-region)   ; originally was snipe
-
-
- (:leader
-   (:prefix "c"
-     :desc "Commentary" :v "c" #'evil-commentary
-                        :n "c" #'evil-commentary-line
-     )
-   (:prefix "f"
-     :desc "File Manager" :n "m" #'+neotree/open
-     )
-  )
+(after! pythonic
+  (setq python-shell-virtualenv-root "/usr")  ; it will otherwise look for .local/bin which may contain ipython2
 )
 
 (after! evil
@@ -87,6 +68,7 @@
 )
 
 (setq doom-font (font-spec :family "Monospace" :size 20))
-(set-face-attribute 'line-number-current-line nil :inherit 'default)
+(set-face-attribute 'line-number-current-line nil :inherit '(hl-line default))
 ;; https://github.com/hlissner/emacs-doom-themes/blob/master/doom-themes-common.el#L67-L70
 
+(load! +bindings)

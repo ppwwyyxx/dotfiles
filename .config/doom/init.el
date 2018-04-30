@@ -1,3 +1,6 @@
+(disable-packages!
+  company-irony company-irony-c-headers flycheck-irony irony irony-eldoc
+  ivy-rtags rtags)
 (doom! :feature
        (popup            ; tame sudden yet inevitable temporary windows
         +all             ; catch all popups that start with an asterix
