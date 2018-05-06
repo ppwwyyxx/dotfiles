@@ -1,6 +1,8 @@
 (disable-packages!
   company-irony company-irony-c-headers flycheck-irony irony irony-eldoc
+  smart-forward
   ivy-rtags rtags)
+  ;anaconda-mode company-anaconda)
 (doom! :feature
        (popup            ; tame sudden yet inevitable temporary windows
         +all             ; catch all popups that start with an asterix
@@ -20,7 +22,7 @@
        workspaces        ; tab emulation, persistence & separate workspaces
 
        :completion
-       company           ; the ultimate code completion backend
+       (company +auto)   ; the ultimate code completion backend
       ;ido               ; the other *other* search engine...
        ivy               ; a search engine for love and life
 
@@ -101,4 +103,6 @@
        ;; a Spacemacs-inspired keybinding scheme, a custom yasnippet library,
        ;; and additional ex commands for evil-mode. Use it as a reference for
        ;; your own modules.
-       (default +bindings +snippets +evil-commands))
+       (default
+         ;+bindings
+         +snippets +evil-commands))

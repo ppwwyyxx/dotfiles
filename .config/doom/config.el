@@ -1,9 +1,22 @@
 ;;; -*- lexical-binding: t -*-
 ;;; -*- no-byte-compile: t -*-
 
-(use-package counsel)       ; greedy load, to enable mappings
+; load at the beginning, to enable some mappings
+(use-package counsel)
 (use-package evil-surround)
-(setq evil-mc-key-map nil)  ; don't pollute keys
+
+(after! imenu-list
+  (setq imenu-list-auto-resize t)
+)
+
+(setq projectile-require-project-root t)
+(projectile-cleanup-known-projects)
+
+
+(after! neotree
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+)
+
 (after! pythonic
   (setq python-shell-virtualenv-root "/usr")  ; it will otherwise look for .local/bin which may contain ipython2
 )
@@ -12,6 +25,11 @@
   (global-evil-surround-mode 1)
   (evil-ex-define-cmd "vsp" 'evil-window-vsplit)
 )
+
+(after! company
+  (setq company-quickhelp-delay nil
+        company-show-numbers t
+        ))
 
 (after! ivy
   ;(defun switch-to-buffer-new-window (buffer-or-name side)
@@ -62,13 +80,13 @@
       )
     )
 
-    (define-key ivy-minibuffer-map (kbd "C-v") (lambda! (my/ivy-exit-new-window 'right)))
-	(define-key ivy-minibuffer-map (kbd "C-s") (lambda! (my/ivy-exit-new-window 'below)))
-	(define-key ivy-minibuffer-map (kbd "C-x") (lambda! (my/ivy-exit-new-window 'below)))
+    ;; (define-key ivy-minibuffer-map (kbd "C-v") (lambda! (my/ivy-exit-new-window 'right)))
+	;; (define-key ivy-minibuffer-map (kbd "C-s") (lambda! (my/ivy-exit-new-window 'below)))
 )
 
 (setq doom-font (font-spec :family "Monospace" :size 20))
-(set-face-attribute 'line-number-current-line nil :inherit '(hl-line default))
-;; https://github.com/hlissner/emacs-doom-themes/blob/master/doom-themes-common.el#L67-L70
+(after! doom-themes
+  (setq doom-neotree-file-icons t)
+)
 
 (load! +bindings)
