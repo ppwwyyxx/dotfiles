@@ -85,8 +85,6 @@
 )
 
 (setq doom-font (font-spec :family "Monospace" :size 20))
-(after! doom-themes
-  (setq doom-neotree-file-icons t)
-)
+(setq neo-theme 'icons)
 
 (load! +bindings)

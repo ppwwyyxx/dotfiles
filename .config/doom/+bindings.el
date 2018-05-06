@@ -13,31 +13,67 @@
       ;; Ensure there are no conflicts
       :nmvo doom-leader-key nil
       :nmvo doom-localleader-key nil
+      (:map special-mode-map
+        :nmvo doom-leader-key nil
+        )
+      (:after dired :map dired-mode-map
+        :nmvo doom-leader-key nil
+        )
 
       ;; --- Global keybindings ---------------------------
       ;; clean-ups:
       :gnvime "M-l" nil
       :gnvime "M-h" nil
 
+      (:map input-decode-map
+        [S-iso-lefttab] [backtab]
+        (:unless window-system "TAB" [tab])) ; Fix TAB in terminal
+
 
       ;; Make M-x available everywhere
       :gnvime "M-x" #'execute-extended-command
       ;; :gnvime "M-:" #'doom/open-scratch-buffer
       :gnvime "C-x C-b" #'ibuffer
+
       :ne "M-r"   #'+eval/buffer
       :ne "M-f"   #'swiper
       :n  "M-s"   #'save-buffer
       :n  ";"     #'evil-ex
-      :nv [tab] #'+evil/matchit-or-toggle-fold
+      :nv [tab]   #'+evil/matchit-or-toggle-fold
 
       ;; :nv "K"  #'+lookup/documentation  ; TODO not cool
       :m  "gd" #'+lookup/definition
       :m  "gD" #'+lookup/references
-      ;:m  "gs" #'+default/easymotion  ; lazy-load `evil-easymotion'
+      ;;:m  "gs" #'+default/easymotion  ; lazy-load `evil-easymotion'
       :n  "gx"  #'evil-exchange  ; https://github.com/tommcdo/vim-exchange
 
       :nv "C-a"   #'evil-numbers/inc-at-pt
       :nv "C-S-a" #'evil-numbers/dec-at-pt
+
+      ;; editing commands
+      :i "C-a" #'doom/backward-to-bol-or-indent
+      :i "C-e" #'doom/forward-to-last-non-comment-or-eol
+      :i "C-u" #'doom/backward-kill-to-bol-and-indent
+      :i "C-b" #'backward-word
+      :i "C-f" #'forward-word
+      (:map (minibuffer-local-map
+             minibuffer-local-ns-map
+             minibuffer-local-completion-map
+             minibuffer-local-must-match-map
+             minibuffer-local-isearch-map
+             read-expression-map)
+        [escape] #'abort-recursive-edit
+        "C-a"    #'move-beginning-of-line
+        "C-w"    #'backward-kill-word
+        "C-u"    #'backward-kill-sentence
+        "C-b"    #'backward-word
+        "C-f"    #'forward-word
+        )
+      (:after evil
+        (:map evil-ex-completion-map
+          "C-a" #'move-beginning-of-line
+          "C-b" #'backward-word
+          "C-f" #'forward-word))
 
       ;; expand-region
       :v  "v"  #'er/expand-region
@@ -295,24 +331,28 @@
 
       ;; ivy
       (:after ivy
-        :map ivy-minibuffer-map
-        [escape] #'keyboard-escape-quit
-        "C-SPC"  #'ivy-call-and-recenter  ; preview
+        (:map ivy-minibuffer-map
+          [escape] #'keyboard-escape-quit
+          "C-SPC"  #'ivy-call-and-recenter  ; preview
 
-        ; basic editing
-        "C-z"    #'undo
-        "C-V"    #'yank
-        ;"C-r"    #'evil-paste-from-register
-        "C-w"    #'ivy-backward-kill-word
-        "C-u"    #'ivy-kill-line
-        "C-b"    #'backward-word
-        "C-f"    #'forward-word
+          ;; basic editing
+          "C-z"    #'undo
+          "C-V"    #'yank
+          ;;"C-r"    #'evil-paste-from-register
+          "C-w"    #'ivy-backward-kill-word
+          "C-u"    #'ivy-kill-line
+          "C-b"    #'backward-word
+          "C-f"    #'forward-word
 
-        ; movement
-        "C-k"    #'ivy-previous-line
-        "C-j"    #'ivy-next-line
-        "C-v"    (lambda! (my/ivy-exit-new-window 'right))
-        "C-s"    (lambda! (my/ivy-exit-new-window 'below))
+          ;; movement
+          "C-k"    #'ivy-previous-line
+          "C-j"    #'ivy-next-line
+          "C-v"    (lambda! (my/ivy-exit-new-window 'right))
+          "C-s"    (lambda! (my/ivy-exit-new-window 'below))
+          )
+        (:map ivy-switch-buffer-map
+          "C-d" 'ivy-switch-buffer-kill
+          )
         )
       (:after swiper
         (:map swiper-map

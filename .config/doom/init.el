@@ -1,7 +1,14 @@
 (disable-packages!
   company-irony company-irony-c-headers flycheck-irony irony irony-eldoc
   smart-forward
-  ivy-rtags rtags)
+  ivy-rtags rtags
+  )
+
+(def-package-hook! doom-themes
+  :post-config
+  ;; https://github.com/hlissner/emacs-doom-themes/issues/180
+  (remove-hook 'doom-load-theme-hook #'doom-themes-neotree-config)
+)
   ;anaconda-mode company-anaconda)
 (doom! :feature
        (popup            ; tame sudden yet inevitable temporary windows
@@ -28,7 +35,7 @@
 
        :ui
        doom              ; what makes DOOM look the way it does
-       doom-dashboard    ; a nifty splash screen for Emacs
+       ;doom-dashboard    ; a nifty splash screen for Emacs
        doom-modeline     ; a snazzy Atom-inspired mode-line
        doom-quit         ; DOOM quit-message prompts when you quit Emacs
        evil-goggles      ; display visual hints when editing in evil
