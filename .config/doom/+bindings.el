@@ -37,8 +37,11 @@
 
       :ne "M-r"   #'+eval/buffer
       :ne "M-f"   #'swiper
-      :n  "M-s"   #'save-buffer
-      :n  ";"     #'evil-ex
+      ;;:n  "M-s"   #'save-buffer
+
+      :nm  ";"     #'evil-ex
+      (:after dired :map dired-mode-map :nm  ";"     #'evil-ex)
+
       :nv [tab]   #'+evil/matchit-or-toggle-fold
 
       ;; :nv "K"  #'+lookup/documentation  ; TODO not cool
@@ -51,11 +54,12 @@
       :nv "C-S-a" #'evil-numbers/dec-at-pt
 
       ;; editing commands
-      :i "C-a" #'doom/backward-to-bol-or-indent
-      :i "C-e" #'doom/forward-to-last-non-comment-or-eol
-      :i "C-u" #'doom/backward-kill-to-bol-and-indent
-      :i "C-b" #'backward-word
-      :i "C-f" #'forward-word
+      :i "C-S-V" #'evil-paste-after
+      :i "C-a"   #'doom/backward-to-bol-or-indent
+      :i "C-e"   #'doom/forward-to-last-non-comment-or-eol
+      :i "C-u"   #'doom/backward-kill-to-bol-and-indent
+      :i "C-b"   #'backward-word
+      :i "C-f"   #'forward-word
       (:map (minibuffer-local-map
              minibuffer-local-ns-map
              minibuffer-local-completion-map
@@ -69,40 +73,41 @@
         "C-b"    #'backward-word
         "C-f"    #'forward-word
         )
-      (:after evil
-        (:map evil-ex-completion-map
-          "C-a" #'move-beginning-of-line
-          "C-b" #'backward-word
-          "C-f" #'forward-word))
+      (:after evil :map evil-ex-completion-map
+        "C-a"   #'move-beginning-of-line
+        "C-b"   #'backward-word
+        "C-f"   #'forward-word
+        "C-S-V" #'evil-paste-after
+        )
 
       ;; expand-region
       :v  "v"  #'er/expand-region
       :v  "V"  #'er/contract-region
 
       ; workspace/tab related
-      :ne "M-t"       #'+workspace/new
-      :ne "M-T"       #'+workspace/display
-      :ne "M-1"       (λ! (+workspace/switch-to 0))
-      :ne "M-2"       (λ! (+workspace/switch-to 1))
-      :ne "M-3"       (λ! (+workspace/switch-to 2))
-      :ne "M-4"       (λ! (+workspace/switch-to 3))
-      :ne "M-5"       (λ! (+workspace/switch-to 4))
-      :ne "M-6"       (λ! (+workspace/switch-to 5))
-      :ne "M-7"       (λ! (+workspace/switch-to 6))
-      :ne "M-8"       (λ! (+workspace/switch-to 7))
-      :ne "M-9"       (λ! (+workspace/switch-to 8))
-      :ne "M-0"       #'+workspace/switch-to-last
+      :me "M-t"       #'+workspace/new
+      :me "M-T"       #'+workspace/display
+      :me "M-1"       (λ! (+workspace/switch-to 0))
+      :me "M-2"       (λ! (+workspace/switch-to 1))
+      :me "M-3"       (λ! (+workspace/switch-to 2))
+      :me "M-4"       (λ! (+workspace/switch-to 3))
+      :me "M-5"       (λ! (+workspace/switch-to 4))
+      :me "M-6"       (λ! (+workspace/switch-to 5))
+      :me "M-7"       (λ! (+workspace/switch-to 6))
+      :me "M-8"       (λ! (+workspace/switch-to 7))
+      :me "M-9"       (λ! (+workspace/switch-to 8))
+      :me "M-0"       #'+workspace/switch-to-last
       ; window management
-      :en "C-h"   #'evil-window-left
-      :en "C-j"   #'evil-window-down
-      :en "C-k"   #'evil-window-up
-      :en "C-l"   #'evil-window-right
+      :me "C-h"   #'evil-window-left
+      :me "C-j"   #'evil-window-down
+      :me "C-k"   #'evil-window-up
+      :me "C-l"   #'evil-window-right
 
-      :n  "]b" #'next-buffer
-      :n  "[b" #'previous-buffer
+      :m  "]b" #'next-buffer
+      :m  "[b" #'previous-buffer
       ; TODO if under GUI, use alt-hl
-      :n  "]w" #'+workspace/switch-right
-      :n  "[w" #'+workspace/switch-left
+      :m  "]w" #'+workspace/switch-right
+      :m  "[w" #'+workspace/switch-left
       :m  "]e" #'next-error
       :m  "[e" #'previous-error
       :m  "]d" #'git-gutter:next-hunk
@@ -281,12 +286,10 @@
           [escape]  #'company-search-abort)
         )
 
-      (:after counsel
-        :n "C-p" #'counsel-projectile-find-file
-        (:map counsel-ag-map
+      :n "C-p" #'counsel-projectile-find-file
+      (:after counsel :map counsel-ag-map
           [backtab]  #'+ivy/wgrep-occur      ; search/replace on results
           "C-SPC"    #'ivy-call-and-recenter ; preview
-          )
         )
 
       (:after evil
@@ -337,7 +340,7 @@
 
           ;; basic editing
           "C-z"    #'undo
-          "C-V"    #'yank
+          "C-S-V"  #'yank
           ;;"C-r"    #'evil-paste-from-register
           "C-w"    #'ivy-backward-kill-word
           "C-u"    #'ivy-kill-line

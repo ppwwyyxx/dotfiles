@@ -4,6 +4,19 @@
   ivy-rtags rtags
   evil-embrace
   )
+
+(def-package-hook! evil-snipe
+  :post-init
+  (setq evil-snipe-override-evil-repeat-keys nil)   ; don't override ; and ,
+  :pre-config
+  nil
+  )
+(def-package-hook! evil-collection
+  :pre-config
+  (delq 'diff-mode evil-collection-mode-list)  ; breaks too much
+  t
+  )
+
 (setq debug-on-error nil)
 
 (doom! :feature
