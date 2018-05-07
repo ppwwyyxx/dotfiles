@@ -2,20 +2,14 @@
 ;;; -*- no-byte-compile: t -*-
 
 ; load at the beginning, to enable some mappings
-(use-package counsel)
-(use-package evil-surround)
-
 (after! imenu-list
   (setq imenu-list-auto-resize t)
-)
+  )
 
-(setq projectile-require-project-root t)
-(projectile-cleanup-known-projects)
-
-
-(after! neotree
-  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
-)
+(after! projectile
+  (setq projectile-require-project-root t)
+  (projectile-cleanup-known-projects)
+  )
 
 (after! pythonic
   (setq python-shell-virtualenv-root "/usr")  ; it will otherwise look for .local/bin which may contain ipython2
@@ -79,12 +73,7 @@
         )
       )
     )
-
-    ;; (define-key ivy-minibuffer-map (kbd "C-v") (lambda! (my/ivy-exit-new-window 'right)))
-	;; (define-key ivy-minibuffer-map (kbd "C-s") (lambda! (my/ivy-exit-new-window 'below)))
 )
 
-(setq doom-font (font-spec :family "Monospace" :size 20))
-(setq neo-theme 'icons)
-
+(load! +ui)
 (load! +bindings)

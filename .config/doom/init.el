@@ -2,14 +2,10 @@
   company-irony company-irony-c-headers flycheck-irony irony irony-eldoc
   smart-forward
   ivy-rtags rtags
+  evil-embrace
   )
+(setq debug-on-error nil)
 
-(def-package-hook! doom-themes
-  :post-config
-  ;; https://github.com/hlissner/emacs-doom-themes/issues/180
-  (remove-hook 'doom-load-theme-hook #'doom-themes-neotree-config)
-)
-  ;anaconda-mode company-anaconda)
 (doom! :feature
        (popup            ; tame sudden yet inevitable temporary windows
         +all             ; catch all popups that start with an asterix
@@ -30,7 +26,6 @@
 
        :completion
        (company +auto)   ; the ultimate code completion backend
-      ;ido               ; the other *other* search engine...
        ivy               ; a search engine for love and life
 
        :ui
@@ -112,4 +107,6 @@
        ;; your own modules.
        (default
          ;+bindings
-         +snippets +evil-commands))
+         +snippets
+         +evil-commands)
+    )
