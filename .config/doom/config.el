@@ -27,6 +27,11 @@
         company-show-numbers t
         ))
 
+(after! undo-tree
+  ;; may be buggy
+  (setq undo-tree-auto-save-history t)
+  )
+
 (after! ivy
   ;(defun switch-to-buffer-new-window (buffer-or-name side)
   ;  "Switch to BUFFER-OR-NAME in a new window, based on SIDE."

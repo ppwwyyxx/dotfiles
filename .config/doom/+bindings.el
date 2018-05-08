@@ -53,7 +53,12 @@
       :nv "C-a"   #'evil-numbers/inc-at-pt
       :nv "C-S-a" #'evil-numbers/dec-at-pt
 
-      ;; editing commands
+      ;; Vim-like editing commands
+      :i "C-j"   #'evil-next-line
+      :i "C-k"   #'evil-previous-line
+      :i "C-h"   #'evil-backward-char
+      :i "C-l"   #'evil-forward-char
+
       :i "C-S-V" #'evil-paste-after
       :i "C-a"   #'doom/backward-to-bol-or-indent
       :i "C-e"   #'doom/forward-to-last-non-comment-or-eol
@@ -248,8 +253,12 @@
           :desc "List project tasks"      :n  "t" #'+ivy/tasks
           :desc "Invalidate cache"        :n  "x" #'projectile-invalidate-cache)
 
-        (:prefix "r"
+        ;; Unorganized:
+        (:desc "XXX" :prefix "r"
           :desc "Eval Buffer" :n "r" #'+eval/buffer
+          )
+        (:desc "XXX" :prefix "n"
+          :desc "No Highlight" :n "o" #'evil-ex-nohighlight
           )
         ; TODO magit, insert, notes, remote, snippet
         )  ; end of leader
@@ -339,7 +348,7 @@
           "C-SPC"  #'ivy-call-and-recenter  ; preview
 
           ;; basic editing
-          "C-z"    #'undo
+          ;;"C-z"    #'undo
           "C-S-V"  #'yank
           ;;"C-r"    #'evil-paste-from-register
           "C-w"    #'ivy-backward-kill-word
