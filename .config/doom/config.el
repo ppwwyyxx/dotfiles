@@ -31,9 +31,15 @@
   ;; may be buggy
   (setq undo-tree-auto-save-history t)
   )
-;(after! helm-dash
-; (setq helm-dash-docsets-path "/home/yuxinwu/.local/share/Zeal/Zeal/docsets/")
-;  )
+(after! helm-dash
+  (setq helm-dash-docsets-path
+        (substitute-in-file-name "$HOME/.local/share/Zeal/Zeal/docsets/"))
+  (setq helm-dash-browser-func 'eww)
+  (helm-dash-activate-docset "C++")
+  (helm-dash-activate-docset "C")
+  (helm-dash-activate-docset "Python_3")
+  (helm-dash-activate-docset "Emacs_Lisp")
+  )
 
 (after! ivy
   ;(defun switch-to-buffer-new-window (buffer-or-name side)
