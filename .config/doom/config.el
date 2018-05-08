@@ -31,6 +31,9 @@
   ;; may be buggy
   (setq undo-tree-auto-save-history t)
   )
+;(after! helm-dash
+; (setq helm-dash-docsets-path "/home/yuxinwu/.local/share/Zeal/Zeal/docsets/")
+;  )
 
 (after! ivy
   ;(defun switch-to-buffer-new-window (buffer-or-name side)

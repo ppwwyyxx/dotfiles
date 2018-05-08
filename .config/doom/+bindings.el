@@ -59,7 +59,7 @@
       :i "C-h"   #'evil-backward-char
       :i "C-l"   #'evil-forward-char
 
-      :i "C-S-V" #'evil-paste-after
+      :i "C-S-V" #'yank
       :i "C-a"   #'doom/backward-to-bol-or-indent
       :i "C-e"   #'doom/forward-to-last-non-comment-or-eol
       :i "C-u"   #'doom/backward-kill-to-bol-and-indent
@@ -82,7 +82,7 @@
         "C-a"   #'move-beginning-of-line
         "C-b"   #'backward-word
         "C-f"   #'forward-word
-        "C-S-V" #'evil-paste-after
+        "C-S-V" #'yank
         )
 
       ;; expand-region
