@@ -57,7 +57,7 @@
       :i "C-j"   #'evil-next-line
       :i "C-k"   #'evil-previous-line
       :i "C-h"   #'evil-backward-char
-      :i "C-l"   #'evil-forward-char
+      :i "C-l"   #'right-char ; TODO
 
       :i "C-S-V" #'yank
       :i "C-a"   #'doom/backward-to-bol-or-indent
@@ -289,7 +289,9 @@
           "TAB"     #'company-complete-common-or-cycle
           [tab]     #'company-complete-common-or-cycle
           "S-TAB"   #'company-select-previous
-          [backtab] #'company-select-previous)
+          [backtab] #'company-select-previous
+          "<f1>"    nil
+          )
         (:map company-search-map
           "C-n"     #'company-select-next-or-abort
           "C-p"     #'company-select-previous-or-abort

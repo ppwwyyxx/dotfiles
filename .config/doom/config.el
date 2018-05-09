@@ -19,6 +19,7 @@
 
 (after! evil
   (global-evil-surround-mode 1)
+  (setq evil-move-beyond-eol t)
   (evil-ex-define-cmd "vsp" 'evil-window-vsplit)
   )
 

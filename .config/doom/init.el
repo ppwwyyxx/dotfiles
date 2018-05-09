@@ -39,8 +39,9 @@
        workspaces        ; tab emulation, persistence & separate workspaces
 
        :completion
-       (company +auto)   ; the ultimate code completion backend
-       ivy               ; a search engine for love and life
+       (company
+        +auto +childframe)     ; the ultimate code completion backend
+       (ivy +childframe) ; a search engine for love and life
 
        :ui
        doom              ; what makes DOOM look the way it does
@@ -49,7 +50,6 @@
        evil-goggles      ; display visual hints when editing in evil
        hl-todo           ; highlight TODO/FIXME/NOTE tags
        nav-flash         ; blink the current line after jumping
-       posframe          ; use child frames where possible (Emacs 26+ only)
       ;tabbar            ; FIXME an (incomplete) tab bar for Emacs
       ;unicode           ; extended unicode support for various languages
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
@@ -57,6 +57,7 @@
 
        :tools
        dired             ; making dired pretty [functional]
+       editorconfig
        ein               ; tame Jupyter notebooks with emacs
        electric-indent   ; smarter, keyword-based electric-indent
        eshell            ; a consistent, cross-platform shell (WIP)
@@ -114,10 +115,6 @@
       ; +langtool)       ; a proofreader (grammar/style check) for Emacs
 
        :config
-       ;; The default module set reasonable defaults for Emacs. It also provides
-       ;; a Spacemacs-inspired keybinding scheme, a custom yasnippet library,
-       ;; and additional ex commands for evil-mode. Use it as a reference for
-       ;; your own modules.
        (default
          +snippets
          +evil-commands)
