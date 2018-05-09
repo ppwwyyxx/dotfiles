@@ -31,15 +31,26 @@
   ;; may be buggy
   (setq undo-tree-auto-save-history t)
   )
-(after! helm-dash
-  (setq helm-dash-docsets-path
-        (substitute-in-file-name "$HOME/.local/share/Zeal/Zeal/docsets/"))
-  (setq helm-dash-browser-func 'eww)
-  (helm-dash-activate-docset "C++")
-  (helm-dash-activate-docset "C")
-  (helm-dash-activate-docset "Python_3")
-  (helm-dash-activate-docset "Emacs_Lisp")
-  )
+
+;; (after! helm-dash
+;;   (setq helm-dash-docsets-path
+;;         (substitute-in-file-name "$HOME/.local/share/Zeal/Zeal/docsets/"))
+
+;;   (defun cpp-doc () (interactive) (setq-local helm-dash-docsets '("C++")))
+;;   (defun python-doc () (interactive) (setq-local helm-dash-docsets '("Python_3")))
+;;   (defun elisp-doc () (interactive) (setq-local helm-dash-docsets '("Emacs_Lisp")))
+;;   (add-hook 'c++-mode-hook #'cpp-doc)
+;;   (add-hook 'python-mode-hook #'python-doc)
+;;   (add-hook 'elisp-mode-hook #'elisp-doc)
+
+;;   (defun helm-dash-browse-url(search-result)
+;;     (message "Result=%s" search-result)
+;;     (let ((docset-name (car search-result))
+;;           (identifier (nth 1 (cadr search-result))))
+;;       (message "%s-%s" docset-name identifier)
+;;       )
+;;     )
+;;   )
 
 (after! ivy
   ;(defun switch-to-buffer-new-window (buffer-or-name side)
@@ -61,27 +72,34 @@
   ;  )
 
   (defun my/ivy-exit-new-window (side)
-    (let ((current-act (ivy--get-action ivy-last)))
-      ;;(message "%s" current-act)
-      (pcase current-act
-        ; TODO handle special cases
-        ((or 'ivy--switch-buffer-action
-             'counsel-projectile-find-file-action
-             'counsel-find-file-action
-             'counsel--find-symbol
-             'identity)
-         (ivy-exit-with-action
-          (lambda (x)
-            (setf
-             (ivy-state-window ivy-last)
-             (select-window (split-window nil nil side))
-            )      ; so that with-ivy-window (used a lot inside predefined actions) will use the new window
-            (balance-windows)
-            (funcall current-act x)
-            )))
-        ;; default:
-        (- (ivy-exit-with-action current-act))
-        )
+    (let ((current-act (ivy--get-action ivy-last))
+          (current-caller (ivy-state-caller ivy-last))
+          )
+      ;(message "Act=%s" current-act)
+      ;(message "Caller=%s" current-caller)
+      (if (or
+           (member current-act '(
+                                 ivy--switch-buffer-action
+                                 counsel-projectile-find-file-action
+                                 counsel-find-file-action
+                                 counsel--find-symbol))
+           (member current-caller '(
+                                    counsel-recentf
+                                    counsel-find-library
+                                    ivy-switch-buffer
+                                    ))
+           )
+          (ivy-exit-with-action
+           (lambda (x)
+             (setf
+              (ivy-state-window ivy-last)
+              (select-window (split-window nil nil side))
+              )      ; so that with-ivy-window (used a lot inside predefined actions) will use the new window
+             (balance-windows)
+             (funcall current-act x)
+             ))
+
+        (ivy-exit-with-action current-act))
       )
     )
 )

@@ -20,16 +20,17 @@
 (setq debug-on-error nil)
 
 (doom! :feature
+       (evil +everywhere); come to the dark side, we have cookies
        (popup            ; tame sudden yet inevitable temporary windows
         +all             ; catch all popups that start with an asterix
         +defaults)       ; default popup rules
        debugger          ; FIXME stepping through code, to help you add bugs
        eval              ; run code, run (also, repls)
-       (evil +everywhere); come to the dark side, we have cookies
        file-templates    ; auto-snippets for empty files
-       (lookup           ; helps you navigate your code and documentation
-        +devdocs         ; ...on devdocs.io online
-        +docsets)        ; ...or in Dash docsets locally
+       lookup
+       ;(lookup           ; helps you navigate your code and documentation
+       ; +devdocs         ; ...on devdocs.io online
+       ; +docsets)        ; ...or in Dash docsets locally
        services          ; TODO managing external services & code builders
        snippets          ; my elves. They type so I don't have to
        spellcheck        ; tasing you for misspelling mispelling
@@ -43,7 +44,6 @@
 
        :ui
        doom              ; what makes DOOM look the way it does
-       ;doom-dashboard    ; a nifty splash screen for Emacs
        doom-modeline     ; a snazzy Atom-inspired mode-line
        doom-quit         ; DOOM quit-message prompts when you quit Emacs
        evil-goggles      ; display visual hints when editing in evil
@@ -119,7 +119,6 @@
        ;; and additional ex commands for evil-mode. Use it as a reference for
        ;; your own modules.
        (default
-         ;+bindings
          +snippets
          +evil-commands)
     )

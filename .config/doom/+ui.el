@@ -11,12 +11,6 @@
   (remove-hook 'doom-load-theme-hook #'doom-themes-neotree-config))
 
 (after! evil-goggles
-  (setq
-   evil-goggles-enable-change nil
-   evil-goggles-enable-delete t
-   evil-goggles-pulse nil
-   evil-goggles-duration 0.02
-   )
   (if (featurep! :ui doom)
       (custom-set-faces
        '(evil-goggles-delete-face           ((t (:inherit diff-refine-removed))))

@@ -44,7 +44,7 @@
 
       :nv [tab]   #'+evil/matchit-or-toggle-fold
 
-      ;; :nv "K"  #'+lookup/documentation  ; TODO not cool
+      :nv "K"  #'+lookup/documentation
       :m  "gd" #'+lookup/definition
       :m  "gD" #'+lookup/references
       ;;:m  "gs" #'+default/easymotion  ; lazy-load `evil-easymotion'
@@ -189,6 +189,7 @@
           :desc "Jump to definition"      :n "d" #'+lookup/definition
           :desc "Jump to references"      :n "D" #'+lookup/references
           :desc "Rotate text"             :n "!" #'rotate-text  ;https://www.emacswiki.org/emacs/RotateText
+          :desc "Insert snippet"         :nv "s" #'yas-insert-snippet
           )
 
         (:desc "file" :prefix "f"
@@ -269,9 +270,10 @@
         :i "C-l"   #'+company/whole-lines
         :i "C-k"   #'+company/dict-or-keywords
         :i "C-f"   #'company-files
-                                        ;:i "C-]"   #'company-etags
-                                        ;:i "s"     #'company-ispell
-                                        ;:i "C-s"   #'company-yasnippet
+        ;;:i "C-]"   #'company-etags
+        ;;:i "s"     #'company-ispell
+        ;;:i "C-s"   #'company-yasnippet
+        :i "C-s"   #'yas-expand
         :i "C-o"   #'+company/complete
                                         ;:i "C-o"   #'company-capf
         :i "C-n"   #'company-dabbrev-code
@@ -398,6 +400,14 @@
         :n "C-v"       #'neotree-enter-vertical-split
         :n "C-s"       #'neotree-enter-horizontal-split
         )
+
+      (:after yasnippet
+        (:map yas-keymap
+          "C-e"           #'+snippets/goto-end-of-field
+          "C-u"           #'+snippets/delete-to-start-of-field
+          "C-a"           #'+snippets/goto-start-of-field
+          [backspace]     #'+snippets/delete-backward-char
+          [delete]        #'+snippets/delete-forward-char-or-field))
 
       ;(:after markdown-mode
       ;  (:map markdown-mode-map
