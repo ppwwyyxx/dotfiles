@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: parse_args
+# key: sargs
+# group: argparser
+# --
+parser = argparse.ArgumentParser(description='$1')
+$0
+args = parser.parse_args()

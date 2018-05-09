@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: tf session
+# key: tfsess
+# --
+sess = tf.Session()
+with sess.as_default():
+    $0

@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: ipython embed
+# key: ipeb
+# group: debug
+# --
+import IPython as IP; IP.embed()

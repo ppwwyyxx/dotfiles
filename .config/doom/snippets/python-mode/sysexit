@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: sys.exit
+# key: exit
+# condition: t
+# --
+import sys; sys.exit($0)

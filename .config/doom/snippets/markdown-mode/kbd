@@ -1,0 +1,4 @@
+# -*- require-final-newline: nil -*-
+# name: <kbd>...</kbd>
+# --
+<kbd>$0</kbd>

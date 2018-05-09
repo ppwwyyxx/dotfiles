@@ -409,7 +409,12 @@
           "C-u"           #'+snippets/delete-to-start-of-field
           "C-a"           #'+snippets/goto-start-of-field
           [backspace]     #'+snippets/delete-backward-char
-          [delete]        #'+snippets/delete-forward-char-or-field))
+          [delete]        #'+snippets/delete-forward-char-or-field
+          )
+        (:map yas-minor-mode-map
+          "SPC"           yas-maybe-expand
+          )
+        )
 
       ;(:after markdown-mode
       ;  (:map markdown-mode-map
