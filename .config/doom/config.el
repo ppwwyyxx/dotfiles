@@ -4,6 +4,8 @@
 ;; load at the beginning, to enable some mappings
 ;;(require 'counsel)   ; Make C-p work at startup
 
+(add-hook 'prog-mode-hook #'doom|enable-delete-trailing-whitespace nil)
+
 (after! imenu-list
   (setq imenu-list-auto-resize t)
   )
@@ -76,8 +78,8 @@
     (let ((current-act (ivy--get-action ivy-last))
           (current-caller (ivy-state-caller ivy-last))
           )
-      ;(message "Act=%s" current-act)
-      ;(message "Caller=%s" current-caller)
+      ;;(message "Act=%s" current-act)
+      ;;(message "Caller=%s" current-caller)
       (if (or
            (member current-act '(
                                  ivy--switch-buffer-action

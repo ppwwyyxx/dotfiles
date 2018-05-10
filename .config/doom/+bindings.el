@@ -239,6 +239,7 @@
           :desc "Neotree"                :n "f" #'+neotree/open
           :desc "Frame fullscreen"       :n "F" #'toggle-frame-fullscreen
           :desc "Indent guides"          :n "i" #'highlight-indentation-mode
+          ;; TODO timemachine, magit?
           ;:desc "Impatient mode"         :n "h" #'+impatient-mode/toggle
           ;:desc "Big mode"               :n "b" #'doom-big-font-mode
           ;:desc "Evil goggles"           :n "g" #'+evil-goggles/toggle
@@ -253,6 +254,28 @@
           :desc "Recent project files"    :n  "r" #'projectile-recentf
           :desc "List project tasks"      :n  "t" #'+ivy/tasks
           :desc "Invalidate cache"        :n  "x" #'projectile-invalidate-cache)
+
+        (:desc "git" :prefix "g"
+          ;:desc "Magit blame"           :n  "b" #'magit-blame
+          ;:desc "Magit commit"          :n  "c" #'magit-commit
+          ;:desc "Magit dispatch"        :n  "d" #'magit-dispatch-popup
+          ;:desc "Magit find-file"       :n  "f" #'magit-find-file
+          ;:desc "Magit status"          :n  "g" #'magit-status
+          ;:desc "List gists"            :n  "G" #'+gist:list
+          ;:desc "Initialize repo"       :n  "i" #'magit-init
+          ;:desc "Magit buffer log"      :n  "l" #'magit-log-buffer-file
+          ;:desc "List repositories"     :n  "L" #'magit-list-repositories
+          ;:desc "Magit push popup"      :n  "p" #'magit-push-popup
+          ;:desc "Magit pull popup"      :n  "P" #'magit-pull-popup
+          :desc "Git revert hunk"       :n  "r" #'git-gutter:revert-hunk
+          :desc "Git revert file"       :n  "R" #'vc-revert
+          :desc "Git stage hunk"        :n  "s" #'git-gutter:stage-hunk
+          ;:desc "Git stage file"        :n  "S" #'magit-stage-file
+          :desc "Git time machine"      :n  "t" #'git-timemachine-toggle
+          :desc "Copy URL of line"      :n  "C" #'git-link
+          ;:desc "Git unstage file"      :n  "U" #'magit-unstage-file
+          :desc "Next hunk"             :nv "]" #'git-gutter:next-hunk
+          :desc "Previous hunk"         :nv "[" #'git-gutter:previous-hunk)
 
         ;; Unorganized:
         (:desc "XXX" :prefix "r"
@@ -426,10 +449,22 @@
       (:after comint
         ;; TAB auto-completion in term buffers
         :map comint-mode-map [tab] #'company-complete)
+
       (:map* (help-mode-map helpful-mode-map)
         :n "o"  #'ace-link-help
         :n "q"  #'quit-window
         :n "Q"  #'ivy-resume)
+
+
+      ;; git-timemachine
+      (:after git-timemachine
+        (:map git-timemachine-mode-map
+          :n "C-p" #'git-timemachine-show-previous-revision
+          :n "C-n" #'git-timemachine-show-next-revision
+          :n "[["  #'git-timemachine-show-previous-revision
+          :n "]]"  #'git-timemachine-show-next-revision
+          :n "q"   #'git-timemachine-quit
+          :n "gb"  #'git-timemachine-blame))
       ;(:after vc-annotate
       ;  :map vc-annotate-mode-map
       ;  [remap quit-window] #'kill-this-buffer)
