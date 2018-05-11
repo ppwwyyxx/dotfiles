@@ -35,6 +35,10 @@
   (setq undo-tree-auto-save-history t)
   )
 
+(after! magit
+  (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
+  )
+
 ;; (after! helm-dash
 ;;   (setq helm-dash-docsets-path
 ;;         (substitute-in-file-name "$HOME/.local/share/Zeal/Zeal/docsets/"))
@@ -78,8 +82,8 @@
     (let ((current-act (ivy--get-action ivy-last))
           (current-caller (ivy-state-caller ivy-last))
           )
-      ;;(message "Act=%s" current-act)
-      ;;(message "Caller=%s" current-caller)
+      ;; (message "Act=%s" current-act)
+      ;; (message "Caller=%s" current-caller)
       (if (or
            (member current-act '(
                                  ivy--switch-buffer-action
@@ -90,6 +94,7 @@
                                     counsel-recentf
                                     counsel-find-library
                                     ivy-switch-buffer
+                                    ivy-xref-show-xrefs
                                     ))
            )
           (ivy-exit-with-action

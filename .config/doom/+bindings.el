@@ -90,23 +90,23 @@
       :v  "V"  #'er/contract-region
 
       ; workspace/tab related
-      :me "M-t"       #'+workspace/new
-      :me "M-T"       #'+workspace/display
-      :me "M-1"       (λ! (+workspace/switch-to 0))
-      :me "M-2"       (λ! (+workspace/switch-to 1))
-      :me "M-3"       (λ! (+workspace/switch-to 2))
-      :me "M-4"       (λ! (+workspace/switch-to 3))
-      :me "M-5"       (λ! (+workspace/switch-to 4))
-      :me "M-6"       (λ! (+workspace/switch-to 5))
-      :me "M-7"       (λ! (+workspace/switch-to 6))
-      :me "M-8"       (λ! (+workspace/switch-to 7))
-      :me "M-9"       (λ! (+workspace/switch-to 8))
-      :me "M-0"       #'+workspace/switch-to-last
+      :nme "M-t"       #'+workspace/new
+      :nme "M-T"       #'+workspace/display
+      :nme "M-1"       (λ! (+workspace/switch-to 0))
+      :nme "M-2"       (λ! (+workspace/switch-to 1))
+      :nme "M-3"       (λ! (+workspace/switch-to 2))
+      :nme "M-4"       (λ! (+workspace/switch-to 3))
+      :nme "M-5"       (λ! (+workspace/switch-to 4))
+      :nme "M-6"       (λ! (+workspace/switch-to 5))
+      :nme "M-7"       (λ! (+workspace/switch-to 6))
+      :nme "M-8"       (λ! (+workspace/switch-to 7))
+      :nme "M-9"       (λ! (+workspace/switch-to 8))
+      :nme "M-0"       #'+workspace/switch-to-last
       ; window management
-      :me "C-h"   #'evil-window-left
-      :me "C-j"   #'evil-window-down
-      :me "C-k"   #'evil-window-up
-      :me "C-l"   #'evil-window-right
+      :nme "C-h"   #'evil-window-left
+      :nme "C-j"   #'evil-window-down
+      :nme "C-k"   #'evil-window-up
+      :nme "C-l"   #'evil-window-right
 
       :m  "]b" #'next-buffer
       :m  "[b" #'previous-buffer
@@ -256,26 +256,26 @@
           :desc "Invalidate cache"        :n  "x" #'projectile-invalidate-cache)
 
         (:desc "git" :prefix "g"
-          ;:desc "Magit blame"           :n  "b" #'magit-blame
-          ;:desc "Magit commit"          :n  "c" #'magit-commit
+          :desc "Magit blame"            :n  "b" #'magit-blame
+          :desc "Magit diff this file"   :n  "d" #'magit-diff-buffer-file
+          :desc "Magit diff repo"        :n  "D" #'magit-diff-working-tree
           ;:desc "Magit dispatch"        :n  "d" #'magit-dispatch-popup
           ;:desc "Magit find-file"       :n  "f" #'magit-find-file
-          ;:desc "Magit status"          :n  "g" #'magit-status
+          :desc "Magit status"           :n  "g" #'magit-status
           ;:desc "List gists"            :n  "G" #'+gist:list
-          ;:desc "Initialize repo"       :n  "i" #'magit-init
-          ;:desc "Magit buffer log"      :n  "l" #'magit-log-buffer-file
-          ;:desc "List repositories"     :n  "L" #'magit-list-repositories
-          ;:desc "Magit push popup"      :n  "p" #'magit-push-popup
-          ;:desc "Magit pull popup"      :n  "P" #'magit-pull-popup
-          :desc "Git revert hunk"       :n  "r" #'git-gutter:revert-hunk
-          :desc "Git revert file"       :n  "R" #'vc-revert
-          :desc "Git stage hunk"        :n  "s" #'git-gutter:stage-hunk
+          :desc "Magit repo log"         :n  "l" #'magit-log-current
+          :desc "Magit log for this file":n  "L" #'magit-log-buffer-file
+          :desc "Magit push popup"       :n  "p" #'magit-push-popup
+          :desc "Magit pull popup"       :n  "P" #'magit-pull-popup
+          :desc "Git revert hunk"        :n  "r" #'git-gutter:revert-hunk
+          :desc "Git revert file"        :n  "R" #'vc-revert
+          :desc "Git stage hunk"         :n  "s" #'git-gutter:stage-hunk
           ;:desc "Git stage file"        :n  "S" #'magit-stage-file
-          :desc "Git time machine"      :n  "t" #'git-timemachine-toggle
-          :desc "Copy URL of line"      :n  "C" #'git-link
+          :desc "Git time machine"       :n  "t" #'git-timemachine-toggle
+          :desc "Copy URL of line"       :n  "C" #'git-link
           ;:desc "Git unstage file"      :n  "U" #'magit-unstage-file
-          :desc "Next hunk"             :nv "]" #'git-gutter:next-hunk
-          :desc "Previous hunk"         :nv "[" #'git-gutter:previous-hunk)
+          :desc "Next hunk"              :nv "]" #'git-gutter:next-hunk
+          :desc "Previous hunk"          :nv "[" #'git-gutter:previous-hunk)
 
         ;; Unorganized:
         (:desc "XXX" :prefix "r"
@@ -314,6 +314,7 @@
           "S-TAB"   #'company-select-previous
           [backtab] #'company-select-previous
           "<f1>"    nil
+          [escape]  #'company-abort
           )
         (:map company-search-map
           "C-n"     #'company-select-next-or-abort
