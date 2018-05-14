@@ -29,7 +29,7 @@
   xfuncname="^\\s*(class.*\\(.*\\)|def.*)(\\(|:)"
 [color]
 	ui = auto
-	diff = always
+	diff = auto
 	status = auto
 	grep = always
 [color "branch"]

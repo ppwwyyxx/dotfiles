@@ -16,6 +16,9 @@
       (:map special-mode-map
         :nmvo doom-leader-key nil
         )
+      (:after pdf-tools :map pdf-view-mode-map
+        :nmvo doom-leader-key nil
+        )
       (:after dired :map dired-mode-map
         :nmvo doom-leader-key nil
         )
@@ -57,7 +60,7 @@
       :i "C-j"   #'evil-next-line
       :i "C-k"   #'evil-previous-line
       :i "C-h"   #'evil-backward-char
-      :i "C-l"   #'right-char ; TODO
+      :i "C-l"   #'evil-forward-char
 
       :i "C-S-V" #'yank
       :i "C-a"   #'doom/backward-to-bol-or-indent
@@ -92,16 +95,16 @@
       ; workspace/tab related
       :nme "M-t"       #'+workspace/new
       :nme "M-T"       #'+workspace/display
-      :nme "M-1"       (λ! (+workspace/switch-to 0))
-      :nme "M-2"       (λ! (+workspace/switch-to 1))
-      :nme "M-3"       (λ! (+workspace/switch-to 2))
-      :nme "M-4"       (λ! (+workspace/switch-to 3))
-      :nme "M-5"       (λ! (+workspace/switch-to 4))
-      :nme "M-6"       (λ! (+workspace/switch-to 5))
-      :nme "M-7"       (λ! (+workspace/switch-to 6))
-      :nme "M-8"       (λ! (+workspace/switch-to 7))
-      :nme "M-9"       (λ! (+workspace/switch-to 8))
-      :nme "M-0"       #'+workspace/switch-to-last
+      :nmei "M-1"       (λ! (+workspace/switch-to 0))
+      :nmei "M-2"       (λ! (+workspace/switch-to 1))
+      :nmei "M-3"       (λ! (+workspace/switch-to 2))
+      :nmei "M-4"       (λ! (+workspace/switch-to 3))
+      :nmei "M-5"       (λ! (+workspace/switch-to 4))
+      :nmei "M-6"       (λ! (+workspace/switch-to 5))
+      :nmei "M-7"       (λ! (+workspace/switch-to 6))
+      :nmei "M-8"       (λ! (+workspace/switch-to 7))
+      :nmei "M-9"       (λ! (+workspace/switch-to 8))
+      :nmei "M-0"       #'+workspace/switch-to-last
       ; window management
       :nme "C-h"   #'evil-window-left
       :nme "C-j"   #'evil-window-down
@@ -118,19 +121,22 @@
       :m  "]d" #'git-gutter:next-hunk
       :m  "[d" #'git-gutter:previous-hunk
 
+      :nme "C--" #'text-scale-decrease
+      :nme "C-=" #'text-scale-increase
+
       (:leader
         ;; :desc "M-x"                     :nv ":"  #'execute-extended-command
         ; jumps:
-        :desc "Find file in project"    :n "SPC" #'projectile-find-file
-        :desc "Switch workspace buffer" :n ","   #'persp-switch-to-buffer
-        :desc "Switch buffer"           :n "<"   #'switch-to-buffer
-        :desc "Browse files"            :n "."   #'find-file
-        :desc "Toggle last popup"       :n "`"   #'+popup/toggle
-        :desc "Blink cursor line"       :n "DEL" #'+nav-flash/blink-cursor
+        :desc "Find file in project"       :n "SPC" #'projectile-find-file
+        :desc "Switch workspace buffer"    :n ","   #'persp-switch-to-buffer
+        :desc "Switch buffer"              :n "<"   #'switch-to-buffer
+        :desc "Find files from here"       :n "."   #'counsel-file-jump
+        :desc "Toggle last popup"          :n "`"   #'+popup/toggle
+        :desc "Blink cursor line"          :n "DEL" #'+nav-flash/blink-cursor
         :desc "Create or jump to bookmark" :n "RET" #'bookmark-jump
 
-        :desc "Universal argument"      :n "u"  #'universal-argument
-        :desc "window"                  :n "w"  evil-window-map
+        :desc "Universal argument"         :n "u"  #'universal-argument
+        :desc "window"                     :n "w"  evil-window-map
 
 
         (:desc "previous..." :prefix "["
@@ -194,10 +200,10 @@
 
         (:desc "file" :prefix "f"
           :desc "File Manager"              :n "m" #'+neotree/find-this-file
-          :desc "Find file"                 :n "." #'find-file
+          :desc "Find file from here"       :n "." #'counsel-file-jump
           :desc "Sudo find file"            :n ">" #'doom/sudo-find-file
           :desc "Find file in project"      :n "p" #'projectile-find-file
-          :desc "Find file from here"       :n "?" #'counsel-file-jump
+          :desc "Find file"                 :n "f" #'find-file
           :desc "Find directory"            :n "d" #'dired
           :desc "Switch buffer"             :n "b" #'switch-to-buffer
 
@@ -242,7 +248,6 @@
           ;; TODO timemachine, magit?
           ;:desc "Impatient mode"         :n "h" #'+impatient-mode/toggle
           ;:desc "Big mode"               :n "b" #'doom-big-font-mode
-          ;:desc "Evil goggles"           :n "g" #'+evil-goggles/toggle
           ;:desc "org-tree-slide mode"    :n "p" #'+org-present/start)
           )
 
@@ -278,8 +283,10 @@
           :desc "Previous hunk"          :nv "[" #'git-gutter:previous-hunk)
 
         ;; Unorganized:
-        (:desc "XXX" :prefix "r"
+        (:desc "Run Stuff" :prefix "r"
           :desc "Eval Buffer" :n "r" #'+eval/buffer
+          :desc "Terminal"    :n "t" #'multi-term
+          :desc "Make"        :n "m" #'+make/run
           )
         (:desc "XXX" :prefix "n"
           :desc "No Highlight" :n "o" #'evil-ex-nohighlight

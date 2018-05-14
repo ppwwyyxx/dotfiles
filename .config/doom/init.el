@@ -59,10 +59,10 @@
        :tools
        dired             ; making dired pretty [functional]
        editorconfig
-       ein               ; tame Jupyter notebooks with emacs
+       ;ein               ; tame Jupyter notebooks with emacs
        electric-indent   ; smarter, keyword-based electric-indent
        eshell            ; a consistent, cross-platform shell (WIP)
-       gist              ; interacting with github gists
+       ;gist              ; interacting with github gists
        imenu             ; an imenu sidebar and searchable code index
        impatient-mode    ; show off code over HTTP
       ;macos             ; MacOS-specific commands
@@ -71,11 +71,11 @@
        neotree           ; a project drawer, like NERDTree for vim
        password-store    ; password manager for nerds
        pdf               ; pdf enhancements
-      ;rgb               ; creating color strings
+       rgb               ; creating color strings
        rotate-text       ; cycle region at point between text candidates
        term              ; terminals in Emacs
        tmux              ; an API for interacting with tmux
-       upload            ; map local to remote projects via ssh/ftp
+       ;upload            ; map local to remote projects via ssh/ftp
 
        :lang
        assembly          ; assembly for fun or debugging
@@ -100,7 +100,6 @@
        python            ; beautiful is better than ugly
        ruby              ; 1.step do {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
        sh                ; she sells (ba|z)sh shells on the C xor
-       typescript        ; javascript, but better
        web               ; the tubes
 
        ;; Applications are complex and opinionated modules that transform Emacs
@@ -116,6 +115,5 @@
       ; +langtool)       ; a proofreader (grammar/style check) for Emacs
 
        :config
-       (default
-         +evil-commands)
+       default
     )

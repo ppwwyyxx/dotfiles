@@ -1,9 +1,6 @@
 ;;; -*- lexical-binding: t -*-
 ;;; -*- no-byte-compile: t -*-
 
-;; load at the beginning, to enable some mappings
-;;(require 'counsel)   ; Make C-p work at startup
-
 (add-hook 'prog-mode-hook #'doom|enable-delete-trailing-whitespace nil)
 
 (after! imenu-list
@@ -21,7 +18,9 @@
 
 (after! evil
   (global-evil-surround-mode 1)
-  (setq evil-move-beyond-eol t)
+  (setq
+   evil-move-beyond-eol t
+   evil-jumps-cross-buffers nil)
   (evil-ex-define-cmd "vsp" 'evil-window-vsplit)
   )
 
@@ -82,19 +81,20 @@
     (let ((current-act (ivy--get-action ivy-last))
           (current-caller (ivy-state-caller ivy-last))
           )
-      ;; (message "Act=%s" current-act)
-      ;; (message "Caller=%s" current-caller)
+      (message "Act=%s, Caller=%s" current-act current-caller)
       (if (or
            (member current-act '(
                                  ivy--switch-buffer-action
                                  counsel-projectile-find-file-action
                                  counsel-find-file-action
+                                 counsel-git-grep-action
                                  counsel--find-symbol))
            (member current-caller '(
                                     counsel-recentf
                                     counsel-find-library
                                     ivy-switch-buffer
                                     ivy-xref-show-xrefs
+                                    +ivy/tasks
                                     ))
            )
           (ivy-exit-with-action
@@ -114,3 +114,4 @@
 
 (load! +ui)
 (load! +bindings)
+(load! +evil-commands)
