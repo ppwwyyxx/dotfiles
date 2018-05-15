@@ -1,6 +1,5 @@
 # -*- mode: snippet -*-
 # name: operator=
-# key: =
 # where this is a reference to myself
 # group: operator overloading
 # --

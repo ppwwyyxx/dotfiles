@@ -1,6 +1,10 @@
 ;;; -*- lexical-binding: t -*-
 ;;; -*- no-byte-compile: t -*-
 
+(load! +ui)
+(load! +bindings)
+(load! +evil-commands)
+
 (add-hook 'prog-mode-hook #'doom|enable-delete-trailing-whitespace nil)
 
 (after! imenu-list
@@ -112,6 +116,38 @@
     )
 )
 
-(load! +ui)
-(load! +bindings)
-(load! +evil-commands)
+(def-package! lsp-mode :defer t)
+
+(def-package! lsp-ui
+  :demand t
+  :hook (lsp-mode . lsp-ui-mode)
+  :config
+  (setq
+   lsp-ui-sideline-enable nil
+   lsp-ui-doc-header nil
+   lsp-ui-doc-include-signature nil
+   lsp-ui-doc-background (doom-color 'base4)
+   lsp-ui-doc-border (doom-color 'fg)
+   lsp-ui-peek-expand-function (lambda (xs) (mapcar #'car xs)))
+
+(def-package! ccls
+  :commands lsp-ccls-enable
+  ;:init (add-hook 'c-mode-common-hook #'lsp-ccls-enable)
+  :config
+  ;; overlay is slow
+  ;; Use https://github.com/emacs-mirror/emacs/commits/feature/noverlay
+  ;(setq ccls-executable "/usr/bin/ccls")
+  (setq ccls-executable "/home/wyx/System/ccls/build/ccls")
+  (setq ccls-sem-highlight-method 'font-lock)
+  (setq ccls-extra-args '("--log-file=/tmp/cq.log"))
+  ;(ccls-use-default-rainbow-sem-highlight)
+  ;(setq ccls-extra-init-params
+  ;      '(:completion (:detailedLabel t)
+  ;                    :diagnostics (:frequencyMs 5000)))
+
+  ;(with-eval-after-load 'projectile
+  ;  (add-to-list 'projectile-globally-ignored-directories ".ccls-cache"))
+
+  ;(evil-set-initial-state 'ccls-tree-mode 'emacs)
+  ;(set! :company-backend '(c-mode c++-mode) '(company-lsp))
+  )

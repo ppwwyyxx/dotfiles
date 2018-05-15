@@ -1,4 +1,5 @@
 #name : #include
 #key: #i
+#require-final-newline: nil
 # --
 #include $0

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: bpython embed
+# key: bpeb
+# group: debug
+# --
+import bpython; bpython.embed(locals_=locals())
