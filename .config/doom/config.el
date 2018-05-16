@@ -94,6 +94,7 @@
                                  counsel-git-grep-action
                                  counsel--find-symbol))
            (member current-caller '(
+                                    counsel-imenu
                                     counsel-recentf
                                     counsel-find-library
                                     ivy-switch-buffer
@@ -124,30 +125,26 @@
   :config
   (setq
    lsp-ui-sideline-enable nil
-   lsp-ui-doc-header nil
-   lsp-ui-doc-include-signature nil
+   lsp-ui-doc-include-signature t
    lsp-ui-doc-background (doom-color 'base4)
    lsp-ui-doc-border (doom-color 'fg)
-   lsp-ui-peek-expand-function (lambda (xs) (mapcar #'car xs)))
+   lsp-ui-peek-expand-function (lambda (xs) (mapcar #'car xs))))
 
 (def-package! ccls
   :commands lsp-ccls-enable
-  ;:init (add-hook 'c-mode-common-hook #'lsp-ccls-enable)
+  :init (add-hook 'c-mode-common-hook #'lsp-ccls-enable)
   :config
-  ;; overlay is slow
-  ;; Use https://github.com/emacs-mirror/emacs/commits/feature/noverlay
-  ;(setq ccls-executable "/usr/bin/ccls")
-  (setq ccls-executable "/home/wyx/System/ccls/build/ccls")
-  (setq ccls-sem-highlight-method 'font-lock)
-  (setq ccls-extra-args '("--log-file=/tmp/cq.log"))
+  (setq ccls-executable "/usr/bin/ccls")
+  (setq ccls-sem-highlight-method 'nil)
+  (setq ccls-extra-args '("--log-file=/tmp/ccls.log"))
   ;(ccls-use-default-rainbow-sem-highlight)
-  ;(setq ccls-extra-init-params
-  ;      '(:completion (:detailedLabel t)
-  ;                    :diagnostics (:frequencyMs 5000)))
+  (setq ccls-extra-init-params
+        '(:completion (:detailedLabel t)
+                      :diagnostics (:frequencyMs 5000)))
 
-  ;(with-eval-after-load 'projectile
-  ;  (add-to-list 'projectile-globally-ignored-directories ".ccls-cache"))
+  (with-eval-after-load 'projectile
+    (add-to-list 'projectile-globally-ignored-directories ".ccls-cache"))
 
   ;(evil-set-initial-state 'ccls-tree-mode 'emacs)
-  ;(set! :company-backend '(c-mode c++-mode) '(company-lsp))
+  (set! :company-backend '(c-mode c++-mode) '(company-lsp))
   )

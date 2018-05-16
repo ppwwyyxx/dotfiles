@@ -3,5 +3,4 @@
 # key: sarg
 # group: argparser
 # --
-parser.add_argument('-$1', '--$2',
-                    $0)
+parser.add_argument('-$1', '--$2', $0)
