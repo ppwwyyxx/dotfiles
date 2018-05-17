@@ -14,16 +14,10 @@
 
 (doom! :feature
        (evil +everywhere); come to the dark side, we have cookies
-       (popup            ; tame sudden yet inevitable temporary windows
-        +all             ; catch all popups that start with an asterix
-        +defaults)       ; default popup rules
        debugger          ; FIXME stepping through code, to help you add bugs
        eval              ; run code, run (also, repls)
        file-templates    ; auto-snippets for empty files
        lookup
-       ;(lookup           ; helps you navigate your code and documentation
-       ; +devdocs         ; ...on devdocs.io online
-       ; +docsets)        ; ...or in Dash docsets locally
        services          ; TODO managing external services & code builders
        snippets          ; my elves. They type so I don't have to
        spellcheck        ; tasing you for misspelling mispelling
@@ -40,12 +34,14 @@
        :ui
        doom              ; what makes DOOM look the way it does
        doom-modeline     ; a snazzy Atom-inspired mode-line
-       ;doom-quit         ; DOOM quit-message prompts when you quit Emacs
        evil-goggles      ; display visual hints when editing in evil
        hl-todo           ; highlight TODO/FIXME/NOTE tags
        nav-flash         ; blink the current line after jumping
        neotree           ; a project drawer, like NERDTree for vim
       ;tabbar            ; FIXME an (incomplete) tab bar for Emacs
+       (popup            ; tame sudden yet inevitable temporary windows
+        ;+all             ; catch all popups that start with an asterix
+        +defaults)       ; default popup rules
        unicode           ; extended unicode support for various languages
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        window-select     ; visually switch windows
@@ -58,7 +54,6 @@
        eshell            ; a consistent, cross-platform shell (WIP)
        ;gist              ; interacting with github gists
        imenu             ; an imenu sidebar and searchable code index
-       impatient-mode    ; show off code over HTTP
       ;macos             ; MacOS-specific commands
        make              ; run make tasks from Emacs
        magit             ;
@@ -98,6 +93,8 @@
        ;; Applications are complex and opinionated modules that transform Emacs
        ;; toward a specific purpose. They may have additional dependencies and
        ;; should be loaded late.
+       :collab
+       impatient-mode    ; show off code over HTTP
        :app
       ;(email +gmail)    ; emacs as an email client
       ;irc               ; how neckbeards socialize

@@ -42,7 +42,7 @@
   new = green bold
   frag = magenta bold
 [pager]
-	diff = diff-highlight | less -r
+	diff = diff-so-fancy | less --tabs=4 -RFX
 [alias]
 	a   = add
 	b   = branch

@@ -5,7 +5,10 @@
 (load! +bindings)
 (load! +evil-commands)
 
-(add-hook 'prog-mode-hook #'doom|enable-delete-trailing-whitespace nil)
+(add-to-list 'exec-path (substitute-in-file-name "$HOME/bin"))
+(add-hook 'prog-mode-hook #'doom|enable-delete-trailing-whitespace)
+(add-hook 'ielm-mode-hook #'visual-line-mode)
+(add-hook 'eshell-mode-hook #'visual-line-mode)
 
 (after! imenu-list
   (setq imenu-list-auto-resize t)
@@ -124,11 +127,14 @@
   :hook (lsp-mode . lsp-ui-mode)
   :config
   (setq
-   lsp-ui-sideline-enable nil
+   lsp-ui-sideline-enable nil  ; too much noise
    lsp-ui-doc-include-signature t
-   lsp-ui-doc-background (doom-color 'base4)
-   lsp-ui-doc-border (doom-color 'fg)
-   lsp-ui-peek-expand-function (lambda (xs) (mapcar #'car xs))))
+   lsp-ui-peek-expand-function (lambda (xs) (mapcar #'car xs)))
+  (when (featurep! :ui doom)
+    (setq
+     lsp-ui-doc-background (doom-color 'base4)
+     lsp-ui-doc-border (doom-color 'fg)))
+  )
 
 (def-package! ccls
   :commands lsp-ccls-enable
@@ -137,7 +143,6 @@
   (setq ccls-executable "/usr/bin/ccls")
   (setq ccls-sem-highlight-method 'nil)
   (setq ccls-extra-args '("--log-file=/tmp/ccls.log"))
-  ;(ccls-use-default-rainbow-sem-highlight)
   (setq ccls-extra-init-params
         '(:completion (:detailedLabel t)
                       :diagnostics (:frequencyMs 5000)))
@@ -145,6 +150,6 @@
   (with-eval-after-load 'projectile
     (add-to-list 'projectile-globally-ignored-directories ".ccls-cache"))
 
-  ;(evil-set-initial-state 'ccls-tree-mode 'emacs)
+  (evil-set-initial-state 'ccls-tree-mode 'emacs)
   (set! :company-backend '(c-mode c++-mode) '(company-lsp))
   )
