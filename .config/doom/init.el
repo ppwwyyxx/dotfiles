@@ -1,10 +1,3 @@
-(disable-packages!
-  company-irony company-irony-c-headers flycheck-irony irony irony-eldoc
-  smart-forward
-  ivy-rtags rtags
-  evil-embrace
-  )
-
 (def-package-hook! evil-snipe
   :post-init
   (setq evil-snipe-override-evil-repeat-keys nil)   ; don't override ; and ,
@@ -51,6 +44,7 @@
        evil-goggles      ; display visual hints when editing in evil
        hl-todo           ; highlight TODO/FIXME/NOTE tags
        nav-flash         ; blink the current line after jumping
+       neotree           ; a project drawer, like NERDTree for vim
       ;tabbar            ; FIXME an (incomplete) tab bar for Emacs
        unicode           ; extended unicode support for various languages
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
@@ -68,7 +62,6 @@
       ;macos             ; MacOS-specific commands
        make              ; run make tasks from Emacs
        magit             ;
-       neotree           ; a project drawer, like NERDTree for vim
        password-store    ; password manager for nerds
        pdf               ; pdf enhancements
        rgb               ; creating color strings
