@@ -120,6 +120,16 @@
     )
 )
 
+(after! ivy-posframe
+  (setq ivy-posframe-parameters `((min-width . 90)
+                                  (min-height . 16)
+                                  (internal-border-width . 10)
+                                  (internal-border-width . 10)
+                                  (foreground-color . "#00afef")
+                                  ))
+  (set-face-attribute 'ivy-current-match nil :underline t)
+  )
+
 (def-package! lsp-mode :defer t)
 
 (def-package! lsp-ui

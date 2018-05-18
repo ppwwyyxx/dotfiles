@@ -1,10 +1,12 @@
 ;; -*- no-byte-compile: t; -*-
-(disable-packages!
-  company-irony company-irony-c-headers flycheck-irony irony irony-eldoc
-  smart-forward
-  ivy-rtags rtags
-  evil-embrace
-  )
+(package! irony :disable t)
+(package! company-irony :disable t)
+(package! company-irony-c-headers :disable t)
+(package! flycheck-irony :disable t)
+(package! irony-eldoc :disable t)
+(package! rtags :disable t)
+(package! ivy-rtags :disable t)
+(package! smart-forward :disable t)
 
 
 (package! lsp-mode)
