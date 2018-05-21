@@ -1,5 +1,4 @@
-;;; -*- lexical-binding: t -*-
-;;; -*- no-byte-compile: t -*-
+;;; -*- lexical-binding: t -*- ;  -*- no-byte-compile: t -*-
 
 (load! +ui)
 (load! +bindings)
@@ -9,9 +8,10 @@
 (add-hook 'prog-mode-hook #'doom|enable-delete-trailing-whitespace)
 (add-hook 'ielm-mode-hook #'visual-line-mode)
 (add-hook 'eshell-mode-hook #'visual-line-mode)
+(add-hook 'markdown-mode-hook #'visual-line-mode)
 
 (after! imenu-list
-  (setq imenu-list-auto-resize t)
+  (setq imenu-list-auto-resize nil)
   )
 
 (after! projectile
@@ -65,6 +65,15 @@
 ;;     )
 ;;   )
 
+  (defun my/ivy-split-action (x current-act side)
+        (message "%s" (ivy-state-window ivy-last))
+        (setf (ivy-state-window ivy-last)
+              (select-window (split-window nil nil side))
+              )      ; so that with-ivy-window (used a lot inside predefined actions) will use the new window
+        (balance-windows)
+        (funcall current-act x)
+    )
+
 (after! ivy
   ;(defun switch-to-buffer-new-window (buffer-or-name side)
   ;  "Switch to BUFFER-OR-NAME in a new window, based on SIDE."
@@ -106,14 +115,17 @@
                                     ))
            )
           (ivy-exit-with-action
-           (lambda (x)
-             (setf
-              (ivy-state-window ivy-last)
-              (select-window (split-window nil nil side))
-              )      ; so that with-ivy-window (used a lot inside predefined actions) will use the new window
-             (balance-windows)
-             (funcall current-act x)
-             ))
+           (lambda (x) (my/ivy-split-action x current-act side))
+           )
+           ;(lambda (x)
+           ;  (message "%s" (ivy-state-window ivy-last))
+           ;  (setf (ivy-state-window ivy-last)
+           ;   ;(select-window (split-window nil nil side))
+           ;   (selected-window)
+           ;   )      ; so that with-ivy-window (used a lot inside predefined actions) will use the new window
+           ;  (balance-windows)
+           ;  (funcall current-act x)
+           ;  ))
 
         (ivy-exit-with-action current-act))
       )

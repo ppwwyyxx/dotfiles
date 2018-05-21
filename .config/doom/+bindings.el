@@ -16,6 +16,9 @@
       (:map special-mode-map
         :nmvo doom-leader-key nil
         )
+      (:after debug :map debugger-mode-map
+        :nmvo doom-leader-key nil
+        )
       (:after pdf-tools :map pdf-view-mode-map
         :nmvo doom-leader-key nil
         )
@@ -43,7 +46,7 @@
       ;;:n  "M-s"   #'save-buffer
 
       :nm  ";"     #'evil-ex
-      (:after dired :map dired-mode-map :nm  ";"     #'evil-ex)
+      ;(:after dired :map dired-mode-map :nm  ";"     #'evil-ex)
 
       :nv [tab]   #'+evil/matchit-or-toggle-fold
 
@@ -357,7 +360,12 @@
           "o"       #'doom/window-enlargen
           ;; Delete window
           "c"       #'+workspace/close-window-or-workspace
-          "C-C"     #'ace-delete-window)
+          "C-C"     #'ace-delete-window
+          [up]      #'evil-window-increase-height
+          [down]    #'evil-window-decrease-height
+          [right]   #'evil-window-increase-width
+          [left]    #'evil-window-decrease-width
+          )
         )
 
       ;; surround

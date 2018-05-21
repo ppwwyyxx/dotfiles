@@ -304,7 +304,10 @@ awful.screen.connect_for_each_screen(function(s)
        [end
        ]]
 
-    right_layout:add(systray)
+    if screen:count() == s.index then
+      right_layout:add(systray)
+      systray:set_screen(s)
+    end
     right_layout:add(textclock)
 
    --right_layout:add(powerline_widget)
