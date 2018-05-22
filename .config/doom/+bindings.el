@@ -11,20 +11,16 @@
 
 (map! [remap newline]          #'newline-and-indent
       ;; Ensure there are no conflicts
-      :nmvo doom-leader-key nil
-      :nmvo doom-localleader-key nil
+      :nmveo doom-leader-key nil
+      :nmveo doom-localleader-key nil
       (:map special-mode-map
-        :nmvo doom-leader-key nil
-        )
+        :nmvo doom-leader-key nil)
       (:after debug :map debugger-mode-map
-        :nmvo doom-leader-key nil
-        )
+        :nmvo doom-leader-key nil)
       (:after pdf-tools :map pdf-view-mode-map
-        :nmvo doom-leader-key nil
-        )
+        :nmvo doom-leader-key nil)
       (:after dired :map dired-mode-map
-        :nmvo doom-leader-key nil
-        )
+        :nmvo doom-leader-key nil)
 
       ;; --- Global keybindings ---------------------------
       ;; clean-ups:
@@ -324,7 +320,7 @@
           "S-TAB"   #'company-select-previous
           [backtab] #'company-select-previous
           "<f1>"    nil
-          [escape]  #'company-abort
+          [escape]  (lambda! (company-abort) (evil-normal-state))
           )
         (:map company-search-map
           "C-n"     #'company-select-next-or-abort

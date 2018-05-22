@@ -65,15 +65,6 @@
 ;;     )
 ;;   )
 
-  (defun my/ivy-split-action (x current-act side)
-        (message "%s" (ivy-state-window ivy-last))
-        (setf (ivy-state-window ivy-last)
-              (select-window (split-window nil nil side))
-              )      ; so that with-ivy-window (used a lot inside predefined actions) will use the new window
-        (balance-windows)
-        (funcall current-act x)
-    )
-
 (after! ivy
   ;(defun switch-to-buffer-new-window (buffer-or-name side)
   ;  "Switch to BUFFER-OR-NAME in a new window, based on SIDE."
@@ -115,17 +106,14 @@
                                     ))
            )
           (ivy-exit-with-action
-           (lambda (x) (my/ivy-split-action x current-act side))
-           )
-           ;(lambda (x)
-           ;  (message "%s" (ivy-state-window ivy-last))
-           ;  (setf (ivy-state-window ivy-last)
-           ;   ;(select-window (split-window nil nil side))
-           ;   (selected-window)
-           ;   )      ; so that with-ivy-window (used a lot inside predefined actions) will use the new window
-           ;  (balance-windows)
-           ;  (funcall current-act x)
-           ;  ))
+           (lambda (x)
+             (message "%s" (ivy-state-window ivy-last))
+             (setf (ivy-state-window ivy-last)
+              (select-window (split-window nil nil side))
+              )      ; so that with-ivy-window (used a lot inside predefined actions) will use the new window
+             (balance-windows)
+             (funcall current-act x)
+             ))
 
         (ivy-exit-with-action current-act))
       )
