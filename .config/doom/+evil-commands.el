@@ -1,4 +1,4 @@
-;;;  -*- lexical-binding: t; -*-
+;;; -*- lexical-binding: t; no-byte-compile: t -*-
 
 
 (defalias 'ex! 'evil-ex-define-cmd)

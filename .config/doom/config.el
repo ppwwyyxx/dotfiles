@@ -1,4 +1,4 @@
-;;; -*- lexical-binding: t -*- ;  -*- no-byte-compile: t -*-
+;;; -*- lexical-binding: t; no-byte-compile: t -*-
 
 (load! +ui)
 (load! +bindings)
@@ -10,6 +10,9 @@
 (add-hook 'eshell-mode-hook #'visual-line-mode)
 (add-hook 'markdown-mode-hook #'visual-line-mode)
 
+(setq tramp-default-method "ssh")
+
+
 (after! imenu-list
   (setq imenu-list-auto-resize nil)
   )
@@ -18,6 +21,14 @@
   (setq projectile-require-project-root t)
   (projectile-cleanup-known-projects)
   )
+
+(after! quickrun
+  (quickrun-add-command "c++/c1z"
+    '((:command . "g++")
+      (:exec    . ("%c -std=c++1z %o -o %e -Wall -Wextra %s"
+                   "%e %a"))
+      (:remove  . ("%e")))
+    :default "c++"))
 
 (after! pythonic
   (setq python-shell-virtualenv-root "/usr")  ; it will otherwise look for .local/bin which may contain ipython2
@@ -151,7 +162,7 @@
   :init (add-hook 'c-mode-common-hook #'lsp-ccls-enable)
   :config
   (setq ccls-executable "/usr/bin/ccls")
-  (setq ccls-sem-highlight-method 'nil)
+  (setq ccls-sem-highlight-method nil)
   (setq ccls-extra-args '("--log-file=/tmp/ccls.log"))
   (setq ccls-extra-init-params
         '(:completion (:detailedLabel t)

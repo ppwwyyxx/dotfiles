@@ -1,4 +1,4 @@
-;;;  -*- lexical-binding: t; -*-
+;;; -*- lexical-binding: t; no-byte-compile: t -*-
 
 
 (after! evil-mc
@@ -391,7 +391,7 @@
           "C-S-V"  #'yank
           ;;"C-r"    #'evil-paste-from-register
           "C-w"    #'ivy-backward-kill-word
-          "C-u"    #'ivy-kill-line
+          "C-u"    #'ivy-kill-whole-line
           "C-b"    #'backward-word
           "C-f"    #'forward-word
 

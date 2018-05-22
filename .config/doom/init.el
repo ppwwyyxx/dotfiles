@@ -1,3 +1,4 @@
+;; -*- no-byte-compile: t; -*-
 (def-package-hook! evil-snipe
   :post-init
   (setq evil-snipe-override-evil-repeat-keys nil)   ; don't override ; and ,
