@@ -9,15 +9,18 @@ if [[ $(uname) == "Darwin" ]]; then
 	source /etc/profile
 fi
 
+# https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html
+[[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
+
 [[ -d $HOME/.zsh/Completion ]] && fpath=($HOME/.zsh/Completion $fpath)
 
 # ENV f[[
 export PYTHONPATH=
-export TRUETERM=$TERM
 export TERM=screen-256color
 export TERMINFO=$HOME/.terminfo
 export LC_ALL=en_US.UTF-8
 export SSH_ASKPASS=
+export _MAJOR_HOST=KeepLearning
 # neovim#2048 suggests: infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti; tic $TERM.ti
 
 function safe_export_path() { [[ -d $1 ]] && export PATH=$1:$PATH }
@@ -29,12 +32,8 @@ safe_export_path $HOME/bin
 safe_export_path $HOME/.local/bin
 safe_export_path $HOME/.zsh/bin
 safe_export_path $HOME/.cabal/bin
-safe_export_path /opt/texlive/2015/bin/x86_64-linux
 safe_export_path /opt/intel/bin
-safe_export_path /opt/intel/vtune_amplifier_xe_2015.3.0.403110/bin64
 safe_export_path /usr/lib/colorgcc/bin
-safe_export_path /opt/lingo14/bin/linux64
-safe_export_path $HOME/.linuxbrew/bin
 safe_export_path $HOME/.rvm/bin		# Add RVM to PATH for scripting
 export GOPATH=$HOME/.local/gocode
 safe_export_path $GOPATH/bin
@@ -112,7 +111,7 @@ for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
 done
 FINISH="%{$terminfo[sgr0]%}"
 
-if [[ $HOST == "KeepLearning" ]]; then
+if [[ $HOST == $_MAJOR_HOST ]]; then
   alias poweroff='vboxmanage controlvm win7 savestate; sudo poweroff'
   alias reboot='vboxmanage controlvm win7 savestate; sudo reboot'
   export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: (meow~~) '
@@ -122,7 +121,7 @@ else
   alias -g poweroff=
   alias -g shutdown=
   alias -g reboot=
-  export SUDO_PROMPT=$'[\e[31;5mYou\'re on %H!\e[m] password for \e[34;1m%p\e[m on\e[0;31m %H\e[m: '
+  export SUDO_PROMPT=$'[\e[31;5mYou are on %H!\e[m] password for \e[34;1m%p\e[m on\e[0;31m %H\e[m: '
 fi
 
 # Config git-prompt
@@ -134,24 +133,19 @@ safe_source $HOME/.zsh/git-prompt/zshrc.sh
 } || { function  git_super_status() {} }
 
 function preexec() {
-COMMAND_TIMER=${COMMAND_TIMER:-$((SECONDS + $(date "+%N") / 1000000000.0))}
+  COMMAND_TIMER=${COMMAND_TIMER:-$((SECONDS + $(date "+%N") / 1000000000.0))}
 }
-[ $TRUETERM = "dumb" ] && {
-  # https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html
-  unsetopt zle
-  PS1='$ '
-} || {
 function precmd() {
 	local separator1=
-  local separator2=
-  local separator3=
+    local separator2=
+    local separator3=
 	local TIMECOLOR="%{%b%F{211}%}"
 	local PINK="%{%b%F{213}%}"
 	local YELLOWGREEN="%{%b%F{154}%}"
 	local YELLOWGREENB="%{%b%K{154}%F{black}%}"
 	local PURPLE="%{%b%F{171}%}"
 
-	if [[ $USER == "wyx" ]] && [[ $HOST == "KeepLearning" ]]; then
+	if [[ $USER == "wyx" ]] && [[ $HOST == $_MAJOR_HOST ]]; then
 		PROMPT_PART="" # on my laptop
 	else
 		PROMPT_PART="$GREEN [%{%F{171}%}%n@%{%F{219}%}%M$GREEN]"
@@ -185,6 +179,7 @@ $YELLOWGREEN%$pwdlen<...<%~%<< \
 	#local return_status="%{$fg[red]%}%(?..%?⏎)%{$reset_color%}"	# return code is useless
 	local return_status="%{$fg[red]%}%(?..⏎)%{$reset_color%}"
 	RPROMPT="${return_status}"
+    # print time for commands that run > 1s
 	if [ $COMMAND_TIMER ]; then
 		local diff=$((SECONDS + $(date "+%N") / 1000000000.0 - COMMAND_TIMER))
 		diff=`printf "%.2f" $diff`
@@ -196,7 +191,6 @@ $YELLOWGREEN%$pwdlen<...<%~%<< \
 
 	PROMPT2='$BLUE($PINK%_$BLUE)$FINISH%{$reset_color%}'
 	PROMPT3='$PINK Select:'
-}
 }
 # f]]
 
@@ -475,16 +469,11 @@ special_command(){
 	local cmd=`echo $BUFFER | awk '{print $1}'`
 	# command running in background
 	in_array $cmd "${bg_list[@]}" && BUFFER=`echo $BUFFER |sed 's/\s\+2>\/dev\/null//g; s/[&]*\s*$/\ 2>\/dev\/null\ \&/g'`
-	## command ending with alert
-	#alert_list=(mencoder aria2c axel)
-	#in_array $cmd "${alert_list[@]}" && BUFFER="$BUFFER ; notify-send \"$cmd finished! \""
 }
 
 user-ret(){
 	path_parse
 	special_command
-	#RPS1= zle reset-prompt	# reset rps1 of last command
-	#BUFFER=${BUFFER/mms:\/\/officetv/rtsp:\/\/officetv}		# mms IPTV urls in China are actually in rtsp!
 	zle accept-line
 }
 zle -N user-ret
@@ -493,10 +482,9 @@ bindkey "\r" user-ret
 # command not found
 function command_not_found_handler() {
 	local command="$1"
-	local fortuneList; fortuneList=("tang300" "song100" "chucknorris" "love")
 	# avoid recursive command-not-found when /usr/bin/ is mistakenly lost in PATH
 	[ -x /usr/bin/fortune ] && [ -x /usr/bin/cowthink ] && {
-		/usr/bin/fortune ${fortuneList[@]} | /usr/bin/cowthink -W 70
+		/usr/bin/fortune chinese | /usr/bin/cowthink -W 70
 	}
 	[ -n "$command" ] && [ -x /usr/bin/pkgfile ] && {
 		echo -e "searching for \"$command\" in repos..."

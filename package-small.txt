@@ -416,3 +416,4 @@ lxappearance
 flatplat-theme
 qtconfig-qt4
 qt5-styleplugins
+cowfortune

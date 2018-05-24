@@ -118,10 +118,12 @@
            )
           (ivy-exit-with-action
            (lambda (x)
-             (message "%s" (ivy-state-window ivy-last))
-             (setf (ivy-state-window ivy-last)
-              (select-window (split-window nil nil side))
-              )      ; so that with-ivy-window (used a lot inside predefined actions) will use the new window
+             (gv-letplace (_ setter) '(ivy-state-window ivy-last)
+                    (funcall setter (select-window (split-window nil nil side))))
+             ; setf was wrongly expanded for some unknown reason
+             ;(setf (ivy-state-window ivy-last)
+             ; (select-window (split-window nil nil side))
+             ; )      ; so that with-ivy-window (used a lot inside predefined actions) will use the new window
              (balance-windows)
              (funcall current-act x)
              ))
