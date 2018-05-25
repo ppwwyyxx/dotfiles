@@ -29,10 +29,6 @@
       (:remove  . ("%e")))
     :default "c++"))
 
-(after! pythonic
-  (setq python-shell-virtualenv-root "/usr")  ; it will otherwise look for .local/bin which may contain ipython2
-)
-
 (after! evil
   (global-evil-surround-mode 1)
   (setq

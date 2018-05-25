@@ -2,6 +2,10 @@
 
 (setq doom-font (font-spec :family "Monospace" :size 20))
 
+(unless (display-graphic-p)
+  (custom-set-faces
+   '(region ((t (:background "#5CC8ED" :foreground "black"))))))
+
 (after! neotree
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
   )
@@ -77,3 +81,7 @@
     (highlight-lines-matching-regexp "import sys; sys.exit"))
   (add-hook 'python-mode-hook #'spacemacs/python-annotate-debug)
 	)
+
+;; Local Variables:
+;; eval: (rainbow-mode)
+;; End:

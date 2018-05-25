@@ -23,10 +23,6 @@
       :gnvime "M-l" nil
       :gnvime "M-h" nil
 
-      (:map input-decode-map
-        [S-iso-lefttab] [backtab]
-        (:unless window-system "TAB" [tab])) ; Fix TAB in terminal
-
 
       ;; Make M-x available everywhere
       :gnvime "M-x" #'execute-extended-command
