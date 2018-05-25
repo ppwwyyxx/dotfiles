@@ -118,8 +118,10 @@
            )
           (ivy-exit-with-action
            (lambda (x)
-             (gv-letplace (_ setter) '(ivy-state-window ivy-last)
-                    (funcall setter (select-window (split-window nil nil side))))
+             (select-window (split-window nil nil side))
+             ;(let ((window (select-window (split-window nil nil side))))
+             ;   (gv-letplace (_ setter) (ivy-state-window ivy-last)
+             ;           (funcall setter window)))
              ; setf was wrongly expanded for some unknown reason
              ;(setf (ivy-state-window ivy-last)
              ; (select-window (split-window nil nil side))

@@ -11,16 +11,12 @@
 
 (map! [remap newline]          #'newline-and-indent
       ;; Ensure there are no conflicts
-      :nmveo doom-leader-key nil
-      :nmveo doom-localleader-key nil
-      (:map special-mode-map
-        :nmvo doom-leader-key nil)
-      (:after debug :map debugger-mode-map
-        :nmvo doom-leader-key nil)
-      (:after pdf-tools :map pdf-view-mode-map
-        :nmvo doom-leader-key nil)
-      (:after dired :map dired-mode-map
-        :nmvo doom-leader-key nil)
+      :nmvo doom-leader-key nil
+      :nmvo doom-localleader-key nil
+      ;;(:map special-mode-map
+      ;;  :nmvo doom-leader-key nil)
+      ;;(:after debug :map debugger-mode-map
+      ;;  :nmvo doom-leader-key nil)
 
       ;; --- Global keybindings ---------------------------
       ;; clean-ups:
@@ -42,7 +38,6 @@
       ;;:n  "M-s"   #'save-buffer
 
       :nm  ";"     #'evil-ex
-      ;(:after dired :map dired-mode-map :nm  ";"     #'evil-ex)
 
       :nv [tab]   #'+evil/matchit-or-toggle-fold
 
@@ -485,3 +480,18 @@
       ; gist, realgud, yasnippet, undo-tree, ?markdown-mode
       )
 
+
+(defun +config|deal-with-evil-collections-bs (_feature keymaps)
+  "Unmap keys that conflict with Doom's defaults."
+  (dolist (map keymaps)
+    (evil-delay `(and (boundp ',map) (keymapp ,map))
+        `(evil-define-key* '(normal visual motion) ,map
+           ";" nil
+           (kbd doom-leader-key) nil
+           (kbd "C-j") nil (kbd "C-k") nil
+           "gd" nil "gf" nil "K"  nil
+           "]"  nil "["  nil)
+      'after-load-functions t nil
+      (format "doom-define-key-in-%s" map))))
+
+(add-hook 'evil-collection-setup-hook #'+config|deal-with-evil-collections-bs)

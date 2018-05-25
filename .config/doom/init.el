@@ -7,11 +7,12 @@
   )
 (def-package-hook! evil-collection
   :pre-config
+  ;(delq 'dired evil-collection-mode-list)
   (delq 'diff-mode evil-collection-mode-list)  ; breaks too much
   t
   )
 
-(setq debug-on-error nil)
+;(setq debug-on-error t)
 
 (doom! :feature
        (evil +everywhere); come to the dark side, we have cookies
