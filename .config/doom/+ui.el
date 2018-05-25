@@ -74,6 +74,6 @@
     (highlight-lines-matching-regexp "import \\(pdb\\|ipdb\\|pudb\\|wdb\\)")
     (highlight-lines-matching-regexp "\\(pdb\\|ipdb\\|pudb\\|wdb\\).set_trace()")
     (highlight-lines-matching-regexp "import IPython")
-    (highlight-lines-matching-regexp "import sys; sys.exit")
+    (highlight-lines-matching-regexp "import sys; sys.exit"))
   (add-hook 'python-mode-hook #'spacemacs/python-annotate-debug)
-  )
+	)
