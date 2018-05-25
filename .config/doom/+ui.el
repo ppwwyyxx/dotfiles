@@ -23,6 +23,15 @@
     )
   )
 
+(after! ivy-posframe
+  (setq ivy-posframe-parameters `((min-width . 90)
+                                  (min-height . 16)
+                                  (internal-border-width . 10)
+                                  (internal-border-width . 10)
+                                  (foreground-color . "#00afef")
+                                  ))
+  (set-face-attribute 'ivy-current-match nil :underline t)
+  )
 
 ;; modeline
 (defface my/modeline-state-normal `((t (:inherit doom-modeline-panel :background "#AFD700")))
@@ -56,3 +65,15 @@
 (def-modeline! main
   (my-state " " buffer-info "  %l:%c %p  " selection-info)
   (buffer-encoding major-mode vcs flycheck))
+
+
+(after! python
+  (defun spacemacs/python-annotate-debug ()
+    "Highlight debug lines. Copied from spacemacs."
+    (interactive)
+    (highlight-lines-matching-regexp "import \\(pdb\\|ipdb\\|pudb\\|wdb\\)")
+    (highlight-lines-matching-regexp "\\(pdb\\|ipdb\\|pudb\\|wdb\\).set_trace()")
+    (highlight-lines-matching-regexp "import IPython")
+    (highlight-lines-matching-regexp "import sys; sys.exit")
+  (add-hook 'python-mode-hook #'spacemacs/python-annotate-debug)
+  )

@@ -12,7 +12,6 @@
 
 (setq tramp-default-method "ssh")
 
-
 (after! imenu-list
   (setq imenu-list-auto-resize nil)
   )
@@ -119,13 +118,11 @@
           (ivy-exit-with-action
            (lambda (x)
              (select-window (split-window nil nil side))
-             ;(let ((window (select-window (split-window nil nil side))))
-             ;   (gv-letplace (_ setter) (ivy-state-window ivy-last)
-             ;           (funcall setter window)))
-             ; setf was wrongly expanded for some unknown reason
-             ;(setf (ivy-state-window ivy-last)
-             ; (select-window (split-window nil nil side))
-             ; )      ; so that with-ivy-window (used a lot inside predefined actions) will use the new window
+             ;; setf was wrongly expanded at load-time for unclear reason
+             (eval '(progn (setf (ivy-state-window ivy-last)
+                                 (selected-window)
+                                 )))
+             ;; so that 'with-ivy-window' (used a lot inside predefined actions) will use the new window
              (balance-windows)
              (funcall current-act x)
              ))
@@ -135,16 +132,8 @@
     )
 )
 
-(after! ivy-posframe
-  (setq ivy-posframe-parameters `((min-width . 90)
-                                  (min-height . 16)
-                                  (internal-border-width . 10)
-                                  (internal-border-width . 10)
-                                  (foreground-color . "#00afef")
-                                  ))
-  (set-face-attribute 'ivy-current-match nil :underline t)
-  )
 
+;; lsp
 (def-package! lsp-mode :defer t)
 
 (def-package! lsp-ui
