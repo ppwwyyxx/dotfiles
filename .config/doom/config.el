@@ -1,10 +1,11 @@
 ;;; -*- lexical-binding: t; no-byte-compile: t -*-
 
+(add-to-list 'exec-path (substitute-in-file-name "$HOME/bin"))
+
 (load! +ui)
 (load! +bindings)
 (load! +evil-commands)
 
-(add-to-list 'exec-path (substitute-in-file-name "$HOME/bin"))
 (add-hook 'prog-mode-hook #'doom|enable-delete-trailing-whitespace)
 (add-hook 'ielm-mode-hook #'visual-line-mode)
 (add-hook 'eshell-mode-hook #'visual-line-mode)
@@ -129,7 +130,7 @@
 )
 
 
-;; lsp
+;; Programming stuff ...
 (def-package! lsp-mode :defer t)
 
 (def-package! lsp-ui
@@ -162,4 +163,17 @@
 
   (evil-set-initial-state 'ccls-tree-mode 'emacs)
   (set! :company-backend '(c-mode c++-mode) '(company-lsp))
+  )
+
+
+(after! python
+  (defun spacemacs/python-annotate-debug ()
+    "Highlight debug lines. Copied from spacemacs."
+    (interactive)
+    (highlight-lines-matching-regexp "import \\(pdb\\|ipdb\\|pudb\\|wdb\\)")
+    (highlight-lines-matching-regexp "\\(pdb\\|ipdb\\|pudb\\|wdb\\).set_trace()")
+    (highlight-lines-matching-regexp "import IPython")
+    (highlight-lines-matching-regexp "import sys; sys.exit"))
+  (add-hook 'python-mode-hook #'spacemacs/python-annotate-debug)
+  (add-hook 'python-mode-hook #'highlight-indent-guides-mode)
   )

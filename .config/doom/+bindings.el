@@ -70,6 +70,7 @@
         "C-u"    #'backward-kill-sentence
         "C-b"    #'backward-word
         "C-f"    #'forward-word
+        "C-S-V"  #'yank
         )
       (:after evil :map evil-ex-completion-map
         "C-a"   #'move-beginning-of-line
@@ -234,7 +235,7 @@
           :desc "Line numbers"           :n "L" #'doom/toggle-line-numbers
           :desc "Neotree"                :n "f" #'+neotree/open
           :desc "Frame fullscreen"       :n "F" #'toggle-frame-fullscreen
-          :desc "Indent guides"          :n "i" #'highlight-indentation-mode
+          :desc "Indent guides"          :n "i" #'highlight-indent-guides-mode
           ;; TODO timemachine, magit?
           ;:desc "Impatient mode"         :n "h" #'+impatient-mode/toggle
           ;:desc "Big mode"               :n "b" #'doom-big-font-mode
@@ -273,7 +274,7 @@
           :desc "Previous hunk"          :nv "[" #'git-gutter:previous-hunk)
 
         ;; Unorganized:
-        (:desc "Run Stuff" :prefix "r"
+        (:desc "run Stuff" :prefix "r"
           :desc "Eval Buffer" :n "r" #'+eval/buffer
           :desc "Terminal"    :n "t" #'multi-term
           :desc "Make"        :n "m" #'+make/run

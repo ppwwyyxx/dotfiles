@@ -70,17 +70,14 @@
   (my-state " " buffer-info "  %l:%c %p  " selection-info)
   (buffer-encoding major-mode vcs flycheck))
 
-
-(after! python
-  (defun spacemacs/python-annotate-debug ()
-    "Highlight debug lines. Copied from spacemacs."
-    (interactive)
-    (highlight-lines-matching-regexp "import \\(pdb\\|ipdb\\|pudb\\|wdb\\)")
-    (highlight-lines-matching-regexp "\\(pdb\\|ipdb\\|pudb\\|wdb\\).set_trace()")
-    (highlight-lines-matching-regexp "import IPython")
-    (highlight-lines-matching-regexp "import sys; sys.exit"))
-  (add-hook 'python-mode-hook #'spacemacs/python-annotate-debug)
-	)
+(after! highlight-indent-guides
+  (setq highlight-indent-guides-method 'character)
+  ;;(setq highlight-indent-guides-character ?\|)
+  (setq highlight-indent-guides-responsive 'top)
+  (setq highlight-indent-guides-auto-enabled nil)
+  (set-face-foreground 'highlight-indent-guides-character-face "dimgray")
+  (set-face-foreground 'highlight-indent-guides-top-character-face "skyblue")
+  )
 
 ;; Local Variables:
 ;; eval: (rainbow-mode)

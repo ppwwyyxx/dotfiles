@@ -7,8 +7,9 @@
 (package! rtags :disable t)
 (package! ivy-rtags :disable t)
 (package! smart-forward :disable t)
+(package! highlight-indentation :disable t)
 
-
+(package! highlight-indent-guides)
 (package! lsp-mode)
 (package! lsp-ui)
 (package! company-lsp)
