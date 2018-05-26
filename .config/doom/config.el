@@ -11,6 +11,14 @@
 (add-hook 'eshell-mode-hook #'visual-line-mode)
 (add-hook 'markdown-mode-hook #'visual-line-mode)
 
+(def-package! fcitx
+  :if (and IS-LINUX (string= (getenv "LC_CTYPE") "zh_CN.UTF-8"))
+  :config
+  (fcitx-aggressive-setup)
+  (setq fcitx-use-dbus t))
+
+(setq tab-width 4)
+(setq tab-always-indent nil)
 (setq tramp-default-method "ssh")
 
 (after! imenu-list
@@ -134,7 +142,6 @@
 (def-package! lsp-mode :defer t)
 
 (def-package! lsp-ui
-  :demand t
   :hook (lsp-mode . lsp-ui-mode)
   :config
   (setq
@@ -148,8 +155,7 @@
   )
 
 (def-package! ccls
-  :commands lsp-ccls-enable
-  :init (add-hook 'c-mode-common-hook #'lsp-ccls-enable)
+  :hook (c-mode-common . lsp-ccls-enable)
   :config
   (setq ccls-executable "/usr/bin/ccls")
   (setq ccls-sem-highlight-method nil)

@@ -14,6 +14,7 @@
   (remove-hook 'doom-load-theme-hook #'doom-themes-neotree-config))
 
 (after! evil-goggles
+  (setq evil-goggles-enable-delete t)
   (if (featurep! :ui doom)
       (custom-set-faces
        '(evil-goggles-delete-face           ((t (:inherit diff-refine-removed))))
@@ -24,8 +25,7 @@
        '(evil-goggles-undo-redo-add-face    ((t (:inherit diff-refine-added))))
        '(evil-goggles-undo-redo-change-face ((t (:inherit diff-refine-changed)))))
     (evil-goggles-use-diff-faces)
-    )
-  )
+    ))
 
 (after! ivy-posframe
   (setq ivy-posframe-parameters `((min-width . 90)
@@ -48,7 +48,7 @@
 (defun +doom-modeline-evil-state ()
  (let ((name-and-face
         (pcase evil-state
-            ('normal '(" N " 'my/modeline-state-normal))
+            ((or 'normal 'operator) '(" N " 'my/modeline-state-normal))
             ('insert '(" I " 'my/modeline-state-insert))
             ('visual '(" V " 'my/modeline-state-visual))
             (- `(,(upcase (format " %s " evil-state)) 'my/modeline-state-normal))

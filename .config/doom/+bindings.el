@@ -269,6 +269,7 @@
           ;:desc "Git stage file"        :n  "S" #'magit-stage-file
           :desc "Git time machine"       :n  "t" #'git-timemachine-toggle
           :desc "Copy URL of line"       :n  "C" #'git-link
+          :desc "Browse Issues"          :n  "I" #'+vcs/git-browse-issues
           ;:desc "Git unstage file"      :n  "U" #'magit-unstage-file
           :desc "Next hunk"              :nv "]" #'git-gutter:next-hunk
           :desc "Previous hunk"          :nv "[" #'git-gutter:previous-hunk)

@@ -14,3 +14,5 @@
 (package! lsp-ui)
 (package! company-lsp)
 (package! ccls)
+
+(when IS-LINUX (package! fcitx))
