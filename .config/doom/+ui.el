@@ -3,12 +3,13 @@
 (setq doom-font (font-spec :family "Monospace" :size 20))
 
 (unless (display-graphic-p)
+  ;; visual selection under terminal
   (custom-set-faces
    '(region ((t (:background "#5CC8ED" :foreground "black"))))))
 
 (after! neotree
-  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
-  )
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+
 (after! doom-themes
   ;; https://github.com/hlissner/emacs-doom-themes/issues/180
   (remove-hook 'doom-load-theme-hook #'doom-themes-neotree-config))
@@ -70,13 +71,24 @@
   (my-state " " buffer-info "  %l:%c %p  " selection-info)
   (buffer-encoding major-mode vcs flycheck))
 
-(after! highlight-indent-guides
+(def-package! highlight-indent-guides
+  :config
   (setq highlight-indent-guides-method 'character)
-  ;;(setq highlight-indent-guides-character ?\|)
   (setq highlight-indent-guides-responsive 'top)
   (setq highlight-indent-guides-auto-enabled nil)
   (set-face-foreground 'highlight-indent-guides-character-face "dimgray")
   (set-face-foreground 'highlight-indent-guides-top-character-face "skyblue")
+  )
+
+;; copied from +spacemacs/spacemacs-editing-visual
+(def-package! highlight-parentheses
+  :hook (prog-mode . highlight-parentheses-mode)
+  :init
+  (setq hl-paren-delay 0.2)
+  (setq hl-paren-colors
+    '("SpringGreen3" "IndianRed1" "IndianRed3" "IndianRed4"))
+  :config
+  (set-face-attribute 'hl-paren-face nil :weight 'ultra-bold)
   )
 
 ;; Local Variables:

@@ -10,6 +10,8 @@
 (package! highlight-indentation :disable t)
 
 (package! highlight-indent-guides)
+(package! highlight-parentheses)
+
 (package! lsp-mode)
 (package! lsp-ui)
 (package! company-lsp)

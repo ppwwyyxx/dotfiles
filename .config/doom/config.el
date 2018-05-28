@@ -12,6 +12,7 @@
 (add-hook 'markdown-mode-hook #'visual-line-mode)
 
 (def-package! fcitx
+  ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=10867
   :if (and IS-LINUX (string= (getenv "LC_CTYPE") "zh_CN.UTF-8"))
   :config
   (fcitx-aggressive-setup)
@@ -31,6 +32,7 @@
   )
 
 (after! quickrun
+  (setq quickrun-timeout-seconds 30)
   (quickrun-add-command "c++/c1z"
     '((:command . "g++")
       (:exec    . ("%c -std=c++1z %o -o %e -Wall -Wextra %s"
@@ -81,14 +83,6 @@
 ;;   )
 
 (after! ivy
-  ;(defun switch-to-buffer-new-window (buffer-or-name side)
-  ;  "Switch to BUFFER-OR-NAME in a new window, based on SIDE."
-  ;  (select-window (split-window nil nil side))
-  ;  (balance-windows)
-  ;  (switch-to-buffer buffer-or-name)
-  ;  )
-  ;(defun find-file-new-window (filename side)
-  ;  (switch-to-buffer-new-window (find-file-noselect filename) side))
   ;(defmacro my/new-window-context (code side)
   ;  `(letf (
   ;        ;((symbol-function 'find-file-other-window) (lambda (a) (find-file-new-window a ,side)))
@@ -170,7 +164,6 @@
   (evil-set-initial-state 'ccls-tree-mode 'emacs)
   (set! :company-backend '(c-mode c++-mode) '(company-lsp))
   )
-
 
 (after! python
   (defun spacemacs/python-annotate-debug ()

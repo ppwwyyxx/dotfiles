@@ -18,7 +18,7 @@ fi
 export PYTHONPATH=
 export TERM=screen-256color
 export TERMINFO=$HOME/.terminfo
-export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 export SSH_ASKPASS=
 export _MAJOR_HOST=KeepLearning
 # neovim#2048 suggests: infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti; tic $TERM.ti

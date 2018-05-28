@@ -26,7 +26,6 @@
 
       ;; Make M-x available everywhere
       :gnvime "M-x" #'execute-extended-command
-      ;; :gnvime "M-:" #'doom/open-scratch-buffer
       :gnvime "C-x C-b" #'ibuffer
 
       :ne "M-r"   #'+eval/buffer
@@ -40,6 +39,7 @@
       :nv "K"  #'+lookup/documentation
       :m  "gd" #'+lookup/definition
       :m  "gD" #'+lookup/references
+      :m  "gw" #'avy-goto-word-1
       ;;:m  "gs" #'+default/easymotion  ; lazy-load `evil-easymotion'
       :n  "gx"  #'evil-exchange  ; https://github.com/tommcdo/vim-exchange
 
