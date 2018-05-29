@@ -183,8 +183,7 @@
           :desc "List errors"             :n "x" #'flycheck-list-errors
           :desc "Evaluate buffer/region"  :n "e" #'+eval/buffer
                                           :v "e" #'+eval/region
-          :desc "Jump to definition"      :n "d" #'+lookup/definition
-          :desc "Jump to references"      :n "D" #'+lookup/references
+          :desc "Diff with File"          :n "d" #'diff-buffer-with-file
           :desc "Rotate text"             :n "!" #'rotate-text  ;https://www.emacswiki.org/emacs/RotateText
           :desc "Insert snippet"         :nv "s" #'yas-insert-snippet
           )
@@ -455,6 +454,10 @@
         ;; TAB auto-completion in term buffers
         :map comint-mode-map [tab] #'company-complete)
 
+      (:after goto-addr
+        :map goto-address-highlight-keymap
+        "RET" #'goto-address-at-point)
+
       (:map* (help-mode-map helpful-mode-map)
         :n "o"  #'ace-link-help
         :n "q"  #'quit-window
@@ -487,7 +490,7 @@
            ";" nil
            (kbd doom-leader-key) nil
            (kbd "C-j") nil (kbd "C-k") nil
-           "gd" nil "gf" nil "K"  nil
+           "gd" nil "gf" nil "K"  nil "gD" nil "gw" nil
            "]"  nil "["  nil)
       'after-load-functions t nil
       (format "doom-define-key-in-%s" map))))

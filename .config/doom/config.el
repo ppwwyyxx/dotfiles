@@ -7,6 +7,7 @@
 (load! +evil-commands)
 
 (add-hook 'prog-mode-hook #'doom|enable-delete-trailing-whitespace)
+(add-hook 'prog-mode-hook #'goto-address-prog-mode)
 (add-hook 'ielm-mode-hook #'visual-line-mode)
 (add-hook 'eshell-mode-hook #'visual-line-mode)
 (add-hook 'markdown-mode-hook #'visual-line-mode)
@@ -150,8 +151,9 @@
 
 (def-package! ccls
   :hook (c-mode-common . lsp-ccls-enable)
+  :when (executable-find "ccls")
   :config
-  (setq ccls-executable "/usr/bin/ccls")
+  (setq ccls-executable (executable-find "/usr/bin/ccls"))
   (setq ccls-sem-highlight-method nil)
   (setq ccls-extra-args '("--log-file=/tmp/ccls.log"))
   (setq ccls-extra-init-params
