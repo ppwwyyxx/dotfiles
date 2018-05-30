@@ -235,6 +235,7 @@
           :desc "Neotree"                :n "f" #'+neotree/open
           :desc "Frame fullscreen"       :n "F" #'toggle-frame-fullscreen
           :desc "Indent guides"          :n "i" #'highlight-indent-guides-mode
+          :desc "Line Wrap"              :n "w" #'visual-line-mode
           ;; TODO timemachine, magit?
           ;:desc "Impatient mode"         :n "h" #'+impatient-mode/toggle
           ;:desc "Big mode"               :n "b" #'doom-big-font-mode

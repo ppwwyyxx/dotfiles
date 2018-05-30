@@ -133,6 +133,18 @@
 )
 
 
+(defun my/apply-conf-after-save()
+  (let* ((filename (buffer-file-name))
+        (basename (file-name-nondirectory filename)))
+    (pcase basename
+      (".tmux.conf" (call-process "tmux" nil nil nil "source" filename))
+      (".Xresources" (call-process "xrdb" nil nil nil filename))
+      (".xbindkeysrc" (call-process-shell-command "killall -HUP xbindkeys"))
+      )))
+(add-hook 'after-save-hook #'my/apply-conf-after-save)
+(add-to-list 'auto-mode-alist '(".xbindkeysrc" . conf-mode))
+
+
 ;; Programming stuff ...
 (def-package! lsp-mode :defer t)
 
