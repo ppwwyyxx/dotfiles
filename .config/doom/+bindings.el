@@ -482,6 +482,21 @@
                                         (unhighlight-regexp t)
                                         (evil-mc-undo-all-cursors))
         )
+
+      (:after json-mode :map json-mode-map
+        :n "js" #'json-mode-beautify
+        :n "bu" #'json-mode-beautify
+        )
+      (:after javascript-mode :map javascript-mode-map
+        :n "js" #'web-beautify-js
+        :n "bu" #'web-beautify-js
+        )
+      (:after web-mode :map web-mode-map
+        :n "bu" #'web-beautify-html)
+      (:after css-mode :map css-mode-map
+        :n "bu"  #'web-beautify-css
+        :n "css" #'web-beautify-css
+        )
       ) ;; end of leader
 
 (defun +config|deal-with-evil-collections-bs (_feature keymaps)

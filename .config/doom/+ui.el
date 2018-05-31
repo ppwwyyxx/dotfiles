@@ -90,7 +90,8 @@
   (setq hl-paren-colors
     '("SpringGreen3" "IndianRed1" "IndianRed3" "IndianRed4"))
   :config
-  (set-face-attribute 'hl-paren-face nil :weight 'ultra-bold)
+  (set-face-attribute 'hl-paren-face nil :weight 'bold)
+  (custom-set-faces '(show-paren-match ((t (:foreground "SpringGreen1" :underline t)))))
   )
 
 ;; Local Variables:

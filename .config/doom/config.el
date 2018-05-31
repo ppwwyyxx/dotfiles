@@ -173,11 +173,12 @@
 
 (when (featurep! :feature version-control)
   (defun my/my-own-project-p()
-    (let ((link (+vcs-root)))
-      (or
-       (cl-search "ppwwyyxx" link)
-       (cl-search "tensorpack" link)
-       (cl-search "facebook" link)
-       ))
-    )
+    (let ((link (ignore-errors (+vcs-root))))
+       (and (or
+        (not link)
+        (cl-search "ppwwyyxx" link)
+        (cl-search "tensorpack" link)
+        (cl-search "facebook" link)
+        ) t)
+    ))
 )

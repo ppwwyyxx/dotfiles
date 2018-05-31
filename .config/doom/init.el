@@ -20,7 +20,7 @@
        (evil +everywhere); come to the dark side, we have cookies
        debugger          ; FIXME stepping through code, to help you add bugs
        eval              ; run code, run (also, repls)
-                                        ;file-templates    ; auto-snippets for empty files
+       file-templates    ; auto-snippets for empty files
        lookup
        snippets          ; my elves. They type so I don't have to
        spellcheck        ; tasing you for misspelling mispelling
