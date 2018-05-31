@@ -93,6 +93,7 @@
            (member current-caller '(
                                     counsel-imenu
                                     counsel-recentf
+                                    counsel-file-jump
                                     counsel-find-library
                                     ivy-switch-buffer
                                     ivy-xref-show-xrefs

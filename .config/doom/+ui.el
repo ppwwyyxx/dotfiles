@@ -6,9 +6,16 @@
   (custom-set-faces
    ;; visual selection under terminal
    '(region ((t (:background "#5CC8ED" :foreground "black"))))
-   ;; default white is not light enough
+
+   ;; color similar to my vimrc
    '(default ((t (:foreground "#FFFFFF"))))
-   ))
+   '(font-lock-comment-face ((t (:foreground "#2277EE"))))
+   '(font-lock-doc-face ((t (:foreground "#FF0117"))))
+   '(font-lock-string-face ((t (:foreground "red"))))
+   '(font-lock-keyword-face ((t (:foreground "yellow"))))
+   '(font-lock-function-name-face ((t (:foreground "cyan"))))
+   )
+  )
 
 (after! neotree
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
