@@ -3,9 +3,12 @@
 (setq doom-font (font-spec :family "Monospace" :size 20))
 
 (unless (display-graphic-p)
-  ;; visual selection under terminal
   (custom-set-faces
-   '(region ((t (:background "#5CC8ED" :foreground "black"))))))
+   ;; visual selection under terminal
+   '(region ((t (:background "#5CC8ED" :foreground "black"))))
+   ;; default white is not light enough
+   '(default ((t (:foreground "#FFFFFF"))))
+   ))
 
 (after! neotree
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
