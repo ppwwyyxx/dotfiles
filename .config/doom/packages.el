@@ -16,5 +16,6 @@
 (package! lsp-ui)
 (package! company-lsp)
 (package! ccls)
+(package! clang-format)
 
 (when IS-LINUX (package! fcitx))

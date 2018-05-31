@@ -39,37 +39,39 @@
   )
 
 ;; modeline
-(defface my/modeline-state-normal `((t (:inherit doom-modeline-panel :background "#AFD700")))
-  "" :group '+doom-modeilne)
-(defface my/modeline-state-insert `((t (:inherit doom-modeline-panel :background "#00875F")))
-  "" :group '+doom-modeilne)
-(defface my/modeline-state-visual `((t (:inherit doom-modeline-panel :background "#F7AA52")))
-  "" :group '+doom-modeilne)
+(when (featurep! :ui doom-modeline)
+  (defface my/modeline-state-normal `((t (:inherit doom-modeline-panel :background "#AFD700")))
+    "" :group '+doom-modeilne)
+  (defface my/modeline-state-insert `((t (:inherit doom-modeline-panel :background "#00875F")))
+    "" :group '+doom-modeilne)
+  (defface my/modeline-state-visual `((t (:inherit doom-modeline-panel :background "#F7AA52")))
+    "" :group '+doom-modeilne)
 
-(defun +doom-modeline-evil-state ()
- (let ((name-and-face
-        (pcase evil-state
-            ((or 'normal 'operator) '(" N " 'my/modeline-state-normal))
-            ('insert '(" I " 'my/modeline-state-insert))
-            ('visual '(" V " 'my/modeline-state-visual))
-            (- `(,(upcase (format " %s " evil-state)) 'my/modeline-state-normal))
-            )))
-   (propertize (car name-and-face) 'face (cadr name-and-face))
- ))
+  (defun +doom-modeline-evil-state ()
+    (let ((name-and-face
+           (pcase evil-state
+             ((or 'normal 'operator) '(" N " 'my/modeline-state-normal))
+             ('insert '(" I " 'my/modeline-state-insert))
+             ('visual '(" V " 'my/modeline-state-visual))
+             (- `(,(upcase (format " %s " evil-state)) 'my/modeline-state-normal))
+             )))
+      (propertize (car name-and-face) 'face (cadr name-and-face))
+      ))
 
-(def-modeline-segment! my-state
-  "Override doom internal modeline segments"
-  (let ((meta (concat (+doom-modeline--macro-recording)
-                      (+doom-modeline--anzu)
-                      (+doom-modeline--evil-substitute)
-                      (+doom-modeline--iedit))))
-     (or (and (not (equal meta "")) meta)
-         (+doom-modeline-evil-state)
-         )))
+  (def-modeline-segment! my-state
+    "Override doom internal modeline segments"
+    (let ((meta (concat (+doom-modeline--macro-recording)
+                        (+doom-modeline--anzu)
+                        (+doom-modeline--evil-substitute)
+                        (+doom-modeline--iedit))))
+      (or (and (not (equal meta "")) meta)
+          (+doom-modeline-evil-state)
+          )))
 
-(def-modeline! main
-  (my-state " " buffer-info "  %l:%c %p  " selection-info)
-  (buffer-encoding major-mode vcs flycheck))
+  (def-modeline! main
+    (my-state " " buffer-info "  %l:%c %p  " selection-info)
+    (buffer-encoding major-mode vcs flycheck))
+)
 
 (def-package! highlight-indent-guides
   :config

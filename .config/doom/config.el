@@ -2,9 +2,9 @@
 
 (add-to-list 'exec-path (substitute-in-file-name "$HOME/bin"))
 
-(load! +ui)
-(load! +bindings)
-(load! +evil-commands)
+(load! "+ui")
+(load! "+bindings")
+(load! "+evil-commands")
 
 (add-hook 'prog-mode-hook #'doom|enable-delete-trailing-whitespace)
 (add-hook 'prog-mode-hook #'goto-address-prog-mode)
@@ -24,13 +24,11 @@
 (setq tramp-default-method "ssh")
 
 (after! imenu-list
-  (setq imenu-list-auto-resize nil)
-  )
+  (setq imenu-list-auto-resize nil))
 
 (after! projectile
   (setq projectile-require-project-root t)
-  (projectile-cleanup-known-projects)
-  )
+  (projectile-cleanup-known-projects))
 
 (after! quickrun
   (setq quickrun-timeout-seconds 30)
@@ -46,22 +44,18 @@
   (setq
    evil-move-beyond-eol t
    evil-jumps-cross-buffers nil)
-  (evil-ex-define-cmd "vsp" 'evil-window-vsplit)
-  )
+  (evil-ex-define-cmd "vsp" 'evil-window-vsplit))
 
 (after! company
   (setq company-quickhelp-delay nil
-        company-show-numbers t
-        ))
+        company-show-numbers t))
 
 (after! undo-tree
   ;; may be buggy
-  (setq undo-tree-auto-save-history t)
-  )
+  (setq undo-tree-auto-save-history t))
 
 (after! magit
-  (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
-  )
+  (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1))
 
 ;; (after! helm-dash
 ;;   (setq helm-dash-docsets-path
@@ -84,16 +78,6 @@
 ;;   )
 
 (after! ivy
-  ;(defmacro my/new-window-context (code side)
-  ;  `(letf (
-  ;        ;((symbol-function 'find-file-other-window) (lambda (a) (find-file-new-window a ,side)))
-  ;          ((symbol-function 'find-file) (lambda (a) (find-file-new-window a ,side)))
-  ;        ;((symbol-function 'switch-to-buffer-other-window) (lambda (a) (switch-to-buffer-new-window a ,side)))
-  ;          )
-  ;     ,code
-  ;     )
-  ;  )
-
   (defun my/ivy-exit-new-window (side)
     (let ((current-act (ivy--get-action ivy-last))
           (current-caller (ivy-state-caller ivy-last))
@@ -129,8 +113,7 @@
 
         (ivy-exit-with-action current-act))
       )
-    )
-)
+    ))
 
 
 (defun my/apply-conf-after-save()
@@ -157,8 +140,7 @@
   (when (featurep! :ui doom)
     (setq
      lsp-ui-doc-background (doom-color 'base4)
-     lsp-ui-doc-border (doom-color 'fg)))
-  )
+     lsp-ui-doc-border (doom-color 'fg))))
 
 (def-package! ccls
   :hook (c-mode-common . lsp-ccls-enable)
@@ -175,8 +157,7 @@
     (add-to-list 'projectile-globally-ignored-directories ".ccls-cache"))
 
   (evil-set-initial-state 'ccls-tree-mode 'emacs)
-  (set! :company-backend '(c-mode c++-mode) '(company-lsp))
-  )
+  (set! :company-backend '(c-mode c++-mode) '(company-lsp)))
 
 (after! python
   (defun spacemacs/python-annotate-debug ()
@@ -187,5 +168,16 @@
     (highlight-lines-matching-regexp "import IPython")
     (highlight-lines-matching-regexp "import sys; sys.exit"))
   (add-hook 'python-mode-hook #'spacemacs/python-annotate-debug)
-  (add-hook 'python-mode-hook #'highlight-indent-guides-mode)
-  )
+  (add-hook 'python-mode-hook #'highlight-indent-guides-mode))
+
+
+(when (featurep! :feature version-control)
+  (defun my/my-own-project-p()
+    (let ((link (+vcs-root)))
+      (or
+       (cl-search "ppwwyyxx" link)
+       (cl-search "tensorpack" link)
+       (cl-search "facebook" link)
+       ))
+    )
+)

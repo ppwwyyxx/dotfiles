@@ -11,8 +11,6 @@
       ;; Ensure there are no conflicts
       :nmvo doom-leader-key nil
       :nmvo doom-localleader-key nil
-      ;;(:map special-mode-map
-      ;;  :nmvo doom-leader-key nil)
       ;;(:after debug :map debugger-mode-map
       ;;  :nmvo doom-leader-key nil)
 
@@ -118,175 +116,6 @@
       :nme "C--" #'text-scale-decrease
       :nme "C-=" #'text-scale-increase
 
-      (:leader
-        ;; :desc "M-x"                     :nv ":"  #'execute-extended-command
-        ; jumps:
-        :desc "Find file in project"       :n "SPC" #'projectile-find-file
-        :desc "Switch workspace buffer"    :n ","   #'persp-switch-to-buffer
-        :desc "Switch buffer"              :n "<"   #'switch-to-buffer
-        :desc "Find files from here"       :n "."   #'counsel-file-jump
-        :desc "Toggle last popup"          :n "~"   #'+popup/toggle
-       ; :desc "Blink cursor line"          :n "DEL" #'+nav-flash/blink-cursor
-        :desc "Create or jump to bookmark" :n "RET" #'bookmark-jump
-
-        :desc "Universal argument"         :n "u"  #'universal-argument
-        :desc "window"                     :n "w"  evil-window-map
-
-
-        (:desc "previous..." :prefix "["
-          :desc "Buffer"                :nv "b" #'previous-buffer
-          :desc "Diff Hunk"             :nv "d" #'git-gutter:previous-hunk
-          :desc "Error"                 :nv "e" #'previous-error
-          :desc "Spelling error"        :nv "s" #'evil-prev-flyspell-error
-        )
-        (:desc "next..." :prefix "]"
-          :desc "Buffer"                :nv "b" #'next-buffer
-          :desc "Diff Hunk"             :nv "d" #'git-gutter:next-hunk
-          :desc "Error"                 :nv "e" #'next-error
-          :desc "Spelling error"        :nv "s" #'evil-next-flyspell-error
-        )
-
-        (:desc "search" :prefix "/"
-          :desc "Project"                :nv "/" #'+ivy/project-search
-          :desc "Project"                :nv "p" #'+ivy/project-search
-          :desc "This Directory"         :nv "d" (λ! (+ivy/project-search t))
-          :desc "In Buffer (swiper)"     :nv "b" #'swiper
-          :desc "Tags (imenu)"           :nv "t" #'imenu
-          :desc "Tags across buffers"    :nv "T" #'imenu-anywhere
-          :desc "Online providers"       :nv "o" #'+lookup/online-select)
-
-        (:desc "workspace" :prefix "TAB"
-          :desc "Display tab bar"          :n "TAB" #'+workspace/display
-          :desc "New workspace"            :n "n"   #'+workspace/new
-          ;:desc "Load workspace from file" :n "l"   #'+workspace/load
-          :desc "Load last session"        :n "L"   (λ! (+workspace/load-session))
-          ;:desc "Save workspace to file"   :n "s"   #'+workspace/save
-          :desc "Autosave current session" :n "S"   #'+workspace/save-session
-          :desc "Switch workspace"         :n "."   #'+workspace/switch-to
-          :desc "Kill all buffers"         :n "x"   #'doom/kill-all-buffers
-          ;:desc "Delete session"           :n "X"   #'+workspace/kill-session
-          :desc "Delete this workspace"    :n "d"   #'+workspace/delete
-          ;:desc "Load session"             :n "L"   #'+workspace/load-session
-          :desc "Rename workspace"         :n "r"   #'+workspace/rename
-          :desc "Next workspace"           :n "]"   #'+workspace/switch-right
-          :desc "Previous workspace"       :n "["   #'+workspace/switch-left)
-
-        (:desc "buffer" :prefix "b"
-          :desc "Kill buffer"             :n "k" #'kill-this-buffer
-          :desc "Kill other buffers"      :n "o" #'doom/kill-other-buffers
-          :desc "Switch workspace buffer" :n "b" #'switch-to-buffer
-          :desc "Next buffer"             :n "]" #'next-buffer
-          :desc "Previous buffer"         :n "[" #'previous-buffer
-          :desc "Sudo edit this file"     :n "S" #'doom/sudo-this-file)
-
-        (:desc "code" :prefix "c"
-          ; TODO https://github.com/redguardtoo/evil-nerd-commenter
-          :desc "Commentary"              :v "c" #'evil-commentary
-                                          :n "c" #'evil-commentary-line
-          :desc "List errors"             :n "x" #'flycheck-list-errors
-          :desc "Evaluate buffer/region"  :n "e" #'+eval/buffer
-                                          :v "e" #'+eval/region
-          :desc "Diff with File"          :n "d" #'diff-buffer-with-file
-          :desc "Rotate text"             :n "!" #'rotate-text  ;https://www.emacswiki.org/emacs/RotateText
-          :desc "Insert snippet"         :nv "s" #'yas-insert-snippet
-          :desc "Start MultiCursor"       :n "m" #'turn-on-evil-mc-mode
-                                          :v "m" (lambda! () (turn-on-evil-mc-mode) (evil-mc-make-all-cursors))
-          )
-
-        (:desc "file" :prefix "f"
-          :desc "File Manager"              :n "m" #'+neotree/find-this-file
-          :desc "Find file from here"       :n "." #'counsel-file-jump
-          :desc "Sudo find file"            :n ">" #'doom/sudo-find-file
-          :desc "Find file in project"      :n "p" #'projectile-find-file
-          :desc "Find file"                 :n "f" #'find-file
-          :desc "Find directory"            :n "d" #'dired
-          :desc "Switch buffer"             :n "b" #'switch-to-buffer
-
-          :desc "Recent files"              :n "r" #'recentf-open-files
-          :desc "Recent project files"      :n "R" #'projectile-recentf
-          :desc "Copy current filename"     :n "y" #'+default/yank-buffer-filename
-          :desc "Find emacs library"        :n "l" #'find-library
-
-          :desc "Find file in emacs.d"      :n "e" #'+default/find-in-emacsd
-          :desc "Browse emacs.d"            :n "E" #'+default/browse-emacsd
-          :desc "Find file in dotfiles"     :n "D" #'+default/find-in-config)
-
-        (:desc "git" :prefix "g"
-          :desc "Magit blame"            :n  "b" #'magit-blame
-          :desc "Magit diff this file"   :n  "d" #'magit-diff-buffer-file
-          :desc "Magit diff repo"        :n  "D" #'magit-diff-working-tree
-          :desc "Magit status"           :n  "g" #'magit-status
-          :desc "Magit repo log"         :n  "l" #'magit-log-current
-          :desc "Magit log for this file":n  "L" #'magit-log-buffer-file
-          :desc "Magit push popup"       :n  "p" #'magit-push-popup
-          :desc "Magit pull popup"       :n  "P" #'magit-pull-popup
-          :desc "Git revert hunk"        :n  "r" #'git-gutter:revert-hunk
-          :desc "Git revert file"        :n  "R" #'vc-revert
-          :desc "Git stage hunk"         :n  "s" #'git-gutter:stage-hunk
-          ;:desc "Git stage file"        :n  "S" #'magit-stage-file
-          :desc "Git time machine"       :n  "t" #'git-timemachine-toggle
-          :desc "Copy URL of line"       :n  "C" #'git-link
-          :desc "Browse Issues"          :n  "I" #'+vcs/git-browse-issues
-          ;:desc "Git unstage file"      :n  "U" #'magit-unstage-file
-          :desc "Next hunk"              :nv "]" #'git-gutter:next-hunk
-          :desc "Previous hunk"          :nv "[" #'git-gutter:previous-hunk)
-
-        (:desc "help" :prefix "h"
-          :n "h" help-map
-          :desc "Apropos"               :n  "a" #'apropos
-          :desc "Describe bindings"     :n  "b" #'describe-bindings
-          :desc "Describe char"         :n  "c" #'describe-char
-          :desc "Describe DOOM module"  :n  "D" #'doom/describe-module
-          :desc "Describe function"     :n  "f" #'describe-function
-          :desc "Describe face"         :n  "F" #'describe-face
-          :desc "Info"                  :n  "i" #'info-lookup-symbol
-          :desc "Describe key"          :n  "k" #'describe-key
-          :desc "Find documentation"    :n  "K" #'+lookup/documentation
-          :desc "Command log"           :n  "L" #'global-command-log-mode
-          :desc "Describe mode"         :n  "m" #'describe-mode
-          :desc "Toggle Emacs log"      :n  "M" #'view-echo-area-messages
-          :desc "Describe variable"     :n  "v" #'describe-variable
-          :desc "Where is"              :n  "w" #'where-is
-          :desc "Describe at point"     :n  "." #'helpful-at-point
-          :desc "What face"             :n  "'" #'doom/what-face
-          :desc "What minor modes"      :n  ";" #'doom/what-minor-mode)
-
-        (:desc "project" :prefix "p"
-          :desc "Browse project"          :n  "." #'+default/browse-project
-          :desc "Run cmd in project root" :nv "!" #'projectile-run-shell-command-in-root
-          :desc "Compile project"         :n  "c" #'projectile-compile-project
-          :desc "Switch project"          :n  "p" #'projectile-switch-project
-          :desc "Recent project files"    :n  "r" #'projectile-recentf
-          :desc "List project tasks"      :n  "t" #'+ivy/tasks
-          :desc "Invalidate cache"        :n  "x" #'projectile-invalidate-cache)
-
-        ;; Unorganized:
-        (:desc "run Stuff" :prefix "r"
-          :desc "Eval Buffer" :n "r" #'+eval/buffer
-          :desc "Terminal"    :n "t" #'multi-term
-          :desc "Make"        :n "m" #'+make/run
-          )
-
-        (:desc "toggle" :prefix "t"
-          :desc "Spell"                  :n "S" #'flyspell-mode
-          :desc "Syntax (flycheck)"      :n "s" #'flycheck-mode
-          :desc "Taglist (imenu-list)"  :nv "l" #'imenu-list-smart-toggle
-          :desc "Line numbers"           :n "L" #'doom/toggle-line-numbers
-          :desc "Neotree"                :n "f" #'+neotree/open
-          :desc "Frame fullscreen"       :n "F" #'toggle-frame-fullscreen
-          :desc "Indent guides"          :n "i" #'highlight-indent-guides-mode
-          :desc "Line Wrap"              :n "w" #'visual-line-mode
-          ;:desc "org-tree-slide mode"    :n "p" #'+org-present/start)
-          )
-
-        (:desc "XXX" :prefix "n"
-          :desc "No Highlight" :n "o" (lambda! ()
-                (evil-ex-nohighlight)
-                (unhighlight-regexp t)
-                (evil-mc-undo-all-cursors))
-          )
-        ) ;; end of leader
-
       ;; company-mode
       :i "C-SPC"  #'+company/complete
       (:prefix "C-x"
@@ -298,7 +127,7 @@
         :i "C-s"   #'yas-expand
         :i "C-o"   #'+company/complete
         ;;:i "C-o"   #'company-capf
-        :i "C-n"   #'company-dabbrev-code
+        :i "C-n"   #'+company/dabbrev
         :i "C-p"   #'+company/dabbrev-code-previous)
 
       (:after company
@@ -468,9 +297,10 @@
       ;    "<M-left>"    nil
       ;    "<M-right>"   nil))
 
-      (:after comint
-        ;; TAB auto-completion in term buffers
-        :map comint-mode-map [tab] #'company-complete)
+			(:when (featurep! :completion company)
+				(:after comint
+					;; TAB auto-completion in term buffers
+					:map comint-mode-map [tab] #'company-complete))
 
       (:map* (help-mode-map helpful-mode-map)
         :n "o"  #'ace-link-help
@@ -484,6 +314,175 @@
         "<escape>" #'View-quit-all)
       )
 
+
+(map! :leader
+      ;; :desc "M-x"                     :nv ":"  #'execute-extended-command
+                                        ; jumps:
+      :desc "Find file in project"       :n "SPC" #'projectile-find-file
+      :desc "Switch workspace buffer"    :n ","   #'persp-switch-to-buffer
+      :desc "Switch buffer"              :n "<"   #'switch-to-buffer
+      :desc "Find files from here"       :n "."   #'counsel-file-jump
+      :desc "Toggle last popup"          :n "~"   #'+popup/toggle
+                                        ; :desc "Blink cursor line"          :n "DEL" #'+nav-flash/blink-cursor
+      :desc "Create or jump to bookmark" :n "RET" #'bookmark-jump
+
+      :desc "Universal argument"         :n "u"  #'universal-argument
+      :desc "window"                     :n "w"  evil-window-map
+
+
+      (:desc "previous..." :prefix "["
+        :desc "Buffer"                :nv "b" #'previous-buffer
+        :desc "Diff Hunk"             :nv "d" #'git-gutter:previous-hunk
+        :desc "Error"                 :nv "e" #'previous-error
+        :desc "Spelling error"        :nv "s" #'evil-prev-flyspell-error
+        )
+      (:desc "next..." :prefix "]"
+        :desc "Buffer"                :nv "b" #'next-buffer
+        :desc "Diff Hunk"             :nv "d" #'git-gutter:next-hunk
+        :desc "Error"                 :nv "e" #'next-error
+        :desc "Spelling error"        :nv "s" #'evil-next-flyspell-error
+        )
+
+      (:desc "search" :prefix "/"
+        :desc "Project"                :nv "/" #'+ivy/project-search
+        :desc "Project"                :nv "p" #'+ivy/project-search
+        :desc "This Directory"         :nv "d" (λ! (+ivy/project-search t))
+        :desc "In Buffer (swiper)"     :nv "b" #'swiper
+        :desc "Tags (imenu)"           :nv "t" #'imenu
+        :desc "Tags across buffers"    :nv "T" #'imenu-anywhere
+        :desc "Online providers"       :nv "o" #'+lookup/online-select)
+
+      (:desc "workspace" :prefix "TAB"
+        :desc "Display tab bar"          :n "TAB" #'+workspace/display
+        :desc "New workspace"            :n "n"   #'+workspace/new
+                                        ;:desc "Load workspace from file" :n "l"   #'+workspace/load
+        :desc "Load last session"        :n "L"   (λ! (+workspace/load-session))
+                                        ;:desc "Save workspace to file"   :n "s"   #'+workspace/save
+        :desc "Autosave current session" :n "S"   #'+workspace/save-session
+        :desc "Switch workspace"         :n "."   #'+workspace/switch-to
+        :desc "Kill all buffers"         :n "x"   #'doom/kill-all-buffers
+                                        ;:desc "Delete session"           :n "X"   #'+workspace/kill-session
+        :desc "Delete this workspace"    :n "d"   #'+workspace/delete
+                                        ;:desc "Load session"             :n "L"   #'+workspace/load-session
+        :desc "Rename workspace"         :n "r"   #'+workspace/rename
+        :desc "Next workspace"           :n "]"   #'+workspace/switch-right
+        :desc "Previous workspace"       :n "["   #'+workspace/switch-left)
+
+      (:desc "buffer" :prefix "b"
+        :desc "Kill buffer"             :n "k" #'kill-this-buffer
+        :desc "Kill other buffers"      :n "o" #'doom/kill-other-buffers
+        :desc "Switch workspace buffer" :n "b" #'switch-to-buffer
+        :desc "Next buffer"             :n "]" #'next-buffer
+        :desc "Previous buffer"         :n "[" #'previous-buffer
+        :desc "Sudo edit this file"     :n "S" #'doom/sudo-this-file)
+
+      (:desc "code" :prefix "c"
+                                        ; TODO https://github.com/redguardtoo/evil-nerd-commenter
+        :desc "Commentary"              :v "c" #'evil-commentary
+        :n "c" #'evil-commentary-line
+        :desc "List errors"             :n "x" #'flycheck-list-errors
+        :desc "Evaluate buffer/region"  :n "e" #'+eval/buffer
+        :v "e" #'+eval/region
+        :desc "Diff with File"          :n "d" #'diff-buffer-with-file
+        :desc "Rotate text"             :n "!" #'rotate-text  ;https://www.emacswiki.org/emacs/RotateText
+        :desc "Insert snippet"         :nv "s" #'yas-insert-snippet
+        :desc "Start MultiCursor"       :n "m" #'turn-on-evil-mc-mode
+        :v "m" (lambda! () (turn-on-evil-mc-mode) (evil-mc-make-all-cursors))
+        )
+
+      (:desc "file" :prefix "f"
+        :desc "File Manager"              :n "m" #'+neotree/find-this-file
+        :desc "Find file from here"       :n "." #'counsel-file-jump
+        :desc "Sudo find file"            :n ">" #'doom/sudo-find-file
+        :desc "Find file in project"      :n "p" #'projectile-find-file
+        :desc "Find file"                 :n "f" #'find-file
+        :desc "Find directory"            :n "d" #'dired
+        :desc "Switch buffer"             :n "b" #'switch-to-buffer
+
+        :desc "Recent files"              :n "r" #'recentf-open-files
+        :desc "Recent project files"      :n "R" #'projectile-recentf
+        :desc "Copy current filename"     :n "y" #'+default/yank-buffer-filename
+        :desc "Find emacs library"        :n "l" #'find-library
+
+        :desc "Find file in emacs.d"      :n "e" #'+default/find-in-emacsd
+        :desc "Browse emacs.d"            :n "E" #'+default/browse-emacsd
+        :desc "Find file in dotfiles"     :n "D" #'+default/find-in-config)
+
+      (:desc "git" :prefix "g"
+        :desc "Magit blame"            :n  "b" #'magit-blame
+        :desc "Magit diff this file"   :n  "d" #'magit-diff-buffer-file
+        :desc "Magit diff repo"        :n  "D" #'magit-diff-working-tree
+        :desc "Magit status"           :n  "g" #'magit-status
+        :desc "Magit repo log"         :n  "l" #'magit-log-current
+        :desc "Magit log for this file":n  "L" #'magit-log-buffer-file
+        :desc "Magit push popup"       :n  "p" #'magit-push-popup
+        :desc "Magit pull popup"       :n  "P" #'magit-pull-popup
+        :desc "Git revert hunk"        :n  "r" #'git-gutter:revert-hunk
+        :desc "Git revert file"        :n  "R" #'vc-revert
+        :desc "Git stage hunk"         :n  "s" #'git-gutter:stage-hunk
+                                        ;:desc "Git stage file"        :n  "S" #'magit-stage-file
+        :desc "Git time machine"       :n  "t" #'git-timemachine-toggle
+        :desc "Copy URL of line"       :n  "C" #'git-link
+        :desc "Browse Issues"          :n  "I" #'+vcs/git-browse-issues
+                                        ;:desc "Git unstage file"      :n  "U" #'magit-unstage-file
+        :desc "Next hunk"              :nv "]" #'git-gutter:next-hunk
+        :desc "Previous hunk"          :nv "[" #'git-gutter:previous-hunk)
+
+      (:desc "help" :prefix "h"
+        :n "h" help-map
+        :desc "Apropos"               :n  "a" #'apropos
+        :desc "Describe bindings"     :n  "b" #'describe-bindings
+        :desc "Describe char"         :n  "c" #'describe-char
+        :desc "Describe DOOM module"  :n  "D" #'doom/describe-module
+        :desc "Describe function"     :n  "f" #'describe-function
+        :desc "Describe face"         :n  "F" #'describe-face
+        :desc "Info"                  :n  "i" #'info-lookup-symbol
+        :desc "Describe key"          :n  "k" #'describe-key
+        :desc "Find documentation"    :n  "K" #'+lookup/documentation
+        :desc "Command log"           :n  "L" #'global-command-log-mode
+        :desc "Describe mode"         :n  "m" #'describe-mode
+        :desc "Toggle Emacs log"      :n  "M" #'view-echo-area-messages
+        :desc "Describe variable"     :n  "v" #'describe-variable
+        :desc "Where is"              :n  "w" #'where-is
+        :desc "Describe at point"     :n  "." #'helpful-at-point
+        :desc "What face"             :n  "'" #'doom/what-face
+        :desc "What minor modes"      :n  ";" #'doom/what-minor-mode)
+
+      (:desc "project" :prefix "p"
+        :desc "Browse project"          :n  "." #'+default/browse-project
+        :desc "Run cmd in project root" :nv "!" #'projectile-run-shell-command-in-root
+        :desc "Compile project"         :n  "c" #'projectile-compile-project
+        :desc "Switch project"          :n  "p" #'projectile-switch-project
+        :desc "Recent project files"    :n  "r" #'projectile-recentf
+        :desc "List project tasks"      :n  "t" #'+ivy/tasks
+        :desc "Invalidate cache"        :n  "x" #'projectile-invalidate-cache)
+
+      ;; Unorganized:
+      (:desc "run Stuff" :prefix "r"
+        :desc "Eval Buffer" :n "r" #'+eval/buffer
+        :desc "Terminal"    :n "t" #'multi-term
+        :desc "Make"        :n "m" #'+make/run
+        )
+
+      (:desc "toggle" :prefix "t"
+        :desc "Spell"                  :n "S" #'flyspell-mode
+        :desc "Syntax (flycheck)"      :n "s" #'flycheck-mode
+        :desc "Taglist (imenu-list)"  :nv "l" #'imenu-list-smart-toggle
+        :desc "Line numbers"           :n "L" #'doom/toggle-line-numbers
+        :desc "Neotree"                :n "f" #'+neotree/open
+        :desc "Frame fullscreen"       :n "F" #'toggle-frame-fullscreen
+        :desc "Indent guides"          :n "i" #'highlight-indent-guides-mode
+        :desc "Line Wrap"              :n "w" #'visual-line-mode
+                                        ;:desc "org-tree-slide mode"    :n "p" #'+org-present/start)
+        )
+
+      (:desc "XXX" :prefix "n"
+        :desc "No Highlight" :n "o" (lambda! ()
+                                        (evil-ex-nohighlight)
+                                        (unhighlight-regexp t)
+                                        (evil-mc-undo-all-cursors))
+        )
+      ) ;; end of leader
 
 (defun +config|deal-with-evil-collections-bs (_feature keymaps)
   "Unmap keys that conflict with Doom's defaults."

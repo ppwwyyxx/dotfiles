@@ -5,12 +5,14 @@
   :pre-config
   nil
   )
-(def-package-hook! evil-collection
-  :pre-config
-  ;(delq 'dired evil-collection-mode-list)
-  (delq 'diff-mode evil-collection-mode-list)  ; breaks too much
-  t
-  )
+(setq +evil-collection-disabled-list
+		'(simple diff-mode anaconda-mode ivy dired))
+;;(def-package-hook! evil-collection
+;;	:pre-config
+;;	;(delq 'dired evil-collection-mode-list)
+;;	(delq 'diff-mode evil-collection-mode-list)  ; breaks too much
+;;	t
+;;	)
 
 ;(setq debug-on-error t)
 
@@ -18,13 +20,12 @@
        (evil +everywhere); come to the dark side, we have cookies
        debugger          ; FIXME stepping through code, to help you add bugs
        eval              ; run code, run (also, repls)
-       ;file-templates    ; auto-snippets for empty files
+                                        ;file-templates    ; auto-snippets for empty files
        lookup
-       services          ; TODO managing external services & code builders
        snippets          ; my elves. They type so I don't have to
        spellcheck        ; tasing you for misspelling mispelling
        (syntax-checker
-         +childframe)    ; tasing you for every semicolon you forget
+        +childframe)    ; tasing you for every semicolon you forget
        version-control   ; remember, remember that commit in November
        workspaces        ; tab emulation, persistence & separate workspaces
 
@@ -32,7 +33,9 @@
        (company
         +auto
         +childframe)     ; the ultimate code completion backend
-       (ivy +childframe) ; a search engine for love and life
+       (ivy
+        +childframe
+        +fuzzy)				 ; a search engine for love and life
 
        :ui
        doom              ; what makes DOOM look the way it does
@@ -41,7 +44,7 @@
        hl-todo           ; highlight TODO/FIXME/NOTE tags
        nav-flash         ; blink the current line after jumping
        neotree           ; a project drawer, like NERDTree for vim
-      ;tabbar            ; FIXME an (incomplete) tab bar for Emacs
+       ;;tabbar            ; FIXME an (incomplete) tab bar for Emacs
        (popup            ; tame sudden yet inevitable temporary windows
         +all             ; catch all popups that start with an asterix
         +defaults)       ; default popup rules
@@ -49,24 +52,28 @@
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        window-select     ; visually switch windows
 
-       :tools
+       :emacs
        dired             ; making dired pretty [functional]
-       editorconfig
-       ;ein               ; tame Jupyter notebooks with emacs
        electric-indent   ; smarter, keyword-based electric-indent
        eshell            ; a consistent, cross-platform shell (WIP)
-       ;gist              ; interacting with github gists
        imenu             ; an imenu sidebar and searchable code index
-      ;macos             ; MacOS-specific commands
+       term              ; terminals in Emacs
+       ediff
+
+       :tools
+       editorconfig
+       ;;ein               ; tame Jupyter notebooks with emacs
+       ;;gist              ; interacting with github gists
+       ;;macos             ; MacOS-specific commands
        make              ; run make tasks from Emacs
        magit             ;
        password-store    ; password manager for nerds
+       prodigy
        pdf               ; pdf enhancements
        rgb               ; creating color strings
        rotate-text       ; cycle region at point between text candidates
-       term              ; terminals in Emacs
        tmux              ; an API for interacting with tmux
-       ;upload            ; map local to remote projects via ssh/ftp
+                                        ;upload            ; map local to remote projects via ssh/ftp
 
        :lang
        assembly          ; assembly for fun or debugging
@@ -99,14 +106,14 @@
        :collab
        impatient-mode    ; show off code over HTTP
        :app
-      ;(email +gmail)    ; emacs as an email client
-      ;irc               ; how neckbeards socialize
-      ;(rss +org)        ; emacs as an RSS reader
-      ;twitter           ; twitter client https://twitter.com/vnought
-      ;(write            ; emacs as a word processor (latex + org + markdown)
-      ; +wordnut         ; wordnet (wn) search
-      ; +langtool)       ; a proofreader (grammar/style check) for Emacs
+                                        ;(email +gmail)    ; emacs as an email client
+                                        ;irc               ; how neckbeards socialize
+                                        ;(rss +org)        ; emacs as an RSS reader
+                                        ;twitter           ; twitter client https://twitter.com/vnought
+                                        ;(write            ; emacs as a word processor (latex + org + markdown)
+                                        ; +wordnut         ; wordnet (wn) search
+                                        ; +langtool)       ; a proofreader (grammar/style check) for Emacs
 
        :config
        default
-    )
+       )
