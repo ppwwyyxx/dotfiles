@@ -38,7 +38,7 @@
 
 ;; buffers:
 (ex! "cleanup"    #'doom:cleanup-session)
-(ex! "kill"       #'doom/kill-this-buffer)
+(ex! "k[ill]"     #'kill-this-buffer)
 (ex! "msg"        #'view-echo-area-messages)
 (ex! "A"          #'projectile-find-other-file)
 

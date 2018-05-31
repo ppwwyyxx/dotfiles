@@ -1,10 +1,8 @@
 ;;; -*- lexical-binding: t; no-byte-compile: t -*-
 
-
 (after! evil-mc
   (global-evil-mc-mode 0)
-  (setq evil-mc-key-map (make-sparse-keymap))  ; don't pollute keys
-)
+  (add-hook 'evil-mc-after-cursors-deleted #'turn-off-evil-mc-mode))
 
 ;; expand-region's prompt can't tell what key contract-region is bound to, so we tell it explicitly.
 (setq expand-region-contract-fast-key "H")
@@ -36,6 +34,10 @@
       :nm  "*"     #'highlight-symbol-at-point
 
       :nv [tab]   #'+evil/matchit-or-toggle-fold
+      ;; delete to blackhole register
+      :v  [delete] (lambda! ()
+        (let ((evil-this-register ?_))
+          (call-interactively #'evil-delete)))
 
       :nv "K"  #'+lookup/documentation
       :m  "gd" #'+lookup/definition
@@ -123,8 +125,8 @@
         :desc "Switch workspace buffer"    :n ","   #'persp-switch-to-buffer
         :desc "Switch buffer"              :n "<"   #'switch-to-buffer
         :desc "Find files from here"       :n "."   #'counsel-file-jump
-        :desc "Toggle last popup"          :n "`"   #'+popup/toggle
-        :desc "Blink cursor line"          :n "DEL" #'+nav-flash/blink-cursor
+        :desc "Toggle last popup"          :n "~"   #'+popup/toggle
+       ; :desc "Blink cursor line"          :n "DEL" #'+nav-flash/blink-cursor
         :desc "Create or jump to bookmark" :n "RET" #'bookmark-jump
 
         :desc "Universal argument"         :n "u"  #'universal-argument
@@ -135,15 +137,13 @@
           :desc "Buffer"                :nv "b" #'previous-buffer
           :desc "Diff Hunk"             :nv "d" #'git-gutter:previous-hunk
           :desc "Error"                 :nv "e" #'previous-error
-          ;:desc "Spelling error"        :nv "s" #'evil-prev-flyspell-error
-          ;:desc "Spelling correction"   :n  "S" #'flyspell-correct-previous-word-generic
+          :desc "Spelling error"        :nv "s" #'evil-prev-flyspell-error
         )
         (:desc "next..." :prefix "]"
           :desc "Buffer"                :nv "b" #'next-buffer
           :desc "Diff Hunk"             :nv "d" #'git-gutter:next-hunk
           :desc "Error"                 :nv "e" #'next-error
-          ;:desc "Spelling error"        :nv "s" #'evil-next-flyspell-error
-          ;:desc "Spelling correction"   :n  "S" #'flyspell-correct-word-generic
+          :desc "Spelling error"        :nv "s" #'evil-next-flyspell-error
         )
 
         (:desc "search" :prefix "/"
@@ -152,18 +152,19 @@
           :desc "This Directory"         :nv "d" (λ! (+ivy/project-search t))
           :desc "In Buffer (swiper)"     :nv "b" #'swiper
           :desc "Tags (imenu)"           :nv "t" #'imenu
-          :desc "Tags across buffers"    :nv "T" #'imenu-anywhere)
+          :desc "Tags across buffers"    :nv "T" #'imenu-anywhere
+          :desc "Online providers"       :nv "o" #'+lookup/online-select)
 
         (:desc "workspace" :prefix "TAB"
           :desc "Display tab bar"          :n "TAB" #'+workspace/display
           :desc "New workspace"            :n "n"   #'+workspace/new
-          :desc "Load workspace from file" :n "l"   #'+workspace/load
+          ;:desc "Load workspace from file" :n "l"   #'+workspace/load
           :desc "Load last session"        :n "L"   (λ! (+workspace/load-session))
-          :desc "Save workspace to file"   :n "s"   #'+workspace/save
+          ;:desc "Save workspace to file"   :n "s"   #'+workspace/save
           :desc "Autosave current session" :n "S"   #'+workspace/save-session
           :desc "Switch workspace"         :n "."   #'+workspace/switch-to
           :desc "Kill all buffers"         :n "x"   #'doom/kill-all-buffers
-          :desc "Delete session"           :n "X"   #'+workspace/kill-session
+          ;:desc "Delete session"           :n "X"   #'+workspace/kill-session
           :desc "Delete this workspace"    :n "d"   #'+workspace/delete
           ;:desc "Load session"             :n "L"   #'+workspace/load-session
           :desc "Rename workspace"         :n "r"   #'+workspace/rename
@@ -171,6 +172,7 @@
           :desc "Previous workspace"       :n "["   #'+workspace/switch-left)
 
         (:desc "buffer" :prefix "b"
+          :desc "Kill buffer"             :n "k" #'kill-this-buffer
           :desc "Kill other buffers"      :n "o" #'doom/kill-other-buffers
           :desc "Switch workspace buffer" :n "b" #'switch-to-buffer
           :desc "Next buffer"             :n "]" #'next-buffer
@@ -187,6 +189,8 @@
           :desc "Diff with File"          :n "d" #'diff-buffer-with-file
           :desc "Rotate text"             :n "!" #'rotate-text  ;https://www.emacswiki.org/emacs/RotateText
           :desc "Insert snippet"         :nv "s" #'yas-insert-snippet
+          :desc "Start MultiCursor"       :n "m" #'turn-on-evil-mc-mode
+                                          :v "m" (lambda! () (turn-on-evil-mc-mode) (evil-mc-make-all-cursors))
           )
 
         (:desc "file" :prefix "f"
@@ -205,8 +209,27 @@
 
           :desc "Find file in emacs.d"      :n "e" #'+default/find-in-emacsd
           :desc "Browse emacs.d"            :n "E" #'+default/browse-emacsd
-          :desc "Find file in dotfiles"     :n "D" #'+default/find-in-config
-          )
+          :desc "Find file in dotfiles"     :n "D" #'+default/find-in-config)
+
+        (:desc "git" :prefix "g"
+          :desc "Magit blame"            :n  "b" #'magit-blame
+          :desc "Magit diff this file"   :n  "d" #'magit-diff-buffer-file
+          :desc "Magit diff repo"        :n  "D" #'magit-diff-working-tree
+          :desc "Magit status"           :n  "g" #'magit-status
+          :desc "Magit repo log"         :n  "l" #'magit-log-current
+          :desc "Magit log for this file":n  "L" #'magit-log-buffer-file
+          :desc "Magit push popup"       :n  "p" #'magit-push-popup
+          :desc "Magit pull popup"       :n  "P" #'magit-pull-popup
+          :desc "Git revert hunk"        :n  "r" #'git-gutter:revert-hunk
+          :desc "Git revert file"        :n  "R" #'vc-revert
+          :desc "Git stage hunk"         :n  "s" #'git-gutter:stage-hunk
+          ;:desc "Git stage file"        :n  "S" #'magit-stage-file
+          :desc "Git time machine"       :n  "t" #'git-timemachine-toggle
+          :desc "Copy URL of line"       :n  "C" #'git-link
+          :desc "Browse Issues"          :n  "I" #'+vcs/git-browse-issues
+          ;:desc "Git unstage file"      :n  "U" #'magit-unstage-file
+          :desc "Next hunk"              :nv "]" #'git-gutter:next-hunk
+          :desc "Previous hunk"          :nv "[" #'git-gutter:previous-hunk)
 
         (:desc "help" :prefix "h"
           :n "h" help-map
@@ -228,21 +251,6 @@
           :desc "What face"             :n  "'" #'doom/what-face
           :desc "What minor modes"      :n  ";" #'doom/what-minor-mode)
 
-        (:desc "toggle" :prefix "t"
-          :desc "Spell"                  :n "S" #'flyspell-mode
-          :desc "Syntax (flycheck)"      :n "s" #'flycheck-mode
-          :desc "Taglist (imenu-list)"   :nv "l" #'imenu-list-smart-toggle
-          :desc "Line numbers"           :n "L" #'doom/toggle-line-numbers
-          :desc "Neotree"                :n "f" #'+neotree/open
-          :desc "Frame fullscreen"       :n "F" #'toggle-frame-fullscreen
-          :desc "Indent guides"          :n "i" #'highlight-indent-guides-mode
-          :desc "Line Wrap"              :n "w" #'visual-line-mode
-          ;; TODO timemachine, magit?
-          ;:desc "Impatient mode"         :n "h" #'+impatient-mode/toggle
-          ;:desc "Big mode"               :n "b" #'doom-big-font-mode
-          ;:desc "org-tree-slide mode"    :n "p" #'+org-present/start)
-          )
-
         (:desc "project" :prefix "p"
           :desc "Browse project"          :n  "." #'+default/browse-project
           :desc "Run cmd in project root" :nv "!" #'projectile-run-shell-command-in-root
@@ -252,40 +260,32 @@
           :desc "List project tasks"      :n  "t" #'+ivy/tasks
           :desc "Invalidate cache"        :n  "x" #'projectile-invalidate-cache)
 
-        (:desc "git" :prefix "g"
-          :desc "Magit blame"            :n  "b" #'magit-blame
-          :desc "Magit diff this file"   :n  "d" #'magit-diff-buffer-file
-          :desc "Magit diff repo"        :n  "D" #'magit-diff-working-tree
-          ;:desc "Magit dispatch"        :n  "d" #'magit-dispatch-popup
-          ;:desc "Magit find-file"       :n  "f" #'magit-find-file
-          :desc "Magit status"           :n  "g" #'magit-status
-          ;:desc "List gists"            :n  "G" #'+gist:list
-          :desc "Magit repo log"         :n  "l" #'magit-log-current
-          :desc "Magit log for this file":n  "L" #'magit-log-buffer-file
-          :desc "Magit push popup"       :n  "p" #'magit-push-popup
-          :desc "Magit pull popup"       :n  "P" #'magit-pull-popup
-          :desc "Git revert hunk"        :n  "r" #'git-gutter:revert-hunk
-          :desc "Git revert file"        :n  "R" #'vc-revert
-          :desc "Git stage hunk"         :n  "s" #'git-gutter:stage-hunk
-          ;:desc "Git stage file"        :n  "S" #'magit-stage-file
-          :desc "Git time machine"       :n  "t" #'git-timemachine-toggle
-          :desc "Copy URL of line"       :n  "C" #'git-link
-          :desc "Browse Issues"          :n  "I" #'+vcs/git-browse-issues
-          ;:desc "Git unstage file"      :n  "U" #'magit-unstage-file
-          :desc "Next hunk"              :nv "]" #'git-gutter:next-hunk
-          :desc "Previous hunk"          :nv "[" #'git-gutter:previous-hunk)
-
         ;; Unorganized:
         (:desc "run Stuff" :prefix "r"
           :desc "Eval Buffer" :n "r" #'+eval/buffer
           :desc "Terminal"    :n "t" #'multi-term
           :desc "Make"        :n "m" #'+make/run
           )
-        (:desc "XXX" :prefix "n"
-          :desc "No Highlight" :n "o" (lambda! () (evil-ex-nohighlight) (unhighlight-regexp t))
+
+        (:desc "toggle" :prefix "t"
+          :desc "Spell"                  :n "S" #'flyspell-mode
+          :desc "Syntax (flycheck)"      :n "s" #'flycheck-mode
+          :desc "Taglist (imenu-list)"  :nv "l" #'imenu-list-smart-toggle
+          :desc "Line numbers"           :n "L" #'doom/toggle-line-numbers
+          :desc "Neotree"                :n "f" #'+neotree/open
+          :desc "Frame fullscreen"       :n "F" #'toggle-frame-fullscreen
+          :desc "Indent guides"          :n "i" #'highlight-indent-guides-mode
+          :desc "Line Wrap"              :n "w" #'visual-line-mode
+          ;:desc "org-tree-slide mode"    :n "p" #'+org-present/start)
           )
-        ; TODO magit, insert, notes, remote, snippet
-        )  ; end of leader
+
+        (:desc "XXX" :prefix "n"
+          :desc "No Highlight" :n "o" (lambda! ()
+                (evil-ex-nohighlight)
+                (unhighlight-regexp t)
+                (evil-mc-undo-all-cursors))
+          )
+        ) ;; end of leader
 
       ;; company-mode
       :i "C-SPC"  #'+company/complete
@@ -294,13 +294,13 @@
         :i "C-k"   #'+company/dict-or-keywords
         :i "C-f"   #'company-files
         ;;:i "C-]"   #'company-etags
-        ;;:i "s"     #'company-ispell
         ;;:i "C-s"   #'company-yasnippet
         :i "C-s"   #'yas-expand
         :i "C-o"   #'+company/complete
-                                        ;:i "C-o"   #'company-capf
+        ;;:i "C-o"   #'company-capf
         :i "C-n"   #'company-dabbrev-code
         :i "C-p"   #'+company/dabbrev-code-previous)
+
       (:after company
         (:map company-active-map
           ;; Don't interfere with `evil-delete-backward-word' in insert mode
@@ -323,6 +323,7 @@
           [escape]  #'company-search-abort)
         )
 
+      ;; just like vim ctrlp
       :n "C-p" #'counsel-projectile-find-file
       (:after counsel :map counsel-ag-map
           [backtab]  #'+ivy/wgrep-occur      ; search/replace on results
@@ -358,6 +359,13 @@
           )
         )
 
+      ;; doom already clears the map, which is nice!
+      (:after evil-mc :map evil-mc-key-map
+        :nv "C-n" #'evil-mc-make-and-goto-next-match
+        :nv "C-p" #'evil-mc-make-and-goto-prev-match
+        :nv "C-S-n" #'evil-mc-skip-and-goto-next-match
+        :nv "C-S-p" #'evil-mc-skip-and-goto-prev-match)
+
       ;; surround
       (:after evil-surround
         :map evil-surround-mode-map
@@ -374,6 +382,16 @@
         :n "k"   #'flycheck-error-list-previous-error
         :n "RET" #'flycheck-error-list-goto-error)
 
+      ;; git-timemachine
+      (:after git-timemachine
+        (:map git-timemachine-mode-map
+          :n "C-p" #'git-timemachine-show-previous-revision
+          :n "C-n" #'git-timemachine-show-next-revision
+          :n "[["  #'git-timemachine-show-previous-revision
+          :n "]]"  #'git-timemachine-show-next-revision
+          :n "q"   #'git-timemachine-quit
+          :n "gb"  #'git-timemachine-blame))
+
       ;; ivy
       (:after ivy
         (:map ivy-minibuffer-map
@@ -381,9 +399,7 @@
           "C-SPC"  #'ivy-call-and-recenter  ; preview
 
           ;; basic editing
-          ;;"C-z"    #'undo
           "C-S-V"  #'yank
-          ;;"C-r"    #'evil-paste-from-register
           "C-w"    #'ivy-backward-kill-word
           "C-u"    #'ivy-kill-whole-line
           "C-b"    #'backward-word
@@ -392,13 +408,14 @@
           ;; movement
           "C-k"    #'ivy-previous-line
           "C-j"    #'ivy-next-line
+          ;; split window and execute action, similar to ctrlp.vim
           "C-v"    (lambda! (my/ivy-exit-new-window 'right))
           "C-s"    (lambda! (my/ivy-exit-new-window 'below))
           )
         (:map ivy-switch-buffer-map
           "C-d" 'ivy-switch-buffer-kill
-          )
-        )
+          ))
+
       (:after swiper
         (:map swiper-map
           [backtab]  #'+ivy/wgrep-occur))
@@ -442,8 +459,7 @@
           )
         (:map yas-minor-mode-map
           "SPC"           yas-maybe-expand
-          )
-        )
+          ))
 
       ;(:after markdown-mode
       ;  (:map markdown-mode-map
@@ -456,31 +472,16 @@
         ;; TAB auto-completion in term buffers
         :map comint-mode-map [tab] #'company-complete)
 
-      (:after goto-addr
-        :map goto-address-highlight-keymap
-        "RET" #'goto-address-at-point)
-
       (:map* (help-mode-map helpful-mode-map)
         :n "o"  #'ace-link-help
         :n "q"  #'quit-window
         :n "Q"  #'ivy-resume)
 
-
-      ;; git-timemachine
-      (:after git-timemachine
-        (:map git-timemachine-mode-map
-          :n "C-p" #'git-timemachine-show-previous-revision
-          :n "C-n" #'git-timemachine-show-next-revision
-          :n "[["  #'git-timemachine-show-previous-revision
-          :n "]]"  #'git-timemachine-show-next-revision
-          :n "q"   #'git-timemachine-quit
-          :n "gb"  #'git-timemachine-blame))
-      ;(:after vc-annotate
-      ;  :map vc-annotate-mode-map
-      ;  [remap quit-window] #'kill-this-buffer)
-
-      ; TODO: magit, MC, multiedit, snipe, flyspell, git timemachine,
-      ; gist, realgud, yasnippet, undo-tree, ?markdown-mode
+      (:after goto-addr
+        :map goto-address-highlight-keymap
+        "RET" #'goto-address-at-point)
+      (:after view :map view-mode-map
+        "<escape>" #'View-quit-all)
       )
 
 

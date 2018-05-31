@@ -144,7 +144,6 @@
 (add-hook 'after-save-hook #'my/apply-conf-after-save)
 (add-to-list 'auto-mode-alist '(".xbindkeysrc" . conf-mode))
 
-
 ;; Programming stuff ...
 (def-package! lsp-mode :defer t)
 
