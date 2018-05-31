@@ -7,7 +7,7 @@
 )
 
 ;; expand-region's prompt can't tell what key contract-region is bound to, so we tell it explicitly.
-(setq expand-region-contract-fast-key "V")
+(setq expand-region-contract-fast-key "H")
 
 (map! [remap newline]          #'newline-and-indent
       ;; Ensure there are no conflicts
@@ -33,6 +33,7 @@
       ;;:n  "M-s"   #'save-buffer
 
       :nm  ";"     #'evil-ex
+      :nm  "*"     #'highlight-symbol-at-point
 
       :nv [tab]   #'+evil/matchit-or-toggle-fold
 
@@ -80,8 +81,8 @@
         )
 
       ;; expand-region
-      :v  "v"  #'er/expand-region
-      :v  "V"  #'er/contract-region
+      :v  "L"  #'er/expand-region
+      :v  "H"  #'er/contract-region
 
       ; workspace/tab related
       :nme "M-t"       #'+workspace/new
@@ -281,7 +282,7 @@
           :desc "Make"        :n "m" #'+make/run
           )
         (:desc "XXX" :prefix "n"
-          :desc "No Highlight" :n "o" #'evil-ex-nohighlight
+          :desc "No Highlight" :n "o" (lambda! () (evil-ex-nohighlight) (unhighlight-regexp t))
           )
         ; TODO magit, insert, notes, remote, snippet
         )  ; end of leader
