@@ -31,10 +31,14 @@
   (add-to-list
    'aggressive-indent-dont-indent-if
    '(and (derived-mode-p 'c++-mode)
-                                        ;(null (string-match "\\([;{}]\\|\\b\\(if\\|for\\|while\\)\\b\\)"
          (null (string-match "\\([;{}]\\)"
                              (thing-at-point 'line)))))
   )
+
+(def-package! stickyfunc-enhance
+  :defer t
+  :init
+  (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode))
 
 (after! imenu-list
   (setq imenu-list-auto-resize nil))
@@ -189,7 +193,13 @@
     (highlight-lines-matching-regexp "import IPython")
     (highlight-lines-matching-regexp "import sys; sys.exit"))
   (add-hook 'python-mode-hook #'spacemacs/python-annotate-debug)
-  (add-hook 'python-mode-hook #'highlight-indent-guides-mode))
+  (add-hook 'python-mode-hook #'highlight-indent-guides-mode)
+  (when (executable-find "ipython")
+    ;; my fancy ipython prompt
+    (setq python-shell-prompt-regexp "╭─.*\n.*╰─\\$ "
+          python-shell-prompt-block-regexp "\\.\\.\\.: ")
+    )
+  )
 
 
 (defun display-ansi-colors ()

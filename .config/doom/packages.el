@@ -4,6 +4,7 @@
 
 (when IS-LINUX (package! fcitx))
 (package! aggressive-indent)
+(package! stickyfunc-enhance)
 
 ;; disable irony-related stuff
 (package! irony :disable t)
