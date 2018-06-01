@@ -12,6 +12,10 @@
 (add-hook 'eshell-mode-hook #'visual-line-mode)
 (add-hook 'markdown-mode-hook #'visual-line-mode)
 
+(setq tab-width 4)
+(setq tab-always-indent nil)
+(setq tramp-default-method "ssh")
+
 (def-package! fcitx
   ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=10867
   :if (and IS-LINUX (string= (getenv "LC_CTYPE") "zh_CN.UTF-8"))
@@ -19,9 +23,18 @@
   (fcitx-aggressive-setup)
   (setq fcitx-use-dbus t))
 
-(setq tab-width 4)
-(setq tab-always-indent nil)
-(setq tramp-default-method "ssh")
+(def-package! aggressive-indent
+  :demand t
+  :config
+  (global-aggressive-indent-mode 1)
+  (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+  (add-to-list
+   'aggressive-indent-dont-indent-if
+   '(and (derived-mode-p 'c++-mode)
+                                        ;(null (string-match "\\([;{}]\\|\\b\\(if\\|for\\|while\\)\\b\\)"
+         (null (string-match "\\([;{}]\\)"
+                             (thing-at-point 'line)))))
+  )
 
 (after! imenu-list
   (setq imenu-list-auto-resize nil))
@@ -57,6 +70,17 @@
 (after! magit
   (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1))
 
+(after! yasnippet
+  ;; https://github.com/emacs-evil/evil/issues/254
+  (add-hook 'yas-before-expand-snippet-hook
+            #'(lambda ()
+                (when (evil-visual-state-p)
+                  (let ((p (point))
+                        (m (mark)))
+                    (evil-insert-state)  ;; yasnippet is happier while in insert mode
+                    (goto-char p)  ;; but we need the selection
+                    (set-mark m)))
+                )))
 ;; (after! helm-dash
 ;;   (setq helm-dash-docsets-path
 ;;         (substitute-in-file-name "$HOME/.local/share/Zeal/Zeal/docsets/"))
@@ -80,33 +104,29 @@
 (after! ivy
   (defun my/ivy-exit-new-window (side)
     (let ((current-act (ivy--get-action ivy-last))
-          (current-caller (ivy-state-caller ivy-last))
-          )
+          (current-caller (ivy-state-caller ivy-last)))
       (message "Act=%s, Caller=%s" current-act current-caller)
       (if (or
-           (member current-act '(
-                                 ivy--switch-buffer-action
+           (member current-act '(ivy--switch-buffer-action
                                  counsel-projectile-find-file-action
                                  counsel-find-file-action
                                  counsel-git-grep-action
                                  counsel--find-symbol))
-           (member current-caller '(
-                                    counsel-imenu
+           (member current-caller '(counsel-imenu
                                     counsel-recentf
                                     counsel-file-jump
                                     counsel-find-library
                                     ivy-switch-buffer
                                     ivy-xref-show-xrefs
-                                    +ivy/tasks
-                                    ))
-           )
+                                    +ivy/tasks)))
           (ivy-exit-with-action
            (lambda (x)
              (select-window (split-window nil nil side))
              ;; setf was wrongly expanded at load-time for unclear reason
-             (eval '(progn (setf (ivy-state-window ivy-last)
-                                 (selected-window)
-                                 )))
+             (eval '(progn
+                      (setf (ivy-state-window ivy-last)
+                            (selected-window)
+                            )))
              ;; so that 'with-ivy-window' (used a lot inside predefined actions) will use the new window
              (balance-windows)
              (funcall current-act x)
@@ -147,7 +167,7 @@
   :hook (c-mode-common . lsp-ccls-enable)
   :when (executable-find "ccls")
   :config
-  (setq ccls-executable (executable-find "/usr/bin/ccls"))
+  (setq ccls-executable (executable-find "ccls"))
   (setq ccls-sem-highlight-method nil)
   (setq ccls-extra-args '("--log-file=/tmp/ccls.log"))
   (setq ccls-extra-init-params
@@ -172,14 +192,21 @@
   (add-hook 'python-mode-hook #'highlight-indent-guides-mode))
 
 
+(defun display-ansi-colors ()
+  (interactive)
+  (require 'tty-format)
+  (format-decode-buffer 'ansi-colors))
+(add-to-list 'auto-mode-alist '("\\.log\\'" . display-ansi-colors))
+
+
 (when (featurep! :feature version-control)
   (defun my/my-own-project-p()
     (let ((link (ignore-errors (+vcs-root))))
-       (and (or
-        (not link)
-        (cl-search "ppwwyyxx" link)
-        (cl-search "tensorpack" link)
-        (cl-search "facebook" link)
-        ) t)
-    ))
-)
+      (and (or
+            (not link)
+            (cl-search "ppwwyyxx" link)
+            (cl-search "tensorpack" link)
+            (cl-search "facebook" link)
+            ) t)
+      ))
+  )

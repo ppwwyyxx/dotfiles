@@ -4,6 +4,6 @@
 # --
 #ifdef ${1:MACRO}
 
-$0
+$0`yas-selected-text`
 
 #endif // $1

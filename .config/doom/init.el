@@ -1,4 +1,6 @@
 ;; -*- no-byte-compile: t; -*-
+(add-to-list 'load-path (concat doom-private-dir "vendor/"))
+
 (def-package-hook! evil-snipe
   :post-init
   (setq evil-snipe-override-evil-repeat-keys nil)   ; don't override ; and ,

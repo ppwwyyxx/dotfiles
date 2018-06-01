@@ -3,5 +3,5 @@
 # key: for
 # --
 for (${1}) {
-    $0
-}
+    $0`(ignore-errors (string-trim-right yas-selected-text))`
+}`(when (string-suffix-p "\n" yas-selected-text) "\n")`

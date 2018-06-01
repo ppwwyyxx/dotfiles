@@ -2,7 +2,7 @@
 # name: try
 # --
 try {
-    `%`$0
+    $0`(ignore-errors (string-trim-right yas-selected-text))`
 } catch (${1:type}) {
 
-}
+}`(when (string-suffix-p "\n" yas-selected-text) "\n")`

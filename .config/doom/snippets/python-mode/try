@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: try
+# key: try
+# condition: t
+# --
+try:
+    $1`(if yas-selected-text (string-trim-right yas-selected-text) "pass")`
+except ${2:Exception}:
+    ${3:pass}
+

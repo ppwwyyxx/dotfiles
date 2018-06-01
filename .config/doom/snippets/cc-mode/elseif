@@ -2,5 +2,5 @@
 # name: elseif
 # --
 else if {
-    `%`$0
+    $0
 }

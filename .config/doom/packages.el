@@ -1,4 +1,11 @@
 ;; -*- no-byte-compile: t; -*-
+
+(package! smart-forward :disable t)
+
+(when IS-LINUX (package! fcitx))
+(package! aggressive-indent)
+
+;; disable irony-related stuff
 (package! irony :disable t)
 (package! company-irony :disable t)
 (package! company-irony-c-headers :disable t)
@@ -6,16 +13,16 @@
 (package! irony-eldoc :disable t)
 (package! rtags :disable t)
 (package! ivy-rtags :disable t)
-(package! smart-forward :disable t)
-(package! highlight-indentation :disable t)
 
-(package! highlight-indent-guides)
-(package! highlight-parentheses)
-
+;; cc stuff
 (package! lsp-mode)
 (package! lsp-ui)
 (package! company-lsp)
 (package! ccls)
 (package! clang-format)
 
-(when IS-LINUX (package! fcitx))
+;; ui
+(package! highlight-indentation :disable t)
+(package! highlight-indent-guides)
+(package! highlight-parentheses)
+
