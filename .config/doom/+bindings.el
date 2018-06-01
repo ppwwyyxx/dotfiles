@@ -117,6 +117,7 @@
       :nme "C-=" #'text-scale-increase
 
       ;; company-mode
+      "C-SPC" nil  ;; clear
       :i "C-SPC"  #'+company/complete
       (:prefix "C-x"
         :i "C-l"   #'+company/whole-lines
