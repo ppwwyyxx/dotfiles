@@ -1,22 +1,25 @@
 ;; -*- no-byte-compile: t; -*-
-(add-to-list 'load-path (concat doom-private-dir "vendor/"))
 
+;; Environment:
+(add-to-list 'load-path (concat doom-private-dir "vendor/"))
+(add-to-list 'exec-path (substitute-in-file-name "$HOME/bin"))
+
+;; fix some packages
 (def-package-hook! evil-snipe
   :post-init
   (setq evil-snipe-override-evil-repeat-keys nil)   ; don't override ; and ,
   :pre-config
-  nil
-  )
-(setq +evil-collection-disabled-list
-		'(simple diff-mode anaconda-mode ivy dired))
-;;(def-package-hook! evil-collection
-;;	:pre-config
-;;	;(delq 'dired evil-collection-mode-list)
-;;	(delq 'diff-mode evil-collection-mode-list)  ; breaks too much
-;;	t
-;;	)
+  nil)
 
-;(setq debug-on-error t)
+(def-package-hook! evil-goggles
+  :post-init
+  (setq evil-goggles-enable-delete t)
+  (setq evil-goggles-enable-change t))
+
+(setq +evil-collection-disabled-list
+      '(simple diff-mode anaconda-mode ivy dired))
+
+;;(setq debug-on-error t)
 
 (doom! :feature
        (evil +everywhere); come to the dark side, we have cookies

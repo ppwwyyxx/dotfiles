@@ -5,6 +5,7 @@
 (when IS-LINUX (package! fcitx))
 (package! aggressive-indent)
 (package! stickyfunc-enhance)
+(package! vim-empty-lines-mode)
 
 ;; disable irony-related stuff
 (package! irony :disable t)
@@ -26,4 +27,3 @@
 (package! highlight-indentation :disable t)
 (package! highlight-indent-guides)
 (package! highlight-parentheses)
-
