@@ -20,6 +20,20 @@
         (command (and command (evil-ex-replace-special-filenames command))))
     (compile command)))
 
+
+(evil-define-command my/delete-window-or-workspace (bang)
+  (interactive "<!>")
+  (condition-case nil
+      (evil-window-delete)
+    (error
+     (let ((is-last-window (eq (length (+workspace-list)) 1)))
+       (call-interactively #'+workspace/delete)
+       (when is-last-window
+         (evil-quit))
+       )
+     ))
+  )
+
 ;; editing:
 (ex! "align"      #'+evil:align)
 (ex! "ralign"     #'+evil:align-right)
@@ -37,10 +51,13 @@
 (ex! "er[rors]"   #'flycheck-list-errors)
 
 ;; buffers:
-(ex! "cleanup"    #'doom:cleanup-session)
+;; don't close emacs with :q
+(when (display-graphic-p)
+  (ex! "q[uit]"     #'my/delete-window-or-workspace))
 (ex! "k[ill]"     #'kill-this-buffer)
 (ex! "msg"        #'view-echo-area-messages)
 (ex! "A"          #'projectile-find-other-file)
+(ex! "cleanup"    #'doom:cleanup-session)
 
 (ex! "tabc[lose]" #'+workspace:delete)
 (ex! "tabnew"     #'+workspace:new)

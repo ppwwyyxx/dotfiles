@@ -73,3 +73,23 @@
   (require 'tty-format)
   (format-decode-buffer 'ansi-colors))
 (add-to-list 'auto-mode-alist '("\\.log\\'" . display-ansi-colors))
+
+;; ielm history: https://emacs.stackexchange.com/questions/4221/remembering-history-between-sessions-in-inferior-emacs-lisp-mode
+;; global copy of the buffer-local variable
+(after! ielm
+  (defvar ielm-comint-input-ring nil)
+
+  (defun set-ielm-comint-input-ring ()
+    (setq-local comint-input-ring-size 200)
+    (add-hook 'kill-buffer-hook #'save-ielm-comint-input-ring nil t)
+    ;; restore saved value (if available)
+    (when ielm-comint-input-ring
+      (message "Restoring comint-input-ring for ielm ...")
+      (setq comint-input-ring ielm-comint-input-ring)))
+
+  (defun save-ielm-comint-input-ring ()
+    (message "Saving comint-input-ring for ielm ...")
+    (setq ielm-comint-input-ring comint-input-ring))
+
+  (add-hook 'inferior-emacs-lisp-mode-hook #'set-ielm-comint-input-ring)
+  (add-to-list 'savehist-additional-variables 'ielm-comint-input-ring))
