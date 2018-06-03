@@ -6,6 +6,11 @@
 (package! aggressive-indent)
 (package! stickyfunc-enhance)
 (package! vim-empty-lines-mode)
+(when IS-LINUX
+  (package! zeal-at-point))
+
+(package! edit-server)
+(package! gmail-message-mode)
 
 ;; disable irony-related stuff
 (package! irony :disable t)
@@ -27,3 +32,8 @@
 (package! highlight-indentation :disable t)
 (package! highlight-indent-guides)
 (package! highlight-parentheses)
+
+;; file format
+(package! pkgbuild-mode)
+(package! protobuf-mode)
+(package! nginx-mode)

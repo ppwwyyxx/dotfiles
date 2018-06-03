@@ -37,12 +37,22 @@
 (def-package! vim-empty-lines-mode
   :hook (prog-mode . vim-empty-lines-mode))
 
+(def-package! edit-server
+  :demand t
+  :when (display-graphic-p)
+  :config
+  (setq edit-server-default-major-mode 'markdown-mode)
+  (edit-server-start)
+  )
+
 (after! imenu-list
   (setq imenu-list-auto-resize nil))
 
 (after! projectile
   (setq projectile-require-project-root t)
-  (projectile-cleanup-known-projects))
+  (projectile-cleanup-known-projects)
+  (setq +workspaces-switch-project-function #'find-file)
+  )
 
 (after! evil
   (global-evil-surround-mode 1)

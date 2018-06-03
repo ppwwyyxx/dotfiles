@@ -407,26 +407,26 @@ function killz() {
 }
 function waitpid() { while test -d "/proc/$1"; do sleep 1; done }
 function retry() {
-# Usage: retry <max-number> <command>
-# or: retry <command>
-	case $1 in
-		''|*[!0-9]*)
-				local cmd="${@}"
-				while true; do
-					eval $cmd && break || {
-						echo "Retry $cmd ..."; sleep 0.1
-					}
-				done
-			;;
-		*)
-			local cmd="${@: 2}"
-			local n=1
-			until [[ $n -ge $1 ]]; do
-				eval $cmd && break || {
-					((n++))
-					echo "Retry No.$n $cmd ..."; sleep 0.1
-				}
-			done
+    # Usage: retry <max-number> <command>
+    # or: retry <command>
+    case $1 in
+        ''|*[!0-9]*)
+            local cmd="${@}"
+            while true; do
+                eval $cmd && break || {
+                        echo "Retry $cmd ..."; sleep 0.1
+                    }
+            done
+            ;;
+        *)
+            local cmd="${@: 2}"
+            local n=1
+            until [[ $n -ge $1 ]]; do
+                eval $cmd && break || {
+                        ((n++))
+                        echo "Retry No.$n $cmd ..."; sleep 0.1
+                    }
+            done
 			;;
 	esac
 }
@@ -446,7 +446,7 @@ function pytwistd() { twistd web --path "$1" -p tcp:"${2:-8000}" }
 alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --user -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install --user -U"
 alias unquote='python2 -c "import sys, urllib as ul; [sys.stdout.write(ul.unquote(l)) for l in sys.stdin]"'
 
-# package
+# package; https://github.com/icy/pacapt
 which pacman NN && {
 	alias pS='pacaur -S'
 	alias pU='sudo pacman -U'
@@ -460,12 +460,12 @@ which pacman NN && {
 	alias paur='pacman -Qm'
 	#alias pacman-size="paste <(pacman -Q | awk '{ print \$1; }' | xargs pacman -Qi | grep 'Size' | awk '{ print \$4\$5; }') <(pacman -Q | awk '{print \$1; }') | sort -h | column -t"
 	alias pacman-size="expac -H M '%m\t%n' | sort -h"
-	function pacman-orphan() {
-	  if [[ ! -n $(pacman -Qdt) ]]; then
-			echo "No orphans to remove."
-	  else
-			sudo pacman -Rns $(pacman -Qdtq)
-	  fi
+    function pacman-orphan() {
+        if [[ ! -n $(pacman -Qdt) ]]; then
+            echo "No orphans to remove."
+        else
+            sudo pacman -Rns $(pacman -Qdtq)
+        fi
 	}
 } || {
 [[ -n $_CFG_ON_MAC ]] && {
@@ -476,55 +476,45 @@ which pacman NN && {
 	alias pQl='brew list'
 } || {
 which apt-get NN && {
-		which apt NN && {
-			alias pS='sudo apt install'
-			alias pR='sudo apt remove'
-			alias pSs='apt search'
-			alias pSy='sudo apt update'
-			alias pSu='sudo apt update; sudo apt upgrade'
-		} || {
-			alias pS='sudo aptitude install'
-			alias pR='sudo aptitude purge'
-			alias pSs='aptitude search'
-			alias pSy='sudo aptitude update'
-			alias pSu='sudo aptitude upgrade'
-		}
-		which apt-file NN && {
-			alias pQo='apt-file search'
-		} || {
-			alias pQo='dpkg -S'		# only works for already-installed packages
-		}
-		alias pQl='dpkg-query -L'
-		alias pU='sudo dpkg -i'
+    which apt NN && {
+        alias pS='sudo apt install'
+        alias pR='sudo apt remove'
+        alias pSs='apt search'
+        alias pSy='sudo apt update'
+        alias pSu='sudo apt update; sudo apt upgrade'
+    } || {
+        alias pS='sudo aptitude install'
+        alias pR='sudo aptitude purge'
+        alias pSs='aptitude search'
+        alias pSy='sudo aptitude update'
+        alias pSu='sudo aptitude upgrade'
+    }
+    which apt-file NN && {
+        alias pQo='apt-file search'
+    } || {
+        alias pQo='dpkg -S'		# only works for already-installed packages
+    }
+    alias pQl='dpkg-query -L'
+    alias pU='sudo dpkg -i'
 } || {
-	alias pS='sudo yum install'
-	alias pR='sudo yum remove'
+    alias pS='sudo yum install'
+	alias pR='sudo yum erase'
 	alias pSy='sudo yum check-update'
 	alias pSu='sudo yum update'
 	alias pSs='yum search'
 	alias pQo='yum whatprovides'
 	alias pQl='rpm -ql'
+    alias pU='yum localinstall'
 }
 }
 }
 
 
-# weird stuff
-function theano() {
-	if [[ "$1" == gpu* ]] ; then
-		device="$1"
-		args=("${@: 2}")
-	else
-		device=gpu$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | nl | sort -n -k2 | awk '{print $1-1; exit}')
-		args=("${@: 1}")
-	fi
-	OMP_NUM_THREADS=1 THEANO_FLAGS="device=$device,floatX=float32,allow_gc=False,linker=cvm_nogc,warn_float64=warn" $args
-}
-
+# weird personal stuff
 function tpgrep() {
-# a function to grep tensorpack logs
-# $1: string to grep
-# $2+: dirs or logs
+    # a function to grep tensorpack logs
+    # $1: string to grep
+    # $2+: dirs or logs
 	[[ -n "$1" ]] || return 1
 	local pat=$1
 	local cmd="paste"

@@ -9,6 +9,13 @@
       (:remove  . ("%e")))
     :default "c++"))
 
+(def-package! zeal-at-point
+  :when (and IS-LINUX (display-graphic-p))
+  :defer t
+  :config
+  ;;(add-to-list 'zeal-at-point-mode-alist '(python-mode . ("python3" "tensorpack" "TensorFlow")))
+  )
+
 (def-package! lsp-mode :defer t)
 
 (def-package! lsp-ui
@@ -40,6 +47,11 @@
   (evil-set-initial-state 'ccls-tree-mode 'emacs)
   (set! :company-backend '(c-mode c++-mode) '(company-lsp)))
 
+(def-package! protobuf-mode
+  :defer t
+  :init
+  (add-hook 'protobuf-mode-hook #'flycheck-mode))
+
 (after! python
   (defun spacemacs/python-annotate-debug ()
     "Highlight debug lines. Copied from spacemacs."
@@ -50,6 +62,22 @@
     (highlight-lines-matching-regexp "import sys; sys.exit"))
   (add-hook 'python-mode-hook #'spacemacs/python-annotate-debug)
   (add-hook 'python-mode-hook #'highlight-indent-guides-mode)
+
+  (defun buffer-contains-substring (string)
+    (save-excursion
+      (save-match-data
+        (goto-char (point-min))
+        (search-forward string nil t))))
+
+  (defun my/python-docset-to-use()
+    (cond
+     ((or (s-contains? "tensorpack" (buffer-file-name)) (buffer-contains-substring "tensorpack"))
+      (setq zeal-at-point-docset '("python3" "tensorpack" "TensorFlow")))
+     ((buffer-contains-substring "tensorflow")
+      (setq zeal-at-point-docset '("python3" "TensorFlow")))
+     ))
+  (add-hook 'python-mode-hook #'my/python-docset-to-use)
+
   (when (executable-find "ipython")
     ;; my fancy ipython prompt
     (setq python-shell-prompt-regexp "╭─.*\n.*╰─\\$ "

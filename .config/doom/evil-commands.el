@@ -26,13 +26,17 @@
   (condition-case nil
       (evil-window-delete)
     (error
-     (let ((is-last-window (eq (length (+workspace-list)) 1)))
-       (call-interactively #'+workspace/delete)
-       (when is-last-window
-         (evil-quit))
-       )
-     ))
-  )
+     (let ((is-last-frame (eq (length (visible-frame-list)) 1))
+           (is-last-window (eq (length (+workspace-list)) 1)))
+       (if is-last-frame
+           (progn
+             (call-interactively #'+workspace/delete)
+             (when is-last-window
+               (evil-quit)))
+         (delete-frame)  ;; only destroy the frame if there are other frames left
+         )
+       ))
+    ))
 
 ;; editing:
 (ex! "align"      #'+evil:align)

@@ -5,7 +5,7 @@ doc/tags
 *.so
 *.o
 *.elc
-
+*.exe
 *.sqlite
 wallpaper
 __pycache__

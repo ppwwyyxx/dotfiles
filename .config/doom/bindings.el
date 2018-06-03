@@ -13,6 +13,10 @@
       :nmvo doom-localleader-key nil
       ;;(:after debug :map debugger-mode-map
       ;;  :nmvo doom-leader-key nil)
+      (:after dired :map dired-mode-map
+        :nmv ";" nil
+        :nmv "]" nil
+        :nmv "[" nil)
 
       ;; --- Global keybindings ---------------------------
       ;; clean-ups:
@@ -34,9 +38,11 @@
       :nv [tab]   #'+evil/matchit-or-toggle-fold
       ;; delete to blackhole register
       :v  [delete] (lambda! ()
-        (let ((evil-this-register ?_))
-          (call-interactively #'evil-delete)))
+                        (let ((evil-this-register ?_))
+                          (call-interactively #'evil-delete)))
 
+      (:when IS-LINUX
+        :nvm "C-z" #'zeal-at-point)
       :nv "K"  #'+lookup/documentation
       :m  "gd" #'+lookup/definition
       :m  "gD" #'+lookup/references
@@ -84,7 +90,7 @@
       :v  "L"  #'er/expand-region
       :v  "H"  #'er/contract-region
 
-      ; workspace/tab related
+      ;; workspace/tab related
       :nme "M-t"       #'+workspace/new
       :nme "M-T"       #'+workspace/display
       :nmei "M-1"       (λ! (+workspace/switch-to 0))
@@ -97,21 +103,21 @@
       :nmei "M-8"       (λ! (+workspace/switch-to 7))
       :nmei "M-9"       (λ! (+workspace/switch-to 8))
       :nmei "M-0"       #'+workspace/switch-to-last
-      ; window management
+      ;; window management
       :nme "C-h"   #'evil-window-left
       :nme "C-j"   #'evil-window-down
       :nme "C-k"   #'evil-window-up
       :nme "C-l"   #'evil-window-right
 
-      :m  "]b" #'next-buffer
-      :m  "[b" #'previous-buffer
-      ; TODO if under GUI, use alt-hl
-      :m  "]w" #'+workspace/switch-right
-      :m  "[w" #'+workspace/switch-left
-      :m  "]e" #'next-error
-      :m  "[e" #'previous-error
-      :m  "]d" #'git-gutter:next-hunk
-      :m  "[d" #'git-gutter:previous-hunk
+      :nm  "]b" #'next-buffer
+      :nm  "[b" #'previous-buffer
+      ;; TODO if under GUI, use alt-hl
+      :nm  "]w" #'+workspace/switch-right
+      :nm  "[w" #'+workspace/switch-left
+      :nm  "]e" #'next-error
+      :nm  "[e" #'previous-error
+      :nm  "]d" #'git-gutter:next-hunk
+      :nm  "[d" #'git-gutter:previous-hunk
 
       :nme "C--" #'text-scale-decrease
       :nme "C-=" #'text-scale-increase
@@ -156,8 +162,8 @@
       ;; just like vim ctrlp
       :n "C-p" #'counsel-projectile-find-file
       (:after counsel :map counsel-ag-map
-          [backtab]  #'+ivy/wgrep-occur      ; search/replace on results
-          "C-SPC"    #'ivy-call-and-recenter ; preview
+        [backtab]  #'+ivy/wgrep-occur      ; search/replace on results
+        "C-SPC"    #'ivy-call-and-recenter ; preview
         )
 
       (:after evil
@@ -291,17 +297,10 @@
           "SPC"           yas-maybe-expand
           ))
 
-      ;(:after markdown-mode
-      ;  (:map markdown-mode-map
-      ;    ;; fix conflicts with private bindings
-      ;    "<backspace>" nil
-      ;    "<M-left>"    nil
-      ;    "<M-right>"   nil))
-
-			(:when (featurep! :completion company)
-				(:after comint
-					;; TAB auto-completion in term buffers
-					:map comint-mode-map [tab] #'company-complete))
+	  (:when (featurep! :completion company)
+		(:after comint
+		  ;; TAB auto-completion in term buffers
+		  :map comint-mode-map [tab] #'company-complete))
 
       (:map* (help-mode-map helpful-mode-map)
         :n "o"  #'ace-link-help
@@ -500,17 +499,17 @@
         )
       ) ;; end of leader
 
-(defun +config|deal-with-evil-collections-bs (_feature keymaps)
+(defun +config|save-my-favorite-keys (_feature keymaps)
   "Unmap keys that conflict with Doom's defaults."
   (dolist (map keymaps)
     (evil-delay `(and (boundp ',map) (keymapp ,map))
         `(evil-define-key* '(normal visual motion) ,map
-           ";" nil
-           (kbd doom-leader-key) nil
-           (kbd "C-j") nil (kbd "C-k") nil
-           "gd" nil "gf" nil "K"  nil "gD" nil "gw" nil
-           "]"  nil "["  nil)
+                           ";" nil
+                           (kbd doom-leader-key) nil
+                           (kbd "C-j") nil (kbd "C-k") nil
+                           "gd" nil "gf" nil "K"  nil "gD" nil "gw" nil
+                           "]"  nil "["  nil)
       'after-load-functions t nil
       (format "doom-define-key-in-%s" map))))
 
-(add-hook 'evil-collection-setup-hook #'+config|deal-with-evil-collections-bs)
+(add-hook 'evil-collection-setup-hook #'+config|save-my-favorite-keys)

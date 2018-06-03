@@ -26,11 +26,11 @@
        debugger          ; FIXME stepping through code, to help you add bugs
        eval              ; run code, run (also, repls)
        file-templates    ; auto-snippets for empty files
-       lookup
+       (lookup +docsets)
        snippets          ; my elves. They type so I don't have to
        spellcheck        ; tasing you for misspelling mispelling
        (syntax-checker
-        +childframe)    ; tasing you for every semicolon you forget
+        +childframe)     ; tasing you for every semicolon you forget
        version-control   ; remember, remember that commit in November
        workspaces        ; tab emulation, persistence & separate workspaces
 
@@ -40,7 +40,7 @@
         +childframe)     ; the ultimate code completion backend
        (ivy
         +childframe
-        +fuzzy)				 ; a search engine for love and life
+        +fuzzy)			 ; a search engine for love and life
 
        :ui
        doom              ; what makes DOOM look the way it does
@@ -111,13 +111,13 @@
        :collab
        impatient-mode    ; show off code over HTTP
        :app
-                                        ;(email +gmail)    ; emacs as an email client
-                                        ;irc               ; how neckbeards socialize
-                                        ;(rss +org)        ; emacs as an RSS reader
-                                        ;twitter           ; twitter client https://twitter.com/vnought
-                                        ;(write            ; emacs as a word processor (latex + org + markdown)
-                                        ; +wordnut         ; wordnet (wn) search
-                                        ; +langtool)       ; a proofreader (grammar/style check) for Emacs
+       ;;(email +gmail)    ; emacs as an email client
+       ;;irc               ; how neckbeards socialize
+       ;;(rss +org)        ; emacs as an RSS reader
+       ;;twitter           ; twitter client https://twitter.com/vnought
+       ;;(write            ; emacs as a word processor (latex + org + markdown)
+       ;; +wordnut         ; wordnet (wn) search
+       ;; +langtool)       ; a proofreader (grammar/style check) for Emacs
 
        :config
        default

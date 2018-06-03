@@ -88,8 +88,7 @@
   (setq highlight-indent-guides-responsive 'top)
   (setq highlight-indent-guides-auto-enabled nil)
   (set-face-foreground 'highlight-indent-guides-character-face "dimgray")
-  (set-face-foreground 'highlight-indent-guides-top-character-face "skyblue")
-  )
+  (set-face-foreground 'highlight-indent-guides-top-character-face "skyblue"))
 
 ;; copied from +spacemacs/spacemacs-editing-visual
 (def-package! highlight-parentheses
