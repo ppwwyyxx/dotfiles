@@ -58,7 +58,7 @@
   (global-evil-surround-mode 1)
   (setq
    evil-move-beyond-eol t
-   evil-jumps-cross-buffers nil)
+   evil-jumps-cross-buffers t)
   (evil-ex-define-cmd "vsp" 'evil-window-vsplit))
 
 (after! company
@@ -83,25 +83,6 @@
                     (goto-char p)  ;; but we need the selection
                     (set-mark m)))
                 )))
-;; (after! helm-dash
-;;   (setq helm-dash-docsets-path
-;;         (substitute-in-file-name "$HOME/.local/share/Zeal/Zeal/docsets/"))
-
-;;   (defun cpp-doc () (interactive) (setq-local helm-dash-docsets '("C++")))
-;;   (defun python-doc () (interactive) (setq-local helm-dash-docsets '("Python_3")))
-;;   (defun elisp-doc () (interactive) (setq-local helm-dash-docsets '("Emacs_Lisp")))
-;;   (add-hook 'c++-mode-hook #'cpp-doc)
-;;   (add-hook 'python-mode-hook #'python-doc)
-;;   (add-hook 'elisp-mode-hook #'elisp-doc)
-
-;;   (defun helm-dash-browse-url(search-result)
-;;     (message "Result=%s" search-result)
-;;     (let ((docset-name (car search-result))
-;;           (identifier (nth 1 (cadr search-result))))
-;;       (message "%s-%s" docset-name identifier)
-;;       )
-;;     )
-;;   )
 
 (after! ivy
   (defun my/ivy-exit-new-window (side)
@@ -154,3 +135,5 @@
 (load! "lang")
 (load! "bindings")
 (load! "evil-commands")
+(when (file-readable-p (concat doom-private-dir "private.el"))
+  (load! "private"))

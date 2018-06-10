@@ -44,9 +44,9 @@
       (:when IS-LINUX
         :nvm "C-z" #'zeal-at-point)
       :nv "K"  #'+lookup/documentation
-      :m  "gd" #'+lookup/definition
-      :m  "gD" #'+lookup/references
-      :m  "gw" #'avy-goto-word-1
+      :nm  "gd" #'+lookup/definition
+      :nm  "gD" #'+lookup/references
+      :nm  "gw" #'avy-goto-word-1
       ;;:m  "gs" #'+default/easymotion  ; lazy-load `evil-easymotion'
       :n  "gx"  #'evil-exchange  ; https://github.com/tommcdo/vim-exchange
 
@@ -160,7 +160,7 @@
         )
 
       ;; just like vim ctrlp
-      :n "C-p" #'counsel-projectile-find-file
+      :nm "C-p" #'counsel-projectile-find-file
       (:after counsel :map counsel-ag-map
         [backtab]  #'+ivy/wgrep-occur      ; search/replace on results
         "C-SPC"    #'ivy-call-and-recenter ; preview

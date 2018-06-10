@@ -3,6 +3,7 @@
 ;; Environment:
 (add-to-list 'load-path (concat doom-private-dir "vendor/"))
 (add-to-list 'exec-path (substitute-in-file-name "$HOME/bin"))
+(add-to-list 'exec-path (substitute-in-file-name "$HOME/.local/bin"))
 
 ;; fix some packages
 (def-package-hook! evil-snipe
@@ -16,8 +17,13 @@
   (setq evil-goggles-enable-delete t)
   (setq evil-goggles-enable-change t))
 
+(def-package-hook! ivy
+  :pre-config
+  (setq ivy-do-completion-in-region nil)  ;; don't use it for evil-ex completion
+  t)
+
 (setq +evil-collection-disabled-list
-      '(simple diff-mode anaconda-mode ivy dired))
+      '(simple diff-mode anaconda-mode ivy dired minibuffer))
 
 ;;(setq debug-on-error t)
 
@@ -40,12 +46,13 @@
         +childframe)     ; the ultimate code completion backend
        (ivy
         +childframe
-        +fuzzy)			 ; a search engine for love and life
+        +fuzzy)          ; a search engine for love and life
 
        :ui
        doom              ; what makes DOOM look the way it does
        doom-modeline     ; a snazzy Atom-inspired mode-line
        evil-goggles      ; display visual hints when editing in evil
+       fci
        hl-todo           ; highlight TODO/FIXME/NOTE tags
        nav-flash         ; blink the current line after jumping
        neotree           ; a project drawer, like NERDTree for vim
@@ -78,7 +85,8 @@
        rgb               ; creating color strings
        rotate-text       ; cycle region at point between text candidates
        tmux              ; an API for interacting with tmux
-                                        ;upload            ; map local to remote projects via ssh/ftp
+       ;;upload            ; map local to remote projects via ssh/ftp
+       wakatime
 
        :lang
        assembly          ; assembly for fun or debugging

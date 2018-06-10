@@ -20,6 +20,7 @@
 (package! irony-eldoc :disable t)
 (package! rtags :disable t)
 (package! ivy-rtags :disable t)
+(package! ido-completing-read+ :disable t)
 
 ;; cc stuff
 (package! lsp-mode)

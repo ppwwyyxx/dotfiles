@@ -1,26 +1,37 @@
 [general]
 ui = ttyui
-accounts = Gmail
+accounts = personal
 socktimeout = 10
 
-[Account Gmail]
-localrepository = Gmail-Local
-remoterepository = Gmail-Remote
+[Account personal]
+localrepository = GmailLocal
+remoterepository = GmailRemote
 autorefresh = 5
 quick = 10
 
-[Repository Gmail-Local]
+[Repository GmailLocal]
 type = Maildir
 localfolders = /home/wyx/Mail/Maildir
 nametrans = lambda f: f if 'Sent' not in f else '[Gmail]/Sent Mail'
 
-[Repository Gmail-Remote]
+[Repository GmailRemote]
 type = Gmail
+ipv6 = False
+ssl = yes
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+starttls = no
+maxconnections = 1
 readonly = true
-remoteuser = ppwwyyxxc@gmail.com
-oauth2_client_id =
-oauth2_client_secret =
-oauth2_refresh_token =
+remoteuser = 
+
+#remotepass = app-specific-password
+#auth_mechanisms = LOGIN
+
+auth_mechanisms = XOAUTH2
+oauth2_client_id = 
+oauth2_client_secret = 
+oauth2_request_url = https://accounts.google.com/o/oauth2/token
+oauth2_refresh_token = 
 
 folderfilter = lambda folder: folder not in \
 	[
@@ -33,7 +44,8 @@ folderfilter = lambda folder: folder not in \
 	 '[Gmail]/Spam',
 	 '[Gmail]/All Mail',
 	 '[Gmail]/Important',
-	 #'[Gmail]/Trash',
+	 '[Gmail]/Trash',
+
 	 'road_ahead/hulu/other',
 	 'projects/pynojo',
 	 'projects/unknown',
@@ -46,10 +58,5 @@ folderfilter = lambda folder: folder not in \
 	 #'[Gmail]/&g0l6Pw-', # draft
 
 nametrans = lambda f: f if 'Sent Mail' not in f else 'Sent'
-
-
-realdelete = no
-maxconnections = 4
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 
 # vim: ft=conf

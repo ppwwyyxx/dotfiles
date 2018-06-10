@@ -11,10 +11,7 @@
 
 (def-package! zeal-at-point
   :when (and IS-LINUX (display-graphic-p))
-  :defer t
-  :config
-  ;;(add-to-list 'zeal-at-point-mode-alist '(python-mode . ("python3" "tensorpack" "TensorFlow")))
-  )
+  :defer t)
 
 (def-package! lsp-mode :defer t)
 
@@ -47,6 +44,10 @@
   (evil-set-initial-state 'ccls-tree-mode 'emacs)
   (set! :company-backend '(c-mode c++-mode) '(company-lsp)))
 
+(defconst my/cc-style
+  '("doom" (c-offsets-alist . ((innamespace . [0])))))
+(c-add-style "my-cc-mode" my/cc-style)
+
 (def-package! protobuf-mode
   :defer t
   :init
@@ -54,7 +55,7 @@
 
 (after! python
   (defun spacemacs/python-annotate-debug ()
-    "Highlight debug lines. Copied from spacemacs."
+    "Highlight debug lines. Modified from spacemacs."
     (interactive)
     (highlight-lines-matching-regexp "import \\(pdb\\|ipdb\\|pudb\\|wdb\\)")
     (highlight-lines-matching-regexp "\\(pdb\\|ipdb\\|pudb\\|wdb\\).set_trace()")
@@ -62,6 +63,8 @@
     (highlight-lines-matching-regexp "import sys; sys.exit"))
   (add-hook 'python-mode-hook #'spacemacs/python-annotate-debug)
   (add-hook 'python-mode-hook #'highlight-indent-guides-mode)
+  (add-hook 'python-mode-hook
+            (lambda () (setq tab-width 4 fill-column 120)))
 
   (defun buffer-contains-substring (string)
     (save-excursion
@@ -72,9 +75,11 @@
   (defun my/python-docset-to-use()
     (cond
      ((or (s-contains? "tensorpack" (buffer-file-name)) (buffer-contains-substring "tensorpack"))
-      (setq zeal-at-point-docset '("python3" "tensorpack" "TensorFlow")))
+      (setq zeal-at-point-docset '("python3" "numpy" "tensorpack" "TensorFlow")))
      ((buffer-contains-substring "tensorflow")
-      (setq zeal-at-point-docset '("python3" "TensorFlow")))
+      (setq zeal-at-point-docset '("python3" "numpy" "TensorFlow")))
+     (t (setq zeal-at-point-docset '("python3" "numpy")))
+     ;; TODO complete zeal-at-po
      ))
   (add-hook 'python-mode-hook #'my/python-docset-to-use)
 
@@ -94,7 +99,8 @@
       (".xbindkeysrc" (call-process-shell-command "killall -HUP xbindkeys"))
       )))
 (add-hook 'after-save-hook #'my/apply-conf-after-save)
-(add-to-list 'auto-mode-alist '(".xbindkeysrc" . conf-mode))
+(add-to-list 'auto-mode-alist '("\\..*rc\\'" . conf-mode))
+(add-to-list 'auto-mode-alist '("/[^\\.]*rc\\'" . conf-mode))
 
 (defun display-ansi-colors ()
   (interactive)
