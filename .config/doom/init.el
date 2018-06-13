@@ -64,6 +64,9 @@
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        window-select     ; visually switch windows
 
+       :editor
+       ;;parinfer
+
        :emacs
        dired             ; making dired pretty [functional]
        electric-indent   ; smarter, keyword-based electric-indent

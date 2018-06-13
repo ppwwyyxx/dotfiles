@@ -26,8 +26,9 @@
    'aggressive-indent-dont-indent-if
    '(and (derived-mode-p 'c++-mode)
          (null (string-match "\\([;{}]\\)"
-                             (thing-at-point 'line)))))
-  )
+                             (thing-at-point 'line))))
+   ))
+
 
 (def-package! stickyfunc-enhance
   :defer t
@@ -42,8 +43,7 @@
   :when (display-graphic-p)
   :config
   (setq edit-server-default-major-mode 'markdown-mode)
-  (edit-server-start)
-  )
+  (edit-server-start))
 
 (after! imenu-list
   (setq imenu-list-auto-resize nil))
@@ -63,11 +63,16 @@
 
 (after! company
   (setq company-quickhelp-delay nil
-        company-show-numbers t))
+        company-show-numbers t)
+  (setq company-box-show-single-candidate t))
 
 (after! undo-tree
-  ;; may be buggy
-  (setq undo-tree-auto-save-history t))
+  ;; undo-tree may be buggy
+  (setq undo-tree-auto-save-history t)
+  (defun my/undo-tree-overwrite-advice (&optional filename noerror)
+    (undo-tree-save-history nil t))
+  (advice-add 'undo-tree-load-history :after-until #'my/undo-tree-overwrite-advice)
+  )
 
 (after! magit
   (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1))
