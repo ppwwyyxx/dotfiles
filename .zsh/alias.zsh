@@ -104,6 +104,13 @@ which nvim NN && {
 	alias vi='=vim'
 	alias iv='=vim'
 }
+which emacsclient NN && {
+    if [[ -n $DISPLAY ]]; then
+        alias e='emacsclient'
+    else
+        alias e='emacsclient -nw'
+    fi
+}
 alias sv='sudo vim'
 
 alias sort='LC_ALL=C sort'
@@ -512,9 +519,9 @@ which apt-get NN && {
 
 # weird personal stuff
 function tpgrep() {
-    # a function to grep tensorpack logs
-    # $1: string to grep
-    # $2+: dirs or logs
+# a function to grep tensorpack logs
+# $1: string to grep
+# $2+: dirs or logs
 	[[ -n "$1" ]] || return 1
 	local pat=$1
 	local cmd="paste"
