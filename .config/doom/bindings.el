@@ -145,7 +145,7 @@
           "C-p"     #'company-select-previous
           "C-h"     #'company-show-doc-buffer
           "C-s"     #'company-filter-candidates
-          "TAB"     #'company-complete-common-or-cycle
+          [tab]     #'company-complete-common-or-cycle
           [tab]     #'company-complete-common-or-cycle
           "S-TAB"   #'company-select-previous
           [backtab] #'company-select-previous
@@ -352,8 +352,8 @@
         :desc "Tags across buffers"    :nv "T" #'imenu-anywhere
         :desc "Online providers"       :nv "o" #'+lookup/online-select)
 
-      (:desc "workspace" :prefix "TAB"
-        :desc "Display tab bar"          :n "TAB" #'+workspace/display
+      (:desc "workspace" :prefix [tab]
+        :desc "Display tab bar"          :n [tab] #'+workspace/display
         :desc "New workspace"            :n "n"   #'+workspace/new
                                         ;:desc "Load workspace from file" :n "l"   #'+workspace/load
         :desc "Load last session"        :n "L"   (λ! (+workspace/load-session))
@@ -478,9 +478,9 @@
 
       (:desc "XXX" :prefix "n"
         :desc "No Highlight" :n "o" (lambda! ()
-                                        (evil-ex-nohighlight)
-                                        (unhighlight-regexp t)
-                                        (evil-mc-undo-all-cursors))
+                                         (evil-ex-nohighlight)
+                                         (unhighlight-regexp t)
+                                         (evil-mc-undo-all-cursors))
         )
 
       (:after json-mode :map json-mode-map
@@ -499,17 +499,26 @@
         )
       ) ;; end of leader
 
-(defun +config|save-my-favorite-keys (_feature keymaps)
-  "Unmap keys that conflict with Doom's defaults."
-  (dolist (map keymaps)
-    (evil-delay `(and (boundp ',map) (keymapp ,map))
-        `(evil-define-key* '(normal visual motion) ,map
-                           ";" nil
-                           (kbd doom-leader-key) nil
-                           (kbd "C-j") nil (kbd "C-k") nil
-                           "gd" nil "gf" nil "K"  nil "gD" nil "gw" nil
-                           "]"  nil "["  nil)
-      'after-load-functions t nil
-      (format "doom-define-key-in-%s" map))))
+(after! man
+  (evil-define-key* 'normal Man-mode-map "q" #'kill-this-buffer))
 
-(add-hook 'evil-collection-setup-hook #'+config|save-my-favorite-keys)
+;; (defun +config|save-my-favorite-keys (_feature keymaps)
+;;   "Unmap keys that conflict with Doom's defaults."
+;;   (dolist (map keymaps)
+;;     (evil-delay `(and (boundp ',map) (keymapp ,map))
+;;         `(evil-define-key* '(normal visual motion) ,map
+;;                            ";" nil
+;;                            (kbd doom-leader-key) nil
+;;                            (kbd "C-j") nil (kbd "C-k") nil
+;;                            "gd" nil "gf" nil "K"  nil "gD" nil "gw" nil
+;;                            "]"  nil "["  nil)
+;;       'after-load-functions t nil
+;;       (format "doom-define-key-in-%s" map))))
+
+;; (add-hook 'evil-collection-setup-hook #'+config|save-my-favorite-keys)
+
+(setq evil-collection-key-blacklist
+      (list "C-j" "C-k"
+            "gd" "gf" "K"
+            "[" "]"
+            ";" doom-leader-key))

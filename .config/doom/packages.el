@@ -12,14 +12,6 @@
 (package! edit-server)
 (package! gmail-message-mode)
 
-;; disable irony-related stuff
-(package! irony :disable t)
-(package! company-irony :disable t)
-(package! company-irony-c-headers :disable t)
-(package! flycheck-irony :disable t)
-(package! irony-eldoc :disable t)
-(package! rtags :disable t)
-(package! ivy-rtags :disable t)
 (package! ido-completing-read+ :disable t)
 
 ;; cc stuff

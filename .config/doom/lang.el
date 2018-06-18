@@ -42,7 +42,7 @@
     (add-to-list 'projectile-globally-ignored-directories ".ccls-cache"))
 
   (evil-set-initial-state 'ccls-tree-mode 'emacs)
-  (set! :company-backend '(c-mode c++-mode) '(company-lsp)))
+  (set-company-backend! '(c-mode c++-mode) 'company-lsp))
 
 (defconst my/cc-style
   '("doom" (c-offsets-alist . ((innamespace . [0])))))
@@ -65,6 +65,7 @@
   (add-hook 'python-mode-hook #'highlight-indent-guides-mode)
   (add-hook 'python-mode-hook
             (lambda () (setq tab-width 4 fill-column 120)))
+  (setq flycheck-flake8-maximum-line-length 120)
 
   (defun buffer-contains-substring (string)
     (save-excursion
@@ -99,7 +100,7 @@
       (".xbindkeysrc" (call-process-shell-command "killall -HUP xbindkeys"))
       )))
 (add-hook 'after-save-hook #'my/apply-conf-after-save)
-(add-to-list 'auto-mode-alist '("\\..*rc\\'" . conf-mode))
+(add-to-list 'auto-mode-alist '("\\..*rc\(\\.local\)?\\'" . conf-mode))
 (add-to-list 'auto-mode-alist '("/[^\\.]*rc\\'" . conf-mode))
 
 (defun display-ansi-colors ()

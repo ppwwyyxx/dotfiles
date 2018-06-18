@@ -126,13 +126,17 @@
 
 (when (featurep! :feature version-control)
   (defun my/my-own-project-p()
+    "Return value: 0 - unknown; 1 - yes; -1 - no"
     (let ((link (ignore-errors (+vcs-root))))
-      (and (or
-            (not link)
-            (cl-search "ppwwyyxx" link)
-            (cl-search "tensorpack" link)
-            (cl-search "facebook" link)
-            ) t)
+      (cond
+       ((not link) 0)
+       ((or
+         (cl-search "ppwwyyxx" link)
+         (cl-search "tensorpack" link)
+         (cl-search "facebook" link)
+         ) 1)
+       (t -1)
+       )
       ))
   )
 
