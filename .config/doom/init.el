@@ -37,7 +37,6 @@
        spellcheck        ; tasing you for misspelling mispelling
        (syntax-checker
         +childframe)     ; tasing you for every semicolon you forget
-       version-control   ; remember, remember that commit in November
        workspaces        ; tab emulation, persistence & separate workspaces
 
        :completion
@@ -63,9 +62,11 @@
         +defaults)       ; default popup rules
        unicode           ; extended unicode support for various languages
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
+       vc-gutter
        window-select     ; visually switch windows
 
        :editor
+       rotate-text       ; cycle region at point between text candidates
        ;;parinfer
 
        :emacs
@@ -75,6 +76,7 @@
        imenu             ; an imenu sidebar and searchable code index
        term              ; terminals in Emacs
        ediff
+       vc
 
        :tools
        editorconfig
@@ -87,7 +89,6 @@
        prodigy
        pdf               ; pdf enhancements
        rgb               ; creating color strings
-       rotate-text       ; cycle region at point between text candidates
        tmux              ; an API for interacting with tmux
        ;;upload            ; map local to remote projects via ssh/ftp
        wakatime

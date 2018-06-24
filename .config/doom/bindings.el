@@ -44,10 +44,9 @@
       (:when IS-LINUX
         :nvm "C-z" #'zeal-at-point)
       :nv "K"  #'+lookup/documentation
-      :nm  "gd" #'+lookup/definition
-      :nm  "gD" #'+lookup/references
-      :nm  "gw" #'avy-goto-word-1
-      ;;:m  "gs" #'+default/easymotion  ; lazy-load `evil-easymotion'
+      :nm "gd" #'+lookup/definition
+      :nm "gD" #'+lookup/references
+      :nm "gw" #'avy-goto-word-1
       :n  "gx"  #'evil-exchange  ; https://github.com/tommcdo/vim-exchange
 
       :nv "C-a"   #'evil-numbers/inc-at-pt
