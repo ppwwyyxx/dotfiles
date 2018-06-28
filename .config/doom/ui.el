@@ -83,6 +83,7 @@
 )
 
 (def-package! highlight-indent-guides
+  :when (display-graphic-p)
   :config
   (setq highlight-indent-guides-method 'character)
   (setq highlight-indent-guides-responsive 'top)

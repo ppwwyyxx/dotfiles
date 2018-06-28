@@ -67,6 +67,16 @@
             (lambda () (setq tab-width 4 fill-column 120)))
   (setq flycheck-flake8-maximum-line-length 120)
 
+  (when (executable-find "ipython")
+    ;; my fancy ipython prompt
+    (setq python-shell-prompt-regexp "╭─.*\n.*╰─\\$ "
+          python-shell-prompt-block-regexp "\\.\\.\\.: ")
+    )
+
+  (set-pretty-symbols! 'python-mode
+    :lambda "lambda"
+    :in "in" :not-in "not in")
+
   (defun buffer-contains-substring (string)
     (save-excursion
       (save-match-data
@@ -83,12 +93,6 @@
      ;; TODO complete zeal-at-po
      ))
   (add-hook 'python-mode-hook #'my/python-docset-to-use)
-
-  (when (executable-find "ipython")
-    ;; my fancy ipython prompt
-    (setq python-shell-prompt-regexp "╭─.*\n.*╰─\\$ "
-          python-shell-prompt-block-regexp "\\.\\.\\.: ")
-    )
   )
 
 (defun my/apply-conf-after-save()
