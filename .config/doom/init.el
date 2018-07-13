@@ -49,12 +49,14 @@
 
        :ui
        doom              ; what makes DOOM look the way it does
-       doom-modeline     ; a snazzy Atom-inspired mode-line
+       (doom-modeline    ; a snazzy Atom-inspired mode-line
+        +new)
        evil-goggles      ; display visual hints when editing in evil
        fci
        hl-todo           ; highlight TODO/FIXME/NOTE tags
        nav-flash         ; blink the current line after jumping
        neotree           ; a project drawer, like NERDTree for vim
+       ;;treemacs
        pretty-code
        ;;tabbar            ; FIXME an (incomplete) tab bar for Emacs
        (popup            ; tame sudden yet inevitable temporary windows

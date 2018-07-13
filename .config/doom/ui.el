@@ -67,20 +67,23 @@
       (propertize (car name-and-face) 'face (cadr name-and-face))
       ))
 
-  (def-modeline-segment! my-state
+  (def-modeline-segment! +mode-line-my-state
     "Override doom internal modeline segments"
     (let ((meta (concat (+doom-modeline--macro-recording)
                         (+doom-modeline--anzu)
                         (+doom-modeline--evil-substitute)
                         (+doom-modeline--iedit))))
       (or (and (not (equal meta "")) meta)
-          (+doom-modeline-evil-state)
-          )))
+          (if (eq (selected-window) +doom-modeline-current-window)
+              (+doom-modeline-evil-state)
+            nil
+            ))))
 
-  (def-modeline! main
-    (my-state " " buffer-info "  %l:%c %p  " selection-info)
-    (buffer-encoding major-mode vcs flycheck))
-)
+  (def-modeline! :myown
+    '(+mode-line-my-state " " +mode-line-buffer-id "  %2l:%c %p  " +mode-line-selection-info)
+    '(+mode-line-buffer-encoding +mode-line-major-mode +mode-line-vcs)); flycheck))
+  (set-modeline! :myown t)
+  )
 
 (def-package! highlight-indent-guides
   :when (display-graphic-p)

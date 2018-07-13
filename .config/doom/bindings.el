@@ -7,311 +7,315 @@
 ;; expand-region's prompt can't tell what key contract-region is bound to, so we tell it explicitly.
 (setq expand-region-contract-fast-key "H")
 
-(map! [remap newline]          #'newline-and-indent
-      ;; Ensure there are no conflicts
-      :nmvo doom-leader-key nil
-      :nmvo doom-localleader-key nil
-      ;;(:after debug :map debugger-mode-map
-      ;;  :nmvo doom-leader-key nil)
-      (:after dired :map dired-mode-map
-        :nmv ";" nil
-        :nmv "]" nil
-        :nmv "[" nil)
+(map!
+ ;; Ensure there are no conflicts
+ :nmvo doom-leader-key nil
+ :nmvo doom-localleader-key nil
 
-      ;; --- Global keybindings ---------------------------
-      ;; clean-ups:
-      :gnvime "M-l" nil
-      :gnvime "M-h" nil
+ ;; swap ret/c-j
+ :i [remap newline] #'newline-and-indent
+ :i "C-j" #'+default/newline
+ ;;(:after debug :map debugger-mode-map
+ ;;  :nmvo doom-leader-key nil)
+ (:after dired :map dired-mode-map
+   :nmv ";" nil
+   :nmv "]" nil
+   :nmv "[" nil)
+
+ ;; --- Global keybindings ---------------------------
+ ;; clean-ups:
+ :gnvime "M-l" nil
+ :gnvime "M-h" nil
 
 
-      ;; Make M-x available everywhere
-      :gnvime "M-x" #'execute-extended-command
-      :gnvime "C-x C-b" #'ibuffer
+ ;; Make M-x available everywhere
+ :gnvime "M-x" #'execute-extended-command
+ :gnvime "C-x C-b" #'ibuffer
 
-      :ne "M-r"   #'+eval/buffer
-      :ne "M-f"   #'swiper
-      ;;:n  "M-s"   #'save-buffer
+ :n "M-r"   #'+eval/buffer
+ :n "M-f"   #'swiper
+ ;;:n  "M-s"   #'save-buffer
 
-      :nm  ";"     #'evil-ex
-      :nm  "*"     #'highlight-symbol-at-point
+ :nm  ";"     #'evil-ex
+ :nm  "*"     #'highlight-symbol-at-point
 
-      :nv [tab]   #'+evil/matchit-or-toggle-fold
-      ;; delete to blackhole register
-      :v  [delete] (lambda! ()
-                        (let ((evil-this-register ?_))
-                          (call-interactively #'evil-delete)))
+ :nv [tab]   #'+evil/matchit-or-toggle-fold
+ ;; delete to blackhole register
+ :v  [delete] (lambda! ()
+                       (let ((evil-this-register ?_))
+                         (call-interactively #'evil-delete)))
 
-      (:when IS-LINUX
-        :nvm "C-z" #'zeal-at-point)
-      :nv "K"  #'+lookup/documentation
-      :nm "gd" #'+lookup/definition
-      :nm "gD" #'+lookup/references
-      :nm "gw" #'avy-goto-word-1
-      :n  "gx"  #'evil-exchange  ; https://github.com/tommcdo/vim-exchange
+ (:when IS-LINUX
+   :nvm "C-z" #'zeal-at-point)
+ :nv "K"  #'+lookup/documentation
+ :nm "gd" #'+lookup/definition
+ :nm "gD" #'+lookup/references
+ :nm "gw" #'avy-goto-word-1
+ :n  "gx"  #'evil-exchange  ; https://github.com/tommcdo/vim-exchange
 
-      :nv "C-a"   #'evil-numbers/inc-at-pt
-      :nv "C-S-a" #'evil-numbers/dec-at-pt
+ :nv "C-a"   #'evil-numbers/inc-at-pt
+ :nv "C-S-a" #'evil-numbers/dec-at-pt
 
-      ;; Vim-like editing commands
-      :i "C-j"   #'evil-next-line
-      :i "C-k"   #'evil-previous-line
-      :i "C-h"   #'evil-backward-char
-      :i "C-l"   #'evil-forward-char
+ ;; Vim-like editing commands
+ :i "C-j"   #'evil-next-line
+ :i "C-k"   #'evil-previous-line
+ :i "C-h"   #'evil-backward-char
+ :i "C-l"   #'evil-forward-char
 
-      :i "C-S-V" #'yank
-      :i "C-a"   #'doom/backward-to-bol-or-indent
-      :i "C-e"   #'doom/forward-to-last-non-comment-or-eol
-      :i "C-u"   #'doom/backward-kill-to-bol-and-indent
-      :i "C-b"   #'backward-word
-      :i "C-f"   #'forward-word
-      (:map (minibuffer-local-map
-             minibuffer-local-ns-map
-             minibuffer-local-completion-map
-             minibuffer-local-must-match-map
-             minibuffer-local-isearch-map
-             read-expression-map)
-        [escape] #'abort-recursive-edit
-        "C-a"    #'move-beginning-of-line
-        "C-w"    #'backward-kill-word
-        "C-u"    #'backward-kill-sentence
-        "C-b"    #'backward-word
-        "C-f"    #'forward-word
-        "C-S-V"  #'yank
-        )
-      (:after evil :map evil-ex-completion-map
-        "C-a"   #'move-beginning-of-line
-        "C-b"   #'backward-word
-        "C-f"   #'forward-word
-        "C-S-V" #'yank
-        )
+ :i "C-S-V" #'yank
+ :i "C-a"   #'doom/backward-to-bol-or-indent
+ :i "C-e"   #'doom/forward-to-last-non-comment-or-eol
+ :i "C-u"   #'doom/backward-kill-to-bol-and-indent
+ :i "C-b"   #'backward-word
+ :i "C-f"   #'forward-word
+ (:map (minibuffer-local-map
+        minibuffer-local-ns-map
+        minibuffer-local-completion-map
+        minibuffer-local-must-match-map
+        minibuffer-local-isearch-map
+        read-expression-map)
+   [escape] #'abort-recursive-edit
+   "C-a"    #'move-beginning-of-line
+   "C-w"    #'backward-kill-word
+   "C-u"    #'backward-kill-sentence
+   "C-b"    #'backward-word
+   "C-f"    #'forward-word
+   "C-S-V"  #'yank
+   )
+ (:after evil :map evil-ex-completion-map
+   "C-a"   #'move-beginning-of-line
+   "C-b"   #'backward-word
+   "C-f"   #'forward-word
+   "C-S-V" #'yank
+   )
 
-      ;; expand-region
-      :v  "L"  #'er/expand-region
-      :v  "H"  #'er/contract-region
+ ;; expand-region
+ :v  "L"  #'er/expand-region
+ :v  "H"  #'er/contract-region
 
-      ;; workspace/tab related
-      :nme "M-t"       #'+workspace/new
-      :nme "M-T"       #'+workspace/display
-      :nmei "M-1"       (λ! (+workspace/switch-to 0))
-      :nmei "M-2"       (λ! (+workspace/switch-to 1))
-      :nmei "M-3"       (λ! (+workspace/switch-to 2))
-      :nmei "M-4"       (λ! (+workspace/switch-to 3))
-      :nmei "M-5"       (λ! (+workspace/switch-to 4))
-      :nmei "M-6"       (λ! (+workspace/switch-to 5))
-      :nmei "M-7"       (λ! (+workspace/switch-to 6))
-      :nmei "M-8"       (λ! (+workspace/switch-to 7))
-      :nmei "M-9"       (λ! (+workspace/switch-to 8))
-      :nmei "M-0"       #'+workspace/switch-to-last
-      ;; window management
-      :nme "C-h"   #'evil-window-left
-      :nme "C-j"   #'evil-window-down
-      :nme "C-k"   #'evil-window-up
-      :nme "C-l"   #'evil-window-right
+ ;; workspace/tab related
+ :nm "M-t"       #'+workspace/new
+ :nm "M-T"       #'+workspace/display
+ :nmi "M-1"       (λ! (+workspace/switch-to 0))
+ :nmi "M-2"       (λ! (+workspace/switch-to 1))
+ :nmi "M-3"       (λ! (+workspace/switch-to 2))
+ :nmi "M-4"       (λ! (+workspace/switch-to 3))
+ :nmi "M-5"       (λ! (+workspace/switch-to 4))
+ :nmi "M-6"       (λ! (+workspace/switch-to 5))
+ :nmi "M-7"       (λ! (+workspace/switch-to 6))
+ :nmi "M-8"       (λ! (+workspace/switch-to 7))
+ :nmi "M-9"       (λ! (+workspace/switch-to 8))
+ :nmi "M-0"       #'+workspace/switch-to-last
+ ;; window management
+ :nm "C-h"   #'evil-window-left
+ :nm "C-j"   #'evil-window-down
+ :nm "C-k"   #'evil-window-up
+ :nm "C-l"   #'evil-window-right
 
-      :nm  "]b" #'next-buffer
-      :nm  "[b" #'previous-buffer
-      ;; TODO if under GUI, use alt-hl
-      :nm  "]w" #'+workspace/switch-right
-      :nm  "[w" #'+workspace/switch-left
-      :nm  "]e" #'next-error
-      :nm  "[e" #'previous-error
-      :nm  "]d" #'git-gutter:next-hunk
-      :nm  "[d" #'git-gutter:previous-hunk
+ :nm  "]b" #'next-buffer
+ :nm  "[b" #'previous-buffer
+ ;; TODO if under GUI, use alt-hl
+ :nm  "]w" #'+workspace/switch-right
+ :nm  "[w" #'+workspace/switch-left
+ :nm  "]e" #'next-error
+ :nm  "[e" #'previous-error
+ :nm  "]d" #'git-gutter:next-hunk
+ :nm  "[d" #'git-gutter:previous-hunk
 
-      :nme "C--" #'text-scale-decrease
-      :nme "C-=" #'text-scale-increase
+ :nme "C--" #'text-scale-decrease
+ :nme "C-=" #'text-scale-increase
 
-      ;; company-mode
-      "C-SPC" nil  ;; clear
-      :i "C-SPC"  #'+company/complete
-      (:prefix "C-x"
-        :i "C-l"   #'+company/whole-lines
-        :i "C-k"   #'+company/dict-or-keywords
-        :i "C-f"   #'company-files
-        ;;:i "C-]"   #'company-etags
-        ;;:i "C-s"   #'company-yasnippet
-        :i "C-s"   #'yas-expand
-        :i "C-o"   #'+company/complete
-        ;;:i "C-o"   #'company-capf
-        :i "C-n"   #'+company/dabbrev
-        :i "C-p"   #'+company/dabbrev-code-previous)
+ ;; company-mode
+ "C-SPC" nil  ;; clear
+ :i "C-SPC"  #'+company/complete
+ (:prefix "C-x"
+   :i "C-l"   #'+company/whole-lines
+   :i "C-k"   #'+company/dict-or-keywords
+   :i "C-f"   #'company-files
+   ;;:i "C-]"   #'company-etags
+   ;;:i "C-s"   #'company-yasnippet
+   :i "C-s"   #'yas-expand
+   :i "C-o"   #'+company/complete
+   ;;:i "C-o"   #'company-capf
+   :i "C-n"   #'+company/dabbrev
+   :i "C-p"   #'+company/dabbrev-code-previous)
 
-      (:after company
-        (:map company-active-map
-          ;; Don't interfere with `evil-delete-backward-word' in insert mode
-          "C-w"     nil
-          "C-n"     #'company-select-next
-          "C-p"     #'company-select-previous
-          "C-h"     #'company-show-doc-buffer
-          "C-s"     #'company-filter-candidates
-          [tab]     #'company-complete-common-or-cycle
-          [tab]     #'company-complete-common-or-cycle
-          "S-TAB"   #'company-select-previous
-          [backtab] #'company-select-previous
-          "<f1>"    nil
-          [escape]  (lambda! (company-abort) (evil-normal-state))
-          )
-        (:map company-search-map
-          "C-n"     #'company-select-next-or-abort
-          "C-p"     #'company-select-previous-or-abort
-          "C-s"     (λ! (company-search-abort) (company-filter-candidates))
-          [escape]  #'company-search-abort)
-        )
+ (:after company
+   (:map company-active-map
+     ;; Don't interfere with `evil-delete-backward-word' in insert mode
+     "C-w"     nil
+     "C-n"     #'company-select-next
+     "C-p"     #'company-select-previous
+     "C-h"     #'company-show-doc-buffer
+     "C-s"     #'company-filter-candidates
+     [tab]     #'company-complete-common-or-cycle
+     [tab]     #'company-complete-common-or-cycle
+     "S-TAB"   #'company-select-previous
+     [backtab] #'company-select-previous
+     "<f1>"    nil
+     [escape]  (lambda! (company-abort) (evil-normal-state))
+     )
+   (:map company-search-map
+     "C-n"     #'company-select-next-or-abort
+     "C-p"     #'company-select-previous-or-abort
+     "C-s"     (λ! (company-search-abort) (company-filter-candidates))
+     [escape]  #'company-search-abort)
+   )
 
-      ;; just like vim ctrlp
-      :nm "C-p" #'counsel-projectile-find-file
-      (:after counsel :map counsel-ag-map
-        [backtab]  #'+ivy/wgrep-occur      ; search/replace on results
-        "C-SPC"    #'ivy-call-and-recenter ; preview
-        )
+ ;; just like vim ctrlp
+ :nm "C-p" #'counsel-projectile-find-file
+ (:after counsel :map counsel-ag-map
+   [backtab]  #'+ivy/wgrep-occur      ; search/replace on results
+   "C-SPC"    #'ivy-call-and-recenter ; preview
+   )
 
-      (:after evil
-        :textobj "a" #'evil-inner-arg                    #'evil-outer-arg
-        :textobj "i" #'evil-indent-plus-i-indent         #'evil-indent-plus-a-indent
-        (:map evil-window-map ; prefix "C-w"
-          ;; Navigation
-          "C-h"     #'evil-window-left
-          "C-j"     #'evil-window-down
-          "C-k"     #'evil-window-up
-          "C-l"     #'evil-window-right
-          "C-w"     #'other-window
-          ;; Swapping windows
-          "H"       #'+evil/window-move-left
-          "J"       #'+evil/window-move-down
-          "K"       #'+evil/window-move-up
-          "L"       #'+evil/window-move-right
-          ;; Window undo/redo
-          "u"       #'winner-undo
-          "C-r"     #'winner-redo
-          "o"       #'doom/window-enlargen
-          ;; Delete window
-          "c"       #'+workspace/close-window-or-workspace
-          "C-C"     #'ace-delete-window
-          [up]      #'evil-window-increase-height
-          [down]    #'evil-window-decrease-height
-          [right]   #'evil-window-increase-width
-          [left]    #'evil-window-decrease-width
-          )
-        )
+ (:after evil
+   :textobj "a" #'evil-inner-arg                    #'evil-outer-arg
+   :textobj "i" #'evil-indent-plus-i-indent         #'evil-indent-plus-a-indent
+   (:map evil-window-map ; prefix "C-w"
+     ;; Navigation
+     "C-h"     #'evil-window-left
+     "C-j"     #'evil-window-down
+     "C-k"     #'evil-window-up
+     "C-l"     #'evil-window-right
+     "C-w"     #'other-window
+     ;; Swapping windows
+     "H"       #'+evil/window-move-left
+     "J"       #'+evil/window-move-down
+     "K"       #'+evil/window-move-up
+     "L"       #'+evil/window-move-right
+     ;; Window undo/redo
+     "u"       #'winner-undo
+     "C-r"     #'winner-redo
+     "o"       #'doom/window-enlargen
+     ;; Delete window
+     "c"       #'+workspace/close-window-or-workspace
+     "C-C"     #'ace-delete-window
+     [up]      #'evil-window-increase-height
+     [down]    #'evil-window-decrease-height
+     [right]   #'evil-window-increase-width
+     [left]    #'evil-window-decrease-width
+     )
+   )
 
-      ;; doom already clears the map, which is nice!
-      (:after evil-mc :map evil-mc-key-map
-        :nv "C-n" #'evil-mc-make-and-goto-next-match
-        :nv "C-p" #'evil-mc-make-and-goto-prev-match
-        :nv "C-S-n" #'evil-mc-skip-and-goto-next-match
-        :nv "C-S-p" #'evil-mc-skip-and-goto-prev-match)
+ ;; doom already clears the map, which is nice!
+ (:after evil-mc :map evil-mc-key-map
+   :nv "C-n" #'evil-mc-make-and-goto-next-match
+   :nv "C-p" #'evil-mc-make-and-goto-prev-match
+   :nv "C-S-n" #'evil-mc-skip-and-goto-next-match
+   :nv "C-S-p" #'evil-mc-skip-and-goto-prev-match)
 
-      ;; surround
-      (:after evil-surround
-        :map evil-surround-mode-map
-        :v "s" 'evil-surround-region
-        )   ; originally was snipe
-      :o  "s"  #'evil-surround-edit
+ ;; surround
+ (:after evil-surround
+   :map evil-surround-mode-map
+   :v "s" 'evil-surround-region
+   )   ; originally was snipe
+ :o  "s"  #'evil-surround-edit
 
-      ;; flycheck
-      (:after flycheck
-        :map flycheck-error-list-mode-map
-        :n "C-j" #'evil-window-down
-        :n "C-k" #'evil-window-up
-        :n "j"   #'flycheck-error-list-next-error
-        :n "k"   #'flycheck-error-list-previous-error
-        :n "RET" #'flycheck-error-list-goto-error)
+ ;; flycheck
+ (:after flycheck
+   :map flycheck-error-list-mode-map
+   :n "C-j" #'evil-window-down
+   :n "C-k" #'evil-window-up
+   :n "j"   #'flycheck-error-list-next-error
+   :n "k"   #'flycheck-error-list-previous-error
+   :n "RET" #'flycheck-error-list-goto-error)
 
-      ;; git-timemachine
-      (:after git-timemachine
-        (:map git-timemachine-mode-map
-          :n "C-p" #'git-timemachine-show-previous-revision
-          :n "C-n" #'git-timemachine-show-next-revision
-          :n "[["  #'git-timemachine-show-previous-revision
-          :n "]]"  #'git-timemachine-show-next-revision
-          :n "q"   #'git-timemachine-quit
-          :n "gb"  #'git-timemachine-blame))
+ ;; git-timemachine
+ (:after git-timemachine
+   (:map git-timemachine-mode-map
+     :n "C-p" #'git-timemachine-show-previous-revision
+     :n "C-n" #'git-timemachine-show-next-revision
+     :n "[["  #'git-timemachine-show-previous-revision
+     :n "]]"  #'git-timemachine-show-next-revision
+     :n "q"   #'git-timemachine-quit
+     :n "gb"  #'git-timemachine-blame))
 
-      ;; ivy
-      (:after ivy
-        (:map ivy-minibuffer-map
-          [escape] #'keyboard-escape-quit
-          "C-SPC"  #'ivy-call-and-recenter  ; preview
+ ;; ivy
+ (:after ivy
+   (:map ivy-minibuffer-map
+     [escape] #'keyboard-escape-quit
+     "C-SPC"  #'ivy-call-and-recenter  ; preview
 
-          ;; basic editing
-          "C-S-V"  #'yank
-          "C-w"    #'ivy-backward-kill-word
-          "C-u"    #'ivy-kill-whole-line
-          "C-b"    #'backward-word
-          "C-f"    #'forward-word
+     ;; basic editing
+     "C-S-V"  #'yank
+     "C-w"    #'ivy-backward-kill-word
+     "C-u"    #'ivy-kill-whole-line
+     "C-b"    #'backward-word
+     "C-f"    #'forward-word
 
-          ;; movement
-          "C-k"    #'ivy-previous-line
-          "C-j"    #'ivy-next-line
-          ;; split window and execute action, similar to ctrlp.vim
-          "C-v"    (lambda! (my/ivy-exit-new-window 'right))
-          "C-s"    (lambda! (my/ivy-exit-new-window 'below))
-          )
-        (:map ivy-switch-buffer-map
-          "C-d" 'ivy-switch-buffer-kill
-          ))
+     ;; movement
+     "C-k"    #'ivy-previous-line
+     "C-j"    #'ivy-next-line
+     ;; split window and execute action, similar to ctrlp.vim
+     "C-v"    (lambda! (my/ivy-exit-new-window 'right))
+     "C-s"    (lambda! (my/ivy-exit-new-window 'below))
+     )
+   (:map ivy-switch-buffer-map
+     "C-d" 'ivy-switch-buffer-kill
+     ))
 
-      (:after swiper
-        (:map swiper-map
-          [backtab]  #'+ivy/wgrep-occur))
+ (:after swiper
+   (:map swiper-map
+     [backtab]  #'+ivy/wgrep-occur))
 
-      ;; neotree
-      (:after neotree
-        :map neotree-mode-map
-        :n "g"         nil
-        :n [tab]       #'neotree-quick-look
-        :n "RET"       #'neotree-enter
-        :n [backspace] #'evil-window-prev
-        :n "q"         #'neotree-hide
-        :n "R"         #'neotree-refresh
+ ;; neotree
+ (:after neotree
+   :map neotree-mode-map
+   :n "g"         nil
+   :n [tab]       #'neotree-quick-look
+   :n "RET"       #'neotree-enter
+   :n [backspace] #'evil-window-prev
+   :n "q"         #'neotree-hide
+   :n "R"         #'neotree-refresh
 
-        :n "c"         #'neotree-create-node
-        :n "r"         #'neotree-rename-node
-        :n "d"         #'neotree-delete-node
+   :n "c"         #'neotree-create-node
+   :n "r"         #'neotree-rename-node
+   :n "d"         #'neotree-delete-node
 
-        :n "j"         #'neotree-next-line
-        :n "k"         #'neotree-previous-line
-        :n "h"         #'+neotree/collapse-or-up
-        :n "l"         #'+neotree/expand-or-open
-        :n "J"         #'neotree-select-next-sibling-node
-        :n "K"         #'neotree-select-previous-sibling-node
-        :n "H"         #'neotree-select-up-node
-        :n "L"         #'neotree-select-down-node
+   :n "j"         #'neotree-next-line
+   :n "k"         #'neotree-previous-line
+   :n "h"         #'+neotree/collapse-or-up
+   :n "l"         #'+neotree/expand-or-open
+   :n "J"         #'neotree-select-next-sibling-node
+   :n "K"         #'neotree-select-previous-sibling-node
+   :n "H"         #'neotree-select-up-node
+   :n "L"         #'neotree-select-down-node
 
-        :n "G"         #'evil-goto-line
-        :n "gg"        #'evil-goto-first-line
-        :n "C-v"       #'neotree-enter-vertical-split
-        :n "C-s"       #'neotree-enter-horizontal-split
-        )
+   :n "G"         #'evil-goto-line
+   :n "gg"        #'evil-goto-first-line
+   :n "C-v"       #'neotree-enter-vertical-split
+   :n "C-s"       #'neotree-enter-horizontal-split
+   )
 
-      (:after yasnippet
-        (:map yas-keymap
-          "C-e"           #'+snippets/goto-end-of-field
-          "C-u"           #'+snippets/delete-to-start-of-field
-          "C-a"           #'+snippets/goto-start-of-field
-          [backspace]     #'+snippets/delete-backward-char
-          [delete]        #'+snippets/delete-forward-char-or-field
-          )
-        (:map yas-minor-mode-map
-          "SPC"           yas-maybe-expand
-          ))
+ (:after yasnippet
+   (:map yas-keymap
+     "C-e"           #'+snippets/goto-end-of-field
+     "C-u"           #'+snippets/delete-to-start-of-field
+     "C-a"           #'+snippets/goto-start-of-field
+     [backspace]     #'+snippets/delete-backward-char
+     [delete]        #'+snippets/delete-forward-char-or-field
+     )
+   (:map yas-minor-mode-map
+     "SPC"           yas-maybe-expand
+     ))
 
-	  (:when (featurep! :completion company)
-		(:after comint
-		  ;; TAB auto-completion in term buffers
-		  :map comint-mode-map [tab] #'company-complete))
+ (:when (featurep! :completion company)
+   (:after comint
+	 ;; TAB auto-completion in term buffers
+	 :map comint-mode-map [tab] #'company-complete))
 
-      (:map* (help-mode-map helpful-mode-map)
-        :n "o"  #'ace-link-help
-        :n "q"  #'quit-window
-        :n "Q"  #'ivy-resume)
+ (:map* (help-mode-map helpful-mode-map)
+   :n "o"  #'ace-link-help
+   :n "q"  #'quit-window
+   :n "Q"  #'ivy-resume)
 
-      (:after goto-addr
-        :map goto-address-highlight-keymap
-        "RET" #'goto-address-at-point)
-      (:after view :map view-mode-map
-        "<escape>" #'View-quit-all)
-      )
+ (:after goto-addr
+   :map goto-address-highlight-keymap
+   "RET" #'goto-address-at-point)
+ (:after view :map view-mode-map
+   "<escape>" #'View-quit-all)
+ )
 
 
 (map! :leader
@@ -354,9 +358,7 @@
       (:desc "workspace" :prefix [tab]
         :desc "Display tab bar"          :n [tab] #'+workspace/display
         :desc "New workspace"            :n "n"   #'+workspace/new
-                                        ;:desc "Load workspace from file" :n "l"   #'+workspace/load
-        :desc "Load last session"        :n "L"   (λ! (+workspace/load-session))
-                                        ;:desc "Save workspace to file"   :n "s"   #'+workspace/save
+        :desc "Load last session"        :n "L"   #'+workspace/load-session
         :desc "Autosave current session" :n "S"   #'+workspace/save-session
         :desc "Switch workspace"         :n "."   #'+workspace/switch-to
         :desc "Kill all buffers"         :n "x"   #'doom/kill-all-buffers
@@ -477,9 +479,9 @@
 
       (:desc "XXX" :prefix "n"
         :desc "No Highlight" :n "o" (lambda! ()
-                                         (evil-ex-nohighlight)
-                                         (unhighlight-regexp t)
-                                         (evil-mc-undo-all-cursors))
+                                             (evil-ex-nohighlight)
+                                             (unhighlight-regexp t)
+                                             (evil-mc-undo-all-cursors))
         )
 
       (:after json-mode :map json-mode-map
