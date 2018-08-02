@@ -13,7 +13,7 @@
  :nmvo doom-localleader-key nil
 
  ;; swap ret/c-j
- :i [remap newline] #'newline-and-indent
+ :gi "RET" #'newline-and-indent
  :i "C-j" #'+default/newline
  ;;(:after debug :map debugger-mode-map
  ;;  :nmvo doom-leader-key nil)

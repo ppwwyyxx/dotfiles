@@ -49,8 +49,7 @@
 
        :ui
        doom              ; what makes DOOM look the way it does
-       (doom-modeline    ; a snazzy Atom-inspired mode-line
-        +new)
+       modeline          ; a snazzy Atom-inspired mode-line
        evil-goggles      ; display visual hints when editing in evil
        fci
        hl-todo           ; highlight TODO/FIXME/NOTE tags
@@ -75,6 +74,7 @@
        dired             ; making dired pretty [functional]
        electric          ; smarter, keyword-based electric-indent
        eshell            ; a consistent, cross-platform shell (WIP)
+       hideshow
        imenu             ; an imenu sidebar and searchable code index
        term              ; terminals in Emacs
        ediff
@@ -115,7 +115,9 @@
         +export          ; Exporting org to whatever you want
         +present         ; Emacs for presentations
         +publish)        ; Emacs+Org as a static site generator
-       python            ; beautiful is better than ugly
+       (python
+        +conda
+        +ipython)        ; beautiful is better than ugly
        ruby              ; 1.step do {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
        sh                ; she sells (ba|z)sh shells on the C xor
        web               ; the tubes

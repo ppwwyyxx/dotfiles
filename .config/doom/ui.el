@@ -82,8 +82,7 @@
   (def-modeline! :myown
     '(+mode-line-my-state " " +mode-line-buffer-id "  %2l:%c %p  " +mode-line-selection-info)
     '(+mode-line-buffer-encoding +mode-line-major-mode +mode-line-vcs)); flycheck))
-  (set-modeline! :myown t)
-  )
+  (set-modeline! :myown t))
 
 (def-package! highlight-indent-guides
   :when (display-graphic-p)

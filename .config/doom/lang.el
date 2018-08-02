@@ -86,10 +86,10 @@
   (defun my/python-docset-to-use()
     (cond
      ((or (s-contains? "tensorpack" (buffer-file-name)) (buffer-contains-substring "tensorpack"))
-      (setq zeal-at-point-docset '("python3" "numpy" "tensorpack" "TensorFlow")))
+      (setq-local zeal-at-point-docset '("python3" "numpy" "tensorpack" "TensorFlow")))
      ((buffer-contains-substring "tensorflow")
-      (setq zeal-at-point-docset '("python3" "numpy" "TensorFlow")))
-     (t (setq zeal-at-point-docset '("python3" "numpy")))
+      (setq-local zeal-at-point-docset '("python3" "numpy" "TensorFlow")))
+     (t (setq-local zeal-at-point-docset '("python3" "numpy")))
      ;; TODO complete zeal-at-po
      ))
   (add-hook 'python-mode-hook #'my/python-docset-to-use)
