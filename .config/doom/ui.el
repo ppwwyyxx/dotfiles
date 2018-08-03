@@ -48,15 +48,15 @@
   )
 
 ;; modeline
-(when (featurep! :ui doom-modeline)
+(when (featurep! :ui modeline)
   (defface my/modeline-state-normal `((t (:inherit doom-modeline-panel :background "#AFD700")))
-    "" :group '+doom-modeilne)
+    "" :group '+modeilne)
   (defface my/modeline-state-insert `((t (:inherit doom-modeline-panel :background "#00875F")))
-    "" :group '+doom-modeilne)
+    "" :group '+modeilne)
   (defface my/modeline-state-visual `((t (:inherit doom-modeline-panel :background "#F7AA52")))
-    "" :group '+doom-modeilne)
+    "" :group '+modeilne)
 
-  (defun +doom-modeline-evil-state ()
+  (defun +modeline-evil-state ()
     (let ((name-and-face
            (pcase evil-state
              ((or 'normal 'operator) '(" N " 'my/modeline-state-normal))
@@ -67,21 +67,32 @@
       (propertize (car name-and-face) 'face (cadr name-and-face))
       ))
 
-  (def-modeline-segment! +mode-line-my-state
+  (def-modeline-segment! +modeline-my-state
     "Override doom internal modeline segments"
-    (let ((meta (concat (+doom-modeline--macro-recording)
-                        (+doom-modeline--anzu)
-                        (+doom-modeline--evil-substitute)
-                        (+doom-modeline--iedit))))
+    (let ((meta (concat (+modeline--macro-recording)
+                        (+modeline--anzu)
+                        (+modeline--evil-substitute)
+                        (+modeline--iedit))))
       (or (and (not (equal meta "")) meta)
-          (if (eq (selected-window) +doom-modeline-current-window)
-              (+doom-modeline-evil-state)
+          (if (eq (selected-window) +modeline-current-window)
+              (+modeline-evil-state)
             nil
             ))))
 
-  (def-modeline! :myown
-    '(+mode-line-my-state " " +mode-line-buffer-id "  %2l:%c %p  " +mode-line-selection-info)
-    '(+mode-line-buffer-encoding +mode-line-major-mode +mode-line-vcs)); flycheck))
+  (def-modeline-format! :myown
+    '(+modeline-my-state
+      " "
+      +modeline-buffer-state
+      +modeline-buffer-id
+      "  %2l:%c %p  "
+      +modeline-selection-info)
+    '(+modeline-encoding
+      +modeline-major-mode
+      " "
+      +mode-line-misc-info
+      (vc-mode (" " +modeline-vcs " "))
+      mode-line-process
+      +modeline-flycheck))
   (set-modeline! :myown t))
 
 (def-package! highlight-indent-guides

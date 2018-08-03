@@ -102,6 +102,7 @@
                                  counsel--find-symbol))
            (member current-caller '(counsel-imenu
                                     counsel-recentf
+                                    counsel-projectile-find-file
                                     counsel-file-jump
                                     counsel-find-library
                                     ivy-switch-buffer
