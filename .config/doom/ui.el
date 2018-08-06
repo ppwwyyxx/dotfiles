@@ -49,6 +49,7 @@
 
 ;; modeline
 (when (featurep! :ui modeline)
+  (setq +modeline-bar-at-end t)
   (defface my/modeline-state-normal `((t (:inherit doom-modeline-panel :background "#AFD700")))
     "" :group '+modeilne)
   (defface my/modeline-state-insert `((t (:inherit doom-modeline-panel :background "#00875F")))

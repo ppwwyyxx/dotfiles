@@ -241,7 +241,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias clean-trash='=rm /ssd_home/.Trash/{.,}* -rf; =rm ~/.Trash/{.,}* -rf'
 
 which squeue NN && {
-	alias sacct='=sacct -S $(date +"%m/%d" -d "-4days") -o jobid,jobname%30,alloccpus%3,reqmem%5,state%8,nodelist%14,start%16,end%16,elapsed%5 | colorline'
+	alias sacct='=sacct -S $(date +"%m/%d" -d "-4days") -o jobid,jobname%30,alloccpus%3,reqmem%5,state%8,nodelist%16,start%16,end%16,elapsed%5 | colorline'
 	alias sacct-all='=sacct -S $(date +"%m/%d" -d "-5hours") -a -o User%10,JobID,Jobname,state%5,MaxRss,MaxVMSize,avediskread,nnodes%3,ncpus%3,nodelist,start%16,end%16,elapsed%5 | colorline'
 	alias squeue='=squeue -u $(whoami) -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | sort -n -k 1 | colorline'
 	alias squeue-all='=squeue -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | colorline'

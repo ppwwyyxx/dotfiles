@@ -22,12 +22,8 @@
   :config
   (global-aggressive-indent-mode 1)
   (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
-  (add-to-list
-   'aggressive-indent-dont-indent-if
-   '(and (derived-mode-p 'c++-mode)
-         (null (string-match "\\([;{}]\\)"
-                             (thing-at-point 'line))))
-   ))
+	(add-to-list 'aggressive-indent-excluded-modes 'c++-mode)
+  (add-to-list 'aggressive-indent-excluded-modes 'c-mode))
 
 
 (def-package! stickyfunc-enhance
@@ -101,6 +97,7 @@
                                  counsel-git-grep-action
                                  counsel--find-symbol))
            (member current-caller '(counsel-imenu
+                                    projectile-completing-read
                                     counsel-recentf
                                     counsel-projectile-find-file
                                     counsel-file-jump

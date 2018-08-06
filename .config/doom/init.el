@@ -67,6 +67,7 @@
 
        :editor
        rotate-text       ; cycle region at point between text candidates
+       multiple-cursors
        ;;parinfer
 
        :emacs
