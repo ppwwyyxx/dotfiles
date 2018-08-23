@@ -302,8 +302,8 @@
 
  (:when (featurep! :completion company)
    (:after comint
-	 ;; TAB auto-completion in term buffers
-	 :map comint-mode-map [tab] #'company-complete))
+   ;; TAB auto-completion in term buffers
+   :map comint-mode-map [tab] #'company-complete))
 
  (:map* (help-mode-map helpful-mode-map)
    :n "o"  #'ace-link-help
@@ -326,6 +326,8 @@
       :desc "Switch buffer"              :n "<"   #'switch-to-buffer
       :desc "Find files from here"       :n "."   #'counsel-file-jump
       :desc "Toggle last popup"          :n "~"   #'+popup/toggle
+      (:when (featurep! :completion ivy)
+        :desc "Resume last search"     :n "'"   #'ivy-resume)
                                         ; :desc "Blink cursor line"          :n "DEL" #'+nav-flash/blink-cursor
       :desc "Create or jump to bookmark" :n "RET" #'bookmark-jump
 
@@ -349,7 +351,7 @@
       (:desc "search" :prefix "/"
         :desc "Project"                :nv "/" #'+ivy/project-search
         :desc "Project"                :nv "p" #'+ivy/project-search
-        :desc "This Directory"         :nv "d" (λ! (+ivy/project-search t))
+        :desc "This Directory"         :nv "d" #'+ivy/project-search-from-cwd
         :desc "In Buffer (swiper)"     :nv "b" #'swiper
         :desc "Tags (imenu)"           :nv "t" #'imenu
         :desc "Tags across buffers"    :nv "T" #'imenu-anywhere
@@ -446,8 +448,7 @@
         :desc "Describe variable"     :n  "v" #'describe-variable
         :desc "Where is"              :n  "w" #'where-is
         :desc "Describe at point"     :n  "." #'helpful-at-point
-        :desc "What face"             :n  "'" #'doom/what-face
-        :desc "What minor modes"      :n  ";" #'doom/what-minor-mode)
+        :desc "What face"             :n  "'" #'doom/what-face)
 
       (:desc "project" :prefix "p"
         :desc "Browse project"          :n  "." #'+default/browse-project
@@ -469,12 +470,12 @@
         :desc "Spell"                  :n "S" #'flyspell-mode
         :desc "Syntax (flycheck)"      :n "s" #'flycheck-mode
         :desc "Taglist (imenu-list)"  :nv "l" #'imenu-list-smart-toggle
-        :desc "Line numbers"           :n "L" #'doom/toggle-line-numbers
+        :desc "Line Numbers"           :n "L" #'doom/toggle-line-numbers
         :desc "Neotree"                :n "f" #'+neotree/open
-        :desc "Frame fullscreen"       :n "F" #'toggle-frame-fullscreen
-        :desc "Indent guides"          :n "i" #'highlight-indent-guides-mode
+        :desc "Frame Fullscreen"       :n "F" #'toggle-frame-fullscreen
+        :desc "Indent Guides"          :n "i" #'highlight-indent-guides-mode
         :desc "Line Wrap"              :n "w" #'visual-line-mode
-                                        ;:desc "org-tree-slide mode"    :n "p" #'+org-present/start)
+        :desc "Command Log"            :n "C" #'clm/toggle-command-log-buffer
         )
 
       (:desc "XXX" :prefix "n"

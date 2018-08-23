@@ -97,7 +97,6 @@
                                  counsel-git-grep-action
                                  counsel--find-symbol))
            (member current-caller '(counsel-imenu
-                                    projectile-completing-read
                                     counsel-recentf
                                     counsel-projectile-find-file
                                     counsel-file-jump
