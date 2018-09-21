@@ -149,7 +149,7 @@
      "C-h"     #'company-show-doc-buffer
      "C-s"     #'company-filter-candidates
      [tab]     #'company-complete-common-or-cycle
-     [tab]     #'company-complete-common-or-cycle
+     "RET"     #'company-complete-selection
      "S-TAB"   #'company-select-previous
      [backtab] #'company-select-previous
      "<f1>"    nil
@@ -302,8 +302,8 @@
 
  (:when (featurep! :completion company)
    (:after comint
-   ;; TAB auto-completion in term buffers
-   :map comint-mode-map [tab] #'company-complete))
+     ;; TAB auto-completion in term buffers
+     :map comint-mode-map [tab] #'company-complete))
 
  (:map* (help-mode-map helpful-mode-map)
    :n "o"  #'ace-link-help

@@ -4,7 +4,6 @@
 (setq tab-always-indent nil)
 (setq tramp-default-method "ssh")
 
-(add-hook 'prog-mode-hook #'doom|enable-delete-trailing-whitespace)
 (add-hook 'prog-mode-hook #'goto-address-prog-mode)
 (add-hook 'ielm-mode-hook #'visual-line-mode)
 (add-hook 'eshell-mode-hook #'visual-line-mode)
@@ -121,10 +120,10 @@
       )
     ))
 
-(when (featurep! :feature version-control)
+(when (featurep! :emacs vc)
   (defun my/my-own-project-p()
     "Return value: 0 - unknown; 1 - yes; -1 - no"
-    (let ((link (ignore-errors (+vcs-root))))
+    (let ((link (ignore-errors (+vc-git-root-url))))
       (cond
        ((not link) 0)
        ((or
@@ -135,6 +134,9 @@
        (t -1)
        )
       ))
+  (add-hook 'prog-mode-hook (lambda!
+                             (if (eq (my/my-own-project-p) 1)
+                                 (doom|enable-delete-trailing-whitespace))))
   )
 
 (load! "ui")
