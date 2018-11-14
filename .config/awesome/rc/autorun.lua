@@ -4,7 +4,7 @@ local autorun_items = {
   "wicd-gtk",
 
   "sleep 3 && compton --config ~/.compton.conf",  -- https://github.com/awesomeWM/awesome/issues/1660
-	"dunst -config ~/.dunstrc",
+  "dunst -config ~/.dunstrc",
   -- "xscreensaver -nosplash",
   "gnome-screensaver",
   "fcitx-autostart",
@@ -22,8 +22,9 @@ local autorun_items = {
 
   --"sleep 100 && dropbox",
 
+  -- https://github.com/jonls/redshift/issues/636
+  "/usr/lib/geoclue-2.0/demos/agent",
   "sleep 10 && redshift-gtk",
-  -- "sleep 15 && workrave"
 }
 
 local runonce = require("lib/runonce")

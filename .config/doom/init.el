@@ -41,8 +41,8 @@
 
        :completion
        (company
-        +auto
-        +childframe)     ; the ultimate code completion backend
+        +auto)
+       ;; +childframe)     ; the ultimate code completion backend
        (ivy              ; a search engine for love and life
         +childframe)
 

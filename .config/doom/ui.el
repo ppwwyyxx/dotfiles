@@ -38,13 +38,21 @@
     ))
 
 (after! ivy-posframe
-  (setq ivy-posframe-parameters `((min-width . 90)
-                                  (min-height . 16)
+  (setq ivy-posframe-parameters `((min-height . 16)
                                   (internal-border-width . 10)
                                   (internal-border-width . 10)
                                   (foreground-color . "#00afef")
                                   ))
   (set-face-attribute 'ivy-current-match nil :underline t)
+
+  (defun reset-posframe-size(frame)
+    ;; TODO use curr-width-4, but frame can be the pos-frame itself
+    (let ((curr-width (frame-width frame)))
+      (setq ivy-posframe-width (min curr-width 90))
+      (setq ivy-posframe-min-width (min curr-width 90))
+      )
+    )
+  (add-to-list 'window-size-change-functions 'reset-posframe-size)
   )
 
 ;; modeline
