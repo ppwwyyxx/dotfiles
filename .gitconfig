@@ -82,7 +82,7 @@
 	sl  = stash list
 	sa  = stash apply
 
-	sbi = submodule update --recursive
+	sbi = submodule update --init --recursive
 
 	gcc = gc --aggressive --prune=now
 	lastchange = log -p --follow -n 1

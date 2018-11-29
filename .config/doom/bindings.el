@@ -412,7 +412,7 @@
         :desc "Find file in dotfiles"     :n "D" #'+default/find-in-config)
 
       (:desc "git" :prefix "g"
-        :desc "Magit blame"            :n  "b" #'magit-blame
+        :desc "Magit blame"            :n  "b" #'magit-blame-addition
         :desc "Magit diff this file"   :n  "d" #'magit-diff-buffer-file
         :desc "Magit diff repo"        :n  "D" #'magit-diff-working-tree
         :desc "Magit status"           :n  "g" #'magit-status

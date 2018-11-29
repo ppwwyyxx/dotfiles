@@ -1,5 +1,8 @@
 ;; -*- no-byte-compile: t; -*-
 
+;; (disable-packages! emacs-snippets)
+(package! emacs-snippets :disable t)
+
 (package! smart-forward :disable t)
 
 (when IS-LINUX (package! fcitx))

@@ -9,6 +9,9 @@
       (:remove  . ("%e")))
     :default "c++"))
 
+(after! flycheck
+  (setq-default flycheck-disabled-checkers '(python-pylint)))
+
 (def-package! zeal-at-point
   :when (and IS-LINUX (display-graphic-p))
   :defer t)
