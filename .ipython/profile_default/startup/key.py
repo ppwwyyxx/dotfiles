@@ -15,7 +15,7 @@ cursor_right = lambda ev: ev.current_buffer.cursor_right()
 default_filters = HasFocus(DEFAULT_BUFFER) & ~HasSelection() & insert_mode
 
 # Register the shortcut if IPython is using prompt_toolkit
-if getattr(ip, 'pt_cli'):
+if hasattr(ip, 'pt_cli'):
     registry = ip.pt_cli.application.key_bindings_registry
     registry.add_binding(Keys.ControlH, filter=default_filters)(cursor_left)
     registry.add_binding(Keys.ControlL, filter=default_filters)(cursor_right)
