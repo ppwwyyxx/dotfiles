@@ -244,7 +244,7 @@ if __name__ == '__main__':
 
     try:
         locale.setlocale(locale.LC_ALL, "")
-    except StandardError:
+    except Exception:
         pass
 
     # when dealing with outer world, always use native encoding
