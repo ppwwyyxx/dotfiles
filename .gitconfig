@@ -1,25 +1,26 @@
 [user]
-	name = Yuxin Wu
-	email = ppwwyyxxc@gmail.com
+  name = Yuxin Wu
+  email = ppwwyyxxc@gmail.com
 [core]
-	autocrlf = input
-	editor = vim
-	excludesfile = /home/wyx/.gitignore
+  autocrlf = input
+  editor = vim
+  excludesfile = /home/wyx/.gitignore
+	preloadindex = true
 [advice]
-	statusHints = false
+  statusHints = false
 [merge]
-	tool = vimdiff
-	ff = false
+  tool = vimdiff
+  ff = false
 [pull]
-	ff = only
+  ff = only
 [branch]
-	autosetuprebase = always
+  autosetuprebase = always
 [clone]
-	progress = true
+  progress = true
 [github]
-	user = ppwwyyxx
+  user = ppwwyyxx
 [push]
-	default = simple
+  default = simple
 [diff]
   mnemonicprefix = true
   tool = gvimdiff
@@ -28,10 +29,10 @@
 [diff "python"]
   xfuncname="^\\s*(class.*\\(.*\\)|def.*)(\\(|:)"
 [color]
-	ui = auto
-	diff = auto
-	status = auto
-	grep = always
+  ui = auto
+  diff = auto
+  status = auto
+  grep = always
 [color "branch"]
   current = yellow reverse
   local = yellow
@@ -42,86 +43,87 @@
   new = green bold
   frag = magenta bold
 [pager]
-	diff = diff-so-fancy | less --tabs=4 -RFX
+  diff = ([[ -x "$(command -v diff-so-fancy)" ]] && diff-so-fancy || diff-highlight) | less --tab=4 -RFX
 [alias]
-	a   = add
-	b   = branch
-	pl  = pull --rebase
-	pu  = push
-	m   = merge
-	mt  = mergetool
-	cl  = clone --recursive
-	s   = status -b
-	ck	= checkout
-	ckb = checkout -b
-	r	= remote
+  a   = add
+  b   = branch
+  pl  = pull --rebase
+  pu  = push
+  m   = merge
+  mt  = mergetool
+  cl  = clone --recursive
+  s   = status -b -uno
+  ck  = checkout
+  ckb = checkout -b
+  r  = remote
 
-	t   = tag
-	rc  = rebase --continue
-	sqlast = rebase -i "HEAD~2"
-	untrack = rm -r --cached
-	unstage = reset --hard 'HEAD'
-	dupes = !git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40
-	showdelete = log --diff-filter=D --summary
+  t   = tag
+  rc  = rebase --continue
+  sqlast = rebase -i "HEAD~2"
+  untrack = rm -r --cached
+  unstage = reset --hard 'HEAD'
+  dupes = !git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40
+  showdelete = log --diff-filter=D --summary
 
-	dc  = diff --cached
-	d   = diff
-	last= diff HEAD^
+  dc  = diff --cached
+  d   = diff
+  last= diff HEAD^
+  lastchange = log -p --follow -n 1
 
-	c   = commit
-	cv  = commit -v
-	ca  = commit -a
-	cav = commit -av
+  c   = commit
+  cv  = commit -v
+  ca  = commit -a
+  cav = commit -av
 
-	l   = log --graph
-	log = log --graph
-	lc  = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
-	lola= log --graph --decorate --pretty=oneline --abbrev-commit --all
+  l   = log --graph
+  log = log --graph
+  lc  = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
+  lola= log --graph --decorate --pretty=oneline --abbrev-commit --all
 
-	ss  = stash
-	sl  = stash list
-	sa  = stash apply
+  ss  = stash
+  sl  = stash list
+  sa  = stash apply
 
-	sbi = submodule update --init --recursive
+  sbi = submodule update --init --recursive
 
-	gcc = gc --aggressive --prune=now
-	lastchange = log -p --follow -n 1
+  gcc = gc --aggressive --prune=now
+  lastchange = log -p --follow -n 1
 
-	# from CIA
-	aliases = !git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /' | sort
+  # from CIA
+  aliases = !git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /' | sort
 
-	pulll = pull --rebase
-	pullll = pull --rebase
-	pulllll = pull --rebase
-	pullllll = pull --rebase
-	pulllllll = pull --rebase
-	pullllllll = pull --rebase
-	pulllllllll = pull --rebase
-	pullllllllll = pull --rebase
-	pulllllllllll = pull --rebase
-	pullllllllllll = pull --rebase
-	pulllllllllllll = pull --rebase
-	pullllllllllllll = pull --rebase
-	pulllllllllllllll = pull --rebase
-	pullllllllllllllll = pull --rebase
-	pulllllllllllllllll = pull --rebase
-	pullllllllllllllllll = pull --rebase
-	pulllllllllllllllllll = pull --rebase
-	pullllllllllllllllllll = pull --rebase
-	pulllllllllllllllllllll = pull --rebase
+  pulll = pull --rebase
+  pullll = pull --rebase
+  pulllll = pull --rebase
+  pullllll = pull --rebase
+  pulllllll = pull --rebase
+  pullllllll = pull --rebase
+  pulllllllll = pull --rebase
+  pullllllllll = pull --rebase
+  pulllllllllll = pull --rebase
+  pullllllllllll = pull --rebase
+  pulllllllllllll = pull --rebase
+  pullllllllllllll = pull --rebase
+  pulllllllllllllll = pull --rebase
+  pullllllllllllllll = pull --rebase
+  pulllllllllllllllll = pull --rebase
+  pullllllllllllllllll = pull --rebase
+  pulllllllllllllllllll = pull --rebase
+  pullllllllllllllllllll = pull --rebase
+  pulllllllllllllllllllll = pull --rebase
 [http]
-	;proxy=http://localhost:7777
+  ;proxy=http://localhost:7777
 [https]
-	;proxy=http://localhost:7777
+  ;proxy=http://localhost:7777
 [init]
-	templatedir = /home/wyx/.git-templates
+  templatedir = /home/wyx/.git-templates
 [tig]
-	tab-size = 2
-	ignore-space = some
-	main-view = date author:display=full,width=11 commit-title:graph=v2,refs=true
+  tab-size = 2
+  ignore-space = some
+  main-view = date author:display=full,width=11 commit-title:graph=v2,refs=true
 [tig "bind"]
-	stage = <Enter> :/^@@
-	main = G none
-	generic = G move-last-line
-	generic = g none
-	generic = gg move-first-line
+  stage = <Enter> :/^@@
+  main = G none
+  generic = G move-last-line
+  generic = g none
+  generic = gg move-first-line

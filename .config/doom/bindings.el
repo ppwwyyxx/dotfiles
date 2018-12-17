@@ -332,7 +332,7 @@
       :desc "Create or jump to bookmark" :n "RET" #'bookmark-jump
 
       :desc "Universal argument"         :n "u"  #'universal-argument
-      :desc "window"                     :n "w"  evil-window-map
+      :desc "window"                     :nm "w"  evil-window-map
 
 
       (:desc "previous..." :prefix "["
@@ -400,6 +400,7 @@
         :desc "Find file in project"      :n "p" #'projectile-find-file
         :desc "Find file"                 :n "f" #'find-file
         :desc "Find directory"            :n "d" #'dired
+        ;; #'deer, #'ranger
         :desc "Switch buffer"             :n "b" #'switch-to-buffer
 
         :desc "Recent files"              :n "r" #'recentf-open-files

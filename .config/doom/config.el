@@ -16,13 +16,14 @@
   (fcitx-aggressive-setup)
   (setq fcitx-use-dbus t))
 
-(def-package! aggressive-indent
-  :demand t
-  :config
-  (global-aggressive-indent-mode 1)
-  (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
-	(add-to-list 'aggressive-indent-excluded-modes 'c++-mode)
-  (add-to-list 'aggressive-indent-excluded-modes 'c-mode))
+;; TODO only include for Python mode?
+;; (def-package! aggressive-indent
+;;   :demand t
+;;   :config
+;;   (global-aggressive-indent-mode 1)
+;;   (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+;; 	(add-to-list 'aggressive-indent-excluded-modes 'c++-mode)
+;;   (add-to-list 'aggressive-indent-excluded-modes 'c-mode))
 
 
 (def-package! stickyfunc-enhance
