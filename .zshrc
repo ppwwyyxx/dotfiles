@@ -53,17 +53,18 @@ fi
 
 
 # dev libraries
+# export TF_CUDA_VERSION=9.0
+export TF_CUDNN_VERSION=7
 export TF_NEED_GCP=0
-export TF_CUDA_VERSION=9.0
+export TF_NEED_ROCM=0
 export TF_NEED_HDFS=0
 export TF_NEED_OPENCL=0
 export TF_NEED_JEMALLOC=1
 export TF_ENABLE_XLA=1
 export TF_NEED_VERBS=0
 export TF_CUDA_CLANG=0
-export TF_CUDNN_VERSION=7
-export TF_NEED_MKL=0
-export TF_DOWNLOAD_MKL=0
+# export TF_NEED_MKL=0
+# export TF_DOWNLOAD_MKL=0
 export TF_NEED_AWS=0
 export TF_NEED_KAFKA=0
 export TF_SET_ANDROID_WORKSPACE=0
@@ -73,6 +74,7 @@ export TF_NEED_S3=0
 export TF_NEED_OPENCL_SYCL=0
 export TF_NEED_COMPUTECPP=0
 export CC_OPT_FLAGS="-march=native"
+export TORCH_CUDA_ARCH_LIST="6.0 7.0"
 
 if [[ -d /opt/intel/mkl ]]; then
 	export MKLROOT=/opt/intel/mkl
@@ -94,6 +96,10 @@ function try_use_cudnn() {
 	if [[ -d "$1/lib64" ]]; then
 		export LD_LIBRARY_PATH=$1/lib64:$LD_LIBRARY_PATH
 		export LIBRARY_PATH=$1/lib64:$LIBRARY_PATH
+    # for pytorch build
+		export CUDNN_ROOT_DIR=$1
+		export CUDNN_INCLUDE_DIR=$1/include
+		export CUDNN_LIB_DIR=$1/lib64
 	fi
 }
 try_use_cuda_home /usr/local/cuda
