@@ -263,6 +263,10 @@ alias nohistory='unset HISTFILE'
 
 # key binding f[[
 bindkey -e
+bindkey -r "^G"  # C-G was bind to break in emacs
+bindkey -r "^[c"
+bindkey -r "^[l"
+bindkey -r "^[u"
 autoload edit-command-line
 zle -N edit-command-line
 bindkey -M viins '^v' edit-command-line
