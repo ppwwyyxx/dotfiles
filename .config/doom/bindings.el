@@ -245,8 +245,9 @@
      "C-f"    #'forward-word
 
      ;; movement
-     "C-k"    #'ivy-previous-line
-     "C-j"    #'ivy-next-line
+		 ;; this allows us to move out of ivy buffer
+     "C-k"    #'evil-window-up
+     "C-j"    #'evil-window-down
      ;; split window and execute action, similar to ctrlp.vim
      "C-v"    (lambda! (my/ivy-exit-new-window 'right))
      "C-s"    (lambda! (my/ivy-exit-new-window 'below))
