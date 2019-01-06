@@ -86,6 +86,7 @@
                 )))
 
 (after! ivy
+  (setq counsel-find-file-ignore-regexp "\\.elc\\'\\|\\.pyc\\'\\|\\.o\\'")
   (defun my/ivy-exit-new-window (side)
     (let ((current-act (ivy--get-action ivy-last))
           (current-caller (ivy-state-caller ivy-last)))

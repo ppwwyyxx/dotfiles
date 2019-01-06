@@ -18,7 +18,9 @@
   )
 
 (after! neotree
-  (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+  (setq neo-show-hidden-files nil)
+  )
 
 (after! doom-themes
   ;; https://github.com/hlissner/emacs-doom-themes/issues/180
