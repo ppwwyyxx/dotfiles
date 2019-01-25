@@ -1,6 +1,31 @@
 ;;; -*- lexical-binding: t; no-byte-compile: t -*-
 
-(setq doom-font (font-spec :family "Monospace" :size 20))
+;; https://emacs.stackexchange.com/questions/28390/quickly-adjusting-text-to-dpi-changes
+(defun myself/get-dpi ()
+  (let* ((attrs (car (display-monitor-attributes-list)))
+         (size (assoc 'mm-size attrs))
+         (sizex (cadr size))
+         (res (cdr (assoc 'geometry attrs)))
+         (resx (- (caddr res) (car res)))
+         dpi)
+    (catch 'exit
+      ;; in terminal
+      (unless sizex
+        (throw 'exit 10))
+      ;; on big screen
+      (when (> sizex 1000)
+        (throw 'exit 10))
+      ;; DPI
+      (* (/ (float resx) sizex) 25.4))))
+
+(defun myself/preferred-font-size ()
+  (let ( (dpi (myself/get-dpi)) )
+  (cond
+    ((< dpi 110) 20)
+    ((< dpi 130) 24)
+    (t 28))))
+
+(setq doom-font (font-spec :family "Monospace" :size (myself/preferred-font-size)))
 
 (unless (display-graphic-p)
   (custom-set-faces
