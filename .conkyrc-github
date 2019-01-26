@@ -1,0 +1,46 @@
+-- vim: ts=4 sw=4 noet ai cindent syntax=lua
+
+conky.config = {
+	update_interval = 2,
+	own_window = true,
+	own_window_transparent = true,
+	own_window_type = 'override',
+	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+	double_buffer = true,
+-- fonts
+	use_xft = true,
+	text_buffer_size = 2048,
+	xftalpha = 0.7,
+	font = 'arial black:size=12',
+	uppercase = false,
+	use_spacer = 'none',
+
+-- apperances
+	draw_shades = false,
+	draw_outline = false,
+	draw_borders = false,
+	stippled_borders = 0,
+	border_width = 0,
+	default_color = 'grey',
+	own_window_colour = 'white',
+
+	no_buffers = true,
+	cpu_avg_samples = 2,
+	net_avg_samples = 2,
+	override_utf8_locale = true,
+
+-- position
+	alignment = 'bottom_right',
+	gap_x = 5,
+	gap_y = 10,
+	top_name_width = 100,
+	minimum_width = 705,
+	minimum_height = 105
+
+}
+
+conky.text = [[
+TEST
+${image ~/a.png}
+]]
+--FAN: $font$color${ibm_fan}rpm${alignr}

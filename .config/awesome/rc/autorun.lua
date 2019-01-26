@@ -1,7 +1,7 @@
 local autorun_items = {
   "mkdir -p /tmp/t && mkdir /t/mnt{,2,3} /t/mac",
   "xcape -e 'Control_L=Escape;Hyper_L=XF86Mail'",
-  "wicd-gtk",
+  -- "wicd-gtk",
 
   "sleep 3 && compton --config ~/.compton.conf",  -- https://github.com/awesomeWM/awesome/issues/1660
   "dunst -config ~/.dunstrc",
