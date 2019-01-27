@@ -1,11 +1,19 @@
 ;;; -*- lexical-binding: t; no-byte-compile: t -*-
 
+
 (after! evil-mc
   (global-evil-mc-mode 0)
   (add-hook 'evil-mc-after-cursors-deleted #'turn-off-evil-mc-mode))
 
 ;; expand-region's prompt can't tell what key contract-region is bound to, so we tell it explicitly.
 (setq expand-region-contract-fast-key "H")
+
+
+;; Make M-x harder to miss
+(define-key! 'override
+  "M-x" #'execute-extended-command
+  "A-x" #'execute-extended-command
+  "s-x" #'execute-extended-command)
 
 (map!
  ;; Ensure there are no conflicts
@@ -27,9 +35,6 @@
  :gnvime "M-l" nil
  :gnvime "M-h" nil
 
-
- ;; Make M-x available everywhere
- :gnvime "M-x" #'execute-extended-command
  :gnvime "C-x C-b" #'ibuffer
 
  :n "M-r"   #'+eval/buffer
@@ -53,8 +58,8 @@
  :nm "gw" #'avy-goto-word-1
  :n  "gx"  #'evil-exchange  ; https://github.com/tommcdo/vim-exchange
 
- :nv "C-a"   #'evil-numbers/inc-at-pt
- :nv "C-S-a" #'evil-numbers/dec-at-pt
+ ;; :nv "C-a"   #'evil-numbers/inc-at-pt
+ ;; :nv "C-S-a" #'evil-numbers/dec-at-pt
 
  ;; Vim-like editing commands
  :i "C-j"   #'evil-next-line
@@ -63,8 +68,8 @@
  :i "C-l"   #'evil-forward-char
 
  :i "C-S-V" #'yank
- :i "C-a"   #'doom/backward-to-bol-or-indent
- :i "C-e"   #'doom/forward-to-last-non-comment-or-eol
+ :gi "C-a"   #'doom/backward-to-bol-or-indent
+ :gi "C-e"   #'doom/forward-to-last-non-comment-or-eol
  :i "C-u"   #'doom/backward-kill-to-bol-and-indent
  :i "C-b"   #'backward-word
  :i "C-f"   #'forward-word
@@ -124,6 +129,9 @@
 
  :nme "C--" #'text-scale-decrease
  :nme "C-=" #'text-scale-increase
+ :nme "C-0" (lambda! (text-scale-set 0))
+ "<C-mouse-5>" #'text-scale-decrease
+ "<C-mouse-4>" #'text-scale-increase
 
  ;; company-mode
  "C-SPC" nil  ;; clear
@@ -320,8 +328,6 @@
 
 
 (map! :leader
-      ;; :desc "M-x"                     :nv ":"  #'execute-extended-command
-                                        ; jumps:
       :desc "Find file in project"       :n "SPC" #'projectile-find-file
       :desc "Switch workspace buffer"    :n ","   #'persp-switch-to-buffer
       :desc "Switch buffer"              :n "<"   #'switch-to-buffer
@@ -359,7 +365,8 @@
         :desc "Online providers"       :nv "o" #'+lookup/online-select)
 
       (:desc "workspace" :prefix [tab]
-        :desc "Display tab bar"          :n [tab] #'+workspace/display
+        ;;:desc "Display tab bar"          :n [tab] #'+workspace/display
+        :desc "Switch workspace"         :n [tab] #'+workspace/switch-to
         :desc "New workspace"            :n "n"   #'+workspace/new
         :desc "Load last session"        :n "L"   #'+workspace/load-session
         :desc "Autosave current session" :n "S"   #'+workspace/save-session
