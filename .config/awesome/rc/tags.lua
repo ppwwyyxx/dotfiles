@@ -38,8 +38,47 @@ end
 
 local tag_name = { "1", "2", "chat", "0"}
 local tags = {}   -- tags: screen -> table of tags
+
+local function handle_orphan_tag(t)
+  -- called when the tag t has no screen
+
+  -- Find a live screen
+  local live_screen = nil;
+  for s in screen do
+      if s ~= t.screen then
+          live_screen = s;
+          break
+      end
+  end
+  myutil.move_clients_among_screen(t.screen, live_screen)
+end
+
+local function put_clients_on_largest_screen()
+  local target = nil
+  local area = 0
+  for s in screen do
+    local screen_area = s.geometry.width * s.geometry.height
+    if screen_area > area then
+      area = screen_area
+      target = s
+    end
+  end
+
+  for s in screen do
+    if s.index ~= target.index then
+      myutil.move_clients_among_screen(s, target)
+    end
+  end
+end
+
 awful.screen.connect_for_each_screen(function(s)
     tags[s] = awful.tag(tag_name, s, const.default_layout)
+    for i, tag in pairs(s.tags) do
+      tag:connect_signal("request::screen", handle_orphan_tag)
+    end
+    if s.index ~= 1 then
+      put_clients_on_largest_screen()
+    end
 end)
 
 -- because 0 is on the right of keyboard

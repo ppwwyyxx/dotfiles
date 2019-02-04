@@ -17,7 +17,7 @@ local autorun_items = {
   "nvidia-smi",
 
   --"/home/wyx/bin/cvim-server.py",
-  "/home/wyx/bin/background/notify-daemon.py",
+  "sleep 180 && /home/wyx/bin/background/notify-daemon.py",
   "sleep 30 && QT_STYLE_OVERRIDE= telegram-desktop",
 
   --"sleep 100 && dropbox",

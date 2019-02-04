@@ -120,4 +120,18 @@ function myutil.remove_by_value(tbl, val)
   return pos
 end
 
+function myutil.move_clients_among_screen(src, dst)
+  -- src, dst: both are screen
+  if src.index == dst.index then return end
+  for _, c in ipairs(src.all_clients) do
+    c:move_to_screen(dst)
+    local oldtags = c:tags()
+    local newtags = {}
+    for _, t in ipairs(oldtags) do
+      table.insert(newtags, dst.tags[t.index])
+    end
+    c:tags(newtags)
+  end
+end
+
 return myutil

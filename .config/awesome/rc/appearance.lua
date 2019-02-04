@@ -27,6 +27,7 @@ local wp_timer = gears.timer({ timeout = wp_timeout })
 wp_timer:connect_signal("timeout", changewp)
 wp_timer:start()
 
+
 awful.screen.connect_for_each_screen(function(s)
   if s.index ~= 1 then
     gears.wallpaper.maximized(wp_path .. "dark.jpg", s, true)

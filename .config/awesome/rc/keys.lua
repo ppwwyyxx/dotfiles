@@ -21,16 +21,8 @@ ROOT_KEYS = gears.table.join(
     local cur_screen = mouse.screen.index
     local dest = screen[3 - cur_screen]
     for s in screen do
-      for _, c in ipairs(s.all_clients) do
-        if c.screen ~= dest then
-          c:move_to_screen(dest)
-          local oldtags = c:tags()
-          local newtags = {}
-          for _, t in ipairs(oldtags) do
-            table.insert(newtags, dest.tags[t.index])
-          end
-          c:tags(newtags)
-        end
+      if s.index ~= dest.index then
+        myutil.move_clients_among_screen(s, dest)
       end
     end
   end),
@@ -262,9 +254,10 @@ local CLIENT_KEYS = gears.table.join(
 	awful.key({altkey}, "F12",  function(c) c.above = not c.above            end),
 	awful.key({altkey}, "F9",   function(c) c.minimized = true end),
   awful.key({altkey}, "F10",  toggle_maximize),
-  awful.key({modkey}, "Up",  function(c)
-    myutil.moveresize_abs(0, 0, 1, 1, c)
-  end)
+  awful.key({modkey}, "Up",  toggle_maximize)
+  -- awful.key({modkey}, "Up",  function(c)
+  --   myutil.moveresize_abs(0, 0, 1, 1, c)
+  -- end)
 )
 
 local CLIENT_BUTTONS = gears.table.join(
