@@ -53,7 +53,6 @@ fi
 
 
 # dev libraries
-# export TF_CUDA_VERSION=9.0
 export TF_CUDNN_VERSION=7
 export TF_NEED_GCP=0
 export TF_NEED_ROCM=0
@@ -458,11 +457,11 @@ user-complete(){
 		return
 	fi
 	if [[ $BUFFER =~ "^\.\.\.*$" ]]; then
-		BUFFER=`echo "$BUFFER" |sed 's/^/cd\ /g'`
+	 	BUFFER=`echo "$BUFFER" |sed 's/^/cd\ /g'`
 		zle end-of-line
 		user-complete
 		return
-	elif [[ $BUFFER =~ ".*\.\.\..*$" ]] ;then
+	elif [[ $BUFFER =~ ".* \.\.\..*$" ]] ;then
 		BUFFER=`echo "$BUFFER" |sed 's/\.\.\./\.\.\/\.\./g'`
 		zle end-of-line
 		user-complete
@@ -479,7 +478,7 @@ path_parse(){
 	if [[ $BUFFER = "." ]]; then
 		BUFFER="cd ../"
 		return
-	elif [[ $BUFFER =~ ".*\.\.\..*" ]] ;then	# expand ...
+	elif [[ $BUFFER =~ ".* \.\.\..*" ]] ;then	# expand ...
 		BUFFER=`echo "$BUFFER" |sed 's/\.\.\./\.\.\/\.\./g'`
 		path_parse
 	elif [[ $BUFFER =~ "^\.\..*" ]]; then		# auto add cd to the beginning of ...
