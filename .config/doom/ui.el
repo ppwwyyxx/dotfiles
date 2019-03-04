@@ -81,7 +81,7 @@
   )
 
 ;; modeline
-(when (featurep! :ui modeline)
+(after! doom-modeline
   (setq +modeline-bar-at-end t)
   (defface my/modeline-state-normal `((t (:inherit doom-modeline-panel :background "#AFD700")))
     "" :group '+modeilne)
@@ -101,33 +101,26 @@
       (propertize (car name-and-face) 'face (cadr name-and-face))
       ))
 
-  (def-modeline-segment! +modeline-my-state
+  (doom-modeline-def-segment my/modeline-state
     "Override doom internal modeline segments"
-    (let ((meta (concat (+modeline--macro-recording)
-                        (+modeline--anzu)
-                        (+modeline--evil-substitute)
-                        (+modeline--iedit))))
-      (or (and (not (equal meta "")) meta)
-          (if (eq (selected-window) +modeline-current-window)
-              (+modeline-evil-state)
-            nil
-            ))))
+    (if (eq (selected-window) doom-modeline-current-window)
+        (+modeline-evil-state)
+      nil)
+    )
+;;    (let ((meta (concat (+modeline--macro-recording)
+;;                        (+modeline--anzu)
+;;                        (+modeline--evil-substitute)
+;;                        (+modeline--iedit))))
+;;      (or (and (not (equal meta "")) meta)
+;;          (if (eq (selected-window) +modeline-current-window)
+;;              (+modeline-evil-state)
+;;            nil
+;;            ))))
 
-  (def-modeline-format! :myown
-    '(+modeline-my-state
-      " "
-      +modeline-buffer-state
-      +modeline-buffer-id
-      "  %2l:%c %p  "
-      +modeline-selection-info)
-    '(+modeline-encoding
-      +modeline-major-mode
-      " "
-      +mode-line-misc-info
-      (vc-mode (" " +modeline-vcs " "))
-      mode-line-process
-      +modeline-flycheck))
-  (set-modeline! :myown t))
+  (doom-modeline-def-modeline 'main
+    '(my/modeline-state matches buffer-info remote-host buffer-position selection-info)
+    '(misc-info persp-name irc mu4e github debug input-method lsp major-mode process vcs checker))
+  )
 
 (def-package! highlight-indent-guides
   :when (display-graphic-p)

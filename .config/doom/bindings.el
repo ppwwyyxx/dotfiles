@@ -1,30 +1,85 @@
 ;;; -*- lexical-binding: t; no-byte-compile: t -*-
 
+;; expand-region's prompt can't tell what key contract-region is bound to, so we tell it explicitly.
+(setq expand-region-contract-fast-key "H")
+
+;; Don't let evil-collection interfere with certain keys
+(setq evil-collection-key-blacklist
+      (list "C-j" "C-k"
+            "gd" "gf" "K"
+            "[" "]"
+            ";"  ;; my custom :
+            doom-leader-key doom-localleader-key
+            doom-leader-alt-key doom-localleader-alt-key))
 
 (after! evil-mc
   (global-evil-mc-mode 0)
   (add-hook 'evil-mc-after-cursors-deleted #'turn-off-evil-mc-mode))
 
-;; expand-region's prompt can't tell what key contract-region is bound to, so we tell it explicitly.
-(setq expand-region-contract-fast-key "H")
-
-
 ;; Make M-x harder to miss
 (define-key! 'override
   "M-x" #'execute-extended-command
-  "A-x" #'execute-extended-command
-  "s-x" #'execute-extended-command)
+  "A-x" #'execute-extended-command)
+
+;; Smarter C-a/C-e for both Emacs and Evil. C-a will jump to indentation.
+;; Pressing it again will send you to the true bol. Same goes for C-e, except
+;; it will ignore comments+trailing whitespace before jumping to eol.
+(map! :gi "C-a" #'doom/backward-to-bol-or-indent
+    :gi "C-e" #'doom/forward-to-last-non-comment-or-eol
+    ;; Standardize the behavior of M-RET/M-S-RET as a "add new item
+    ;; below/above" key.
+    :gni [M-return]    #'+default/newline-below
+    :gni [M-S-return]  #'+default/newline-above
+    :gni [C-return]    #'+default/newline-below
+    :gni [C-S-return]  #'+default/newline-above)
 
 (map!
+
+ [remap evil-jump-to-tag] #'projectile-find-tag
+ [remap find-tag]         #'projectile-find-tag
+
  ;; Ensure there are no conflicts
  :nmvo doom-leader-key nil
  :nmvo doom-localleader-key nil
 
- ;; swap ret/c-j
- :gi "RET" #'newline-and-indent
- :i "C-j" #'+default/newline
- ;;(:after debug :map debugger-mode-map
- ;;  :nmvo doom-leader-key nil)
+ ;; Smarter RET in normal mode
+ :n "RET" (general-predicate-dispatch nil
+            (and (bound-and-true-p flyspell-mode)
+                 (+flyspell-correction-at-point-p))
+            'flyspell-correct-word-generic)
+
+ ;; Smarter newlines
+ :i [remap newline] #'newline-and-indent  ; auto-indent on newline
+ :i "C-j"           #'+default/newline    ; default behavior
+
+ ;; expand-region
+ :v "L"   (general-predicate-dispatch 'er/expand-region
+            (eq (evil-visual-type) 'line)
+            'evil-visual-char)
+ :v "H" #'er/contract-region
+
+ :n [tab] (general-predicate-dispatch nil
+             (derived-mode-p 'magit-mode)
+             'magit-section-toggle
+             (derived-mode-p 'deadgrep-mode)
+             'deadgrep-toggle-file-results
+             (and (featurep! :editor fold)
+                 (save-excursion (end-of-line) (invisible-p (point))))
+             '+fold/toggle
+             (fboundp 'evilmi-jump-items)
+             'evilmi-jump-items)
+ :v [tab] (general-predicate-dispatch nil
+             (and (bound-and-true-p yas-minor-mode)
+                 (or (eq evil-visual-selection 'line)
+                     (and (fboundp 'evilmi-jump-items)
+                         (save-excursion
+                             (/= (point)
+                                 (progn (evilmi-jump-items nil)
+                                     (point)))))))
+             'yas-insert-snippet
+             (fboundp 'evilmi-jump-items)
+             'evilmi-jump-items)
+
  (:after dired :map dired-mode-map
    :nmv ";" nil
    :nmv "]" nil
@@ -35,16 +90,20 @@
  :gnvime "M-l" nil
  :gnvime "M-h" nil
 
+ :n  "gp"    #'+evil/reselect-paste
+ :n  "g="    #'widen
+ :v  "g="    #'+evil:narrow-buffer
+ :nm "gw" #'avy-goto-word-1
+ :n  "gx"  #'evil-exchange  ; https://github.com/tommcdo/vim-exchange
+
  :gnvime "C-x C-b" #'ibuffer
 
  :n "M-r"   #'+eval/buffer
  :n "M-f"   #'swiper
- ;;:n  "M-s"   #'save-buffer
 
  :nm  ";"     #'evil-ex
  :nm  "*"     #'highlight-symbol-at-point
 
- :nv [tab]   #'+evil/matchit-or-toggle-fold
  ;; delete to blackhole register
  :v  [delete] (lambda! ()
                        (let ((evil-this-register ?_))
@@ -55,11 +114,6 @@
  :nv "K"  #'+lookup/documentation
  :nm "gd" #'+lookup/definition
  :nm "gD" #'+lookup/references
- :nm "gw" #'avy-goto-word-1
- :n  "gx"  #'evil-exchange  ; https://github.com/tommcdo/vim-exchange
-
- ;; :nv "C-a"   #'evil-numbers/inc-at-pt
- ;; :nv "C-S-a" #'evil-numbers/dec-at-pt
 
  ;; Vim-like editing commands
  :i "C-j"   #'evil-next-line
@@ -67,9 +121,44 @@
  :i "C-h"   #'evil-backward-char
  :i "C-l"   #'evil-forward-char
 
+ ;; window management
+ :nm "C-h"   #'evil-window-left
+ :nm "C-j"   #'evil-window-down
+ :nm "C-k"   #'evil-window-up
+ :nm "C-l"   #'evil-window-right
+ (:map evil-window-map ; prefix "C-w"
+   ;; Navigation
+   "C-h"     #'evil-window-left
+   "C-j"     #'evil-window-down
+   "C-k"     #'evil-window-up
+   "C-l"     #'evil-window-right
+   "C-w"     #'other-window
+   ;; Swapping windows
+   "H"       #'+evil/window-move-left
+   "J"       #'+evil/window-move-down
+   "K"       #'+evil/window-move-up
+   "L"       #'+evil/window-move-right
+   ;; Window undo/redo
+   "u"       #'winner-undo
+   "C-r"     #'winner-redo
+   "o"       #'doom/window-enlargen
+   ;; Delete window
+   "c"       #'+workspace/close-window-or-workspace
+   "C-C"     #'ace-delete-window
+   [up]      #'evil-window-increase-height
+   [down]    #'evil-window-decrease-height
+   [right]   #'evil-window-increase-width
+   [left]    #'evil-window-decrease-width)
+
+ :textobj "x" #'evil-inner-xml-attr               #'evil-outer-xml-attr
+ :textobj "a" #'evil-inner-arg                    #'evil-outer-arg
+ :textobj "B" #'evil-textobj-anyblock-inner-block #'evil-textobj-anyblock-a-block
+ :textobj "i" #'evil-indent-plus-i-indent         #'evil-indent-plus-a-indent
+ :textobj "k" #'evil-indent-plus-i-indent-up      #'evil-indent-plus-a-indent-up
+ :textobj "j" #'evil-indent-plus-i-indent-up-down #'evil-indent-plus-a-indent-up-down
+
+
  :i "C-S-V" #'yank
- :gi "C-a"   #'doom/backward-to-bol-or-indent
- :gi "C-e"   #'doom/forward-to-last-non-comment-or-eol
  :i "C-u"   #'doom/backward-kill-to-bol-and-indent
  :i "C-b"   #'backward-word
  :i "C-f"   #'forward-word
@@ -94,34 +183,26 @@
    "C-S-V" #'yank
    )
 
- ;; expand-region
- :v  "L"  #'er/expand-region
- :v  "H"  #'er/contract-region
-
  ;; workspace/tab related
- :nm "M-t"       #'+workspace/new
- :nm "M-T"       #'+workspace/display
- :nmi "M-1"       (λ! (+workspace/switch-to 0))
- :nmi "M-2"       (λ! (+workspace/switch-to 1))
- :nmi "M-3"       (λ! (+workspace/switch-to 2))
- :nmi "M-4"       (λ! (+workspace/switch-to 3))
- :nmi "M-5"       (λ! (+workspace/switch-to 4))
- :nmi "M-6"       (λ! (+workspace/switch-to 5))
- :nmi "M-7"       (λ! (+workspace/switch-to 6))
- :nmi "M-8"       (λ! (+workspace/switch-to 7))
- :nmi "M-9"       (λ! (+workspace/switch-to 8))
- :nmi "M-0"       #'+workspace/switch-to-last
- ;; window management
- :nm "C-h"   #'evil-window-left
- :nm "C-j"   #'evil-window-down
- :nm "C-k"   #'evil-window-up
- :nm "C-l"   #'evil-window-right
+ (:when (featurep! :feature workspaces)
+   :nm "M-t"       #'+workspace/new
+   :nm "M-T"       #'+workspace/display
+   :nmi "M-1"       (λ! (+workspace/switch-to 0))
+   :nmi "M-2"       (λ! (+workspace/switch-to 1))
+   :nmi "M-3"       (λ! (+workspace/switch-to 2))
+   :nmi "M-4"       (λ! (+workspace/switch-to 3))
+   :nmi "M-5"       (λ! (+workspace/switch-to 4))
+   :nmi "M-6"       (λ! (+workspace/switch-to 5))
+   :nmi "M-7"       (λ! (+workspace/switch-to 6))
+   :nmi "M-8"       (λ! (+workspace/switch-to 7))
+   :nmi "M-9"       (λ! (+workspace/switch-to 8))
+   :nmi "M-0"       #'+workspace/switch-to-last
+   :nm  "]w" #'+workspace/switch-right
+   :nm  "[w" #'+workspace/switch-left)
 
- :nm  "]b" #'next-buffer
- :nm  "[b" #'previous-buffer
+ :n  "]b" #'next-buffer
+ :n  "[b" #'previous-buffer
  ;; TODO if under GUI, use alt-hl
- :nm  "]w" #'+workspace/switch-right
- :nm  "[w" #'+workspace/switch-left
  :nm  "]e" #'next-error
  :nm  "[e" #'previous-error
  :nm  "]d" #'git-gutter:next-hunk
@@ -177,35 +258,6 @@
    "C-SPC"    #'ivy-call-and-recenter ; preview
    )
 
- (:after evil
-   :textobj "a" #'evil-inner-arg                    #'evil-outer-arg
-   :textobj "i" #'evil-indent-plus-i-indent         #'evil-indent-plus-a-indent
-   (:map evil-window-map ; prefix "C-w"
-     ;; Navigation
-     "C-h"     #'evil-window-left
-     "C-j"     #'evil-window-down
-     "C-k"     #'evil-window-up
-     "C-l"     #'evil-window-right
-     "C-w"     #'other-window
-     ;; Swapping windows
-     "H"       #'+evil/window-move-left
-     "J"       #'+evil/window-move-down
-     "K"       #'+evil/window-move-up
-     "L"       #'+evil/window-move-right
-     ;; Window undo/redo
-     "u"       #'winner-undo
-     "C-r"     #'winner-redo
-     "o"       #'doom/window-enlargen
-     ;; Delete window
-     "c"       #'+workspace/close-window-or-workspace
-     "C-C"     #'ace-delete-window
-     [up]      #'evil-window-increase-height
-     [down]    #'evil-window-decrease-height
-     [right]   #'evil-window-increase-width
-     [left]    #'evil-window-decrease-width
-     )
-   )
-
  ;; doom already clears the map, which is nice!
  (:after evil-mc :map evil-mc-key-map
    :nv "C-n" #'evil-mc-make-and-goto-next-match
@@ -239,6 +291,10 @@
      :n "q"   #'git-timemachine-quit
      :n "gb"  #'git-timemachine-blame))
 
+ (:after vc-annotate
+   :map vc-annotate-mode-map
+   [remap quit-window] #'kill-this-buffer)
+
  ;; ivy
  (:after ivy
    (:map ivy-minibuffer-map
@@ -253,7 +309,7 @@
      "C-f"    #'forward-word
 
      ;; movement
-		 ;; this allows us to move out of ivy buffer
+     ;; this allows us to move out of ivy buffer
      "C-k"    #'evil-window-up
      "C-j"    #'evil-window-down
      ;; split window and execute action, similar to ctrlp.vim
@@ -315,9 +371,9 @@
      :map comint-mode-map [tab] #'company-complete))
 
  (:map* (help-mode-map helpful-mode-map)
-   :n "o"  #'ace-link-help
-   :n "q"  #'quit-window
-   :n "Q"  #'ivy-resume)
+        :n "o"  #'ace-link-help
+        :n "q"  #'quit-window
+        :n "Q"  #'ivy-resume)
 
  (:after goto-addr
    :map goto-address-highlight-keymap
@@ -389,8 +445,8 @@
 
       (:desc "code" :prefix "c"
                                         ; TODO https://github.com/redguardtoo/evil-nerd-commenter
+        :desc "Commentary"              :n "c" #'evil-commentary-line
         :desc "Commentary"              :v "c" #'evil-commentary
-        :n "c" #'evil-commentary-line
         :desc "List errors"             :n "x" #'flycheck-list-errors
         :desc "Evaluate buffer/region"  :n "e" #'+eval/buffer
         :v "e" #'+eval/region
@@ -418,7 +474,7 @@
 
         :desc "Find file in emacs.d"      :n "e" #'+default/find-in-emacsd
         :desc "Browse emacs.d"            :n "E" #'+default/browse-emacsd
-        :desc "Find file in dotfiles"     :n "D" #'+default/find-in-config)
+        :desc "Find file in dotfiles"     :n "D" #'doom/find-file-in-private-config)
 
       (:desc "git" :prefix "g"
         :desc "Magit blame"            :n  "b" #'magit-blame-addition
@@ -527,9 +583,3 @@
 ;;       (format "doom-define-key-in-%s" map))))
 
 ;; (add-hook 'evil-collection-setup-hook #'+config|save-my-favorite-keys)
-
-(setq evil-collection-key-blacklist
-      (list "C-j" "C-k"
-            "gd" "gf" "K"
-            "[" "]"
-            ";" doom-leader-key))
