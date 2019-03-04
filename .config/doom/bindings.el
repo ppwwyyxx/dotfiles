@@ -1,5 +1,15 @@
 ;;; -*- lexical-binding: t; no-byte-compile: t -*-
 
+(defvar +default-minibuffer-maps
+  `(minibuffer-local-map
+    minibuffer-local-ns-map
+    minibuffer-local-completion-map
+    minibuffer-local-must-match-map
+    minibuffer-local-isearch-map
+    read-expression-map
+    ,@(if (featurep! :completion ivy) '(ivy-minibuffer-map)))
+  "A list of all the keymaps used for the minibuffer.")
+
 ;; expand-region's prompt can't tell what key contract-region is bound to, so we tell it explicitly.
 (setq expand-region-contract-fast-key "H")
 
@@ -25,16 +35,15 @@
 ;; Pressing it again will send you to the true bol. Same goes for C-e, except
 ;; it will ignore comments+trailing whitespace before jumping to eol.
 (map! :gi "C-a" #'doom/backward-to-bol-or-indent
-    :gi "C-e" #'doom/forward-to-last-non-comment-or-eol
-    ;; Standardize the behavior of M-RET/M-S-RET as a "add new item
-    ;; below/above" key.
-    :gni [M-return]    #'+default/newline-below
-    :gni [M-S-return]  #'+default/newline-above
-    :gni [C-return]    #'+default/newline-below
-    :gni [C-S-return]  #'+default/newline-above)
+      :gi "C-e" #'doom/forward-to-last-non-comment-or-eol
+      ;; Standardize the behavior of M-RET/M-S-RET as a "add new item
+      ;; below/above" key.
+      :gni [M-return]    #'+default/newline-below
+      :gni [M-S-return]  #'+default/newline-above
+      :gni [C-return]    #'+default/newline-below
+      :gni [C-S-return]  #'+default/newline-above)
 
 (map!
-
  [remap evil-jump-to-tag] #'projectile-find-tag
  [remap find-tag]         #'projectile-find-tag
 
@@ -58,37 +67,44 @@
             'evil-visual-char)
  :v "H" #'er/contract-region
 
+ ;; smarter tab
  :n [tab] (general-predicate-dispatch nil
-             (derived-mode-p 'magit-mode)
-             'magit-section-toggle
-             (derived-mode-p 'deadgrep-mode)
-             'deadgrep-toggle-file-results
-             (and (featurep! :editor fold)
+            (derived-mode-p 'magit-mode)
+            'magit-section-toggle
+            (derived-mode-p 'deadgrep-mode)
+            'deadgrep-toggle-file-results
+            (and (featurep! :editor fold)
                  (save-excursion (end-of-line) (invisible-p (point))))
-             '+fold/toggle
-             (fboundp 'evilmi-jump-items)
-             'evilmi-jump-items)
+            '+fold/toggle
+            (fboundp 'evilmi-jump-items)
+            'evilmi-jump-items)
  :v [tab] (general-predicate-dispatch nil
-             (and (bound-and-true-p yas-minor-mode)
+            (and (bound-and-true-p yas-minor-mode)
                  (or (eq evil-visual-selection 'line)
                      (and (fboundp 'evilmi-jump-items)
-                         (save-excursion
-                             (/= (point)
-                                 (progn (evilmi-jump-items nil)
-                                     (point)))))))
-             'yas-insert-snippet
-             (fboundp 'evilmi-jump-items)
-             'evilmi-jump-items)
+                          (save-excursion
+                            (/= (point)
+                                (progn (evilmi-jump-items nil)
+                                       (point)))))))
+            'yas-insert-snippet
+            (fboundp 'evilmi-jump-items)
+            'evilmi-jump-items)
 
- (:after dired :map dired-mode-map
-   :nmv ";" nil
-   :nmv "]" nil
-   :nmv "[" nil)
+ (:after vc-annotate
+   :map vc-annotate-mode-map
+   [remap quit-window] #'kill-this-buffer)
+
+ (:map (help-mode-map helpful-mode-map)
+   :n "o"  #'ace-link-help
+   :n "q"  #'quit-window)
 
  ;; --- Global keybindings ---------------------------
  ;; clean-ups:
  :gnvime "M-l" nil
  :gnvime "M-h" nil
+
+ :n  "]b" #'next-buffer
+ :n  "[b" #'previous-buffer
 
  :n  "gp"    #'+evil/reselect-paste
  :n  "g="    #'widen
@@ -98,22 +114,16 @@
 
  :gnvime "C-x C-b" #'ibuffer
 
- :n "M-r"   #'+eval/buffer
  :n "M-f"   #'swiper
 
  :nm  ";"     #'evil-ex
  :nm  "*"     #'highlight-symbol-at-point
+ :i "C-S-V"   #'yank
 
  ;; delete to blackhole register
  :v  [delete] (lambda! ()
                        (let ((evil-this-register ?_))
                          (call-interactively #'evil-delete)))
-
- (:when IS-LINUX
-   :nvm "C-z" #'zeal-at-point)
- :nv "K"  #'+lookup/documentation
- :nm "gd" #'+lookup/definition
- :nm "gD" #'+lookup/references
 
  ;; Vim-like editing commands
  :i "C-j"   #'evil-next-line
@@ -157,31 +167,95 @@
  :textobj "k" #'evil-indent-plus-i-indent-up      #'evil-indent-plus-a-indent-up
  :textobj "j" #'evil-indent-plus-i-indent-up-down #'evil-indent-plus-a-indent-up-down
 
+ ;; evil-surround
+ :v "s" #'evil-surround-region
+ :o "s" #'evil-surround-edit
 
- :i "C-S-V" #'yank
- :i "C-u"   #'doom/backward-kill-to-bol-and-indent
- :i "C-b"   #'backward-word
- :i "C-f"   #'forward-word
- (:map (minibuffer-local-map
-        minibuffer-local-ns-map
-        minibuffer-local-completion-map
-        minibuffer-local-must-match-map
-        minibuffer-local-isearch-map
-        read-expression-map)
-   [escape] #'abort-recursive-edit
-   "C-a"    #'move-beginning-of-line
-   "C-w"    #'backward-kill-word
-   "C-u"    #'backward-kill-sentence
-   "C-b"    #'backward-word
-   "C-f"    #'forward-word
-   "C-S-V"  #'yank
+ (:after dired :map dired-mode-map
+   :nmv ";" nil
+   :nmv "]" nil
+   :nmv "[" nil)
+)
+
+
+;;
+;; Universal evil integration
+(when (featurep! :feature evil +everywhere)
+  (map!
+   ;; Have C-u behave similarly to `doom/backward-to-bol-or-indent'.
+   ;; NOTE SPC u replaces C-u as the universal argument.
+   :gi "C-u"   #'doom/backward-kill-to-bol-and-indent
+   :gi "C-w"   #'backward-kill-word
+   ;; Vimmish ex motion keys
+   :gi "C-b"   #'backward-word
+   :gi "C-f"   #'forward-word)
+
+  (after! view
+    (define-key view-mode-map [escape] #'View-quit-all))
+  (after! man
+    (evil-define-key* 'normal Man-mode-map "q" #'kill-this-buffer))
+
+  ;; Minibuffer
+  (define-key! evil-ex-completion-map
+    "C-a"   #'move-beginning-of-line
+    "C-b"   #'backward-word
+    "C-f"   #'forward-word
+    "C-S-V" #'yank
+    "C-s" (if (featurep! :completion ivy)
+              #'counsel-minibuffer-history
+            #'helm-minibuffer-history))
+
+  (define-key! :keymaps +default-minibuffer-maps
+    [escape] #'abort-recursive-edit
+    "C-S-V"  #'yank
+    "C-a"    #'move-beginning-of-line
+    "C-w"    #'backward-kill-word
+    "C-u"    #'backward-kill-sentence
+    "C-b"    #'backward-word
+    "C-f"    #'forward-word)
+  )
+
+;;
+;; Module keybinds
+
+;;; :feature
+(map!
+ (:when (featurep! :feature eval)
+   :g  "M-r" #'+eval/buffer)
+
+ (:when (featurep! :feature lookup)
+   :nv "K"  #'+lookup/documentation
+   :nv "gd" #'+lookup/definition
+   :nv "gD" #'+lookup/references
+   :nv "gf" #'+lookup/file
    )
- (:after evil :map evil-ex-completion-map
-   "C-a"   #'move-beginning-of-line
-   "C-b"   #'backward-word
-   "C-f"   #'forward-word
-   "C-S-V" #'yank
+ (:when IS-LINUX
+   :nvm "C-z" #'zeal-at-point)
+
+ (:when (featurep! :feature snippets)
+   (:after yasnippet
+     (:map yas-keymap
+       "C-e"           #'+snippets/goto-end-of-field
+       "C-u"           #'+snippets/delete-to-start-of-field
+       "C-a"           #'+snippets/goto-start-of-field
+       [backspace]     #'+snippets/delete-backward-char
+       [delete]        #'+snippets/delete-forward-char-or-field
+       )
+     (:map yas-minor-mode-map
+       "SPC"           yas-maybe-expand  ;; I use space to expand a small collection of snippets
+       ))
    )
+
+ (:when (featurep! :tools flycheck)
+   :m "]e" #'next-error
+   :m "[e" #'previous-error
+   (:after flycheck
+     :map flycheck-error-list-mode-map
+     :n "C-j" #'evil-window-down
+     :n "C-k" #'evil-window-up
+     :n "j"   #'flycheck-error-list-next-error
+     :n "k"   #'flycheck-error-list-previous-error
+     :n "RET" #'flycheck-error-list-goto-error))
 
  ;; workspace/tab related
  (:when (featurep! :feature workspaces)
@@ -199,133 +273,96 @@
    :nmi "M-0"       #'+workspace/switch-to-last
    :nm  "]w" #'+workspace/switch-right
    :nm  "[w" #'+workspace/switch-left)
+ )
 
- :n  "]b" #'next-buffer
- :n  "[b" #'previous-buffer
- ;; TODO if under GUI, use alt-hl
- :nm  "]e" #'next-error
- :nm  "[e" #'previous-error
- :nm  "]d" #'git-gutter:next-hunk
- :nm  "[d" #'git-gutter:previous-hunk
+;; :completion
+(map!
+ (:when (featurep! :completion company)
+   ;; company-mode
+   ;;"C-SPC" nil  ;; clear
+   :i "C-SPC"  #'+company/complete
+   (:prefix "C-x"
+     :i "C-l"   #'+company/whole-lines
+     :i "C-k"   #'+company/dict-or-keywords
+     :i "C-f"   #'company-files
+     ;;:i "C-]"   #'company-etags
+     ;;:i "C-s"   #'company-yasnippet
+     :i "C-s"   #'yas-expand
+     :i "C-o"   #'+company/complete
+     ;;:i "C-o"   #'company-capf
+     :i "C-n"   #'+company/dabbrev
+     :i "C-p"   #'+company/dabbrev-code-previous)
 
- :nme "C--" #'text-scale-decrease
- :nme "C-=" #'text-scale-increase
- :nme "C-0" (lambda! (text-scale-set 0))
- "<C-mouse-5>" #'text-scale-decrease
- "<C-mouse-4>" #'text-scale-increase
-
- ;; company-mode
- "C-SPC" nil  ;; clear
- :i "C-SPC"  #'+company/complete
- (:prefix "C-x"
-   :i "C-l"   #'+company/whole-lines
-   :i "C-k"   #'+company/dict-or-keywords
-   :i "C-f"   #'company-files
-   ;;:i "C-]"   #'company-etags
-   ;;:i "C-s"   #'company-yasnippet
-   :i "C-s"   #'yas-expand
-   :i "C-o"   #'+company/complete
-   ;;:i "C-o"   #'company-capf
-   :i "C-n"   #'+company/dabbrev
-   :i "C-p"   #'+company/dabbrev-code-previous)
-
- (:after company
-   (:map company-active-map
-     ;; Don't interfere with `evil-delete-backward-word' in insert mode
-     "C-w"     nil
-     "C-n"     #'company-select-next
-     "C-p"     #'company-select-previous
-     "C-h"     #'company-show-doc-buffer
-     "C-s"     #'company-filter-candidates
-     [tab]     #'company-complete-common-or-cycle
-     "RET"     #'company-complete-selection
-     "S-TAB"   #'company-select-previous
-     [backtab] #'company-select-previous
-     "<f1>"    nil
-     [escape]  (lambda! (company-abort) (evil-normal-state))
-     )
-   (:map company-search-map
-     "C-n"     #'company-select-next-or-abort
-     "C-p"     #'company-select-previous-or-abort
-     "C-s"     (λ! (company-search-abort) (company-filter-candidates))
-     [escape]  #'company-search-abort)
-   )
-
- ;; just like vim ctrlp
- :nm "C-p" #'counsel-projectile-find-file
- (:after counsel :map counsel-ag-map
-   [backtab]  #'+ivy/wgrep-occur      ; search/replace on results
-   "C-SPC"    #'ivy-call-and-recenter ; preview
-   )
-
- ;; doom already clears the map, which is nice!
- (:after evil-mc :map evil-mc-key-map
-   :nv "C-n" #'evil-mc-make-and-goto-next-match
-   :nv "C-p" #'evil-mc-make-and-goto-prev-match
-   :nv "C-S-n" #'evil-mc-skip-and-goto-next-match
-   :nv "C-S-p" #'evil-mc-skip-and-goto-prev-match)
-
- ;; surround
- (:after evil-surround
-   :map evil-surround-mode-map
-   :v "s" 'evil-surround-region
-   )   ; originally was snipe
- :o  "s"  #'evil-surround-edit
-
- ;; flycheck
- (:after flycheck
-   :map flycheck-error-list-mode-map
-   :n "C-j" #'evil-window-down
-   :n "C-k" #'evil-window-up
-   :n "j"   #'flycheck-error-list-next-error
-   :n "k"   #'flycheck-error-list-previous-error
-   :n "RET" #'flycheck-error-list-goto-error)
-
- ;; git-timemachine
- (:after git-timemachine
-   (:map git-timemachine-mode-map
-     :n "C-p" #'git-timemachine-show-previous-revision
-     :n "C-n" #'git-timemachine-show-next-revision
-     :n "[["  #'git-timemachine-show-previous-revision
-     :n "]]"  #'git-timemachine-show-next-revision
-     :n "q"   #'git-timemachine-quit
-     :n "gb"  #'git-timemachine-blame))
-
- (:after vc-annotate
-   :map vc-annotate-mode-map
-   [remap quit-window] #'kill-this-buffer)
-
- ;; ivy
- (:after ivy
-   (:map ivy-minibuffer-map
-     [escape] #'keyboard-escape-quit
-     "C-SPC"  #'ivy-call-and-recenter  ; preview
-
-     ;; basic editing
-     "C-S-V"  #'yank
-     "C-w"    #'ivy-backward-kill-word
-     "C-u"    #'ivy-kill-whole-line
-     "C-b"    #'backward-word
-     "C-f"    #'forward-word
-
-     ;; movement
-     ;; this allows us to move out of ivy buffer
-     "C-k"    #'evil-window-up
-     "C-j"    #'evil-window-down
-     ;; split window and execute action, similar to ctrlp.vim
-     "C-v"    (lambda! (my/ivy-exit-new-window 'right))
-     "C-s"    (lambda! (my/ivy-exit-new-window 'below))
-     )
-   (:map ivy-switch-buffer-map
-     "C-d" 'ivy-switch-buffer-kill
+   (:after company
+     (:map company-active-map
+       "C-w"     nil   ;; Don't interfere with `evil-delete-backward-word' in insert mode
+       "C-n"     #'company-select-next
+       "C-p"     #'company-select-previous
+       "C-h"     #'company-show-doc-buffer
+       "C-s"     #'company-filter-candidates
+       [tab]     #'company-complete-common-or-cycle
+       "RET"     #'company-complete-selection
+       "S-TAB"   #'company-select-previous
+       [backtab] #'company-select-previous
+       "<f1>"    nil
+       [escape]  (lambda! (company-abort) (evil-normal-state))
+       )
+     (:map company-search-map ; applies to `company-filter-map' too
+       "C-n"     #'company-select-next-or-abort
+       "C-p"     #'company-select-previous-or-abort
+       "C-s"     (λ! (company-search-abort) (company-filter-candidates))
+       [escape]  #'company-search-abort)
+     ;; TAB auto-completion in term buffers
+     (:after comint
+       :map comint-mode-map [tab] #'company-complete)
      ))
 
- (:after swiper
-   (:map swiper-map
-     [backtab]  #'+ivy/wgrep-occur))
+ ;; ivy
+ (:when (featurep! :completion ivy)
+   (:map (help-mode-map helpful-mode-map)
+     :n "Q" #'ivy-resume)
 
- ;; neotree
- (:after neotree
+   (:after ivy
+     (:map ivy-minibuffer-map
+       [escape] #'keyboard-escape-quit
+       "C-SPC"  #'ivy-call-and-recenter  ; preview
+
+       ;; basic editing
+       "C-S-V"  #'yank
+       "C-w"    #'ivy-backward-kill-word
+       "C-u"    #'ivy-kill-whole-line
+       "C-b"    #'backward-word
+       "C-f"    #'forward-word
+
+       ;; movement
+       ;; this allows us to move out of ivy buffer
+       "C-k"    #'evil-window-up
+       "C-j"    #'evil-window-down
+       ;; split window and execute action, similar to ctrlp.vim
+       "C-v"    (lambda! (my/ivy-exit-new-window 'right))
+       "C-s"    (lambda! (my/ivy-exit-new-window 'below))
+       )
+     (:map ivy-switch-buffer-map
+       "C-d" 'ivy-switch-buffer-kill
+       ))
+
+   ;; just like vim ctrlp
+   :nm "C-p" #'counsel-projectile-find-file
+   (:after counsel
+     :map counsel-ag-map
+     "C-SPC"    #'ivy-call-and-recenter ; preview
+     [backtab]  #'+ivy/wgrep-occur      ; search/replace on results
+     )
+
+   (:after swiper
+     (:map swiper-map
+       [backtab]  #'+ivy/wgrep-occur))
+   )
+ )
+
+(map!
+ (:when (featurep! :ui neotree)
+   :after neotree
    :map neotree-mode-map
    :n "g"         nil
    :n [tab]       #'neotree-quick-look
@@ -353,50 +390,71 @@
    :n "C-s"       #'neotree-enter-horizontal-split
    )
 
- (:after yasnippet
-   (:map yas-keymap
-     "C-e"           #'+snippets/goto-end-of-field
-     "C-u"           #'+snippets/delete-to-start-of-field
-     "C-a"           #'+snippets/goto-start-of-field
-     [backspace]     #'+snippets/delete-backward-char
-     [delete]        #'+snippets/delete-forward-char-or-field
-     )
-   (:map yas-minor-mode-map
-     "SPC"           yas-maybe-expand
-     ))
+ (:when (featurep! :ui vc-gutter)
+   ;; TODO if under GUI, use alt-hl
+   :nm  "]d" #'git-gutter:next-hunk
+   :nm  "[d" #'git-gutter:previous-hunk
+   )
 
- (:when (featurep! :completion company)
-   (:after comint
-     ;; TAB auto-completion in term buffers
-     :map comint-mode-map [tab] #'company-complete))
-
- (:map* (help-mode-map helpful-mode-map)
-        :n "o"  #'ace-link-help
-        :n "q"  #'quit-window
-        :n "Q"  #'ivy-resume)
+ :nme "C--" #'text-scale-decrease
+ :nme "C-=" #'text-scale-increase
+ :nme "C-0" (lambda! (text-scale-set 0))
+ "<C-mouse-5>" #'text-scale-decrease
+ "<C-mouse-4>" #'text-scale-increase
 
  (:after goto-addr
    :map goto-address-highlight-keymap
    "RET" #'goto-address-at-point)
- (:after view :map view-mode-map
-   "<escape>" #'View-quit-all)
+
+ (:when (featurep! :editor multiple-cursors)
+   ;; doom already clears the map, which is nice!
+   (:after evil-mc :map evil-mc-key-map
+     :nv "C-n" #'evil-mc-make-and-goto-next-match
+     :nv "C-p" #'evil-mc-make-and-goto-prev-match
+     :nv "C-S-n" #'evil-mc-skip-and-goto-next-match
+     :nv "C-S-p" #'evil-mc-skip-and-goto-prev-match)
+   )
+
+ (:when (featurep! :emacs vc)
+   ;; git-timemachine
+   (:after git-timemachine
+     (:map git-timemachine-mode-map
+       :n "C-p" #'git-timemachine-show-previous-revision
+       :n "C-n" #'git-timemachine-show-next-revision
+       :n "[["  #'git-timemachine-show-previous-revision
+       :n "]]"  #'git-timemachine-show-next-revision
+       :n "q"   #'git-timemachine-quit
+       :n "gb"  #'git-timemachine-blame))
+   )
  )
 
 
 (map! :leader
-      :desc "Find file in project"       :n "SPC" #'projectile-find-file
-      :desc "Switch workspace buffer"    :n ","   #'persp-switch-to-buffer
-      :desc "Switch buffer"              :n "<"   #'switch-to-buffer
-      :desc "Find files from here"       :n "."   #'counsel-file-jump
-      :desc "Toggle last popup"          :n "~"   #'+popup/toggle
-      (:when (featurep! :completion ivy)
-        :desc "Resume last search"     :n "'"   #'ivy-resume)
-                                        ; :desc "Blink cursor line"          :n "DEL" #'+nav-flash/blink-cursor
-      :desc "Create or jump to bookmark" :n "RET" #'bookmark-jump
-
       :desc "Universal argument"         :n "u"  #'universal-argument
       :desc "window"                     :nm "w"  evil-window-map
 
+      (:when (featurep! :feature workspaces)
+        :desc "Switch workspace buffer" "," #'persp-switch-to-buffer
+        :desc "Switch buffer"           "<" #'switch-to-buffer)
+
+
+      :desc "Toggle last popup"          :n "~"   #'+popup/toggle
+      :desc "Find files from here"       :n "."   #'counsel-file-jump
+      :desc "Find file in project"       :n "SPC" #'projectile-find-file
+      ;; :desc "Blink cursor line"          :n "DEL" #'+nav-flash/blink-cursor
+      :desc "Create or jump to bookmark" :n "RET" #'bookmark-jump
+
+      (:when (featurep! :completion ivy)
+        :desc "Resume last search"     :n "'"   #'ivy-resume)
+
+      (:desc "search" :prefix "/"
+        :desc "Project"                :nv "/" #'+ivy/project-search
+        :desc "Project"                :nv "p" #'+ivy/project-search
+        :desc "This Directory"         :nv "d" #'+ivy/project-search-from-cwd
+        :desc "In Buffer (swiper)"     :nv "b" #'swiper
+        :desc "Tags (imenu)"           :nv "t" #'imenu
+        :desc "Tags across buffers"    :nv "T" #'imenu-anywhere
+        :desc "Online providers"       :nv "o" #'+lookup/online-select)
 
       (:desc "previous..." :prefix "["
         :desc "Buffer"                :nv "b" #'previous-buffer
@@ -410,15 +468,6 @@
         :desc "Error"                 :nv "e" #'next-error
         :desc "Spelling error"        :nv "s" #'evil-next-flyspell-error
         )
-
-      (:desc "search" :prefix "/"
-        :desc "Project"                :nv "/" #'+ivy/project-search
-        :desc "Project"                :nv "p" #'+ivy/project-search
-        :desc "This Directory"         :nv "d" #'+ivy/project-search-from-cwd
-        :desc "In Buffer (swiper)"     :nv "b" #'swiper
-        :desc "Tags (imenu)"           :nv "t" #'imenu
-        :desc "Tags across buffers"    :nv "T" #'imenu-anywhere
-        :desc "Online providers"       :nv "o" #'+lookup/online-select)
 
       (:desc "workspace" :prefix [tab]
         ;;:desc "Display tab bar"          :n [tab] #'+workspace/display
@@ -436,6 +485,7 @@
         :desc "Previous workspace"       :n "["   #'+workspace/switch-left)
 
       (:desc "buffer" :prefix "b"
+        :desc "Toggle narrowing"            "-"   #'doom/clone-and-narrow-buffer
         :desc "Kill buffer"             :n "k" #'kill-this-buffer
         :desc "Kill other buffers"      :n "o" #'doom/kill-other-buffers
         :desc "Switch workspace buffer" :n "b" #'switch-to-buffer
@@ -496,33 +546,45 @@
         :desc "Next hunk"              :nv "]" #'git-gutter:next-hunk
         :desc "Previous hunk"          :nv "[" #'git-gutter:previous-hunk)
 
-      (:desc "help" :prefix "h"
-        :n "h" help-map
-        :desc "Apropos"               :n  "a" #'apropos
-        :desc "Describe bindings"     :n  "b" #'describe-bindings
-        :desc "Describe char"         :n  "c" #'describe-char
-        :desc "Describe DOOM module"  :n  "D" #'doom/describe-module
-        :desc "Describe function"     :n  "f" #'describe-function
-        :desc "Describe face"         :n  "F" #'describe-face
-        :desc "Info"                  :n  "i" #'info-lookup-symbol
-        :desc "Describe key"          :n  "k" #'describe-key
-        :desc "Find documentation"    :n  "K" #'+lookup/documentation
-        :desc "Command log"           :n  "L" #'global-command-log-mode
-        :desc "Describe mode"         :n  "m" #'describe-mode
-        :desc "Toggle Emacs log"      :n  "M" #'view-echo-area-messages
-        :desc "Describe variable"     :n  "v" #'describe-variable
-        :desc "Where is"              :n  "w" #'where-is
-        :desc "Describe at point"     :n  "." #'helpful-at-point
-        :desc "What face"             :n  "'" #'doom/what-face)
+      (:prefix ("h" . "help")
+        :desc "What face"                     "'"   #'doom/what-face
+        :desc "Describe at point"             "."   #'helpful-at-point
+        :desc "Describe active minor modes"   ";"   #'doom/describe-active-minor-mode
+        :desc "Open Doom manual"              "D"   #'doom/open-manual
+        :desc "Open vanilla sandbox"          "E"   #'doom/open-vanilla-sandbox
+        :desc "Describe face"                 "F"   #'describe-face
+        :desc "Find documentation"            "K"   #'+lookup/documentation
+        :desc "Command log"                   "L"   #'global-command-log-mode
+        :desc "Describe mode"                 "M"   #'describe-mode
+        :desc "Reload private config"         "R"   #'doom/reload
+        :desc "Print Doom version"            "V"   #'doom/version
+        :desc "Apropos"                       "a"   #'apropos
+        :desc "Open Bug Report"               "b"   #'doom/open-bug-report
+        :desc "Describe char"                 "c"   #'describe-char
+        :desc "Describe DOOM module"          "d"   #'doom/describe-module
+        :desc "Describe function"             "f"   #'describe-function
+        :desc "Emacs help map"                "h"   help-map
+        :desc "Info"                          "i"   #'info-lookup-symbol
+        :desc "Describe key"                  "k"   #'describe-key
+        :desc "Find library"                  "l"   #'find-library
+        :desc "View *Messages*"               "m"   #'view-echo-area-messages
+        :desc "Toggle profiler"               "p"   #'doom/toggle-profiler
+        :desc "Reload theme"                  "r"   #'doom/reload-theme
+        :desc "Describe DOOM setting"         "s"   #'doom/describe-setters
+        :desc "Describe variable"             "v"   #'describe-variable
+        :desc "Man pages"                     "w"   #'+default/man-or-woman
+        )
 
-      (:desc "project" :prefix "p"
-        :desc "Browse project"          :n  "." #'+default/browse-project
-        :desc "Run cmd in project root" :nv "!" #'projectile-run-shell-command-in-root
-        :desc "Compile project"         :n  "c" #'projectile-compile-project
-        :desc "Switch project"          :n  "p" #'projectile-switch-project
-        :desc "Recent project files"    :n  "r" #'projectile-recentf
-        :desc "List project tasks"      :n  "t" #'+ivy/tasks
-        :desc "Invalidate cache"        :n  "x" #'projectile-invalidate-cache)
+      (:prefix ("p" . "project")
+        :desc "Browse project"               "." #'+default/browse-project
+        :desc "Find file in project"         "/" #'projectile-find-file
+        :desc "Run cmd in project root"      "!" #'projectile-run-shell-command-in-root
+        :desc "Compile project"              "c" #'projectile-compile-project
+        :desc "Find other file"              "o" #'projectile-find-other-file
+        :desc "Switch project"               "p" #'projectile-switch-project
+        :desc "Recent project files"         "r" #'projectile-recentf
+        :desc "List project tasks"           "t" #'+default/project-tasks
+        :desc "Invalidate cache"             "x" #'projectile-invalidate-cache)
 
       ;; Unorganized:
       (:desc "run Stuff" :prefix "r"
@@ -565,21 +627,3 @@
         :n "css" #'web-beautify-css
         )
       ) ;; end of leader
-
-(after! man
-  (evil-define-key* 'normal Man-mode-map "q" #'kill-this-buffer))
-
-;; (defun +config|save-my-favorite-keys (_feature keymaps)
-;;   "Unmap keys that conflict with Doom's defaults."
-;;   (dolist (map keymaps)
-;;     (evil-delay `(and (boundp ',map) (keymapp ,map))
-;;         `(evil-define-key* '(normal visual motion) ,map
-;;                            ";" nil
-;;                            (kbd doom-leader-key) nil
-;;                            (kbd "C-j") nil (kbd "C-k") nil
-;;                            "gd" nil "gf" nil "K"  nil "gD" nil "gw" nil
-;;                            "]"  nil "["  nil)
-;;       'after-load-functions t nil
-;;       (format "doom-define-key-in-%s" map))))
-
-;; (add-hook 'evil-collection-setup-hook #'+config|save-my-favorite-keys)

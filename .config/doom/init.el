@@ -34,8 +34,6 @@
        file-templates    ; auto-snippets for empty files
        (lookup +docsets)
        snippets          ; my elves. They type so I don't have to
-       spellcheck        ; tasing you for misspelling mispelling
-       syntax-checker    ; tasing you for every semicolon you forget
        workspaces        ; tab emulation, persistence & separate workspaces
 
        :completion
@@ -65,6 +63,7 @@
        :editor
        rotate-text       ; cycle region at point between text candidates
        multiple-cursors
+       fold
        ;;parinfer
 
        :emacs
@@ -72,14 +71,14 @@
         +icons +ranger)
        electric          ; smarter, keyword-based electric-indent
        eshell            ; a consistent, cross-platform shell (WIP)
-       hideshow
        imenu             ; an imenu sidebar and searchable code index
        term              ; terminals in Emacs
-       ediff
        vc
 
        :tools
        editorconfig
+       flyspell
+       flycheck
        ;;ein               ; tame Jupyter notebooks with emacs
        ;;gist              ; interacting with github gists
        ;;macos             ; MacOS-specific commands
