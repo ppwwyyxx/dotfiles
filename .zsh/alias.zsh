@@ -67,6 +67,7 @@ for(j=1; j<=p; j++) {
 }}'"
 
 # rm moves things to trash
+unalias rm 2>/dev/null || true  # undef alias, if there is one
 function rm() {
 	for file in $@; do
 		local FILE_LOC="`readlink -f $file`"

@@ -143,6 +143,13 @@
   (custom-set-faces '(show-paren-match ((t (:foreground "SpringGreen1" :underline t)))))
   )
 
+(after! ivy-posframe
+  (set-face-attribute 'internal-border nil :background "light slate blue")
+  (setq ivy-posframe-parameters
+      '((left-fringe . 0)
+        (right-fringe . 0)))
+)
+
 ;; Local Variables:
 ;; eval: (rainbow-mode)
 ;; End:
