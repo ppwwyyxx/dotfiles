@@ -45,6 +45,7 @@
        doom              ; what makes DOOM look the way it does
        modeline          ; a snazzy Atom-inspired mode-line
        evil-goggles      ; display visual hints when editing in evil
+       indent-guides
        fci
        hl-todo           ; highlight TODO/FIXME/NOTE tags
        nav-flash         ; blink the current line after jumping

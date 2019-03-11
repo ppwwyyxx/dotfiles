@@ -25,8 +25,6 @@
 (package! clang-format)
 
 ;; ui
-(package! highlight-indentation :disable t)
-(package! highlight-indent-guides)
 (package! highlight-parentheses)
 
 ;; file format

@@ -122,14 +122,9 @@
     '(misc-info persp-name irc mu4e github debug input-method lsp major-mode process vcs checker))
   )
 
-(def-package! highlight-indent-guides
-  :when (display-graphic-p)
-  :config
-  (setq highlight-indent-guides-method 'character)
-  (setq highlight-indent-guides-responsive 'top)
-  (setq highlight-indent-guides-auto-enabled nil)
-  (set-face-foreground 'highlight-indent-guides-character-face "dimgray")
-  (set-face-foreground 'highlight-indent-guides-top-character-face "skyblue"))
+(after! highlight-indent-guides
+   (set-face-foreground 'highlight-indent-guides-character-face "dimgray")
+   (set-face-foreground 'highlight-indent-guides-top-character-face "skyblue"))
 
 ;; copied from +spacemacs/spacemacs-editing-visual
 (def-package! highlight-parentheses
@@ -147,7 +142,8 @@
   (set-face-attribute 'internal-border nil :background "light slate blue")
   (setq ivy-posframe-parameters
       '((left-fringe . 0)
-        (right-fringe . 0)))
+        (right-fringe . 0)
+        ))
 )
 
 ;; Local Variables:
