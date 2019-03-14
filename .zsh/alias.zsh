@@ -450,6 +450,14 @@ function pytwistd() { twistd web --path "$1" -p tcp:"${2:-8000}" }
 alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --user -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install --user -U"
 alias unquote='python2 -c "import sys, urllib as ul; [sys.stdout.write(ul.unquote(l)) for l in sys.stdin]"'
 
+# tensorflow
+function tf-verbose() { export TF_CPP_MIN_LOG_LEVEL=0; export TF_CPP_MIN_VLOG_LEVEL=10 }
+function uninstall-tf() {
+  for p in tensorflow tensorflow-gpu tf-nightly tf-nightly-gpu tensorflow-tensorboard tensorboard tb-nightly; do
+    pip uninstall $p -y
+  done
+}
+
 # package; https://github.com/icy/pacapt
 which pacman NN && {
 	alias pS='pacaur -S'
