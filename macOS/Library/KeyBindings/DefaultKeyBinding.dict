@@ -6,6 +6,9 @@
  * Last modified by: Nilesh Kapadia (http://www.nileshk.com/)
  *
  * Place this file in ~/Library/KeyBindings
+ *
+ * See available codes at:
+ * http://xahlee.info/kbd/osx_keybinding_action_code.html
  */
 {
     "~f"      = "moveWordForward:";              /* M-f */
@@ -33,17 +36,7 @@
     "^\UF701" = "pageDown:";                     /* C-down */
     "\UF72C"  = "pageUp:";                       /* page-up */
     "\UF72D"  = "pageDown:";                     /* page-down */
-    "^z"      = "undo:";                         /* C-/ */
-		/*
-     *"^_"      = "undo:";                         [> C-_ */ /* Added by me <]
-     *"~c"      = "capitalizeWord:";               [> M-c <]
-     *"~u"      = "uppercaseWord:";                [> M-u <]
-     *"~l"      = "lowercaseWord:";                [> M-l <]
-     *"^t"      = "transpose:";                    [> C-t <]
-     *"~t"      = "transposeWords:";               [> M-t <]
-     *"~/"      = "complete:";                     [> M-/ <]
-     *"^g"      = "_cancelKey:";                   [> C-g <]
-		 */
+    "^z"      = "undo:";                         /* C-z */
     "^a"      = "moveToBeginningOfLine:";        /* C-a */
     "^e"      = "moveToEndOfLine:";              /* C-e */
 
@@ -64,11 +57,4 @@
     "^ " = "setMark:";                           /* C-space */
     "^w" = "deleteToMark:";                      /* C-w */
     "~w" = "copy:";                              /* A-w */ /* Added by me */
-
-    /* Incremental search. */
-/* Uncomment these lines If Incremental Search IM is installed */
-/*  "^s"        = "ISIM_incrementalSearch:";        /* C-s          Incremental search */
-/*  "^r"        = "ISIM_reverseIncrementalSearch:"; /* C-r          Reverse incremental search */
-/*  "^g"        = "abort:";                         /* C-g          Abort */
-
 }

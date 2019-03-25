@@ -395,13 +395,19 @@ function colormap(){
 alias psg='nocorrect pgrep -a'
 function pstack() { =gdb -q -nx -p $1 <<< 't a a bt' | sed -ne '/^#/p' }
 
-local top_version=$(=top -h 2>/dev/null | head -n1 | grep -o '[0-9]*$')
-if [[ "$top_version" -ge 10 ]]; then
-	alias top='top -d 0.5 -o %CPU -c'
-else
-	alias top='top -d 0.5 -c'
-fi
-alias topme='top -u $USER'
+
+[[ -n $_CFG_ON_MAC ]] && {
+  alias top="htop"
+  alias topme='htop -u $USER'
+} || {
+  local top_version=$(=top -h 2>/dev/null | head -n1 | grep -o '[0-9]*$')
+  if [[ "$top_version" -ge 10 ]]; then
+    alias top='top -d 0.5 -o %CPU -c'
+  else
+    alias top='top -d 0.5 -c'
+  fi
+  alias topme='top -u $USER'
+}
 alias htopme='htop -u $USER'
 alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -n | tail -n20"
 function memgrep() { grep VmHWM /proc/$(pgrep -d '/status /proc/' "$1")/status; }

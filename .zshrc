@@ -27,7 +27,16 @@ function safe_export_path() { [[ -d $1 ]] && export PATH=$1:$PATH }
 function safe_source() { [[ -s $1 ]] && source $1 }
 safe_source $HOME/.profile
 
-[[ -n $_CFG_ON_MAC ]] && safe_export_path /usr/local/opt/coreutils/libexec/gnubin
+if [[ -n $_CFG_ON_MAC ]]; then
+  safe_export_path /usr/local/opt/coreutils/libexec/gnubin
+  safe_export_path /usr/local/opt/openssh/bin
+  safe_export_path /usr/local/opt/findutils/libexec/gnubin
+  safe_export_path /usr/local/opt/gawk/libexec/gnubin
+  safe_export_path /usr/local/opt/gnu-indent/libexec/gnubin
+  safe_export_path /usr/local/opt/grep/libexec/gnubin
+  safe_export_path /usr/local/opt/gnu-sed/libexec/gnubin
+  safe_export_path /usr/local/opt/gnu-tar/libexec/gnubin
+fi
 safe_export_path $HOME/bin
 safe_export_path $HOME/.local/bin
 safe_export_path $HOME/.zsh/bin
