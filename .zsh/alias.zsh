@@ -535,12 +535,29 @@ function tpgrep() {
 # $2+: dirs or logs
 	[[ -n "$1" ]] || return 1
 	local pat=$1
+  shift
+	local cmd="paste"
+	for d in ${@}; do
+		[[ -d "$d" ]] && {
+			cmd="$cmd <(echo $d; cat "$d/log.log" | grep '$pat' | awk-last)"
+		} || {
+			cmd="$cmd <(echo $d; cat "$d" | grep '$pat' | awk-last)"
+		}
+	done
+	eval $cmd
+}
+function ptgrep() {
+# a function to parse json metrics
+# $1: string to grep
+# $2+: json logs
+	[[ -n "$1" ]] || return 1
+	local pat=$1
 	local cmd="paste"
 	for d in ${@:2}; do
 		[[ -d "$d" ]] && {
-			cmd="$cmd <(cat "$d/log.log" | grep '$pat' | awk-last)"
+			cmd="$cmd <(cat "$d/output/metrics.json" | jq -r ".$1")"
 		} || {
-			cmd="$cmd <(cat "$d" | grep '$pat' | awk-last)"
+			cmd="$cmd <(cat "$d" | jq -r ".$1")"
 		}
 	done
 	eval $cmd

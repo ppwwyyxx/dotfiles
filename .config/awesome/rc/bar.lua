@@ -50,8 +50,19 @@ vicious.register(thermal_widget, vicious.widgets.thermal,
                  end, 19, {"thermal_zone0", "sys"})
 
 local mem_widget = wibox.widget.textbox()
-vicious.register(mem_widget, vicious.widgets.mem,
-   myutil.colored_text("$1% ", "#90ee90"), 11)
+vicious.register(mem_widget, vicious.widgets.mem, function(widget, args)
+      local color = "#90ee90"
+      if args[1] > 60 then
+        color = "#ff0000"
+        -- TODO: make it more visible
+      end
+
+      if args[1] > 85 then
+        myutil.notify("OOM!!", "RAM: " .. tostring(args[1]) .. "%")
+      end
+      return myutil.colored_text(tostring(args[1]) .. "%", color)
+   end,
+   11)
 mem_widget:buttons(awful.button({}, 1, function()
    myutil.run_term('top -o %MEM -d 1', 'top')
 end))

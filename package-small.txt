@@ -568,3 +568,4 @@ zip
 zotero
 zsh
 autorandr
+ttf-ms-fonts
