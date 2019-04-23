@@ -467,14 +467,14 @@ function uninstall-tf() {
 
 # package; https://github.com/icy/pacapt
 which pacman NN && {
-	alias pS='pacaur -S'
+	alias pS='trizen -S'
 	alias pU='sudo pacman -U'
-	alias pSs='pacaur -Ss'
+	alias pSs='trizen -Ss'
 	alias pSi='pacman -Si'
 	alias pQo='pacman -Qo'
 	alias pSy='sudo pacman -Syy'
 	alias pR='sudo pacman -R'
-	alias pSu='pacaur -Syu'
+	alias pSu='trizen -Syu'
 	alias pQl='pacman -Ql'
 	alias paur='pacman -Qm'
 	#alias pacman-size="paste <(pacman -Q | awk '{ print \$1; }' | xargs pacman -Qi | grep 'Size' | awk '{ print \$4\$5; }') <(pacman -Q | awk '{print \$1; }') | sort -h | column -t"
