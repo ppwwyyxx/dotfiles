@@ -288,6 +288,7 @@ function km() {	# only for my laptop
 alias dmesg='dmesg -H || dmesg | less'
 function modulegraph() { lsmod | perl -e 'print "digraph \"lsmod\" {";<>;while(<>){@_=split/\s+/; print "\"$_[0]\" -> \"$_\"\n" for split/,/,$_[3]}print "}"' | dot -Tpng | feh -; }
 alias lsblk="lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT,LABEL,VENDOR,MODEL"
+alias disk-writeback='watch -n1 grep -e Dirty: -e Writeback: /proc/meminfo'
 
 function usbon () {
 	id=$1
