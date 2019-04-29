@@ -28,6 +28,7 @@ audacity
 autoconf
 autogen
 automake
+autorandr
 autossh
 awesome
 axel
@@ -98,6 +99,9 @@ deepin-crossover
 deepin-gettext-tools
 deepin-menu
 deepin-screenshot
+deepin-file-manager
+deepin-icon-theme
+deepin-screen-recorder
 device-mapper
 devtools
 dex
@@ -419,13 +423,14 @@ tree
 ttf-baekmuk
 ttf-dejavu
 ttf-droid
-ttf-fantasque-sans
+ttf-ms-fonts
 ttf-freefont
 ttf-inconsolata
 ttf-ms-fonts
 ttf-opensans
 ttf-symbola
 ttf-ubuntu-font-family
+ttf-fantasque-sans-mono
 unetbootin
 unpaper
 unzip-iconv
@@ -567,5 +572,3 @@ zeal
 zip
 zotero
 zsh
-autorandr
-ttf-ms-fonts

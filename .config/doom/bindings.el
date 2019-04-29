@@ -180,7 +180,7 @@
 
 ;;
 ;; Universal evil integration
-(when (featurep! :feature evil +everywhere)
+(when (featurep! :editor evil +everywhere)
   (map!
    ;; Have C-u behave similarly to `doom/backward-to-bol-or-indent'.
    ;; NOTE SPC u replaces C-u as the universal argument.
@@ -220,10 +220,10 @@
 
 ;;; :feature
 (map!
- (:when (featurep! :feature eval)
+ (:when (featurep! :tools eval)
    :g  "M-r" #'+eval/buffer)
 
- (:when (featurep! :feature lookup)
+ (:when (featurep! :tools lookup)
    :nv "K"  #'+lookup/documentation
    :nv "gd" #'+lookup/definition
    :nv "gD" #'+lookup/references
@@ -232,7 +232,7 @@
  (:when IS-LINUX
    :nvm "C-z" #'zeal-at-point)
 
- (:when (featurep! :feature snippets)
+ (:when (featurep! :editor snippets)
    (:after yasnippet
      (:map yas-keymap
        "C-e"           #'+snippets/goto-end-of-field
@@ -258,7 +258,7 @@
      :n "RET" #'flycheck-error-list-goto-error))
 
  ;; workspace/tab related
- (:when (featurep! :feature workspaces)
+ (:when (featurep! :ui workspaces)
    :nm "M-t"       #'+workspace/new
    :nm "M-T"       #'+workspace/display
    :nmi "M-1"       (λ! (+workspace/switch-to 0))
@@ -433,7 +433,7 @@
       :desc "Universal argument"         :n "u"  #'universal-argument
       :desc "window"                     :nm "w"  evil-window-map
 
-      (:when (featurep! :feature workspaces)
+      (:when (featurep! :ui workspaces)
         :desc "Switch workspace buffer" "," #'persp-switch-to-buffer
         :desc "Switch buffer"           "<" #'switch-to-buffer)
 
@@ -510,7 +510,8 @@
       (:desc "file" :prefix "f"
         :desc "File Manager"              :n "m" #'+neotree/find-this-file
         :desc "Find file from here"       :n "." #'counsel-file-jump
-        :desc "Sudo find file"            :n ">" #'doom/sudo-find-file
+        :desc "Find file in other project":n ">" #'doom/browse-in-other-project
+        :desc "Sudo find file"            :n "S" #'doom/sudo-find-file
         :desc "Find file in project"      :n "p" #'projectile-find-file
         :desc "Find file"                 :n "f" #'find-file
         :desc "Find directory"            :n "d" #'dired

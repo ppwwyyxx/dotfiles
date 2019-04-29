@@ -366,6 +366,8 @@ alias wine32='WINEARCH=win32 LC_ALL=zh_CN.utf-8 WINEPREFIX=~/.wine32 wine'
 alias net9='luit -encoding gb18030 -- ssh ppwwyyxx@bbs.net9.org'
 alias smth='luit -encoding gb18030 -- ssh -1 ppwwyyxx@bbs.smth.org'
 alias freenode='weechat-curses -r "/connect freenode"'	# /join #tuna
+alias baidupan='/opt/deepinwine/apps/Deepin-BaiduNetDisk/run.sh'
+alias wechat='/opt/deepinwine/apps/Deepin-WeChat/run.sh'
 
 # media
 alias idf='identify'

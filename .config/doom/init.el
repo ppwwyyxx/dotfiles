@@ -27,16 +27,7 @@
 
 ;;(setq debug-on-error t)
 
-(doom! :feature
-       (evil +everywhere); come to the dark side, we have cookies
-       debugger          ; FIXME stepping through code, to help you add bugs
-       eval              ; run code, run (also, repls)
-       file-templates    ; auto-snippets for empty files
-       (lookup +docsets)
-       snippets          ; my elves. They type so I don't have to
-       workspaces        ; tab emulation, persistence & separate workspaces
-
-       :completion
+(doom! :completion
        company           ; the ultimate code completion backend
        (ivy              ; a search engine for love and life
         +childframe)
@@ -44,9 +35,9 @@
        :ui
        doom              ; what makes DOOM look the way it does
        modeline          ; a snazzy Atom-inspired mode-line
-       evil-goggles      ; display visual hints when editing in evil
+       ophints           ; display visual hints when editing in evil
        indent-guides
-       fci
+       fill-column
        hl-todo           ; highlight TODO/FIXME/NOTE tags
        nav-flash         ; blink the current line after jumping
        neotree           ; a project drawer, like NERDTree for vim
@@ -60,11 +51,15 @@
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        vc-gutter
        window-select     ; visually switch windows
+       workspaces        ; tab emulation, persistence & separate workspaces
 
        :editor
-       rotate-text       ; cycle region at point between text candidates
-       multiple-cursors
+       (evil +everywhere); come to the dark side, we have cookies
+       file-templates    ; auto-snippets for empty files
        fold
+       multiple-cursors
+       rotate-text       ; cycle region at point between text candidates
+       snippets          ; my elves. They type so I don't have to
        ;;parinfer
 
        :emacs
@@ -77,9 +72,12 @@
        vc
 
        :tools
+       debugger          ; FIXME stepping through code, to help you add bugs
+       eval              ; run code, run (also, repls)
        editorconfig
        flyspell
        flycheck
+       (lookup +docsets)
        ;;ein               ; tame Jupyter notebooks with emacs
        ;;gist              ; interacting with github gists
        ;;macos             ; MacOS-specific commands
