@@ -66,10 +66,11 @@
        (dired            ; making dired pretty [functional]
         +icons +ranger)
        electric          ; smarter, keyword-based electric-indent
-       eshell            ; a consistent, cross-platform shell (WIP)
-       imenu             ; an imenu sidebar and searchable code index
-       term              ; terminals in Emacs
        vc
+
+       :term
+       eshell            ; a consistent, cross-platform shell (WIP)
+       term              ; terminals in Emacs
 
        :tools
        debugger          ; FIXME stepping through code, to help you add bugs
@@ -83,7 +84,7 @@
        ;;macos             ; MacOS-specific commands
        make              ; run make tasks from Emacs
        magit             ;
-       password-store    ; password manager for nerds
+       pass              ; password manager for nerds
        prodigy
        pdf               ; pdf enhancements
        rgb               ; creating color strings
