@@ -555,13 +555,17 @@ function ptgrep() {
 # $1: string to grep
 # $2+: json logs
 	[[ -n "$1" ]] || return 1
-	local pat=$1
+	local pat="$1"
 	local cmd="paste"
 	for d in ${@:2}; do
 		[[ -d "$d" ]] && {
-			cmd="$cmd <(cat "$d/output/metrics.json" | jq -r ".$1")"
+      if [[ -d "$d/output" ]]; then
+        cmd="$cmd <(cat \"$d/output/metrics.json\" | jq -r '.\"$pat\"')"
+      else
+        cmd="$cmd <(cat \"$d/metrics.json\" | jq -r '.\"$pat\"')"
+      fi
 		} || {
-			cmd="$cmd <(cat "$d" | jq -r ".$1")"
+			cmd="$cmd <(cat \"$d\" | jq -r '.\"$pat\"')"
 		}
 	done
 	eval $cmd

@@ -19,7 +19,7 @@ local autorun_items = {
 
   --"/home/wyx/bin/cvim-server.py",
   "sleep 180 && /home/wyx/bin/background/notify-daemon.py",
-  "sleep 30 && QT_STYLE_OVERRIDE= telegram-desktop",
+  "sleep 30 && QT_STYLE_OVERRIDE= QT_SCALE_FACTOR= telegram-desktop",
 
   --"sleep 100 && dropbox",
 
