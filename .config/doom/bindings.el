@@ -259,20 +259,20 @@
 
  ;; workspace/tab related
  (:when (featurep! :ui workspaces)
-   :nm "M-t"       #'+workspace/new
-   :nm "M-T"       #'+workspace/display
-   :nmi "M-1"       (λ! (+workspace/switch-to 0))
-   :nmi "M-2"       (λ! (+workspace/switch-to 1))
-   :nmi "M-3"       (λ! (+workspace/switch-to 2))
-   :nmi "M-4"       (λ! (+workspace/switch-to 3))
-   :nmi "M-5"       (λ! (+workspace/switch-to 4))
-   :nmi "M-6"       (λ! (+workspace/switch-to 5))
-   :nmi "M-7"       (λ! (+workspace/switch-to 6))
-   :nmi "M-8"       (λ! (+workspace/switch-to 7))
-   :nmi "M-9"       (λ! (+workspace/switch-to 8))
-   :nmi "M-0"       #'+workspace/switch-to-last
-   :nm  "]w" #'+workspace/switch-right
-   :nm  "[w" #'+workspace/switch-left)
+   :nm "M-t"  #'+workspace/new
+   :nm "M-T"  #'+workspace/display
+   :nmi "M-1" #'+workspace/switch-to-0
+   :nmi "M-2" #'+workspace/switch-to-1
+   :nmi "M-3" #'+workspace/switch-to-2
+   :nmi "M-4" #'+workspace/switch-to-3
+   :nmi "M-5" #'+workspace/switch-to-4
+   :nmi "M-6" #'+workspace/switch-to-5
+   :nmi "M-7" #'+workspace/switch-to-6
+   :nmi "M-8" #'+workspace/switch-to-7
+   :nmi "M-9" #'+workspace/switch-to-8
+   :nmi "M-0" #'+workspace/switch-to-last
+   :nm  "]w"  #'+workspace/switch-right
+   :nm  "[w"  #'+workspace/switch-left)
  )
 
 ;; :completion
