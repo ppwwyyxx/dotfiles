@@ -64,8 +64,8 @@
 
 (after! ivy-posframe
   (setq ivy-posframe-parameters `((min-height . 16)
-                                  (internal-border-width . 10)
-                                  (internal-border-width . 10)
+                                  (internal-border-width . 1)
+                                  (internal-border-width . 1)
                                   (foreground-color . "#00afef")
                                   ))
   (set-face-attribute 'ivy-current-match nil :underline t)

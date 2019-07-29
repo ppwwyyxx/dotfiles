@@ -14,7 +14,7 @@
 "rofi -show window"
   Mod4 + Tab
 "rofi -sort -matching fuzzy -show file -modi "file:~/bin/background/rofi-file-browser $HOME/Documents/books""
-	Mod4 + b
+  Mod4 + b
 
 "zeal"
   Mod4 + z
@@ -42,14 +42,21 @@
 "banshee --stop"
   XF86AudioStop
 
-# Logitech Mouse..
+# Mouse..
 # TODO use awesome-client for switch, and volume
 
-"notify-send mail"
-  XF86Mail	# the forward button, depends on xcape rules
-"notify-send mod4+mail"
-  Mod4 + XF86Mail	# the backward button
-# TODO hold htop to the middle, and release
+
+# backward
+"chromium https://our.intern.facebook.com/intern/diffs/"
+  m:0x0 + b:8
+# forward
+"notify-send forward"
+  m:0x0 + b:9
+
+# "notify-send mail"
+#   XF86Mail	# the forward button, depends on xcape rules
+# "notify-send mod4+mail"
+#   Mod4 + XF86Mail	# the backward button
 "notify-send launch1"
   XF86Launch1
 "notify-send launch2"

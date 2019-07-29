@@ -1,0 +1,2 @@
+evdev:input:b0003v1006p0022*
+ KEYBOARD_KEY_70039=leftctrl
