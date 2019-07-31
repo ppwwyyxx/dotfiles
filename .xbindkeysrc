@@ -50,8 +50,11 @@
 "chromium https://our.intern.facebook.com/intern/diffs/"
   m:0x0 + b:8
 # forward
-"notify-send forward"
+"notify-send button9"
   m:0x0 + b:9
+# forward
+"notify-send button10"
+  m:0x0 + b:10
 
 # "notify-send mail"
 #   XF86Mail	# the forward button, depends on xcape rules
