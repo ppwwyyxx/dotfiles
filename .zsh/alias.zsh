@@ -416,7 +416,7 @@ alias htopme='htop -u $USER'
 alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -n | tail -n20"
 function memgrep() { grep VmHWM /proc/$(pgrep -d '/status /proc/' "$1")/status; }
 function killz() {
-	ppid=$(ps -oppid $1 | tail -n1)
+	ppid=$(ps -oppid $1 | tail -n1 | sed 's/ //g')
 	kill -SIGHUP $ppid
 }
 function waitpid() { while test -d "/proc/$1"; do sleep 1; done }
