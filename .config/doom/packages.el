@@ -30,3 +30,5 @@
 (package! pkgbuild-mode)
 (package! protobuf-mode)
 (package! nginx-mode)
+
+(package! imenu-list)
