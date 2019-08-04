@@ -321,7 +321,8 @@ which nvidia-smi NN && {
 		| grep -v '^No' \
 		| awk 'BEGIN{OFS=\"\\t\"} { cmd=(\"ps -ho '%a' \" \$3); cmd | getline v; close(cmd); \$4=v; print }'"
 	alias nvp="(echo \"GPU\tMEM\tPID\tCOMMAND\" && __nvp) | column -t -s $'\t' | cut -c 1-$(tput cols)"
-	alias nvpkill="nvp | awk '{print $3}' | tail -n+2 | xargs -I {} kill {}"
+	alias nvpkill="nvp | awk '{print \$3}' | tail -n+2 | xargs -I {} sh -c 'echo Killing {}; kill {} || echo failed'"
+	alias fuser-nvidia-kill="fuser -v /dev/nvidia* 2>&1 |grep -o '$USER.*'  | awk '{print \$2}' | xargs -I {} sh -c 'echo Killing {}; kill {} || echo failed'"
 	alias nsmi='watch -n 0.5 nvidia-smi'
 }
 

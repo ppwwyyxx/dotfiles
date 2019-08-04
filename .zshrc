@@ -70,7 +70,6 @@ export TF_NEED_OPENCL=0
 export TF_NEED_JEMALLOC=1
 export TF_ENABLE_XLA=1
 export TF_NEED_VERBS=0
-export TF_CUDA_CLANG=0
 # export TF_NEED_MKL=0
 # export TF_DOWNLOAD_MKL=0
 export TF_NEED_AWS=0
