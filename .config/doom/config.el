@@ -41,9 +41,6 @@
   (setq edit-server-default-major-mode 'markdown-mode)
   (edit-server-start))
 
-(after! imenu-list
-  (setq imenu-list-auto-resize nil))
-
 (after! projectile
   (setq projectile-require-project-root t)
   (projectile-cleanup-known-projects)

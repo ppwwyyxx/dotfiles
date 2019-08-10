@@ -1,6 +1,7 @@
 ;; -*- no-byte-compile: t; -*-
 
 (package! doom-snippets :disable t)
+(package! emacs-snippets :disable t)
 
 (package! smart-forward :disable t)
 
