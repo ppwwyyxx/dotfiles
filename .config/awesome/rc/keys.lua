@@ -237,6 +237,7 @@ ROOT_KEYS = gears.table.join(
 
 
 local function toggle_maximize(c)
+    c.maximized = false
     c.maximized_horizontal = not c.maximized_horizontal
     c.maximized_vertical   = not c.maximized_vertical
 end

@@ -58,7 +58,6 @@ breeze
 breeze-amber-cursor-theme
 breeze-default-cursor-theme
 breeze-gtk
-breeze-icons
 bumblebee
 busybox
 bvi
@@ -572,3 +571,6 @@ zeal
 zip
 zotero
 zsh
+flat-remix
+flat-remix-gtk
+plank-git
