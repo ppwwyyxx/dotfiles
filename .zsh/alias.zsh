@@ -468,6 +468,11 @@ function uninstall-tf() {
     pip uninstall $p -y
   done
 }
+function uninstall-pt() {
+  for p in torch torchvision torch-nightly detectron2; do
+    pip uninstall $p -y
+  done
+}
 
 # package; https://github.com/icy/pacapt
 which pacman NN && {
