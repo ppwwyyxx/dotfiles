@@ -77,6 +77,7 @@ case $state in
     case $words[1] in
       bundle | install)
         args+=(
+          "1::filename:_files -g '*.whl'"
           {-e,--editable=}"[install a package directly from a checkout]:VCS+REPOS_URL[@REV]#egg=PACKAGE"
           $requirement
           $findlink

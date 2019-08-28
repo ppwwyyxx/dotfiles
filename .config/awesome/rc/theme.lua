@@ -26,7 +26,7 @@ theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
 
 theme.useless_gap   = 0
-theme.border_width  = 2
+-- theme.border_width  = 2  -- not good for dock
 theme.border_normal = "#000000"
 theme.border_focus  = "#2e90ff"
 theme.border_marked = "#91231c"

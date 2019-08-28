@@ -10,6 +10,12 @@ in_array() {
     return 1
 }
 
+alias -s pdf jpg png gif html mhtml=xdg-open
+alias -s djvu=djview4
+alias -s obj=meshlab
+alias -s wmv mkv mp4 mp3 avi rm rmvb flv=mpv
+alias -s xls xlsx doc docx ppt pptx=libreoffice
+
 # common command
 alias cdl='cd'
 alias dc='cd'
