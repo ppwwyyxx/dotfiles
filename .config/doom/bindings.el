@@ -534,8 +534,8 @@
         :desc "Magit status"           :n  "g" #'magit-status
         :desc "Magit repo log"         :n  "l" #'magit-log-current
         :desc "Magit log for this file":n  "L" #'magit-log-buffer-file
-        :desc "Magit push popup"       :n  "p" #'magit-push-popup
-        :desc "Magit pull popup"       :n  "P" #'magit-pull-popup
+        :desc "Magit push"             :n  "p" #'magit-push
+        :desc "Magit pull"             :n  "P" #'magit-pull
         :desc "Git revert hunk"        :n  "r" #'git-gutter:revert-hunk
         :desc "Git revert file"        :n  "R" #'vc-revert
         :desc "Git stage hunk"         :n  "s" #'git-gutter:stage-hunk

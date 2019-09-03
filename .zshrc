@@ -81,7 +81,7 @@ export TF_NEED_S3=0
 export TF_NEED_OPENCL_SYCL=0
 export TF_NEED_COMPUTECPP=0
 export CC_OPT_FLAGS="-march=native"
-export TORCH_CUDA_ARCH_LIST="6.0 7.0"
+export TORCH_CUDA_ARCH_LIST="5.2 6.0 7.0"
 
 if [[ -d /opt/intel/mkl ]]; then
 	export MKLROOT=/opt/intel/mkl
