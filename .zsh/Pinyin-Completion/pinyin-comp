@@ -248,7 +248,7 @@ if __name__ == '__main__':
         pass
 
     # when dealing with outer world, always use native encoding
-    reply = [ stringlize(x) for x in reply]
+    #reply = [ stringlize(x) for x in reply]
     reply.sort( key=locale.strxfrm )
 
     def filter_escape(s):

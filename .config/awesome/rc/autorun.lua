@@ -1,31 +1,37 @@
 local autorun_items = {
   "mkdir -p /tmp/t && mkdir /t/mnt{,2,3} /t/mac",
   "xcape -e 'Control_L=Escape;Hyper_L=XF86Mail'",
-  --"/usr/lib/gsd-xsettings",  -- needed for some wine apps
-  --"wicd-gtk",
 
+  -- hardware:
+  --"wicd-gtk",
+  "blueman-applet",
+  "nvidia-smi",
+
+  -- UI:
   "sleep 3 && compton --config ~/.compton.conf",  -- https://github.com/awesomeWM/awesome/issues/1660
+  "conky",
+  -- "sleep 100 && conky -c /home/wyx/.conkyrc-cal",
   "dunst -config ~/.dunstrc",
   -- "xscreensaver -nosplash",
   "gnome-screensaver",
+
+  -- IM:
   "fcitx-autostart",
   "sogou-qimpanel",
-  "conky",
-  -- "sleep 100 && conky -c /home/wyx/.conkyrc-cal",
 
+  -- Software:
   "sleep 40 && zeal",
   "termite",
-  "nvidia-smi",
-
   --"/home/wyx/bin/cvim-server.py",
   "sleep 180 && /home/wyx/bin/background/notify-daemon.py",
   "sleep 30 && QT_STYLE_OVERRIDE= QT_SCALE_FACTOR= telegram-desktop",
-
   --"sleep 100 && dropbox",
+  --"/usr/lib/gsd-xsettings",  -- needed for some wine apps
 
   -- https://github.com/jonls/redshift/issues/636
   "/usr/lib/geoclue-2.0/demos/agent",
   "sleep 10 && redshift-gtk",
+
 }
 
 local runonce = require("lib/runonce")
