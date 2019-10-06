@@ -54,11 +54,13 @@ awful.rules.rules = {
 },
 
 -- always above:
-{ rule_any = {
-		class = {'MPlayer', 'feh'},
-	},
-	properties = { above = true, }
-},
+--[[
+   [{ rule_any = {
+	 [    class = {'MPlayer', 'feh'},
+	 [  },
+	 [  properties = { above = true, }
+   [},
+   ]]
 
 { rule = {instance = 'gimp'},
   properties = { border_width = 3 },
