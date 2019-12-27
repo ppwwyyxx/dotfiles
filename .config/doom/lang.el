@@ -12,13 +12,13 @@
 (after! flycheck
   (setq-default flycheck-disabled-checkers '(python-pylint)))
 
-(def-package! zeal-at-point
+(use-package! zeal-at-point
   :when (and IS-LINUX (display-graphic-p))
   :defer t)
 
-(def-package! lsp-mode :defer t)
+(use-package! lsp-mode :defer t)
 
-(def-package! lsp-ui
+(use-package! lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
   :config
   (setq
@@ -30,7 +30,7 @@
      lsp-ui-doc-background (doom-color 'base4)
      lsp-ui-doc-border (doom-color 'fg))))
 
-(def-package! ccls
+(use-package! ccls
   :hook (c-mode-common . lsp-ccls-enable)
   :when (executable-find "ccls")
   :config
@@ -51,7 +51,7 @@
   '("doom" (c-offsets-alist . ((innamespace . [0])))))
 (c-add-style "my-cc-mode" my/cc-style)
 
-(def-package! protobuf-mode
+(use-package! protobuf-mode
   :defer t
   :init
   (add-hook 'protobuf-mode-hook #'flycheck-mode))

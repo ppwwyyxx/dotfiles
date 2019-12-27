@@ -127,7 +127,7 @@
    (set-face-foreground 'highlight-indent-guides-top-character-face "skyblue"))
 
 ;; copied from +spacemacs/spacemacs-editing-visual
-(def-package! highlight-parentheses
+(use-package! highlight-parentheses
   :hook (prog-mode . highlight-parentheses-mode)
   :init
   (setq hl-paren-delay 0.2)

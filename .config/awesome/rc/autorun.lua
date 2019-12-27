@@ -3,7 +3,7 @@ local autorun_items = {
   "xcape -e 'Control_L=Escape;Hyper_L=XF86Mail'",
 
   -- hardware:
-  "wicd-gtk",
+  --"wicd-gtk",
   "blueman-applet",
   "nvidia-smi",
 

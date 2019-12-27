@@ -6,18 +6,18 @@
 (add-to-list 'exec-path (substitute-in-file-name "$HOME/.local/bin"))
 
 ;; fix some packages
-(def-package-hook! evil-snipe
+(use-package-hook! evil-snipe
   :post-init
   (setq evil-snipe-override-evil-repeat-keys nil)   ; don't override ; and ,
   :pre-config
   nil)
 
-(def-package-hook! evil-goggles
+(use-package-hook! evil-goggles
   :post-init
   (setq evil-goggles-enable-delete t)
   (setq evil-goggles-enable-change t))
 
-(def-package-hook! ivy
+(use-package-hook! ivy
   :pre-config
   (setq ivy-do-completion-in-region nil)  ;; don't use it for evil-ex completion
   t)
@@ -90,7 +90,6 @@
        rgb               ; creating color strings
        tmux              ; an API for interacting with tmux
        ;;upload            ; map local to remote projects via ssh/ftp
-       wakatime
        docker
 
        :lang
@@ -124,7 +123,6 @@
        ;; toward a specific purpose. They may have additional dependencies and
        ;; should be loaded late.
        :collab
-       impatient-mode    ; show off code over HTTP
        :app
        ;;(email +gmail)    ; emacs as an email client
        ;;irc               ; how neckbeards socialize

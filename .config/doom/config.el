@@ -9,7 +9,7 @@
 (add-hook 'eshell-mode-hook #'visual-line-mode)
 (add-hook 'markdown-mode-hook #'visual-line-mode)
 
-(def-package! fcitx
+(use-package! fcitx
   ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=10867
   :if (and IS-LINUX (string= (getenv "LC_CTYPE") "zh_CN.UTF-8"))
   :config
@@ -17,7 +17,7 @@
   (setq fcitx-use-dbus t))
 
 ;; TODO only include for Python mode?
-;; (def-package! aggressive-indent
+;; (use-package! aggressive-indent
 ;;   :demand t
 ;;   :config
 ;;   (global-aggressive-indent-mode 1)
@@ -26,15 +26,15 @@
 ;;   (add-to-list 'aggressive-indent-excluded-modes 'c-mode))
 
 
-(def-package! stickyfunc-enhance
+(use-package! stickyfunc-enhance
   :defer t
   :init
   (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode))
 
-(def-package! vim-empty-lines-mode
+(use-package! vim-empty-lines-mode
   :hook (prog-mode . vim-empty-lines-mode))
 
-(def-package! edit-server
+(use-package! edit-server
   :demand t
   :when (display-graphic-p)
   :config
