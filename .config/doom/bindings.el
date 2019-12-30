@@ -495,8 +495,8 @@
 
       (:desc "code" :prefix "c"
                                         ; TODO https://github.com/redguardtoo/evil-nerd-commenter
-        :desc "Commentary"              :n "c" #'evil-commentary-line
-        :desc "Commentary"              :v "c" #'evil-commentary
+        :desc "Commentary"              :n "c" #'evilnc-comment-or-uncomment-lines
+        :desc "Commentary"              :v "c" #'evilnc-comment-or-uncomment-lines
         :desc "List errors"             :n "x" #'flycheck-list-errors
         :desc "Evaluate buffer/region"  :n "e" #'+eval/buffer
         :v "e" #'+eval/region
