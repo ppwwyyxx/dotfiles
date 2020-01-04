@@ -1,6 +1,6 @@
 python
 tmux
-vim
+gvim
 zsh
 git
 openssh
@@ -9,10 +9,13 @@ iputils
 proxytunnel
 man
 make
+binutils
+gcc
 cmake
 psmisc
-archey3
 gdb
-patchelf
 rsync
 wget
+dialog
+netctl
+fakeroot
