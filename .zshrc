@@ -20,7 +20,6 @@ export TERM=screen-256color
 export TERMINFO=$HOME/.terminfo
 export LANG=en_US.UTF-8
 export SSH_ASKPASS=
-export _MAJOR_HOST=KeepLearning
 # neovim#2048 suggests: infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti; tic $TERM.ti
 
 function safe_export_path() { [[ -d $1 ]] && export PATH=$1:$PATH }
@@ -145,7 +144,7 @@ for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
 done
 FINISH="%{$terminfo[sgr0]%}"
 
-if [[ $HOST == $_MAJOR_HOST ]]; then
+if [[ $HOST == Keep* ]]; then
   alias poweroff='vboxmanage controlvm win7 savestate; sudo poweroff'
   alias reboot='vboxmanage controlvm win7 savestate; sudo reboot'
   export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: (meow~~) '
@@ -179,7 +178,7 @@ function precmd() {
 	local YELLOWGREENB="%{%b%K{154}%F{black}%}"
 	local PURPLE="%{%b%F{171}%}"
 
-	if [[ $USER == "wyx" ]] && [[ $HOST == $_MAJOR_HOST ]]; then
+	if [[ $USER == "wyx" ]] && [[ $HOST == Keep* ]]; then
 		PROMPT_PART="" # on my laptop
 	else
 		PROMPT_PART="$GREEN [%{%F{171}%}%n@%{%F{219}%}%M$GREEN]"

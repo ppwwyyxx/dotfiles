@@ -4,14 +4,15 @@
 # Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 # avoid mistakenly deploy on laptop
-if [[ "$HOST" == "KeepMoving" ]]; then
-	echo "at Keepmoving"
+if [[ "$HOST" == Keep* ]]; then
+	echo "at $HOST"
 	exit 1
 fi
 
 rm ~/.zsh -rf
 cp .zsh .zshrc .bashrc .gitconfig .profile ~/ -rvf
 cp .xbindkeysrc .toprc .xinitrc .Xmodmap .Xresources ~/ -rvf
+cp .compton.conf .conkyrc ~/ -rvf
 
 cat << EOT >> .tmux.conf
 set -g status-bg green
