@@ -203,8 +203,7 @@ ROOT_KEYS = gears.table.join(
 	awful.key({modkey}, "q", function()
 		local c = client.focus
 		if not c then return end
-    local hide = string.find(c.instance, const.TMP_TERM)
-    if hide ~= nil then
+    if c.instance ~= nil and string.find(c.instance, const.TMP_TERM) ~= nil then
       local nr_tag = #tags[c.screen]
       c:move_to_tag(tags[c.screen][nr_tag])
     else

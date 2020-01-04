@@ -299,3 +299,5 @@ zip
 zsh
 dosbox
 diff-so-fancy
+highlight
+mesa-demos
