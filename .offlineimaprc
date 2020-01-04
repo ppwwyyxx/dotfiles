@@ -7,10 +7,11 @@ socktimeout = 10
 localrepository = GmailLocal
 remoterepository = GmailRemote
 autorefresh = 5
-quick = 10
+#quick = 10
+quick = 0
 
 [Repository GmailLocal]
-type = Maildir
+type = GmailMaildir
 localfolders = /home/wyx/Mail/Maildir
 nametrans = lambda f: f if 'Sent' not in f else '[Gmail]/Sent Mail'
 
@@ -19,20 +20,28 @@ type = Gmail
 ipv6 = False
 ssl = yes
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+# https://github.com/OfflineIMAP/offlineimap/issues/573
+ssl_version = tls1_2
 starttls = no
 maxconnections = 1
 readonly = true
-remoteuser = 
+remoteuser = ppwwyyxxc@gmail.com
+# never create folders on remote
+createfolders = false
 
 #remotepass = app-specific-password
 #auth_mechanisms = LOGIN
 
+# https://support.google.com/cloud/answer/9110914
+# https://github.com/OfflineIMAP/offlineimap/blob/master/offlineimap.conf
 auth_mechanisms = XOAUTH2
-oauth2_client_id = 
-oauth2_client_secret = 
+oauth2_client_id =
+oauth2_client_secret =
 oauth2_request_url = https://accounts.google.com/o/oauth2/token
-oauth2_refresh_token = 
+oauth2_refresh_token =
 
+# folderfilter = lambda folder: 'face' in folder or 'Drafts' in folder or 'Sent' in folder or folder in \
+# 	['finance', 'INBOX', 'papers', 'projects', 'Registration', 'road_ahead/facebook', 'THU/tuna', 'travel']
 folderfilter = lambda folder: folder not in \
 	[
 	 '[Gmail]/&XfJSIJZkkK5O9g-', # trash
