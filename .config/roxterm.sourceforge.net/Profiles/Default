@@ -3,7 +3,7 @@
 full_screen=0
 height=31
 width=82
-font=Monospace 10
+font=Monospace 16
 always_show_tabs=0
 hide_menubar=1
 background_type=2
