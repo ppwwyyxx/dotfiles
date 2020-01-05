@@ -1,6 +1,5 @@
 #!/bin/bash -e
 # File: bootstrap.sh
-# Author: Yuxin Wu <ppwwyyxx@gmail.com>
 
 cd
 mkdir -p configs

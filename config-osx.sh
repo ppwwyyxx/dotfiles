@@ -1,6 +1,5 @@
 #!/bin/bash -e
 # File: osx.sh
-# Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 echo "Disable Spotlight indexing for any volume that gets mounted and has not yet been indexed before? (y/n)"
 sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Volumes"

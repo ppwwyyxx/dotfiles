@@ -1,7 +1,6 @@
 #!/bin/bash -e
 # File: deploy.sh
 # Date: Fri Jun 09 06:16:47 2017 +0000
-# Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 # avoid mistakenly deploy on laptop
 if [[ "$HOST" == Keep* ]]; then

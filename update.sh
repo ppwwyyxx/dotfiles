@@ -1,7 +1,6 @@
 #!/bin/bash
 # File: update.sh
 # Date: Wed Apr 25 11:00:05 2018 -0700
-# Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 if [[ ! "$HOST" -eq "KeepLearning" ]]; then
 	echo "Not at Laptop!"
 	exit 1
