@@ -29,7 +29,7 @@
   Control+Alt+Shift+l
 "xkill"
   Control+Alt+Shift+k
-"cd /tmp && scrot && sleep .5 && notify-send 'Screenshot saved to /tmp'"
+"cd /tmp && scrot -z && sleep .5 && notify-send 'Screenshot saved to /tmp'"
   Control+Alt+Shift+a
 
 # audio keys..

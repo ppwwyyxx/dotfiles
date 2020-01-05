@@ -1,10 +1,10 @@
 [Hotkey]
 # Trigger Input Method
-TriggerKey=CTRL_F11
+TriggerKey= CTRL_,
 # Use extra trigger key only after using it to inactivate
 # Available Value:
 # True False
-#UseExtraTriggerKeyOnlyWhenUseItToInactivate=True
+UseExtraTriggerKeyOnlyWhenUseItToInactivate=False
 # Extra key for trigger input method
 # Available Value:
 # R_CTRL
@@ -27,7 +27,7 @@ TriggerKey=CTRL_F11
 # Super+Right Ctrl
 # Disabled
 # Custom
-#SwitchKey=L_SHIFT
+SwitchKey=SHIFT Both
 # Custom switch key
 #CustomSwitchKey=
 # Activate input method
@@ -37,11 +37,11 @@ TriggerKey=CTRL_F11
 # Enable Hotkey to scroll Between Input Method
 # Available Value:
 # True False
-#IMSwitchKey=True
+IMSwitchKey=False
 # Include Inactivate when scrolling between Input Method
 # Available Value:
 # True False
-#IMSwitchIncludeInactive=False
+IMSwitchIncludeInactive=True
 # Scroll between Input Method
 # Available Value:
 # CTRL_SHIFT
@@ -58,23 +58,25 @@ TriggerKey=CTRL_F11
 # Switching Remind Mode
 #RemindSwitchKey=
 # Switching Full Width Character Mode
-#FullWidthSwitchKey=
+FullWidthSwitchKey=SHIFT_SPACE SHIFT_SPACE
 # Switch Full Width Punc Mode
-#PuncSwitchKey=CTRL_.
+PuncSwitchKey=CTRL_. CTRL_.
 # Prev Page
-#PrevPageKey=- UP
+PrevPageKey=- ,
 # Next Page
-#NextPageKey== DOWN
+NextPageKey== .
 # Choose Second and Third Candidate Word
 #SecondThirdCandWordKey=
 # Saving All Config and Input History
 #SaveAllKey=CTRL_ALT_S
-# Switch Embeded Preedit
+# Switch Embedded Preedit
 #SwitchPreedit=CTRL_ALT_P
 # Previous Candidate Word
 #PrevWord=SHIFT_TAB
 # Next Candidate Word
 #NextWord=TAB
+# Toggle if hide the input window more often
+#HideMoreKey=
 
 [Program]
 # Seconds sleep before fcitx really start
@@ -144,4 +146,8 @@ TriggerKey=CTRL_F11
 # Available Value:
 # True False
 #HideInputWindowWhenOnlyOneCandidate=False
+
+
+
+se
 

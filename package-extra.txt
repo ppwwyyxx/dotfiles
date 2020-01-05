@@ -21,6 +21,7 @@ earlyoom
 emacs-git
 emerald
 fcitx-sogoupinyin
+aur/fcitx-qt4
 flat-remix
 flat-remix-gtk
 flatplat-blue-theme
