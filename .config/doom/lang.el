@@ -76,9 +76,14 @@
           python-shell-prompt-block-regexp "\\.\\.\\.: ")
     )
 
+  (setf (alist-get 'python-mode +pretty-code-symbols-alist) nil)  ;; clear it first
   (set-pretty-symbols! 'python-mode
     :lambda "lambda"
-    :in "in" :not-in "not in")
+    :in "in" :not-in "not in"
+    :alist '(
+       ("<=" . ?≤)
+       (">=" . ?≥)
+    ))
 
   (defun buffer-contains-substring (string)
     (save-excursion

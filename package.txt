@@ -302,3 +302,7 @@ diff-so-fancy
 highlight
 mesa-demos
 scrot
+fd
+editorconfig-core-c
+shellcheck
+js-beautify

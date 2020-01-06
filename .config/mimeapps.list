@@ -10,4 +10,6 @@ application/octet-stream=FoxitReader.desktop
 image/png=feh.desktop
 image/jpeg=feh.desktop
 image/gif=feh.desktop
-x-scheme-handler/mailto=exo-mail-reader.desktop
+x-scheme-handler/mailto=chromium.desktop
+inode/directory=org.gnome.Nautilus.desktop;thunar.desktop;
+

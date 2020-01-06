@@ -1,6 +1,6 @@
 # app keys..
 
-"chromium --force-device-scale-factor=1.1 --no-proxy-server"
+"chromium --force-device-scale-factor=1.2 --no-proxy-server"
   Mod4 + c
 "~/bin/background/screenshot"
   Mod4 + a
@@ -50,7 +50,7 @@
 "chromium https://our.intern.facebook.com/intern/diffs/"
   m:0x0 + b:8
 # forward
-"notify-send button9"
+"chromium https://github.com/facebookresearch/detectron2/issues"
   m:0x0 + b:9
 # forward
 "notify-send button10"
