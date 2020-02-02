@@ -120,6 +120,7 @@ alias sort='LC_ALL=C sort'
 alias uniq='LC_ALL=C uniq'
 alias grep='grep -IE --color=auto --exclude=.tags --exclude-dir="node_modules" --exclude-dir=".git" --exclude-dir=".env"'
 alias tmuxa='tmux a || tmux'
+alias tmux-reset-prefix='tmux set -g status-bg colour141; tmux unbind C-a; tmux set -g prefix C-q; tmux bind C-q send-prefix'
 alias du='du -sh'
 alias strace='strace -yy'
 alias tail='tail -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
@@ -397,6 +398,7 @@ function ffmpeg_compress() {
 		ffmpeg -i "$1" `echo $f_avc_param` $1.mp4
 	fi
 }
+f_avc_param_apple="$f_avc_param_old -pix_fmt yuv420p"
 function mencoder_compress() { mencoder "$1" -o $1.avi `echo $m_avc_param` }
 function ffmpeg_audio() { ffmpeg -i "$1" -vn "${1%.*}".mp3}
 function colormap(){
