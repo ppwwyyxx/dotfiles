@@ -25,8 +25,8 @@ local autorun_items = {
   --"/home/wyx/bin/cvim-server.py",
   "sleep 180 && /home/wyx/bin/background/notify-daemon.py",
   "sleep 30 && QT_STYLE_OVERRIDE= QT_SCALE_FACTOR= telegram-desktop",
-  --"sleep 100 && dropbox",
   --"/usr/lib/gsd-xsettings",  -- needed for some wine apps
+  "sleep 30 && /home/wyx/.dropbox-dist/dropboxd",
 
   -- https://github.com/jonls/redshift/issues/636
   "/usr/lib/geoclue-2.0/demos/agent",

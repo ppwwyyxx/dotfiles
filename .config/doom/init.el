@@ -76,8 +76,6 @@
        debugger          ; FIXME stepping through code, to help you add bugs
        eval              ; run code, run (also, repls)
        editorconfig
-       flyspell
-       flycheck
        (lookup +docsets)
        ;;ein               ; tame Jupyter notebooks with emacs
        ;;gist              ; interacting with github gists
@@ -91,6 +89,10 @@
        tmux              ; an API for interacting with tmux
        ;;upload            ; map local to remote projects via ssh/ftp
        docker
+
+       :checkers
+       spell
+       syntax
 
        :lang
        assembly          ; assembly for fun or debugging

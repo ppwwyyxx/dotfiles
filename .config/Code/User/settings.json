@@ -1,0 +1,100 @@
+{
+    // @sync-ignore
+    "window.zoomLevel": 1,
+    // @sync-ignore
+    "editor.minimap.enabled": false,
+    "workbench.editor.showTabs": false,
+    "breadcrumbs.enabled": true,
+
+
+    "terminal.integrated.cursorStyle": "line",
+    "window.menuBarVisibility": "toggle",
+    "workbench.iconTheme": "vscode-icons",
+
+    "editor.accessibilitySupport": "off",
+    "editor.lineNumbers": "relative",
+    "editor.scrollbar.horizontal": "hidden",
+    "editor.scrollbar.vertical": "hidden",
+    "editor.hideCursorInOverviewRuler": true,
+    "editor.mouseWheelZoom": true,
+    "editor.wordWrapColumn": 100,
+    "editor.cursorSmoothCaretAnimation": false,
+    "editor.fontFamily": "'Fantasque Sans Mono', 'Droid Sans Mono', 'monospace', 'Droid Sans Fallback'",
+    "editor.fontSize": 18,
+    "editor.formatOnPaste": true,
+    "editor.minimap.maxColumn": 80,
+    "files.maxMemoryForLargeFilesMB": 1024,
+    "files.trimTrailingWhitespace": true,
+    "editor.glyphMargin": false,
+    "[jsonc]": {
+        "editor.glyphMargin": true
+    },
+
+    // python
+    "python.analysis.logLevel": "Warning",
+    "python.analysis.memory.keepLibraryAst": true,
+    "python.analysis.memory.keepLibraryLocalVariables": true,
+
+    // formatter:
+    "javascript.format.placeOpenBraceOnNewLineForFunctions": false,
+    "javascript.format.placeOpenBraceOnNewLineForControlBlocks": false,
+    "json.format.enable": false,
+
+    // vim:
+    "vscode-neovim.neovimPath": "/usr/bin/nvim",
+    "vscode-neovim.useCtrlKeysForNormalMode": false,
+    // @sync-ignore
+    //"vscode-neovim.neovimInitPath": "~/.config/nvim/vscode.init.vim",
+    "vim.cursorStylePerMode.insert": "line",
+    "vim.cursorStylePerMode.normal": "block",
+    "vim.enableNeovim": true,
+    "vim.neovimPath": "/usr/bin/nvim",
+    "vim.hlsearch": true,
+    "vim.statusBarColorControl": true,
+    "vim.textwidth": 120,
+    "vim.foldfix": true,
+    "vim.useSystemClipboard": true,
+
+    // vim keybindings
+    "vim.leader": " ",
+    "vim.normalModeKeyBindings": [
+        { "before": [";"], "after": [":"] },
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [
+        { "before": [ "<leader>", "f", "m" ], "commands": [ "workbench.action.toggleSidebarVisibility" ] },
+        { "before": [ "<leader>", "n", "o" ], "commands": [ ":nohl" ] },
+        { "before": [ "<leader>", "f", "D" ], "commands": [ "workbench.action.openSettings" ] },
+        { "before": [ "<leader>", "c", "c" ], "commands": [ "editor.action.commentLine" ] }
+    ],
+    "vim.insertModeKeyBindings": [
+        { "before": ["j", "j"], "after": ["<Esc>"] },
+    ],
+    "vim.visualModeKeyBindings": [
+        // surround
+        { "before": [ "s" ], "after": [ "S" ] },
+        { "before": [ "L" ], "commands": [ "editor.action.smartSelect.expand" ] },
+        { "before": [ "H" ], "commands": [ "editor.action.smartSelect.shrink" ] },
+    ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+        { "before": [ ">" ], "commands": [ "editor.action.indentLines" ] },
+        { "before": [ "<" ], "commands": [ "editor.action.outdentLines" ] },
+        { "before": [ "<leader>", "c", "c" ], "commands": [ "editor.action.blockComment" ] }
+    ],
+
+    // ui
+    "workbench.colorTheme": "Monokai",
+
+    // linenumber width
+    "editor.lineNumbersMinChars": 1,
+    "editor.folding": false,
+
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#007acc",
+        "statusBar.noFolderBackground": "#007acc",
+        "statusBar.debuggingBackground": "#007acc"
+    },
+    "sync.autoUpload": true,
+    "sync.autoDownload": true,
+    "sync.gist": "7337efd36f4ccc655bb295dffd7cd8e6",
+    "sync.quietSync": true,
+}
