@@ -4,23 +4,29 @@ local gears = require('gears')
 -- configuration -
 local wp_timeout  = 180
 local wp_path = awful.util.getdir("config") .. "/wallpaper/"
-local wp_files = myutil.rexec("find -L " .. wp_path .. " -maxdepth 2 -type f | shuf")
+local wp_files = myutil.rexec("find -L " .. wp_path .. " -maxdepth 3 -type f \\( -name '*.jpg' -or -name '*.png' \\) | shuf")
 wp_files = myutil.split(wp_files, "\n")
-
--- use dark for second screen
-if screen.count() == 2 then
-    gears.wallpaper.maximized(wp_path .. "dark.jpg", 2, true)
+if #wp_files == 0 then
+  myutil.notify("No wallpapers found!", "", "critical")
 end
+
 
 local wp_index = 1
 function changewp()
     -- change wallpaper for screen 1
-    if #wp_files == 0 then
-       myutil.notify("No wallpapers found!", "", "critical")
-       return
+    local target = myutil.find_largest_screen()
+    for s in screen do
+      if s.index ~= target.index then
+      -- use dark for other screen
+        gears.wallpaper.maximized(wp_path .. "dark.jpg", s.index, true)
+      else
+        if #wp_files == 0 then
+          return
+        end
+        wp_index = wp_index % #wp_files + 1
+        gears.wallpaper.maximized(wp_files[wp_index], s.index, true)
+      end
     end
-    wp_index = wp_index % #wp_files + 1
-    gears.wallpaper.maximized(wp_files[wp_index], 1, true)
 end
 
 local wp_timer = gears.timer({ timeout = wp_timeout })
@@ -29,11 +35,7 @@ wp_timer:start()
 
 
 awful.screen.connect_for_each_screen(function(s)
-  if s.index ~= 1 then
-    gears.wallpaper.maximized(wp_path .. "dark.jpg", s, true)
-  else
-    changewp()
-  end
+  changewp()
 end)
 
 -- for fcitx-chttrans ?

@@ -241,6 +241,7 @@ termite
 texlive-core
 texlive-latexextra
 texlive-pictures
+texlive-science
 the_silver_searcher
 tig
 tigervnc
@@ -255,6 +256,7 @@ ttf-freefont
 ttf-inconsolata
 ttf-symbola
 ttf-ubuntu-font-family
+ttf-librebaskerville
 unetbootin
 unpaper
 urxvt-perls

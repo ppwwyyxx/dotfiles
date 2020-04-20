@@ -54,16 +54,7 @@ local function handle_orphan_tag(t)
 end
 
 local function put_clients_on_largest_screen()
-  local target = nil
-  local area = 0
-  for s in screen do
-    local screen_area = s.geometry.width * s.geometry.height
-    if screen_area > area then
-      area = screen_area
-      target = s
-    end
-  end
-
+  local target = myutil.find_largest_screen()
   for s in screen do
     if s.index ~= target.index then
       myutil.move_clients_among_screen(s, target)

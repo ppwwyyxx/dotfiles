@@ -3,9 +3,12 @@
     "window.zoomLevel": 1,
     // @sync-ignore
     "editor.minimap.enabled": false,
+    // @sync-ignore
+    // "vscode-neovim.neovimInitPath": "~/.config/nvim/vscode.init.vim",
+
+
     "workbench.editor.showTabs": false,
     "breadcrumbs.enabled": true,
-
 
     "terminal.integrated.cursorStyle": "line",
     "window.menuBarVisibility": "toggle",
@@ -19,12 +22,27 @@
     "editor.mouseWheelZoom": true,
     "editor.wordWrapColumn": 100,
     "editor.cursorSmoothCaretAnimation": false,
-    "editor.fontFamily": "'Fantasque Sans Mono', 'Droid Sans Mono', 'monospace', 'Droid Sans Fallback'",
+    "editor.fontFamily": "'JetBrains Mono', 'Fantasque Sans Mono', 'Droid Sans Mono', 'monospace', 'Droid Sans Fallback'",
     "editor.fontSize": 18,
     "editor.formatOnPaste": true,
+    "editor.formatOnSaveTimeout": 3000,
+    "editor.fontLigatures": true,
     "editor.minimap.maxColumn": 80,
     "files.maxMemoryForLargeFilesMB": 1024,
     "files.trimTrailingWhitespace": true,
+    "files.autoSave": "off",
+    "files.exclude": {
+        "**/*.egg-info": true,
+        "**/__pycache__": true,
+        "**/build/": true,
+        "**/_build/": true,
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true
+    },
+
     "editor.glyphMargin": false,
     "[jsonc]": {
         "editor.glyphMargin": true
@@ -34,6 +52,8 @@
     "python.analysis.logLevel": "Warning",
     "python.analysis.memory.keepLibraryAst": true,
     "python.analysis.memory.keepLibraryLocalVariables": true,
+    "python.formatting.blackArgs": ["--line-length", "100"],
+
 
     // formatter:
     "javascript.format.placeOpenBraceOnNewLineForFunctions": false,
@@ -43,8 +63,6 @@
     // vim:
     "vscode-neovim.neovimPath": "/usr/bin/nvim",
     "vscode-neovim.useCtrlKeysForNormalMode": false,
-    // @sync-ignore
-    //"vscode-neovim.neovimInitPath": "~/.config/nvim/vscode.init.vim",
     "vim.cursorStylePerMode.insert": "line",
     "vim.cursorStylePerMode.normal": "block",
     "vim.enableNeovim": true,
@@ -81,18 +99,27 @@
         { "before": [ "<leader>", "c", "c" ], "commands": [ "editor.action.blockComment" ] }
     ],
 
+    "latex-workshop.view.pdf.viewer": "tab",
+
+    // git
+    "gitlens.currentLine.enabled": false,
+    "gitlens.hovers.currentLine.over": "line",
+    "gitlens.codeLens.enabled": false,
+    "gitlens.statusBar.enabled": false,
+    "gitlens.hovers.enabled": false,
+    "gitlens.mode.statusBar.enabled": false,
+
     // ui
     "workbench.colorTheme": "Monokai",
-
     // linenumber width
     "editor.lineNumbersMinChars": 1,
     "editor.folding": false,
-
     "workbench.colorCustomizations": {
         "statusBar.background": "#007acc",
         "statusBar.noFolderBackground": "#007acc",
         "statusBar.debuggingBackground": "#007acc"
     },
+
     "sync.autoUpload": true,
     "sync.autoDownload": true,
     "sync.gist": "7337efd36f4ccc655bb295dffd7cd8e6",

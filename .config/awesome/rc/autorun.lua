@@ -31,6 +31,7 @@ local autorun_items = {
   -- https://github.com/jonls/redshift/issues/636
   "/usr/lib/geoclue-2.0/demos/agent",
   "sleep 10 && redshift-gtk",
+  "/opt/Todoist/todoist",
 
 }
 

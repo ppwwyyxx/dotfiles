@@ -134,4 +134,17 @@ function myutil.move_clients_among_screen(src, dst)
   end
 end
 
+function myutil.find_largest_screen()
+  local target = nil
+  local area = 0
+  for s in screen do
+    local screen_area = s.geometry.width * s.geometry.height
+    if screen_area > area then
+      area = screen_area
+      target = s
+    end
+  end
+  return target
+end
+
 return myutil

@@ -32,10 +32,12 @@
     { "key": "ctrl+v", "command": "-editor.action.clipboardPasteAction", "when": "textInputFocus && !editorReadonly" },
 
     // switch panels
-    {"key": "ctrl+h", "command": "workbench.action.focusLeftGroup", "when": "vim.mode != 'Insert' && neovim.mode != 'insert'"},
-    {"key": "ctrl+l", "command": "workbench.action.focusRightGroup", "when": "vim.mode != 'Insert' && neovim.mode != 'insert'"},
-    {"key": "ctrl+j", "command": "workbench.action.focusBelowGroup", "when": "vim.mode != 'Insert' && neovim.mode != 'insert'"},
-    {"key": "ctrl+k", "command": "workbench.action.focusAboveGroup", "when": "vim.mode != 'Insert' && neovim.mode != 'insert'"},
+   {"key": "ctrl+h", "command": "workbench.action.focusLeftGroup",  "when": "!textInputFocus || neovim.mode != 'insert'"},
+   {"key": "ctrl+l", "command": "workbench.action.focusRightGroup", "when": "!textInputFocus || neovim.mode != 'insert'"},
+   {"key": "ctrl+j", "command": "workbench.action.focusBelowGroup", "when": "!textInputFocus || neovim.mode != 'insert'"},
+   {"key": "ctrl+k", "command": "workbench.action.focusAboveGroup", "when": "!textInputFocus || neovim.mode != 'insert'"},
+
+    {"key": "ctrl+v", "command": "workbench.action.alternativeAcceptSelectedQuickOpenItem", "when": "inQuickOpen" },
 
     // removed bindings
     { "key": "ctrl+b", "command": "-workbench.action.toggleSidebarVisibility" },
@@ -184,5 +186,49 @@
         "key": "ctrl+shift+.",
         "command": "-breadcrumbs.focusAndSelect",
         "when": "breadcrumbsPossible"
+    },
+    {
+        "key": "ctrl+alt+c",
+        "command": "-latex-workshop.clean",
+        "when": "!config.latex-workshop.bind.altKeymap.enabled && editorLangId == 'latex'"
+    },
+    {
+        "key": "ctrl+alt+c",
+        "command": "-latex-workshop.clean",
+        "when": "!config.latex-workshop.bind.altKeymap.enabled && editorLangId == 'latex'"
+    },
+    {
+        "key": "ctrl+l alt+j",
+        "command": "-latex-workshop.synctex",
+        "when": "config.latex-workshop.bind.altKeymap.enabled && editorTextFocus && editorLangId == 'latex'"
+    },
+    {
+        "key": "ctrl+alt+v",
+        "command": "-latex-workshop.view",
+        "when": "!config.latex-workshop.bind.altKeymap.enabled && editorLangId == 'latex'"
+    },
+    {
+        "key": "ctrl+alt+x",
+        "command": "-workbench.view.extension.latex",
+        "when": "!config.latex-workshop.bind.altKeymap.enabled"
+    },
+    {
+        "key": "ctrl+h",
+        "command": "-editor.action.startFindReplaceAction"
+    },
+    {
+        "key": "ctrl+h",
+        "command": "-vscode-neovim.send",
+        "when": "editorTextFocus && neovim.ctrlKeysNormal && neovim.init && neovim.mode != 'insert'"
+    },
+    {
+        "key": "ctrl+shift+r",
+        "command": "-restructuredtext.showPreview",
+        "when": "editorLangId == 'restructuredtext'"
+    },
+    {
+        "key": "ctrl+k ctrl+r",
+        "command": "-restructuredtext.showPreviewToSide",
+        "when": "editorLangId == 'restructuredtext'"
     },
 ]
