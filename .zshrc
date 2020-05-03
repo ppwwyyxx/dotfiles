@@ -52,7 +52,7 @@ export LIBRARY_PATH=${LIBRARY_PATH+$LIBRARY_PATH:}$HOME/.local/lib
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$HOME/.local/lib/pkgconfig
 
 # override tmux master key under ssh
-if [[ -n "$TMUX" ]] && [[ -n "$SSH_CLIENT" ]]; then
+if [[ -n "$TMUX" ]] && [[ -n "$SSH_CLIENT" ]] && [[ "$HOST" -ne "hawaii" ]]; then
 	tmux set -g status-bg cyan
 	tmux unbind C-q
 	tmux set -g prefix C-a
