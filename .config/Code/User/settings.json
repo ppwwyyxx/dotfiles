@@ -42,10 +42,12 @@
         "**/CVS": true,
         "**/.DS_Store": true
     },
-
-    "editor.glyphMargin": false,
-    "[jsonc]": {
-        "editor.glyphMargin": true
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/*/**": true,
+        "**/build/**": true,
+        "**/__pycache__/**": true
     },
 
     // python
@@ -114,11 +116,23 @@
     // linenumber width
     "editor.lineNumbersMinChars": 1,
     "editor.folding": false,
+    "debug.showBreakpointsInOverviewRuler": true,
     "workbench.colorCustomizations": {
         "statusBar.background": "#007acc",
         "statusBar.noFolderBackground": "#007acc",
         "statusBar.debuggingBackground": "#007acc"
     },
+    "editor.glyphMargin": false,
+    "[jsonc]": {
+        "editor.glyphMargin": true
+    },
+    "bracket-pair-colorizer-2.showHorizontalScopeLine": false,
+    "bracket-pair-colorizer-2.showVerticalScopeLine": false,
+    "bracket-pair-colorizer-2.highlightActiveScope": false,
+    "bracket-pair-colorizer-2.showBracketsInGutter": true,
+    "bracket-pair-colorizer-2.colors": [
+        "White", "GreenYellow", "Gold", "Orchid", "Aqua", "ForestGreen", "Tomato", "LightSkyBlue"
+    ],
 
     "sync.autoUpload": true,
     "sync.autoDownload": true,

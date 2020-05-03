@@ -4,6 +4,9 @@
 (add-to-list 'load-path (concat doom-private-dir "vendor/"))
 (add-to-list 'exec-path (substitute-in-file-name "$HOME/bin"))
 (add-to-list 'exec-path (substitute-in-file-name "$HOME/.local/bin"))
+(setq! evil-want-Y-yank-to-eol t
+       evil-want-C-u-scroll t
+       evil-want-C-d-scroll t)
 
 ;; fix some packages
 (use-package-hook! evil-snipe

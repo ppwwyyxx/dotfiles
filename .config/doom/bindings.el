@@ -184,8 +184,8 @@
   (map!
    ;; Have C-u behave similarly to `doom/backward-to-bol-or-indent'.
    ;; NOTE SPC u replaces C-u as the universal argument.
-   :gi "C-u"   #'doom/backward-kill-to-bol-and-indent
-   :gi "C-w"   #'backward-kill-word
+   :i "C-u"   #'doom/backward-kill-to-bol-and-indent
+   :i "C-w"   #'backward-kill-word
    ;; Vimmish ex motion keys
    :gi "C-b"   #'backward-word
    :gi "C-f"   #'forward-word)

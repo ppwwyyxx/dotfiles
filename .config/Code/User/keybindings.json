@@ -2,7 +2,6 @@
 [
     {"key": "Ctrl-Tab", "command": "workbench.action.nextEditor"},
     {"key": "Ctrl-Shift-Tab", "command": "workbench.action.previousEditor"},
-    { "key": "ctrl+g", "command": "workbench.action.togglePanel" },  // like emacs
     { "key": "ctrl+d", "command": "cursorPageDown", "when": "textInputFocus" },
     { "key": "ctrl+u", "command": "cursorPageUp", "when": "textInputFocus" },
     // vim insert:
@@ -14,6 +13,8 @@
     {"key": "Ctrl-J", "command": "cursorDown", "when": "vim.mode == 'Insert' || neovim.mode == 'insert'"},
     {"key": "Ctrl-B", "command": "cursorWordLeft", "when": "vim.mode == 'Insert' || neovim.mode == 'insert'"},
     {"key": "Ctrl-F", "command": "cursorWordRight", "when": "vim.mode == 'Insert' || neovim.mode == 'insert'" },
+
+    {"key": "ctrl+v", "command": "workbench.action.alternativeAcceptSelectedQuickOpenItem", "when": "inQuickOpen" },
     //{ "key": ";", "command": "vim.showQuickpickCmdLine", "when": "inZenMode && vim.mode != 'Insert'" },
     //{ "key": "Shift+;", "command": "vim.showQuickpickCmdLine", "when": "inZenMode && vim.mode != 'Insert'" },
 
@@ -31,13 +32,17 @@
     { "key": "ctrl+v", "command": "vscode-neovim.send", "when": "textInputFocus && !editorReadonly && neovim.mode == normal", "args": "<C-v>"},
     { "key": "ctrl+v", "command": "-editor.action.clipboardPasteAction", "when": "textInputFocus && !editorReadonly" },
 
-    // switch panels
-   {"key": "ctrl+h", "command": "workbench.action.focusLeftGroup",  "when": "!textInputFocus || neovim.mode != 'insert'"},
-   {"key": "ctrl+l", "command": "workbench.action.focusRightGroup", "when": "!textInputFocus || neovim.mode != 'insert'"},
-   {"key": "ctrl+j", "command": "workbench.action.focusBelowGroup", "when": "!textInputFocus || neovim.mode != 'insert'"},
-   {"key": "ctrl+k", "command": "workbench.action.focusAboveGroup", "when": "!textInputFocus || neovim.mode != 'insert'"},
+    // switch between editors
+    {"key": "ctrl+h", "command": "workbench.action.focusLeftGroup",  "when": "!textInputFocus || neovim.mode != 'insert'"},
+    {"key": "ctrl+l", "command": "workbench.action.focusRightGroup", "when": "!textInputFocus || neovim.mode != 'insert'"},
+    {"key": "ctrl+j", "command": "workbench.action.focusBelowGroup", "when": "!textInputFocus || neovim.mode != 'insert'"},
+    {"key": "ctrl+k", "command": "workbench.action.focusAboveGroup", "when": "!textInputFocus || neovim.mode != 'insert'"},
 
-    {"key": "ctrl+v", "command": "workbench.action.alternativeAcceptSelectedQuickOpenItem", "when": "inQuickOpen" },
+    // switch panels
+    { "key": "ctrl+g", "command": "workbench.action.togglePanel" },  // like emacs
+    { "key": "ctrl+shift+g", "command": "workbench.action.focusPanel", "when": "!panelFocus" },  // like emacs
+    { "key": "alt+l", "command": "workbench.action.nextPanelView", "when": "panelFocus"},
+    { "key": "alt+h", "command": "workbench.action.previousPanelView", "when": "panelFocus"},
 
     // removed bindings
     { "key": "ctrl+b", "command": "-workbench.action.toggleSidebarVisibility" },
