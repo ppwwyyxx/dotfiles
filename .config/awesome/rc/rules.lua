@@ -2,17 +2,6 @@
 local myutil = require('lib/myutil')
 local wibox = require("wibox")
 local gears = require('gears')
---[[
-   [local text_edit_key = myutil.join(
-	 [  awful.key({altkey}, 'f',         function(c) sendkey(c, 'ctrl+Right') end),
-	 [  awful.key({altkey}, 'b',         function(c) sendkey(c, 'ctrl+Left') end),
-	 [  awful.key({'Control'}, 'd',      function(c) sendkey(c, 'Home') end),
-	 [  awful.key({'Control'}, 'e',      function(c) sendkey(c, 'End') end)
-   [)
-   [local function bind_text_key(client)
-	 [  client:keys(myutil.join(client:keys(), text_edit_key))
-   [end
-   ]]
 local print_client = function(c)
   myutil.notify(c.name)
 end
@@ -75,7 +64,7 @@ awful.rules.rules = {
 },
 
 -- chat:
-{ rule_any = { name = {'Telegram', 'plaidchat', 'WeChat', 'Nocturn'} },
+{ rule_any = { name = {'Telegram', 'plaidchat', 'WeChat', 'Nocturn', 'Todoist', 'Polar'} },
   properties = { tag = "chat" },
   callback = function(c)
     local g = c:geometry()
