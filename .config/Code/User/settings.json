@@ -138,4 +138,32 @@
     "sync.autoDownload": true,
     "sync.gist": "7337efd36f4ccc655bb295dffd7cd8e6",
     "sync.quietSync": true,
+    "githubPullRequests.queries": [
+        {
+            "label": "All",
+            "query": "is:open"
+        },
+        {
+            "label": "Assigned To Me",
+            "query": "is:open assignee:${user}"
+        },
+        {
+            "label": "Created By Me",
+            "query": "is:open author:${user}"
+        }
+    ],
+    "githubIssues.queries": [
+        {
+            "label": "All Issues",
+            "query": "is:open repo:${owner}/${repository}"
+        },
+        {
+            "label": "My Issues",
+            "query": "default"
+        },
+        {
+            "label": "Created Issues",
+            "query": "author:${user} state:open repo:${owner}/${repository} sort:created-desc"
+        },
+    ],
 }
