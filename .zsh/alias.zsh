@@ -150,7 +150,7 @@ function linkto() {
 # network
 alias p='ping'
 alias meow='ping'
-alias iwc='iwconfig wlp2s0; ifconfig wlp2s0'
+alias iwc='iwconfig; ifconfig'
 alias port='sudo netstat -ntlpu'
 alias listen='lsof -P -i -n'
 alias scp='scp -r'
@@ -254,6 +254,7 @@ which squeue NN && {
 	alias squeue='=squeue -u $(whoami) -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | sort -n -k 1 | colorline'
 	alias squeue-all='=squeue -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | colorline'
 	alias slurm-gpu-per-user="=squeue -o %u:%D:%b | tail -n+2 | awk -F ':' '{a[\$1]+=\$2*\$NF} END {for (i in a) {print i, a[i]; s+=a[i];} print \"Total\", s}' | sort -n -k2 | column -t"
+  alias sinfo-by-type="=sinfo -o '%f %A %N %m %G' | column -t"
 }
 
 alias win='cd; virtualbox --startvm win7 & ; cd -'
@@ -384,21 +385,34 @@ alias dot='dot -Tpng -O -v'
 alias 2pdf='libreoffice --headless --convert-to pdf' # unoconv -f pdf
 alias 2csv='libreoffice --headless --convert-to csv'
 
-alias mirror='mplayer -tv driver=v4l2:device=/dev/video0 tv:// -vf-add mirror'
+function mirror() {
+  device=${1:-/dev/video0}
+  mplayer -tv driver=v4l2:device=$device tv:// -vf-add mirror
+}
+function webcam-to-v4l2 () {
+  # https://github.com/bluezio/ipwebcam-gst/
+  URL=$1
+  device=$2
+  gst-launch-1.0 souphttpsrc \
+    location=http://$URL \
+    do-timestamp=true is-live=true \
+      '!' queue  '!' multipartdemux '!' decodebin '!' videoconvert '!' videoscale '!' \
+      video/x-raw,format=YUY2 '!' v4l2sink device=$device
+}
 alias tune-pitch='mplayer -af scaletempo=speed=pitch'
 alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_region 1 -i :0.0 ~/Video/out.mpg'
 m_sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "/usr/share/fonts/wenquanyi/wqy-microhei/wqy-microhei.ttc"'
 m_avc_param="-oac mp3lame -lameopts fast:preset=medium -ovc x264 -x264encopts subq=5:8x8dct:frameref=2:bframes=3:weight_b:threads=auto"
 f_avc_param_old="-c:v libx264 -preset slow -crf 22 -c:a libmp3lame"
 f_avc_param="-map 0 -c:v libx265 -preset medium -x265-params crf=23 -c:a aac -strict experimental -b:a 128k"
+f_avc_param_apple="$f_avc_param_old -pix_fmt yuv420p"
 function ffmpeg_compress() {
 	if [[ -n $2 ]]; then
 		ffmpeg -i "$1" `echo $f_avc_param` -vf subtitles=$2 $1.mp4
 	else
-		ffmpeg -i "$1" `echo $f_avc_param` $1.mp4
+		ffmpeg -i "$1" `echo $f_avc_param` -c:s copy $1.mp4
 	fi
 }
-f_avc_param_apple="$f_avc_param_old -pix_fmt yuv420p"
 function mencoder_compress() { mencoder "$1" -o $1.avi `echo $m_avc_param` }
 function ffmpeg_audio() { ffmpeg -i "$1" -vn "${1%.*}".mp3}
 function colormap(){
@@ -472,7 +486,7 @@ alias piu3='pip3 install --user'
 alias piuu3='pip3 install --user -U'
 alias pyftp='python2 -m pyftpdlib'
 function pytwistd() { twistd web --path "$1" -p tcp:"${2:-8000}" }
-alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --user -U"
+alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --user -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install --user -U"
 alias unquote='python2 -c "import sys, urllib as ul; [sys.stdout.write(ul.unquote(l)) for l in sys.stdin]"'
 
 # tensorflow
