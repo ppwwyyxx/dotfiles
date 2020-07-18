@@ -133,7 +133,7 @@
        (t -1)
        )
       ))
-  (add-hook 'prog-mode-hook (lambda!
+  (add-hook 'prog-mode-hook (cmd!
                              (if (eq (my/my-own-project-p) 1)
                                  (doom|enable-delete-trailing-whitespace))))
   )

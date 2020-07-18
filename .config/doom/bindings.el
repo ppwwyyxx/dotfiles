@@ -121,9 +121,9 @@
  :i "C-S-V"   #'yank
 
  ;; delete to blackhole register
- :v  [delete] (lambda! ()
-                       (let ((evil-this-register ?_))
-                         (call-interactively #'evil-delete)))
+ :v  [delete] (cmd! ()
+                    (let ((evil-this-register ?_))
+                      (call-interactively #'evil-delete)))
 
  ;; Vim-like editing commands
  :i "C-j"   #'evil-next-line
@@ -305,7 +305,7 @@
        "S-TAB"   #'company-select-previous
        [backtab] #'company-select-previous
        "<f1>"    nil
-       [escape]  (lambda! (company-abort) (evil-normal-state))
+       [escape]  (cmd! (company-abort) (evil-normal-state))
        )
      (:map company-search-map ; applies to `company-filter-map' too
        "C-n"     #'company-select-next-or-abort
@@ -339,8 +339,8 @@
        "C-k"    #'evil-window-up
        "C-j"    #'evil-window-down
        ;; split window and execute action, similar to ctrlp.vim
-       "C-v"    (lambda! (my/ivy-exit-new-window 'right))
-       "C-s"    (lambda! (my/ivy-exit-new-window 'below))
+       "C-v"    (cmd! (my/ivy-exit-new-window 'right))
+       "C-s"    (cmd! (my/ivy-exit-new-window 'below))
        )
      (:map ivy-switch-buffer-map
        "C-d" 'ivy-switch-buffer-kill
@@ -398,7 +398,7 @@
 
  :nme "C--" #'text-scale-decrease
  :nme "C-=" #'text-scale-increase
- :nme "C-0" (lambda! (text-scale-set 0))
+ :nme "C-0" (cmd! (text-scale-set 0))
  "<C-mouse-5>" #'text-scale-decrease
  "<C-mouse-4>" #'text-scale-increase
 
@@ -504,7 +504,7 @@
         :desc "Rotate text"             :n "!" #'rotate-text  ;https://www.emacswiki.org/emacs/RotateText
         :desc "Insert snippet"         :nv "s" #'yas-insert-snippet
         :desc "Start MultiCursor"       :n "m" #'turn-on-evil-mc-mode
-        :v "m" (lambda! () (turn-on-evil-mc-mode) (evil-mc-make-all-cursors))
+        :v "m" (cmd! () (turn-on-evil-mc-mode) (evil-mc-make-all-cursors))
         )
 
       (:desc "file" :prefix "f"
@@ -607,10 +607,10 @@
         )
 
       (:desc "XXX" :prefix "n"
-        :desc "No Highlight" :n "o" (lambda! ()
-                                             (evil-ex-nohighlight)
-                                             (unhighlight-regexp t)
-                                             (evil-mc-undo-all-cursors))
+        :desc "No Highlight" :n "o" (cmd! ()
+                                          (evil-ex-nohighlight)
+                                          (unhighlight-regexp t)
+                                          (evil-mc-undo-all-cursors))
         )
 
       (:after json-mode :map json-mode-map
