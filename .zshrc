@@ -80,6 +80,7 @@ export TF_NEED_S3=0
 export TF_NEED_OPENCL_SYCL=0
 export TF_NEED_COMPUTECPP=0
 export CC_OPT_FLAGS="-march=native"
+export TF2_BEHAVIOR=0    # NO TF2
 export TORCH_SHOW_CPP_STACKTRACES=1
 #export TORCH_CUDA_ARCH_LIST="5.2 6.0 7.0"
 

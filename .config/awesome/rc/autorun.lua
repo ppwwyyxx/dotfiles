@@ -11,7 +11,7 @@ local autorun_items = {
   "sleep 3 && compton --config ~/.compton.conf",  -- https://github.com/awesomeWM/awesome/issues/1660
   "conky",
   -- "sleep 100 && conky -c /home/wyx/.conkyrc-cal",
-  "dunst -config ~/.dunstrc",
+  "dunst",
   -- "xscreensaver -nosplash",
   "gnome-screensaver",
 

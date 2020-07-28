@@ -308,3 +308,4 @@ fd
 editorconfig-core-c
 shellcheck
 js-beautify
+qt5-styleplugins

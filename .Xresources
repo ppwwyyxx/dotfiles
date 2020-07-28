@@ -36,19 +36,17 @@ URxvt.saveLines: 10000
 URxvt.insecure: true
 
 !URxvt.font: xft:Source Code Pro-12x21:antialias=true,xft:WenQuanYi Micro Hei Mono-11x19:antialias=true
-!URxvt*font: xft:FantasqueSansMono-13x21,xft:WenQuanYi Micro Hei Mono-11x19:antialias=true,xft:Symbola:size=10
-URxvt*font: xft:AntaeusConsole-15x30,xft:AntaeusTerminal-15x30,xft:Symbola:size=10
-!URxvt.boldfont: xft:WenQuanYi Micro Hei Mono-11:bold,xft:Symbola Bold:size=10
-!URxvt.italicfont: xft:WenQuanYi Micro Hei Mono-11:italic
+URxvt*font: xft:FantasqueSansMono-13x21,xft:WenQuanYi Micro Hei Mono-11x19:antialias=true,xft:Symbola:size=10
+URxvt.boldfont: xft:WenQuanYi Micro Hei Mono-11:bold,xft:Symbola Bold:size=10
+URxvt.italicfont: xft:WenQuanYi Micro Hei Mono-11:italic
 URxvt.buffered: true
 !use letterspace=-1 with source-code-pro
 !URxvt.letterSpace: -1
 !URxvt.lineSpace: 0
-!
-Xft.autohint: 1
+Xft.autohint: 0
+Xft.lcdfilter:  lcddefault
+Xft.hintstyle:  hintfull
 Xft.hinting: 1
-Xft.hintstyle: hintfull
-Xft.lcdfilter: lcddefault
 Xft.antialias: 1
 Xft.dpi: 96
 Xft.rgba: rgb

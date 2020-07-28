@@ -11,6 +11,7 @@ dynamic_title = true
 clickable_url = true
 browser = xdg-open
 cursor_shape = ibeam
+urgent_on_bell = false
 
 
 [colors]
