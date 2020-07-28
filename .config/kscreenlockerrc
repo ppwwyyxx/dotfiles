@@ -1,0 +1,12 @@
+[$Version]
+update_info=kscreenlocker.upd:0.1-autolock
+
+[Daemon]
+LockGrace=25
+Timeout=60
+
+[Greeter]
+Theme=com.github.vinceliuice.WhiteSur
+
+[Greeter][Wallpaper][org.kde.image][General]
+Image=/home/wyx/Documents/Wallpapers/dark.jpg
