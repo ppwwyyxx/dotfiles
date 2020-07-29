@@ -52,7 +52,7 @@ Image=file:///home/vince/Pictures/WhiteSur.png
 [Containments][1][Wallpaper][org.kde.slideshow][General]
 Blur=true
 FillMode=1
-Image=file:///home/wyx/Documents/theirs/tsinghua/photography/刘子齐/刘子齐-22.jpg
+Image=file:///home/wyx/Documents/Wallpapers/chromecast/chromecast-backgrounds/download/091220-2536-TheCurl.jpg
 SlidePaths=/home/wyx/.local/share/wallpapers,/usr/share/wallpapers,/home/wyx/Documents/Wallpapers
 
 [Containments][2]
@@ -75,15 +75,6 @@ ToolBoxButtonY=36
 
 [Containments][2][Wallpaper][org.kde.image][General]
 Image=file:///usr/share/wallpapers/summer_1am/contents/images/1920x1080.jpg
-
-[Containments][29]
-activityId=
-formfactor=2
-immutability=1
-lastScreen=0
-location=4
-plugin=org.kde.panel
-wallpaperplugin=org.kde.image
 
 [Containments][3]
 activityId=
@@ -201,7 +192,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][3][Applets][7][Configuration]
-PreloadWeight=60
+PreloadWeight=100
 SystrayContainmentId=8
 immutability=1
 
@@ -255,6 +246,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][30][Applets][34][Configuration]
+PreloadWeight=55
 SystrayContainmentId=35
 
 [Containments][30][Applets][43]
@@ -303,6 +295,9 @@ plugin=org.kde.plasma.clipboard
 [Containments][35][Applets][38]
 immutability=1
 plugin=org.kde.plasma.devicenotifier
+
+[Containments][35][Applets][38][Configuration]
+PreloadWeight=55
 
 [Containments][35][Applets][39]
 immutability=1
@@ -492,6 +487,9 @@ plugin=org.kde.plasma.clipboard
 immutability=1
 plugin=org.kde.plasma.devicenotifier
 
+[Containments][8][Applets][11][Configuration]
+PreloadWeight=55
+
 [Containments][8][Applets][12]
 immutability=1
 plugin=org.kde.plasma.keyboardindicator
@@ -512,6 +510,9 @@ plugin=org.kde.plasma.vault
 immutability=1
 plugin=org.kde.plasma.bluetooth
 
+[Containments][8][Applets][18][Configuration]
+PreloadWeight=80
+
 [Containments][8][Applets][19]
 immutability=1
 plugin=org.kde.plasma.battery
@@ -527,6 +528,13 @@ plugin=org.kde.plasma.mediacontroller_plus
 [Containments][8][Applets][9]
 immutability=1
 plugin=org.kde.plasma.volume
+
+[Containments][8][Applets][9][Configuration]
+PreloadWeight=70
+
+[Containments][8][Applets][9][Configuration][ConfigDialog]
+DialogHeight=540
+DialogWidth=720
 
 [Containments][8][General]
 extraItems=org.kde.plasma.mediacontroller_plus,org.kde.plasma.devicenotifier,org.kde.plasma.vault,org.kde.plasma.nightcolorcontrol,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.mediacontroller,org.kde.plasma.keyboardindicator,org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.networkmanagement
