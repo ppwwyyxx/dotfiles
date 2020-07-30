@@ -15,10 +15,14 @@ Number=3
 Rows=1
 
 [Effect-Blur]
+BlurStrength=4
 NoiseStrength=0
 
 [Effect-MagicLamp]
 AnimationDuration=400
+
+[Effect-PresentWindows]
+BorderActivateAll=1
 
 [Effect-Slide]
 HorizontalGap=20
@@ -41,6 +45,8 @@ Active=true
 NightTemperature=4000
 
 [Plugins]
+blurEnabled=true
+contrastEnabled=true
 coverswitchEnabled=true
 demandsattentioncurrentdesktopEnabled=true
 flipswitchEnabled=true

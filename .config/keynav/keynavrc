@@ -1,0 +1,32 @@
+daemonize
+clear
+
+super+m start,grid 1x1,cursorzoom 20 20
+
+Return click 1,end
+Escape end
+
+
+h move-left 30,warp
+l move-right 30,warp
+j move-down 30,warp
+k move-up 30,warp
+
+shift+h move-left 80,warp
+shift+l move-right 80,warp
+shift+j move-down 80,warp
+shift+k move-up 80,warp
+
+
+# global positioning - corners
+q end,start,grid 3x3,cell-select 1x1,warp,grid 1x1,cursorzoom 20 20
+p end,start,grid 4x4,cell-select 4x1,warp,grid 1x1,cursorzoom 20 20
+
+semicolon end,start,grid 3x3,cell-select 3x2,warp,grid 1x1,cursorzoom 20 20
+a end,start,grid 3x3,cell-select 1x2,warp,grid 1x1,cursorzoom 20 20
+
+slash end,start,grid 3x3,cell-select 3x3,warp,grid 1x1,cursorzoom 20 20
+z end,start,grid 3x3,cell-select 1x3,warp,grid 1x1,cursorzoom 20 20
+
+# around centers
+g end,start,warp,cursorzoom 20 20,grid 1x1
