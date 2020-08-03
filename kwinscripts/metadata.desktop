@@ -1,0 +1,17 @@
+[Desktop Entry]
+Name=MyKwinScript
+Comment=ppwwyyxx's KwinScripts
+Icon=preferences-system-windows-script-test
+
+X-KDE-PluginInfo-Author=ppwwyyxx
+X-KDE-PluginInfo-Name=MyKwinScript
+X-KDE-PluginInfo-Website=https://github.com/ppwwyyxx/dotfiles
+X-KDE-PluginInfo-Version=0.1.0
+X-KDE-PluginInfo-License=BSD
+X-KDE-PluginInfo-EnabledByDefault=true
+
+Type=Service
+
+X-Plasma-API=javascript
+X-Plasma-MainScript=code/main.js
+X-KDE-ServiceTypes=KWin/Script,KCModule
