@@ -152,6 +152,10 @@ View Style=DetailTree
 Close=Ctrl+Esc
 FullScreen=
 Preferences=
+ShowHideHiddenFiles=
+ShowMenubar=
+SubstringCompletion=
+TextCompletion=
 
 [WM]
 FakeEntryToKeepThisGroup=true

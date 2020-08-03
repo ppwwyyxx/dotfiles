@@ -45,6 +45,7 @@ Active=true
 NightTemperature=4000
 
 [Plugins]
+MyKwinScriptEnabled=true
 blurEnabled=true
 contrastEnabled=true
 coverswitchEnabled=true
