@@ -19,6 +19,7 @@ autossh
 awesome
 axel
 bazel
+bat
 bc
 bear
 bind-tools

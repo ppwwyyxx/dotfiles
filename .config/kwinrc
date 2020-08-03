@@ -79,7 +79,10 @@ ShowTabBox=false
 SwitchingMode=1
 
 [Windows]
-ActiveMouseScreen=false
+ActiveMouseScreen=true
+DelayFocusInterval=0
+FocusPolicy=FocusFollowsMouse
+NextFocusPrefersMouse=true
 SeparateScreenFocus=true
 
 [org.kde.kdecoration2]

@@ -25,6 +25,7 @@ display=none,Display\tMeta+P,Switch Display
 [khotkeys]
 _k_friendly_name=KDE Daemon
 {d03619b6-9b3c-48cc-9d9c-a2aadb485550}=,none,Search
+{e60e49c0-47f0-41bd-ad4e-819ebd886414}=Meta+N,none,MouseSwitchScreen
 
 [kmix]
 _k_friendly_name=Audio Volume
@@ -110,7 +111,7 @@ Switch to Desktop 9=,none,Switch to Desktop 9
 Switch to Next Desktop=,none,Switch to Next Desktop
 Switch to Next Screen=,none,Switch to Next Screen
 Switch to Previous Desktop=,none,Switch to Previous Desktop
-Switch to Previous Screen=Meta+N,none,Switch to Previous Screen
+Switch to Previous Screen=none,none,Switch to Previous Screen
 Switch to Screen 0=,none,Switch to Screen 0
 Switch to Screen 1=,none,Switch to Screen 1
 Switch to Screen 2=,none,Switch to Screen 2

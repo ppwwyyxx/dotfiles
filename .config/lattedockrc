@@ -1,6 +1,10 @@
+[PlasmaTransientsConfig]
+PreloadWeight=42
+
 [ScreenConnectors]
 10=DP-5
 11=DP-0
+12=HDMI-0
 
 [UniversalSettings]
 badges3DStyle=false

@@ -40,11 +40,12 @@ function ll(){
 
 alias L=less
 alias C='cat'
-function ccat() { highlight --out-format xterm256 $1 2>/dev/null || =cat $1 }
-function cless() { ccat $1 | less -r }
 alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
 alias -g N='>/dev/null'
 alias -g NN='>/dev/null 2>&1'
+which bat NN && {
+  alias cat='bat'
+}
 which rg NN && {
 	alias -g G='|rg'
 	alias ag='rg -i'
