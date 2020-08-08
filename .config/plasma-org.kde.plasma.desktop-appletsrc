@@ -24,7 +24,7 @@ run associated application=true
 RightButton;NoModifier=org.kde.contextmenu
 
 [Containments][1]
-ItemGeometriesHorizontal=
+ItemGeometriesHorizontal=Applet-52:2480,16,80,80,0;Applet-50:2288,1120,272,272,0;
 activityId=d6d79ebb-3df6-4c64-b891-9dacd08f992a
 formfactor=0
 immutability=1
@@ -32,6 +32,25 @@ lastScreen=0
 location=0
 plugin=org.kde.plasma.folder
 wallpaperplugin=org.kde.slideshow
+
+[Containments][1][Applets][50]
+immutability=1
+plugin=org.kde.plasma.notes
+
+[Containments][1][Applets][50][Configuration][General]
+noteId=9dbbbfcd-5159-4c51-813d-206c3b0d1d
+
+[Containments][1][Applets][52]
+immutability=1
+plugin=launchpadPlasma
+
+[Containments][1][Applets][52][Configuration][ConfigDialog]
+DialogHeight=540
+DialogWidth=720
+
+[Containments][1][Applets][52][Configuration][General]
+favoritesPortedToKAstats=true
+iconSize=60
 
 [Containments][1][Applets][57][Configuration]
 PreloadWeight=60
@@ -199,7 +218,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][2][Applets][7][Configuration]
-PreloadWeight=65
+PreloadWeight=78
 SystrayContainmentId=3
 immutability=1
 
