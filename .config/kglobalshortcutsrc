@@ -23,7 +23,7 @@ _k_friendly_name=KDE Daemon
 display=none,Display\tMeta+P,Switch Display
 
 [khotkeys]
-_k_friendly_name=System Settings
+_k_friendly_name=KDE Daemon
 {d03619b6-9b3c-48cc-9d9c-a2aadb485550}=,none,Search
 {e60e49c0-47f0-41bd-ad4e-819ebd886414}=Meta+N,none,MouseSwitchScreen
 
@@ -47,7 +47,7 @@ Lock Session=Ctrl+Alt+Shift+L\tScreensaver,Meta+L\tCtrl+Alt+L\tScreensaver,Lock 
 Log Out=none,none,Log Out
 Log Out Without Confirmation=none,none,Log Out Without Confirmation
 Reboot Without Confirmation=none,none,Reboot Without Confirmation
-_k_friendly_name=System Settings
+_k_friendly_name=Session Management
 
 [kwin]
 Activate Window Demanding Attention=,Ctrl+Alt+A,Activate Window Demanding Attention
