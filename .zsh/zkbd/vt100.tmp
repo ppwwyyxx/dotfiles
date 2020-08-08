@@ -1,3 +1,0 @@
-typeset -g -A key
-
-key[F1]='^C'

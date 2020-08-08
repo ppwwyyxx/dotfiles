@@ -1,4 +1,4 @@
-
+unsetopt MULTIBYTE
 bindkey -e
 bindkey -r "^G"  # C-G was bind to break in emacs
 bindkey -r "^[c"
@@ -15,7 +15,7 @@ bindkey '^w' backward-delete-word
 bindkey ' ' magic-space		# history expansion + space
 autoload zkbd
 [[ -f $HOME/.zsh/zkbd/$TERM ]] && source $HOME/.zsh/zkbd/$TERM || {
-	echo "Did not find '$HOME/.zkbd'. You might be using incomplete dotfiles."
+	echo "Did not find '$HOME/.zsh/zkbd/$TERM'."
 	zkbd
 }
 [[ -n ${key[Backspace]} ]] && bindkey "${key[Backspace]}" backward-delete-char

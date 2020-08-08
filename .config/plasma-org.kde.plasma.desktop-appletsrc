@@ -218,7 +218,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][2][Applets][7][Configuration]
-PreloadWeight=78
+PreloadWeight=100
 SystrayContainmentId=3
 immutability=1
 
@@ -291,7 +291,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][3][Applets][18][Configuration]
-PreloadWeight=32
+PreloadWeight=37
 
 [Containments][3][Applets][19]
 immutability=1
@@ -311,9 +311,11 @@ PreloadWeight=2
 immutability=1
 plugin=org.kde.plasma.mediacontroller
 
-[Containments][3][Applets][48]
-immutability=1
-plugin=org.kde.plasma.mediacontroller_plus
+[Containments][3][Applets][47][Configuration]
+PreloadWeight=42
+
+[Containments][3][Applets][48][Configuration]
+PreloadWeight=42
 
 [Containments][3][Applets][49]
 immutability=1
@@ -333,7 +335,7 @@ immutability=1
 plugin=org.kde.plasma.volume
 
 [Containments][3][Applets][9][Configuration]
-PreloadWeight=22
+PreloadWeight=42
 
 [Containments][3][Applets][9][Configuration][ConfigDialog]
 DialogHeight=540
@@ -347,7 +349,7 @@ DialogWidth=720
 PreloadWeight=2
 
 [Containments][3][General]
-extraItems=org.kde.plasma.mediacontroller_plus,org.kde.plasma.devicenotifier,org.kde.plasma.vault,org.kde.plasma.nightcolorcontrol,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.mediacontroller,org.kde.plasma.keyboardindicator,org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.networkmanagement,org.kde.kdeconnect
+extraItems=org.kde.plasma.devicenotifier,org.kde.plasma.vault,org.kde.plasma.nightcolorcontrol,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.mediacontroller,org.kde.plasma.keyboardindicator,org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.networkmanagement,org.kde.kdeconnect
 knownItems=org.kde.plasma.mediacontroller_plus,org.kde.plasma.devicenotifier,org.kde.plasma.vault,org.kde.plasma.nightcolorcontrol,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.mediacontroller,org.kde.plasma.keyboardindicator,org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.networkmanagement,org.kde.kdeconnect
 
 [Containments][30][Applets][32][Configuration]
@@ -430,7 +432,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][32][Applets][34][Configuration]
-PreloadWeight=15
+PreloadWeight=20
 SystrayContainmentId=33
 
 [Containments][32][Applets][43]
@@ -554,21 +556,28 @@ plugin=org.kde.plasma.networkmanagement
 [Containments][33][Applets][49][Configuration]
 PreloadWeight=18
 
-[Containments][33][Applets][50]
-immutability=1
-plugin=org.kde.plasma.mediacontroller_plus
+[Containments][33][Applets][50][Configuration]
+PreloadWeight=42
 
 [Containments][33][Applets][52][Configuration]
 PreloadWeight=10
 
+[Containments][33][Applets][53]
+immutability=1
+plugin=org.kde.plasma.mediacontroller
+
 [Containments][33][Applets][53][Configuration]
-PreloadWeight=12
+PreloadWeight=4
+
+[Containments][33][ConfigDialog]
+DialogHeight=540
+DialogWidth=720
 
 [Containments][33][Configuration]
 PreloadWeight=2
 
 [Containments][33][General]
-extraItems=org.kde.plasma.mediacontroller_plus,org.kde.plasma.devicenotifier,org.kde.plasma.vault,org.kde.plasma.nightcolorcontrol,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.mediacontroller,org.kde.plasma.keyboardindicator,org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.networkmanagement,org.kde.kdeconnect
+extraItems=org.kde.plasma.devicenotifier,org.kde.plasma.vault,org.kde.plasma.nightcolorcontrol,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.mediacontroller,org.kde.plasma.keyboardindicator,org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.networkmanagement,org.kde.kdeconnect
 knownItems=org.kde.plasma.mediacontroller_plus,org.kde.plasma.devicenotifier,org.kde.plasma.vault,org.kde.plasma.nightcolorcontrol,org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.notifications,org.kde.plasma.mediacontroller,org.kde.plasma.keyboardindicator,org.kde.plasma.clipboard,org.kde.plasma.volume,org.kde.plasma.networkmanagement,org.kde.kdeconnect
 
 [ScreenMapping]

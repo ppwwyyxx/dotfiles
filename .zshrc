@@ -16,7 +16,6 @@ fi
 
 # ENV f[[
 export PYTHONPATH=
-export TERM=screen-256color
 export TERMINFO=$HOME/.terminfo
 export LANG=en_US.UTF-8
 export SSH_ASKPASS=
