@@ -2,26 +2,20 @@
 update_info=kwinrules.upd:replace-placement-string-to-enum
 
 [1]
+Description=Application settings for mplayer
+noborder=true
+noborderrule=3
+wmclass=x11 mplayer
+wmclasscomplete=true
+wmclassmatch=1
+
+[2]
 Description=Application settings for zeal
 fsplevelrule=2
 wmclass=zeal
 wmclassmatch=1
 
-[2]
-Description=Application settings for emacs
-noborder=true
-noborderrule=2
-wmclass=emacs
-wmclassmatch=1
-
 [3]
-Description=Application settings for urxvt
-noborder=true
-noborderrule=2
-wmclass=urxvt
-wmclassmatch=1
-
-[4]
 Description=Window settings for polar-bookshelf
 desktop=3
 desktoprule=3
@@ -31,7 +25,7 @@ windowrolematch=1
 wmclass=polar-bookshelf
 wmclassmatch=1
 
-[5]
+[4]
 Description=Window settings for code
 noborder=true
 noborderrule=2
@@ -39,29 +33,12 @@ types=1
 wmclass=code
 wmclassmatch=1
 
-[6]
-Description=Application settings for todoist
-desktop=3
-desktoprule=3
-noborder=true
-noborderrule=2
-wmclass=todoist
-wmclassmatch=1
-
-[7]
+[5]
 Description=Application settings for google-chrome
 noborder=true
 noborderrule=2
 wmclass=google-chrome
 wmclassmatch=1
 
-[8]
-Description=Settings for termite
-noborder=true
-noborderrule=2
-types=1
-wmclass=termite
-wmclassmatch=1
-
 [General]
-count=8
+count=5

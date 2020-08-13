@@ -1,0 +1,49 @@
+[Common]
+ShadowColor=69,159,214
+ShadowSize=20
+ShadowStrength=179
+
+[Windeco]
+ButtonHPadding=6
+DrawSizeGrip=false
+DrawTitleBarSeparator=false
+
+[Windeco Exception 0]
+BorderSize=0
+Enabled=true
+ExceptionPattern=Termite
+ExceptionType=0
+HideTitleBar=true
+Mask=16
+
+[Windeco Exception 1]
+BorderSize=0
+Enabled=true
+ExceptionPattern=URxvt
+ExceptionType=0
+HideTitleBar=true
+Mask=16
+
+[Windeco Exception 2]
+BorderSize=0
+Enabled=true
+ExceptionPattern=Todoist
+ExceptionType=0
+HideTitleBar=true
+Mask=16
+
+[Windeco Exception 3]
+BorderSize=0
+Enabled=true
+ExceptionPattern=Emacs
+ExceptionType=0
+HideTitleBar=true
+Mask=16
+
+[Windeco Exception 4]
+BorderSize=0
+Enabled=true
+ExceptionPattern=.*
+ExceptionType=0
+HideTitleBar=false
+Mask=16

@@ -117,6 +117,7 @@ DialogHeight=540
 DialogWidth=720
 
 [Containments][2][Applets][20][Configuration][General]
+groupingStrategy=0
 showOnlyCurrentActivity=false
 showOnlyCurrentScreen=true
 
@@ -164,7 +165,7 @@ immutability=1
 plugin=org.kde.plasma.systemloadviewer
 
 [Containments][2][Applets][24][Configuration]
-PreloadWeight=2
+PreloadWeight=0
 
 [Containments][2][Applets][24][Configuration][ConfigDialog]
 DialogHeight=540
@@ -213,12 +214,16 @@ immutability=1
 [Containments][2][Applets][6][Configuration][Configuration]
 PreloadWeight=0
 
+[Containments][2][Applets][6][Configuration][General]
+expanding=false
+length=208
+
 [Containments][2][Applets][7]
 immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][2][Applets][7][Configuration]
-PreloadWeight=100
+PreloadWeight=92
 SystrayContainmentId=3
 immutability=1
 
@@ -226,7 +231,7 @@ immutability=1
 PreloadWeight=100
 
 [Containments][2][ConfigDialog]
-DialogHeight=74
+DialogHeight=84
 DialogWidth=2560
 
 [Containments][2][Configuration]
@@ -256,7 +261,7 @@ immutability=1
 plugin=org.kde.plasma.devicenotifier
 
 [Containments][3][Applets][11][Configuration]
-PreloadWeight=7
+PreloadWeight=19
 
 [Containments][3][Applets][12]
 immutability=1
@@ -277,7 +282,7 @@ immutability=1
 plugin=org.kde.plasma.notifications
 
 [Containments][3][Applets][14][Configuration]
-PreloadWeight=2
+PreloadWeight=4
 
 [Containments][3][Applets][15]
 immutability=1
@@ -291,7 +296,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][3][Applets][18][Configuration]
-PreloadWeight=37
+PreloadWeight=29
 
 [Containments][3][Applets][19]
 immutability=1
@@ -312,7 +317,7 @@ immutability=1
 plugin=org.kde.plasma.mediacontroller
 
 [Containments][3][Applets][47][Configuration]
-PreloadWeight=42
+PreloadWeight=34
 
 [Containments][3][Applets][48][Configuration]
 PreloadWeight=42
@@ -335,7 +340,7 @@ immutability=1
 plugin=org.kde.plasma.volume
 
 [Containments][3][Applets][9][Configuration]
-PreloadWeight=42
+PreloadWeight=67
 
 [Containments][3][Applets][9][Configuration][ConfigDialog]
 DialogHeight=540
@@ -384,7 +389,7 @@ DialogHeight=856
 DialogWidth=1114
 
 [Containments][31][Configuration]
-PreloadWeight=26
+PreloadWeight=18
 
 [Containments][31][Wallpaper][org.kde.image][General]
 Image=file:///usr/share/wallpapers/summer_1am/contents/images/2560x1600.jpg
@@ -403,7 +408,7 @@ immutability=1
 plugin=org.kde.plasma.pager
 
 [Containments][32][Applets][32][Configuration]
-PreloadWeight=10
+PreloadWeight=2
 
 [Containments][32][Applets][32][Configuration][ConfigDialog]
 DialogHeight=540
@@ -418,7 +423,7 @@ immutability=1
 plugin=org.kde.plasma.taskmanager
 
 [Containments][32][Applets][33][Configuration]
-PreloadWeight=10
+PreloadWeight=2
 
 [Containments][32][Applets][33][Configuration][ConfigDialog]
 DialogHeight=540
@@ -432,7 +437,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][32][Applets][34][Configuration]
-PreloadWeight=20
+PreloadWeight=22
 SystrayContainmentId=33
 
 [Containments][32][Applets][43]
@@ -440,7 +445,7 @@ immutability=1
 plugin=org.kde.plasma.digitalclock
 
 [Containments][32][Applets][43][Configuration]
-PreloadWeight=10
+PreloadWeight=2
 
 [Containments][32][Applets][43][Configuration][Appearance]
 customDateFormat=M/d
@@ -458,14 +463,14 @@ immutability=1
 plugin=org.kde.plasma.showdesktop
 
 [Containments][32][Applets][44][Configuration]
-PreloadWeight=10
+PreloadWeight=2
 
 [Containments][32][ConfigDialog]
 DialogHeight=74
 DialogWidth=1920
 
 [Containments][32][Configuration]
-PreloadWeight=10
+PreloadWeight=2
 
 [Containments][32][General]
 AppletOrder=32;33;34;43;44
@@ -484,49 +489,49 @@ immutability=1
 plugin=org.kde.plasma.volume
 
 [Containments][33][Applets][36][Configuration]
-PreloadWeight=2
+PreloadWeight=7
 
 [Containments][33][Applets][37]
 immutability=1
 plugin=org.kde.plasma.clipboard
 
 [Containments][33][Applets][37][Configuration]
-PreloadWeight=2
+PreloadWeight=0
 
 [Containments][33][Applets][38]
 immutability=1
 plugin=org.kde.plasma.devicenotifier
 
 [Containments][33][Applets][38][Configuration]
-PreloadWeight=7
+PreloadWeight=9
 
 [Containments][33][Applets][39]
 immutability=1
 plugin=org.kde.plasma.keyboardindicator
 
 [Containments][33][Applets][39][Configuration]
-PreloadWeight=2
+PreloadWeight=0
 
 [Containments][33][Applets][40]
 immutability=1
 plugin=org.kde.plasma.nightcolorcontrol
 
 [Containments][33][Applets][40][Configuration]
-PreloadWeight=2
+PreloadWeight=0
 
 [Containments][33][Applets][41]
 immutability=1
 plugin=org.kde.plasma.notifications
 
 [Containments][33][Applets][41][Configuration]
-PreloadWeight=2
+PreloadWeight=0
 
 [Containments][33][Applets][42]
 immutability=1
 plugin=org.kde.plasma.vault
 
 [Containments][33][Applets][42][Configuration]
-PreloadWeight=2
+PreloadWeight=0
 
 [Containments][33][Applets][45]
 immutability=1
@@ -540,7 +545,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][33][Applets][46][Configuration]
-PreloadWeight=2
+PreloadWeight=0
 
 [Containments][33][Applets][48]
 immutability=1
@@ -554,7 +559,7 @@ immutability=1
 plugin=org.kde.plasma.networkmanagement
 
 [Containments][33][Applets][49][Configuration]
-PreloadWeight=18
+PreloadWeight=10
 
 [Containments][33][Applets][50][Configuration]
 PreloadWeight=42

@@ -28,6 +28,7 @@
     "editor.formatOnSaveTimeout": 3000,
     "editor.fontLigatures": true,
     "editor.minimap.maxColumn": 80,
+    "editor.snippetSuggestions": "top",
     "files.maxMemoryForLargeFilesMB": 1024,
     "files.trimTrailingWhitespace": true,
     "files.autoSave": "off",

@@ -80,7 +80,7 @@ ShowTabBox=false
 SwitchingMode=1
 
 [Windows]
-ActiveMouseScreen=true
+ActiveMouseScreen=false
 DelayFocusInterval=0
 FocusPolicy=FocusFollowsMouse
 NextFocusPrefersMouse=true
@@ -89,5 +89,5 @@ SeparateScreenFocus=true
 [org.kde.kdecoration2]
 ButtonsOnLeft=
 ButtonsOnRight=IAX
-library=org.kde.kwin.aurorae
-theme=__aurorae__svg__McMojave-light
+library=org.kde.sierrabreeze
+theme=Sierra Breeze
