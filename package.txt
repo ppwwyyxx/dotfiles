@@ -20,6 +20,7 @@ awesome
 axel
 bazel
 bat
+bashtop
 bc
 bear
 bind-tools

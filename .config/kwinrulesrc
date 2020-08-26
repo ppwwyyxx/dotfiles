@@ -40,5 +40,19 @@ noborderrule=2
 wmclass=google-chrome
 wmclassmatch=1
 
+[6]
+Description=telegram
+desktop=3
+desktoprule=3
+wmclass=telegramdesktop
+wmclassmatch=1
+
+[7]
+Description=todoist
+desktop=3
+desktoprule=3
+wmclass=todoist
+wmclassmatch=1
+
 [General]
-count=5
+count=7

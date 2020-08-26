@@ -126,13 +126,14 @@ Theme=Mkos-Big-Sur-Night
 AnimationDurationFactor=0.5
 ColorScheme=Breeze
 LookAndFeelPackage=com.github.vinceliuice.WhiteSur
+ShowDeleteCommand=false
 contrast=4
 widgetStyle=kvantum
 
 [KFileDialog Settings]
 Allow Expansion=false
 Automatically select filename extension=true
-Breadcrumb Navigation=true
+Breadcrumb Navigation=false
 Decoration position=2
 LocationCombo Completionmode=5
 PathCombo Completionmode=5
@@ -144,9 +145,15 @@ Show Speedbar=true
 Show hidden files=false
 Sort by=Name
 Sort directories first=true
-Sort reversed=false
+Sort reversed=true
 Speedbar Width=152
 View Style=DetailTree
+
+[KShortcutsDialog Settings]
+Dialog Size=985,775
+
+[PreviewSettings]
+MaximumRemoteSize=0
 
 [Shortcuts]
 Close=Ctrl+Esc

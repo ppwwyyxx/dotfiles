@@ -24,6 +24,7 @@ display=none,Display\tMeta+P,Switch Display
 
 [khotkeys]
 _k_friendly_name=KDE Daemon
+{718898af-4799-41f4-aecc-359fee571929}=Ctrl+Alt+T,none,Launch Konsole
 {d03619b6-9b3c-48cc-9d9c-a2aadb485550}=,none,Search
 {e60e49c0-47f0-41bd-ad4e-819ebd886414}=Meta+N,none,MouseSwitchScreen
 
@@ -317,3 +318,7 @@ toggle do not disturb=none,none,Toggle do not disturb
 [systemsettings.desktop]
 _k_friendly_name=System Settings
 _launch=none,Tools,System Settings
+
+[yakuake]
+_k_friendly_name=Yakuake
+toggle-window-state=F10,F12,Open/Retract Yakuake

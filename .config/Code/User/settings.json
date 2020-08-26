@@ -4,6 +4,9 @@
     // @sync-ignore
     "editor.minimap.enabled": false,
     // @sync-ignore
+    "settingsSync.ignoredSettings": [
+        "window.zoomLevel", "editor.minimap.enabled"
+    ],
     // "vscode-neovim.neovimInitPath": "~/.config/nvim/vscode.init.vim",
 
 

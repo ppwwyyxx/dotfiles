@@ -80,7 +80,6 @@ ShowTabBox=false
 SwitchingMode=1
 
 [Windows]
-ActiveMouseScreen=false
 DelayFocusInterval=0
 FocusPolicy=FocusFollowsMouse
 NextFocusPrefersMouse=true
