@@ -60,7 +60,6 @@ fi
 
 
 # dev libraries
-export TF_CUDNN_VERSION=7
 export TF_NEED_GCP=0
 export TF_NEED_ROCM=0
 export TF_NEED_HDFS=0
