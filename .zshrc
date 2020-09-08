@@ -85,8 +85,8 @@ export TORCH_SHOW_CPP_STACKTRACES=1
 
 if [[ -d /opt/intel/mkl ]]; then
 	export MKLROOT=/opt/intel/mkl
-	export LD_LIBRARY_PATH=`readlink -f $MKLROOT/../compiler/lib/intel64`:$MKLROOT/lib/intel64:$LD_LIBRARY_PATH;
-	export LIBRARY_PATH=`readlink -f $MKLROOT/../compiler/lib/intel64`:$MKLROOT/lib/intel64:$LIBRARY_PATH;
+	export LD_LIBRARY_PATH=$MKLROOT/lib/intel64:$LD_LIBRARY_PATH
+	export LIBRARY_PATH=$MKLROOT/lib/intel64:$LIBRARY_PATH
 fi
 function try_use_cuda_home() {
 	if [[ -d "$1/lib64" ]]; then
