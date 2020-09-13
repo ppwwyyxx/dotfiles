@@ -1,6 +1,6 @@
 {
     // @sync-ignore
-    "window.zoomLevel": 1,
+    "window.zoomLevel": 2,
     // @sync-ignore
     "editor.minimap.enabled": false,
     // @sync-ignore
@@ -29,6 +29,7 @@
     "editor.fontSize": 18,
     "editor.formatOnPaste": true,
     "editor.formatOnSaveTimeout": 3000,
+    "editor.formatOnSaveMode": "modifications",
     "editor.fontLigatures": true,
     "editor.minimap.maxColumn": 80,
     "editor.snippetSuggestions": "top",
