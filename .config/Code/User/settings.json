@@ -1,6 +1,6 @@
 {
     // @sync-ignore
-    "window.zoomLevel": 2,
+    "window.zoomLevel": 1,
     // @sync-ignore
     "editor.minimap.enabled": false,
     // @sync-ignore

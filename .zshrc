@@ -471,9 +471,16 @@ safe_source $HOME/.zsh/extract.zsh
 # the next two have to be this order
 safe_source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 safe_source $HOME/.zsh/history-substring-search.zsh
-safe_source $HOME/.zsh/cdnav.zsh
+safe_source $HOME/.zsh/cdnav.zsh   # alt-up/left/right/i
 safe_source $HOME/.zsh/transfer.sh
 safe_source "$HOME/.rvm/scripts/rvm"		# Load RVM into a shell session *as a function*
+safe_source /usr/share/fzf/key-bindings.zsh  # available on archlinux
+safe_source /usr/share/fzf/completion.zsh  # available on archlinux
+safe_source ~/.fzf.zsh  # available by manual install
+if [[ $commands[fzf] && $commands[fd] ]]; then
+  export FZF_DEFAULT_COMMAND='fd --type f -c always'
+  export FZF_DEFAULT_OPTS='--ansi --multi'
+fi
 HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS="I"			# sensitive search
 
 if [ $commands[fasd] ]; then

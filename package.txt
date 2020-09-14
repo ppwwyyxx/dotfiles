@@ -307,6 +307,7 @@ highlight
 mesa-demos
 scrot
 fd
+fzf
 editorconfig-core-c
 shellcheck
 js-beautify

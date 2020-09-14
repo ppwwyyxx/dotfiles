@@ -127,6 +127,9 @@ alias strace='strace -yy'
 alias tail='tail -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
 alias head='head -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
 alias rf='readlink -f'
+which fzf-tmux NN && {
+  alias fzf-tmux='fzf-tmux -d 20% --multi --reverse'
+}
 function sdu () {	# human-readable sorted du
   [[ "$#" -eq 1 && -d "$1" ]] && cd "$1"
 	du -sh {*,.*} | sort -h
