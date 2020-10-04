@@ -10,7 +10,9 @@ in_array() {
     return 1
 }
 
-alias open='xdg-open'
+[[ -z $_CFG_ON_MAC ]] && {
+  alias open='xdg-open'
+}
 alias -s pdf jpg png gif html mhtml=xdg-open
 alias -s djvu=djview4
 alias -s obj=meshlab
