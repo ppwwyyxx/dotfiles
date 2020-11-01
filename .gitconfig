@@ -43,7 +43,7 @@
   new = green bold
   frag = magenta bold
 [pager]
-  diff = ([[ -x "$(command -v diff-so-fancy)" ]] && diff-so-fancy || diff-highlight) | less --tab=4 -RFX
+  diff = ([[ -x "$(command -v diff-so-fancy)" ]] && diff-so-fancy || ([[ -x "$(command -v diff-highlight)" ]] && diff-highlight || less --tab=4 -RFX))
 [alias]
   a   = add
   b   = branch
