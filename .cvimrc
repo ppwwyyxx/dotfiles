@@ -6,7 +6,7 @@ let mapleader = ","
 let highlight = '#d28ce3'
 let activehighlight = '#0ff3db'
 let qmark g = ["http://google.com"]
-let blacklists = ["*://mail.google.com/*"]
+let blacklists = ["*://mail.google.com/*", "*://gather.town/*", "*://webliero.com/*"]
 map gm :tabnew mail.google.com&<CR>
 let barposition = "bottom"
 let nextmatchpattern = "((?!first)(next|more|>|›|»|forward|后页|下一页)+)"
