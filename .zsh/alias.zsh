@@ -517,6 +517,7 @@ which pacman NN && {
 	alias pR='sudo pacman -R'
 	alias pSu='trizen -Syu'
 	alias pQl='pacman -Ql'
+	alias pScc='pacman -Scc'
 	alias paur='pacman -Qm'
 	#alias pacman-size="paste <(pacman -Q | awk '{ print \$1; }' | xargs pacman -Qi | grep 'Size' | awk '{ print \$4\$5; }') <(pacman -Q | awk '{print \$1; }') | sort -h | column -t"
 	alias pacman-size="expac -H M '%m\t%n' | sort -h"
@@ -556,6 +557,7 @@ which apt-get NN && {
     }
     alias pQl='dpkg-query -L'
     alias pU='sudo dpkg -i'
+		alias pScc='sudo apt-get clean'
 } || {
     alias pS='sudo yum install'
 	alias pR='sudo yum erase'
