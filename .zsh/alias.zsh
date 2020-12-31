@@ -23,6 +23,7 @@ alias cdl='cd'
 alias dc='cd'
 alias mv='nocorrect mv -iv'
 alias mkdir='nocorrect mkdir'
+alias buck='nocorrect buck'
 alias cp='nocorrect cp -rvi'
 alias cpv="rsync -pogh -e /dev/null -P --"	# cp with progress
 alias watch='watch '	# allow watching an alias
@@ -263,6 +264,10 @@ which squeue NN && {
   alias sinfo-by-type="=sinfo -o '%f %A %N %m %G' | column -t"
 }
 
+which docker NN && {
+  alias docker-prune='docker stop $(docker ps -a -q); docker system prune -f'
+}
+
 alias win='cd; virtualbox --startvm win7 & ; cd -'
 alias osx='cd; virtualbox --startvm osx & ; cd -'
 
@@ -407,6 +412,7 @@ function webcam-to-v4l2 () {
 }
 alias tune-pitch='mplayer -af scaletempo=speed=pitch'
 alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_region 1 -i :0.0 ~/Video/out.mpg'
+alias ffprobe='ffprobe -hide_banner'
 m_sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "/usr/share/fonts/wenquanyi/wqy-microhei/wqy-microhei.ttc"'
 m_avc_param="-oac mp3lame -lameopts fast:preset=medium -ovc x264 -x264encopts subq=5:8x8dct:frameref=2:bframes=3:weight_b:threads=auto"
 f_avc_param_old="-c:v libx264 -preset slow -crf 22 -c:a libmp3lame"

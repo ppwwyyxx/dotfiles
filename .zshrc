@@ -51,7 +51,7 @@ export LIBRARY_PATH=${LIBRARY_PATH+$LIBRARY_PATH:}$HOME/.local/lib
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$HOME/.local/lib/pkgconfig
 
 # override tmux master key under ssh
-if [[ -n "$TMUX" ]] && [[ -n "$SSH_CLIENT" ]] && [[ "$HOST" -ne "hawaii" ]]; then
+if [[ -n "$TMUX" ]] && [[ -n "$SSH_CLIENT" ]] && [[ "$HOST" != "hawaii" ]]; then
 	tmux set -g status-bg cyan
 	tmux unbind C-q
 	tmux set -g prefix C-a
@@ -166,12 +166,16 @@ safe_source $HOME/.zsh/git-prompt/zshrc.sh
 } || { function  git_super_status() {} }
 
 function preexec() {
+  if [[ $TERM == "xterm-termite" ]]; then
+    # set win title to the command
+    echo -ne "\033]0;$1 \007"
+  fi
   COMMAND_TIMER=${COMMAND_TIMER:-$((SECONDS + $(date "+%N") / 1000000000.0))}
 }
 function precmd() {
 	local separator1=
-    local separator2=
-    local separator3=
+  local separator2=
+  local separator3=
 	local TIMECOLOR="%{%b%F{211}%}"
 	local PINK="%{%b%F{213}%}"
 	local YELLOWGREEN="%{%b%F{154}%}"
@@ -195,7 +199,6 @@ function precmd() {
 
 	local INDICATOR="\$"
 	#local INDICATOR="❱"
-	#local INDICATOR="%{$fg_bold[red]%}❮%{$reset_color%}%{$fg[red]%}❮❮%{$reset_color%}"
 	[[ -n "$VIRTUAL_ENV" ]] && VIRTUAL="(`basename $VIRTUAL_ENV`)"
 	# my magic prompt
   export PROMPT="%{$START_BOLD%}%{$CYAN%}╭─${VIRTUAL}${PROMPT_PART}\
@@ -208,6 +211,10 @@ $YELLOWGREEN%$pwdlen<...<%~%<< \
 #$YELLOWGREEN%$pwdlen<...<%~%<< \
 #%{$reset_color%}$git_status%{$CYAN%}
 #%{$START_BOLD%}╰─%{$reset_color%}%{$CYAN%}%(?..%{$fg[red]%})$INDICATOR%{$reset_color%}"
+  if [[ $TERM == "xterm-termite" ]]; then
+    # set win title to pwd
+    echo -ne "\033]0;$(pwd) \007"
+  fi
 
 	#local return_status="%{$fg[red]%}%(?..%?⏎)%{$reset_color%}"	# return code is useless
 	local return_status="%{$fg[red]%}%(?..⏎)%{$reset_color%}"

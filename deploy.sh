@@ -8,9 +8,11 @@ if [[ "$HOST" == Keep* ]]; then
 fi
 
 rm ~/.zsh -rf
+mkdir -p ~/.config
 cp .zsh .zshrc .bashrc .gitconfig .profile ~/ -rvf
 cp .xbindkeysrc .toprc .xinitrc .Xmodmap .Xresources ~/ -rvf
-cp .compton.conf .conkyrc ~/ -rvf
+cp .conkyrc ~/ -rvf
+cp .config/compton.conf ~/.config -rvf
 
 cat << EOT >> .tmux.conf
 set -g status-bg green

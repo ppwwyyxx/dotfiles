@@ -8,7 +8,7 @@ local autorun_items = {
   "nvidia-smi",
 
   -- UI:
-  "sleep 3 && compton --config ~/.compton.conf",  -- https://github.com/awesomeWM/awesome/issues/1660
+  "sleep 3 && compton --config ~/.config/compton.conf",  -- https://github.com/awesomeWM/awesome/issues/1660
   "conky",
   -- "sleep 100 && conky -c /home/wyx/.conkyrc-cal",
   "dunst",

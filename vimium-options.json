@@ -8,6 +8,18 @@
     {
       "pattern": "https?://www.youtube.com/*",
       "passKeys": ""
+    },
+    {
+      "pattern": "https?://gather.town/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://www.webliero.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://zty.pe/",
+      "passKeys": ""
     }
   ],
   "filterLinkHints": false,
