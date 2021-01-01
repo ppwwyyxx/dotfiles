@@ -1,5 +1,4 @@
 //File: test.cpp
-//Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 #include <iostream>
 #include <cstring>
@@ -29,7 +28,7 @@ using namespace std;
 #include <opencv2/highgui/highgui.hpp>
 
 int main() {
-  auto M = cv::imread("/home/wyx/cat2.jpg", cv::IMREAD_COLOR);
+  auto M = cv::imread("/home/wyx/cat.jpg", cv::IMREAD_COLOR);
   int a;
   cin >> a;
 

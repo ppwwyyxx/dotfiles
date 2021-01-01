@@ -1,6 +1,5 @@
 #!/bin/bash -e
 # File: powerline.sh
-# Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 if [ "$1" == "left" ]; then
 	HOST=`hostname`

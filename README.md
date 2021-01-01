@@ -1,2 +1,7 @@
 
-You might be interested in my .zshrc, .zsh/alias.zsh and .conkyrc :)
+Heavily customized ones:
+
+* `.zshrc`, `.zsh/`
+* `.config/doom/`
+* `.config/awesome/`
+* `.conkyrc`

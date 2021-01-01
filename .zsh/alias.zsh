@@ -489,19 +489,15 @@ function retry() {
 # python
 alias ipy='ipython'
 function pydbg () { ipython --pdb -c "%run $1" }
-alias bp2='bpython2'
 alias piu='pip install --user'
-alias piuu='pip install --user -U'
 alias piu2='pip2 install --user'
-alias piuu2='pip2 install --user -U'
 alias piu3='pip3 install --user'
-alias piuu3='pip3 install --user -U'
-alias pyftp='python2 -m pyftpdlib'
+alias pyftp='python3 -m pyftpdlib'
 function pytwistd() { twistd web --path "$1" -p tcp:"${2:-8000}" }
 alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --user -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install --user -U"
 alias unquote='python2 -c "import sys, urllib as ul; [sys.stdout.write(ul.unquote(l)) for l in sys.stdin]"'
 
-# tensorflow
+# tensorflow/torch
 function tf-verbose() { export TF_CPP_MIN_LOG_LEVEL=0; export TF_CPP_MIN_VLOG_LEVEL=10 }
 function uninstall-tf() {
   for p in tensorflow tensorflow-gpu tf-nightly tf-nightly-gpu tensorflow-tensorboard tensorboard tb-nightly; do

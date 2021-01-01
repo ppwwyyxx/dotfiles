@@ -1,6 +1,4 @@
 #!/bin/bash -e
-# File: brightness.sh
-# Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 # Set brightness via xbrightness when redshift status changes
 
 # Set brightness values for each status.

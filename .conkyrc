@@ -1,13 +1,22 @@
--- vim: ts=4 sw=4 noet ai cindent syntax=lua
-
 conky.config = {
 	update_interval = 2,
 	own_window = true,
-	own_window_transparent = true,
-	own_window_type = 'override',
+	-- for compton+awesome:
+	-- own_window_type = 'override',
+	-- own_window_transparent = true,
+	-- own_window_colour = 'white',
+
+	-- for KDE:
+	own_window_type = 'dock',
+	own_window_transparent = false,
+	own_window_argb_visual = true,
+	own_window_argb_value = 145,
+	own_window_colour = 'black',
+
+	own_window_class = 'Conky',
 	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
 	double_buffer = true,
--- fonts
+	-- fonts
 	use_xft = true,
 	text_buffer_size = 2048,
 	xftalpha = 0.7,
@@ -22,9 +31,8 @@ conky.config = {
 	stippled_borders = 0,
 	border_width = 0,
 	default_color = 'grey',
-	own_window_colour = 'white',
 
-	no_buffers = true,
+	-- no_buffers = true,
 	cpu_avg_samples = 2,
 	net_avg_samples = 2,
 	override_utf8_locale = true,
@@ -36,41 +44,84 @@ conky.config = {
 	top_name_width = 12
 }
 
-conky.text = [[
-${font arial black:size=14}${color magneta}SYSTEM${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
+function getHostname()
+    local f = io.popen ("/bin/hostname")
+    local hostname = f:read("*a") or ""
+    f:close()
+    hostname = string.gsub(hostname, "\n$", "")
+    return hostname
+end
+local nodename = getHostname()
+
+net_if = {
+	KeepRunning = "wlp3s0",
+	KeepLearning = "wlp2s0"
+}
+net_if = net_if[nodename]
+
+if nodename == "KeepLearning" then
+	battery = [[
+	${font arial black:size=14}${color magenta}BATTERY${color}${font arial black:size=8}information${color magenta} ${hr 2}$color$font
+	${battery_bar}
+	STATE: $font$color${battery} $alignr ${battery_time}
+	]]
+else
+	battery = "\n"
+end
+
+root_disk = {
+	KeepRunning = "/dev/nvme0n1p4",
+	KeepLearning = "/dev/nvme0n1p7"
+}
+root_disk = root_disk[nodename]
+home_disk = {
+	KeepRunning = "/dev/sda3",
+	KeepLearning = "/dev/nvme0n1p8"
+}
+home_disk = home_disk[nodename]
+
+text = [[
+${font arial black:size=14}${color magenta}SYSTEM${color}${font arial black:size=8}information${color magenta} ${hr 2}$color$font
 $nodename $kernel
 UP: $font$uptime ${voffset -5}
 ${voffset 10}${font arial black:size=28}${time %e}$font ${voffset -17}${time %A, }${time %B} ${time %G}
 ${voffset -2}${goto 65}${font arial black:size=10} ${time %I:%M:%S %p} ${font arial black:size=14}
-${color magneta}CPU${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
+${color magenta}CPU${color}${font arial black:size=8}information${color magenta} ${hr 2}$color$font
 USAGE: $font${cpu cpu0}%
 ${cpugraph cpu0 C0C0C0 C0C0C0}
-Name${goto 120} PID${goto 180} CPU${goto 220} MEM
-${color #ddaa00}${top name 1}${goto 120}${top pid 1}${goto 175}${top cpu 1}${goto 215}${top mem 1}
-${color lightgrey}${top name 2}${goto 120}${top pid 2}${goto 175}${top cpu 2}${goto 215}${top mem 2}
-${color lightgrey}${top name 3}${goto 120}${top pid 3}${goto 175}${top cpu 3}${goto 215}${top mem 3}
-${color lightgrey}${top name 4}${goto 120}${top pid 4}${goto 175}${top cpu 4}${goto 215}${top mem 4}$color$font
-${font arial black:size=14}${color magneta}Storage${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
+Name${goto 120} PID${goto 185} CPU${goto 225} MEM
+${color #ddaa00}${top name 1}${goto 120}${top pid 1}${goto 185}${top cpu 1}${goto 225}${top mem 1}
+${color lightgrey}${top name 2}${goto 120}${top pid 2}${goto 185}${top cpu 2}${goto 225}${top mem 2}
+${color lightgrey}${top name 3}${goto 120}${top pid 3}${goto 185}${top cpu 3}${goto 225}${top mem 3}
+${color lightgrey}${top name 4}${goto 120}${top pid 4}${goto 185}${top cpu 4}${goto 225}${top mem 4}$color$font
+TEMPERATURE:$font ${hwmon 2 temp 1}°C${color}
+${color magenta}GPU${color}${font arial black:size=8}utilization & temperature ${color magenta} ${hr 2}$color$font
+${exec nvidia-smi --query-gpu=gpu_name,utilization.gpu,temperature.gpu --format=csv | tail -n +2}°C
+${font arial black:size=14}${color magenta}Storage${color}${font arial black:size=8}information${color magenta} ${hr 2}$color$font
 RAM: $font$memperc% ${alignr}$mem/$memmax
 ${membar}
-ROOT:$font${fs_used_perc /}% ${alignr}${fs_used /}/${fs_size /}
+ROOT: $font${fs_used_perc /}% ${alignr}${fs_used /}/${fs_size /}
 ${fs_bar /}$color
-HOME:$font${fs_used_perc /home}% ${alignr}${fs_used /home}/${fs_size /home}
+HOME: $font${fs_used_perc /home}% ${alignr}${fs_used /home}/${fs_size /home}
 ${fs_bar /home/}$color
-Root R: ${diskio_read /dev/nvme0n1p7}${alignr}W: ${diskio_write /dev/nvme0n1p7}
-${diskiograph_read /dev/nvme0n1p7 20,132} ${diskiograph_write /dev/nvme0n1p7 20,132}
-Home R: ${diskio_read /dev/nvme0n1p8}${alignr}W: ${diskio_write /dev/nvme0n1p8}
-${diskiograph_read /dev/nvme0n1p8 20,132} ${diskiograph_write /dev/nvme0n1p8 20,132}
-${font arial black:size=14}${color magneta}NETWORK${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
-DOWN: $font$color${downspeed wlp2s0}/${totaldown wlp2s0}
-UP: $font${upspeed wlp2s0}/${totalup wlp2s0}
-${downspeedgraph wlp2s0 20,132 C0C0C0 C0C0C0} ${upspeedgraph wlp2s0 20,132 C0C0C0 C0C0C0}$color
+Root R: ${diskio_read $root_disk}${alignr}W: ${diskio_write $root_disk}
+${diskiograph_read $root_disk 20,132} ${diskiograph_write $root_disk 20,132}
+Home R: ${diskio_read $home_disk}${alignr}W: ${diskio_write $home_disk}
+${diskiograph_read $home_disk 20,132} ${diskiograph_write $home_disk 20,132}
+${font arial black:size=14}${color magenta}NETWORK${color}${font arial black:size=8}information${color magenta} ${hr 2}$color$font
+DOWN: $font$color${downspeed $net_if}/${totaldown $net_if}
+UP: $font${upspeed $net_if}/${totalup $net_if}
+${downspeedgraph $net_if 20,132 C0C0C0 C0C0C0} ${upspeedgraph $net_if 20,132 C0C0C0 C0C0C0}$color
 Port In: $font${tcp_portmon 1 32767 count} Out: $font${tcp_portmon 32768 61000 count}${alignr}TOTAL: $font${tcp_portmon 1 65535 count}
-LOCAL:$font ${addr wlp2s0}${color}
-${font arial black:size=14}${color magneta}BATTERY${color}${font arial black:size=8}information${color magneta} ${hr 2}$color$font
-${battery_bar}
-STATE: $font$color${battery} $alignr ${battery_time}
-TEMPERATURE:$font ${acpitemp}°C${color}
+LOCAL:$font ${addr $net_if}${color} ]] .. battery .. [[
 ${voffset 15}
 ]]
+-- temp: https://askubuntu.com/questions/235713/how-to-detect-processor-correct-temperature-in-conky
+
+text, _ = string.gsub(text, "$net_if", net_if)
+text, _ = string.gsub(text, "$home_disk", home_disk)
+text, _ = string.gsub(text, "$root_disk", root_disk)
+conky.text = text
 --FAN: $font$color${ibm_fan}rpm${alignr}
+
+-- vim: ts=4 sw=4 noet ai cindent syntax=lua

@@ -1,8 +1,5 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# File: usercustomize.py
-# Date: Wed Apr 01 19:44:39 2015 +0800
-# Author: Yuxin Wu <ppwwyyxxc@gmail.com>
 
 import sys, inspect, os
 
