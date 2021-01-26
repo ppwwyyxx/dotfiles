@@ -24,3 +24,7 @@ cp .tmux.conf ~/ -vf
 cp .tmux ~/ -rvf
 
 chmod 755 ~/.zsh ~/.zsh/Completion
+
+# https://github.com/thestinger/termite#terminfo
+wget https://raw.githubusercontent.com/thestinger/termite/master/termite.terminfo
+tic -x termite.terminfo

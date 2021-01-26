@@ -68,7 +68,16 @@
     "python.analysis.memory.keepLibraryAst": true,
     "python.analysis.memory.keepLibraryLocalVariables": true,
     "python.formatting.blackArgs": ["--line-length", "100"],
+    "python.languageServer": "Pylance",
 
+    "todohighlight.isEnable": true,
+    "todohighlight.keywordsPattern": "from IPython.*|import pdb.*|pdb.set_trace.*|import sys; sys.*",
+    "todohighlight.defaultStyle": {
+        "color": "red",
+        "backgroundColor": "#66aa00",
+        "borderRadius": "2px",
+        "isWholeLine": false,
+    },
 
     // formatter:
     "javascript.format.placeOpenBraceOnNewLineForFunctions": false,
@@ -115,6 +124,9 @@
     ],
 
     "latex-workshop.view.pdf.viewer": "tab",
+    "path-autocomplete.pathMappings": {
+        "/": "/"
+    },
 
     // ui
     "workbench.colorTheme": "Monokai",
@@ -133,6 +145,7 @@
     },
 
     // UI plugins
+    "color-highlight.markRuler": false,
     "bracket-pair-colorizer-2.showHorizontalScopeLine": false,
     "bracket-pair-colorizer-2.showVerticalScopeLine": false,
     "bracket-pair-colorizer-2.highlightActiveScope": false,
@@ -144,38 +157,21 @@
     // git
     "gitlens.currentLine.enabled": false,
     "gitlens.hovers.currentLine.over": "line",
-    "gitlens.codeLens.enabled": false,
-    "gitlens.statusBar.enabled": false,
     "gitlens.hovers.enabled": false,
     "gitlens.mode.statusBar.enabled": false,
+    "gitlens.statusBar.enabled": false,
 
     "githubPullRequests.queries": [
-        {
-            "label": "All",
-            "query": "is:open"
-        },
-        {
-            "label": "Assigned To Me",
-            "query": "is:open assignee:${user}"
-        },
-        {
-            "label": "Created By Me",
-            "query": "is:open author:${user}"
-        }
+        { "label": "All", "query": "is:open" },
+        { "label": "Assigned To Me", "query": "is:open assignee:${user}" },
+        { "label": "Created By Me", "query": "is:open author:${user}" }
     ],
     "githubIssues.queries": [
-        {
-            "label": "All Issues",
-            "query": "is:open repo:${owner}/${repository}"
-        },
-        {
-            "label": "My Issues",
-            "query": "default"
-        },
-        {
-            "label": "Created Issues",
-            "query": "author:${user} state:open repo:${owner}/${repository} sort:created-desc"
-        },
+        { "label": "All Issues", "query": "is:open repo:${owner}/${repository}" },
+        { "label": "My Issues", "query": "default" },
+        { "label": "Created Issues", "query": "author:${user} state:open repo:${owner}/${repository} sort:created-desc" },
     ],
-
+    "githubIssues.assignWhenWorking": false,
+    "pylance.insidersChannel": "daily",
+    "python.analysis.useLibraryCodeForTypes": false,
 }

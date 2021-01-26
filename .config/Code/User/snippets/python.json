@@ -46,5 +46,12 @@
 			"import sys; sys.exit(${1:0})"
 		],
 		"description": "exit python"
-	}
+	},
+	"main": {
+		"prefix": "ifmain",
+		"body": [
+			"if __name__ == \"__main__\":"
+		],
+		"description": "if main"
+	},
 }

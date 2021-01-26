@@ -44,196 +44,57 @@
     { "key": "alt+l", "command": "workbench.action.nextPanelView", "when": "panelFocus"},
     { "key": "alt+h", "command": "workbench.action.previousPanelView", "when": "panelFocus"},
 
+    { "key": "ctrl+z", "command": "extension.dash.specific", "when": "editorTextFocus" },
+
     // removed bindings
     { "key": "ctrl+b", "command": "-workbench.action.toggleSidebarVisibility" },
     { "key": "ctrl+k o", "command": "-workbench.action.files.showOpenedFileInNewWindow" },
-    {
-        "key": "ctrl+,",
-        "command": "-workbench.action.openSettings"
-    },
-    {
-        "key": "shift+alt+right",
-        "command": "-editor.action.smartSelect.expand",
-        "when": "editorTextFocus"
-    },
-    {
-        "key": "shift+alt+left",
-        "command": "-editor.action.smartSelect.shrink",
-        "when": "editorTextFocus"
-    },
-    {
-        "key": "ctrl+k ctrl+q",
-        "command": "-workbench.action.navigateToLastEditLocation"
-    },
-    {
-        "key": "ctrl+o",
-        "command": "-workbench.action.files.openFile"
-    },
-    {
-        "key": "ctrl+c",
-        "command": "-vscode-neovim.escape",
-        "when": "editorTextFocus && neovim.init"
-    },
-    {
-        "key": "alt+up",
-        "command": "-editor.action.moveLinesUpAction",
-        "when": "editorTextFocus && !editorReadonly"
-    },
-    {
-        "key": "alt+down",
-        "command": "-editor.action.moveLinesDownAction",
-        "when": "editorTextFocus && !editorReadonly"
-    },
-    {
-        "key": "ctrl+k ctrl+\\",
-        "command": "-workbench.action.splitEditorOrthogonal"
-    },
-    {
-        "key": "ctrl+\\",
-        "command": "-workbench.action.splitEditor"
-    },
-    {  // this enable system's C-w (delete word) inside quickOpen
-        "key": "ctrl+w",
-        "command": "-workbench.action.closeActiveEditor"
-    },
-    {
-        "key": "ctrl+shift+enter",
-        "command": "-markdown-preview-enhanced.runAllCodeChunks",
-        "when": "editorLangId == 'markdown'"
-    },
-    {
-        "key": "shift+enter",
-        "command": "-markdown-preview-enhanced.runCodeChunk",
-        "when": "editorLangId == 'markdown'"
-    },
-    {
-        "key": "ctrl+shift+s",
-        "command": "-markdown-preview-enhanced.syncPreview",
-        "when": "editorLangId == 'markdown'"
-    },
-    {
-        "key": "ctrl+shift+v",
-        "command": "-markdown-preview-enhanced.openPreview",
-        "when": "editorLangId == 'markdown'"
-    },
-    {
-        "key": "ctrl+k v",
-        "command": "-markdown-preview-enhanced.openPreviewToTheSide",
-        "when": "editorLangId == 'markdown'"
-    },
-    {
-        "key": "ctrl+shift+v",
-        "command": "-markdown.showPreview",
-        "when": "editorLangId == 'markdown'"
-    },
-    {
-        "key": "ctrl+k v",
-        "command": "-markdown.showPreviewToSide",
-        "when": "editorLangId == 'markdown'"
-    },
-    {
-        "key": "ctrl+q",
-        "command": "-workbench.action.quit"
-    },
-    {
-        "key": "ctrl+r q",
-        "command": "-vscode-neovim.paste-register",
-        "when": "editorTextFocus && neovim.ctrlKeysInsert && !neovim.recording && neovim.mode == 'insert'"
-    },
-    {
-        "key": "ctrl+j",
-        "command": "-workbench.action.togglePanel"
-    },
-    {
-        "key": "ctrl+g",
-        "command": "-workbench.action.gotoLine"
-    },
-    {
-        "key": "ctrl+g",
-        "command": "-vscode-neovim.send",
-        "when": "neovim.mode == 'cmdline_insert' || neovim.mode == 'cmdline_normal' || neovim.mode == 'cmdline_replace'"
-    },
-    {
-        "key": "ctrl+w",
-        "command": "-workbench.action.closeWindow",
-        "when": "!editorIsOpen && !multipleEditorGroups"
-    },
-    {
-        "key": "ctrl+k ctrl+left",
-        "command": "-workbench.action.focusLeftGroup"
-    },
-    {
-        "key": "ctrl+e",
-        "command": "-workbench.action.quickOpen"
-    },
-    {
-        "key": "ctrl+k w",
-        "command": "-workbench.action.closeEditorsInGroup"
-    },
-    {
-        "key": "ctrl+k ctrl+w",
-        "command": "-workbench.action.closeAllEditors"
-    },
-    {
-        "key": "ctrl+k ctrl+shift+w",
-        "command": "-workbench.action.closeAllGroups"
-    },
-    {
-        "key": "ctrl+r",
-        "command": "-workbench.action.openRecent"
-    },
-    {
-        "key": "ctrl+shift+[IntlBackslash]",
-        "command": "-breadcrumbs.focusAndSelect",
-        "when": "breadcrumbsPossible"
-    },
-    {
-        "key": "ctrl+shift+.",
-        "command": "-breadcrumbs.focusAndSelect",
-        "when": "breadcrumbsPossible"
-    },
-    {
-        "key": "ctrl+alt+c",
-        "command": "-latex-workshop.clean",
-        "when": "!config.latex-workshop.bind.altKeymap.enabled && editorLangId == 'latex'"
-    },
-    {
-        "key": "ctrl+alt+c",
-        "command": "-latex-workshop.clean",
-        "when": "!config.latex-workshop.bind.altKeymap.enabled && editorLangId == 'latex'"
-    },
-    {
-        "key": "ctrl+l alt+j",
-        "command": "-latex-workshop.synctex",
-        "when": "config.latex-workshop.bind.altKeymap.enabled && editorTextFocus && editorLangId == 'latex'"
-    },
-    {
-        "key": "ctrl+alt+v",
-        "command": "-latex-workshop.view",
-        "when": "!config.latex-workshop.bind.altKeymap.enabled && editorLangId == 'latex'"
-    },
-    {
-        "key": "ctrl+alt+x",
-        "command": "-workbench.view.extension.latex",
-        "when": "!config.latex-workshop.bind.altKeymap.enabled"
-    },
-    {
-        "key": "ctrl+h",
-        "command": "-editor.action.startFindReplaceAction"
-    },
-    {
-        "key": "ctrl+h",
-        "command": "-vscode-neovim.send",
-        "when": "editorTextFocus && neovim.ctrlKeysNormal && neovim.init && neovim.mode != 'insert'"
-    },
-    {
-        "key": "ctrl+shift+r",
-        "command": "-restructuredtext.showPreview",
-        "when": "editorLangId == 'restructuredtext'"
-    },
-    {
-        "key": "ctrl+k ctrl+r",
-        "command": "-restructuredtext.showPreviewToSide",
-        "when": "editorLangId == 'restructuredtext'"
-    },
+    { "key": "ctrl+,", "command": "-workbench.action.openSettings" },
+    { "key": "shift+alt+right", "command": "-editor.action.smartSelect.expand", "when": "editorTextFocus" },
+    { "key": "shift+alt+left", "command": "-editor.action.smartSelect.shrink", "when": "editorTextFocus" },
+    { "key": "ctrl+k ctrl+q", "command": "-workbench.action.navigateToLastEditLocation" },
+    { "key": "ctrl+o", "command": "-workbench.action.files.openFile" },
+    { "key": "ctrl+c", "command": "-vscode-neovim.escape", "when": "editorTextFocus && neovim.init" },
+    { "key": "alt+up", "command": "-editor.action.moveLinesUpAction", "when": "editorTextFocus && !editorReadonly" },
+    { "key": "alt+down", "command": "-editor.action.moveLinesDownAction", "when": "editorTextFocus && !editorReadonly" },
+    { "key": "ctrl+k ctrl+\\", "command": "-workbench.action.splitEditorOrthogonal" },
+    { "key": "ctrl+\\", "command": "-workbench.action.splitEditor" },
+    // this enable system's C-w (delete word) inside quickOpen
+    { "key": "ctrl+w", "command": "-workbench.action.closeActiveEditor" },
+    { "key": "ctrl+shift+enter", "command": "-markdown-preview-enhanced.runAllCodeChunks", "when": "editorLangId == 'markdown'" },
+    { "key": "shift+enter", "command": "-markdown-preview-enhanced.runCodeChunk", "when": "editorLangId == 'markdown'" },
+    { "key": "ctrl+shift+s", "command": "-markdown-preview-enhanced.syncPreview", "when": "editorLangId == 'markdown'" },
+    { "key": "ctrl+shift+v", "command": "-markdown-preview-enhanced.openPreview", "when": "editorLangId == 'markdown'" },
+    { "key": "ctrl+k v", "command": "-markdown-preview-enhanced.openPreviewToTheSide", "when": "editorLangId == 'markdown'" },
+    { "key": "ctrl+shift+v", "command": "-markdown.showPreview", "when": "editorLangId == 'markdown'" },
+    { "key": "ctrl+k v", "command": "-markdown.showPreviewToSide", "when": "editorLangId == 'markdown'" },
+    { "key": "ctrl+q", "command": "-workbench.action.quit" },
+    { "key": "ctrl+r q", "command": "-vscode-neovim.paste-register", "when": "editorTextFocus && neovim.ctrlKeysInsert && !neovim.recording && neovim.mode == 'insert'" },
+    { "key": "ctrl+j", "command": "-workbench.action.togglePanel" },
+    { "key": "ctrl+g", "command": "-workbench.action.gotoLine" },
+    { "key": "ctrl+w", "command": "-workbench.action.closeWindow", "when": "!editorIsOpen && !multipleEditorGroups" },
+    { "key": "ctrl+k ctrl+left", "command": "-workbench.action.focusLeftGroup" },
+    { "key": "ctrl+e", "command": "-workbench.action.quickOpen" },
+    { "key": "ctrl+k w", "command": "-workbench.action.closeEditorsInGroup" },
+    { "key": "ctrl+k ctrl+w", "command": "-workbench.action.closeAllEditors" },
+    { "key": "ctrl+k ctrl+shift+w", "command": "-workbench.action.closeAllGroups" },
+    { "key": "ctrl+r", "command": "-workbench.action.openRecent" },
+    { "key": "ctrl+shift+[IntlBackslash]", "command": "-breadcrumbs.focusAndSelect", "when": "breadcrumbsPossible" },
+    { "key": "ctrl+shift+.", "command": "-breadcrumbs.focusAndSelect", "when": "breadcrumbsPossible" },
+    { "key": "ctrl+alt+c", "command": "-latex-workshop.clean", "when": "!config.latex-workshop.bind.altKeymap.enabled && editorLangId == 'latex'" },
+    { "key": "ctrl+alt+c", "command": "-latex-workshop.clean", "when": "!config.latex-workshop.bind.altKeymap.enabled && editorLangId == 'latex'" },
+    { "key": "ctrl+l alt+j", "command": "-latex-workshop.synctex", "when": "config.latex-workshop.bind.altKeymap.enabled && editorTextFocus && editorLangId == 'latex'" },
+    { "key": "ctrl+alt+v", "command": "-latex-workshop.view", "when": "!config.latex-workshop.bind.altKeymap.enabled && editorLangId == 'latex'" },
+    { "key": "ctrl+alt+x", "command": "-workbench.view.extension.latex", "when": "!config.latex-workshop.bind.altKeymap.enabled" },
+    { "key": "ctrl+h", "command": "-editor.action.startFindReplaceAction" },
+    { "key": "ctrl+g", "command": "-vscode-neovim.send", "when": "neovim.mode == 'cmdline_insert' || neovim.mode == 'cmdline_normal' || neovim.mode == 'cmdline_replace'" },
+    { "key": "ctrl+h", "command": "-vscode-neovim.send", "when": "editorTextFocus && neovim.ctrlKeysNormal && neovim.init && neovim.mode != 'insert'" },
+    { "key": "ctrl+z", "command": "-vscode-neovim.send", "when": "editorTextFocus && neovim.ctrlKeysNormal && neovim.init && neovim.mode != 'insert'" },
+    { "key": "ctrl+shift+r", "command": "-restructuredtext.showPreview", "when": "editorLangId == 'restructuredtext'" },
+    { "key": "ctrl+k ctrl+r", "command": "-restructuredtext.showPreviewToSide", "when": "editorLangId == 'restructuredtext'" },
+    { "key": "ctrl+z", "command": "-undo" },
+    { "key": "ctrl+h", "command": "-extension.dash.specific", "when": "editorTextFocus" },
+    { "key": "ctrl+alt+h", "command": "-extension.dash.all", "when": "editorTextFocus" },
+    { "key": "alt+h", "command": "-extension.dash.customSyntax", "when": "editorTextFocus" },
+    { "key": "ctrl+shift+h", "command": "-extension.dash.emptySyntax", "when": "editorTextFocus" },
 ]

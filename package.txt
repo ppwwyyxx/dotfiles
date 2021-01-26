@@ -313,3 +313,4 @@ shellcheck
 js-beautify
 qt5-styleplugins
 flameshot
+chrpath

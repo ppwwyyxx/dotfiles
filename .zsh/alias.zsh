@@ -254,13 +254,16 @@ alias screenkey='screenkey -s small -t 0.8 --opacity 0.3'
 alias adate='for i in Asia/Shanghai US/{Eastern,Pacific}; do printf %-22s "$i ";TZ=:$i date +"%F %a %T %Z";done'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias clean-trash='=rm /ssd_home/.Trash/{.,}* -rf; =rm ~/.Trash/{.,}* -rf'
+function iconvcp936() {
+  iconv -f cp936 -t utf-8 "$1" | sponge "$1"
+}
 
 which squeue NN && {
 	alias sacct='=sacct -S $(date +"%m/%d" -d "-4days") -o jobid,jobname%30,alloccpus%3,reqmem%5,state%8,nodelist%16,start%16,end%16,elapsed%5 | colorline'
 	alias sacct-all='=sacct -S $(date +"%m/%d" -d "-5hours") -a -o User%10,JobID,Jobname,state%5,MaxRss,MaxVMSize,avediskread,nnodes%3,ncpus%3,nodelist,start%16,end%16,elapsed%5 | colorline'
 	alias squeue='=squeue -u $(whoami) -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | sort -n -k 1 | colorline'
 	alias squeue-all='=squeue -o "%i|%u|%30j|%t|%M|%R|node:%D|cpu:%c|%b" | column -s "|" -t | colorline'
-	alias slurm-gpu-per-user="=squeue -o %u:%D:%b | tail -n+2 | awk -F ':' '{a[\$1]+=\$2*\$NF} END {for (i in a) {print i, a[i]; s+=a[i];} print \"Total\", s}' | sort -n -k2 | column -t"
+	alias slurm-gpu-per-user="=squeue -o %u:%D:%b | tail -n+2 | awk -F ':' '{a[\$1]+=\$2*\$NF} END {for (i in a) {print i, a[i]; s+=a[i];} print \"Total\", s}' | sort -n -k2 | column -t | grep -z $USER"
   alias sinfo-by-type="=sinfo -o '%f %A %N %m %G' | column -t"
 }
 
@@ -563,14 +566,14 @@ which apt-get NN && {
     alias pU='sudo dpkg -i'
 		alias pScc='sudo apt-get clean'
 } || {
-    alias pS='sudo yum install'
+  alias pS='sudo yum install'
 	alias pR='sudo yum erase'
 	alias pSy='sudo yum check-update'
 	alias pSu='sudo yum update'
 	alias pSs='yum search'
 	alias pQo='yum whatprovides'
 	alias pQl='rpm -ql'
-    alias pU='yum localinstall'
+  alias pU='yum localinstall'
 }
 }
 }

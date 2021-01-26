@@ -55,6 +55,7 @@ DialogHeight=540
 DialogWidth=720
 
 [Containments][1][Applets][52][Configuration][General]
+favoriteSystemActions=logout,lock-screen
 favoritesPortedToKAstats=true
 iconSize=60
 
@@ -124,6 +125,7 @@ DialogWidth=720
 
 [Containments][2][Applets][20][Configuration][General]
 groupingStrategy=0
+launchers=applications:org.kde.dolphin.desktop
 showOnlyCurrentActivity=false
 showOnlyCurrentScreen=true
 
@@ -229,7 +231,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][2][Applets][7][Configuration]
-PreloadWeight=10
+PreloadWeight=76
 SystrayContainmentId=3
 immutability=1
 
@@ -267,7 +269,7 @@ immutability=1
 plugin=org.kde.plasma.devicenotifier
 
 [Containments][3][Applets][11][Configuration]
-PreloadWeight=0
+PreloadWeight=7
 
 [Containments][3][Applets][12]
 immutability=1
@@ -346,7 +348,7 @@ immutability=1
 plugin=org.kde.plasma.volume
 
 [Containments][3][Applets][9][Configuration]
-PreloadWeight=26
+PreloadWeight=76
 
 [Containments][3][Applets][9][Configuration][ConfigDialog]
 DialogHeight=540
@@ -436,6 +438,7 @@ DialogHeight=540
 DialogWidth=720
 
 [Containments][32][Applets][33][Configuration][General]
+launchers=preferred://filemanager
 showOnlyCurrentScreen=true
 
 [Containments][32][Applets][34]
@@ -509,7 +512,7 @@ immutability=1
 plugin=org.kde.plasma.devicenotifier
 
 [Containments][33][Applets][38][Configuration]
-PreloadWeight=0
+PreloadWeight=7
 
 [Containments][33][Applets][39]
 immutability=1

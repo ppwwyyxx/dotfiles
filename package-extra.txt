@@ -19,9 +19,6 @@ diff-pdf-git
 droopy-git
 earlyoom
 emacs-git
-emerald
-fcitx-sogoupinyin
-aur/fcitx-qt4
 flat-remix
 flat-remix-gtk
 flatplat-blue-theme
@@ -34,14 +31,11 @@ indent
 libopenblas
 libpam_pwdfile
 masterpdfeditor
-megasync
 meshlab
-nautilus-megasync
 netease-cloud-music
 nocache-git
 noto-fonts-cjk
 noto-fonts-emoji
-plank-git
 proot
 recordmydesktop
 rofi-git
