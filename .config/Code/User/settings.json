@@ -1,20 +1,16 @@
 {
-    // @sync-ignore
-    "window.zoomLevel": 1,
-    // @sync-ignore
-    "editor.minimap.enabled": false,
-    // @sync-ignore
     "settingsSync.ignoredSettings": [
         "window.zoomLevel", "editor.minimap.enabled"
     ],
     "remote.SSH.defaultExtensions": [
         "eamodio.gitlens",
     ],
-    // "vscode-neovim.neovimInitPath": "~/.config/nvim/vscode.init.vim",
 
 
     "workbench.editor.showTabs": false,
     "breadcrumbs.enabled": true,
+    "window.zoomLevel": 1,
+    "editor.minimap.enabled": false,
 
     "terminal.integrated.cursorStyle": "line",
     "window.menuBarVisibility": "toggle",
@@ -28,7 +24,7 @@
     "editor.mouseWheelZoom": true,
     "editor.wordWrapColumn": 100,
     "editor.cursorSmoothCaretAnimation": false,
-    "editor.fontFamily": "'JetBrains Mono', 'Fantasque Sans Mono', 'Droid Sans Mono', 'monospace', 'Droid Sans Fallback'",
+    "editor.fontFamily": "'JetBrains Mono', 'Fantasque Sans Mono', Monaco, 'Courier New', monospace",
     "editor.fontSize": 18,
     "editor.formatOnPaste": true,
     "editor.formatOnSaveTimeout": 3000,
@@ -85,7 +81,9 @@
     "json.format.enable": false,
 
     // vim:
+    // "vscode-neovim.neovimInitPath": "~/.config/nvim/vscode.init.vim",
     "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
+    "vscode-neovim.neovimExecutablePaths.darwin": "/Users/yuxinwu/bin/nvim",
     "vscode-neovim.useCtrlKeysForNormalMode": false,
     "vim.cursorStylePerMode.insert": "line",
     "vim.cursorStylePerMode.normal": "block",
@@ -153,6 +151,7 @@
     "bracket-pair-colorizer-2.colors": [
         "White", "GreenYellow", "Gold", "Orchid", "Aqua", "ForestGreen", "Tomato", "LightSkyBlue"
     ],
+    "tableformatter.common.explicitFullwidthChars": ["✅","❌"],
 
     // git
     "gitlens.currentLine.enabled": false,
@@ -172,6 +171,4 @@
         { "label": "Created Issues", "query": "author:${user} state:open repo:${owner}/${repository} sort:created-desc" },
     ],
     "githubIssues.assignWhenWorking": false,
-    "pylance.insidersChannel": "daily",
-    "python.analysis.useLibraryCodeForTypes": false,
 }

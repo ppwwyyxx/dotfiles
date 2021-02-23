@@ -154,6 +154,8 @@ function linkto() {
 	cd -
 }
 
+function patch1() { patch -p1 < $1 }
+
 # network
 alias p='ping'
 alias meow='ping'
@@ -182,6 +184,8 @@ function pasteimage() {
 alias ssh-reverse='ssh -R 6333:localhost:22 -ServerAliveInterval=60'
 function st() { ssh "$1" -t 'tmux a -d || tmux' }
 function ssh-proxy { ssh $2 -o ProxyCommand="ssh -q $1 nc %h %p" }
+# don't check or add host keys
+alias ssh-temp='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 function gmtr() {
 	sudo mtr -lnc 1 "$1" | paste - - \
 		| awk 'function geo(ip) {
