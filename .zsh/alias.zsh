@@ -171,7 +171,6 @@ alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias chromium-socks='chromium --proxy-server=socks5://localhost:8080'
 alias chromium-http='chromium --proxy-server=localhost:7777'
 alias google-keep='chromium --profile-directory=Default --app-id=hmjkmjkepdijhoojdojkdfohbdgmmhki'
-alias wunderlist='chromium --profile-directory=Default --app-id=ojcflmmmcfpacggndoaaflkmcoblhnbh'
 alias gg='google -r'
 alias gl='google -o'
 alias weather='curl -s http://wttr.in/\?m | head -n-1'
@@ -349,8 +348,8 @@ alias __nvp="nvidia-smi | awk '/GPU.*PID/ { seen=1 }; /==========/{if (seen) pp=
 	alias nvp="(echo \"GPU\tMEM\tPID\tCOMMAND\" && __nvp) | column -t -s $'\t' | cut -c 1-\$(tput cols)"
 	alias nvpkill="nvp | awk '{print \$3}' | tail -n+2 | xargs -I {} sh -c 'echo Killing {}; kill {} || echo failed'"
 	alias fuser-nvidia-kill="fuser -v /dev/nvidia* 2>&1 |grep -o '$USER.*'  | awk '{print \$2}' | xargs -I {} sh -c 'echo Killing {}; kill {} || echo failed'"
-	alias nsmi='watch -n 0.5 nvidia-smi'
 }
+alias kill-forkserver="ps aux | grep forkserver | grep -v grep | awk '{print \$2}' | xargs -I {} sh -c 'echo Killing {}; kill {} || echo failed'"
 
 function b(){
 	=acpi -V | head -n1
@@ -422,8 +421,8 @@ alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_r
 alias ffprobe='ffprobe -hide_banner'
 m_sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "/usr/share/fonts/wenquanyi/wqy-microhei/wqy-microhei.ttc"'
 m_avc_param="-oac mp3lame -lameopts fast:preset=medium -ovc x264 -x264encopts subq=5:8x8dct:frameref=2:bframes=3:weight_b:threads=auto"
-f_avc_param_old="-c:v libx264 -preset slow -crf 22 -c:a libmp3lame"
-f_avc_param="-map 0 -c:v libx265 -preset medium -x265-params crf=23 -c:a aac -strict experimental -b:a 128k"
+f_avc_param_old="-c:v libx264 -preset slow -crf 23 -c:a libmp3lame"
+f_avc_param="-map 0 -c:v libx265 -preset medium -x265-params crf=28 -c:a aac -strict experimental -b:a 128k"
 f_avc_param_apple="$f_avc_param_old -pix_fmt yuv420p"
 function ffmpeg_compress() {
 	if [[ -n $2 ]]; then
@@ -532,7 +531,7 @@ which pacman NN && {
 	alias pR='sudo pacman -R'
 	alias pSu='trizen -Syu'
 	alias pQl='pacman -Ql'
-	alias pScc='pacman -Scc'
+	alias pScc='sudo pacman -Scc'
 	alias paur='pacman -Qm'
 	#alias pacman-size="paste <(pacman -Q | awk '{ print \$1; }' | xargs pacman -Qi | grep 'Size' | awk '{ print \$4\$5; }') <(pacman -Q | awk '{print \$1; }') | sort -h | column -t"
 	alias pacman-size="expac -H M '%m\t%n' | sort -h"

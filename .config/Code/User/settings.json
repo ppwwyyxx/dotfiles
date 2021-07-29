@@ -9,7 +9,6 @@
 
     "workbench.editor.showTabs": false,
     "breadcrumbs.enabled": true,
-    "window.zoomLevel": 1,
     "editor.minimap.enabled": false,
 
     "terminal.integrated.cursorStyle": "line",
@@ -64,7 +63,7 @@
     "python.analysis.memory.keepLibraryAst": true,
     "python.analysis.memory.keepLibraryLocalVariables": true,
     "python.formatting.blackArgs": ["--line-length", "100"],
-    "python.languageServer": "Pylance",
+    "python.languageServer": "Jedi",
 
     "todohighlight.isEnable": true,
     "todohighlight.keywordsPattern": "from IPython.*|import pdb.*|pdb.set_trace.*|import sys; sys.*",
@@ -133,6 +132,7 @@
     "editor.folding": false,
     "debug.showBreakpointsInOverviewRuler": true,
     "workbench.colorCustomizations": {
+		"sash.hoverBorder": "#3285f1",
         "statusBar.background": "#007acc",
         "statusBar.noFolderBackground": "#007acc",
         "statusBar.debuggingBackground": "#007acc"
@@ -155,8 +155,9 @@
 
     // git
     "gitlens.currentLine.enabled": false,
-    "gitlens.hovers.currentLine.over": "line",
-    "gitlens.hovers.enabled": false,
+    "gitlens.hovers.currentLine.over": "annotation",
+    "gitlens.hovers.enabled": true,
+    "gitlens.hovers.pullRequests.enabled": true,
     "gitlens.mode.statusBar.enabled": false,
     "gitlens.statusBar.enabled": false,
 
@@ -171,4 +172,11 @@
         { "label": "Created Issues", "query": "author:${user} state:open repo:${owner}/${repository} sort:created-desc" },
     ],
     "githubIssues.assignWhenWorking": false,
+    "workbench.editorAssociations": [
+        {
+            "viewType": "jupyter.notebook.ipynb",
+            "filenamePattern": "*.ipynb"
+        }
+    ],
+    "window.zoomLevel": 1,
 }
