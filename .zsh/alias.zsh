@@ -349,7 +349,7 @@ alias __nvp="nvidia-smi | awk '/GPU.*PID/ { seen=1 }; /==========/{if (seen) pp=
 	alias nvpkill="nvp | awk '{print \$3}' | tail -n+2 | xargs -I {} sh -c 'echo Killing {}; kill {} || echo failed'"
 	alias fuser-nvidia-kill="fuser -v /dev/nvidia* 2>&1 |grep -o '$USER.*'  | awk '{print \$2}' | xargs -I {} sh -c 'echo Killing {}; kill {} || echo failed'"
 }
-alias kill-forkserver="ps aux | grep forkserver | grep -v grep | awk '{print \$2}' | xargs -I {} sh -c 'echo Killing {}; kill {} || echo failed'"
+alias kill-forkserver="ps aux | grep 'forkserver|spawn_main' | grep -v grep | awk '{print \$2}' | xargs -I {} sh -c 'echo Killing {}; kill {} || echo failed'"
 
 function b(){
 	=acpi -V | head -n1
