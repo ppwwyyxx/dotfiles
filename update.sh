@@ -23,5 +23,6 @@ cp ~/.config/gtk-2.0/* ./.config/gtk-2.0/ -fv
 cp ~/.config/gtk-3.0/* ./.config/gtk-3.0/ -fv
 cp ~/.gtkrc* ./ -fv
 cp ~/.config/termite/config ./.config/termite/ -fv
+cp ~/.config/alacritty.yml ./.config/ -fv
 cp ~/.config/mimeapps.list ./.config/
 cp ~/.config/doom ./.config/ -rvH

@@ -535,7 +535,7 @@ which pacman NN && {
 	alias paur='pacman -Qm'
 	#alias pacman-size="paste <(pacman -Q | awk '{ print \$1; }' | xargs pacman -Qi | grep 'Size' | awk '{ print \$4\$5; }') <(pacman -Q | awk '{print \$1; }') | sort -h | column -t"
 	alias pacman-size="expac -H M '%m\t%n' | sort -h"
-    function pacman-orphan() {
+  function pacman-orphan() {
         if [[ ! -n $(pacman -Qdt) ]]; then
             echo "No orphans to remove."
         else
