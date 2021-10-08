@@ -50,3 +50,4 @@ wqy-zenhei
 xcape-git
 you-get-git
 sierrabreeze-kwin-decoration-git
+ksysguard

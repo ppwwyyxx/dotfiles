@@ -3,7 +3,7 @@ URxvt.depth: 32
 URxvt.transparent: true
 URxvt.shading: 10
 
-URxvt.geometry: 80x30
+URxvt.geometry: 90x90
 !URxvt.borderLess: true
 URxvt.scrollBar: false
 ! Use shift to scroll
@@ -43,6 +43,7 @@ URxvt.buffered: true
 !use letterspace=-1 with source-code-pro
 !URxvt.letterSpace: -1
 !URxvt.lineSpace: 0
+
 Xft.autohint: 0
 Xft.lcdfilter:  lcddefault
 Xft.hintstyle:  hintfull
@@ -50,47 +51,6 @@ Xft.hinting: 1
 Xft.antialias: 1
 Xft.dpi: 96
 Xft.rgba: rgb
-
-
-! With ibus: need ibus to start with `ibus-daemon --xim`
-!URxvt.inputMethod: ibus
-!Urxvt.preeditType: OverTheSpot
-
-! Utils:
-#ifndef URXVT_PERL_LIB
-#define URXVT_PERL_LIB /home/wyx/.urxvt/
-#endif
-!URxvt.perl-ext-common: default,clipboard,url-select,keyboard-select,readline,matcher,selection
-URxvt.perl-ext-common: default,clipboard,url-select,keyboard-select,readline,matcher
-URxvt.perl-ext:selection-popup,selection-autotransform,searchable-scrollback
-URxvt.perl-lib: URXVT_PERL_LIB
-
-URxvt.matcher.button: 1
-URxvt.url-select.launcher:  chromium
-URxvt.url-select.underline: true
-!URxvt.keysym.M-u:           perl:url-select:select_next
-URxvt.keysym.M-Escape:      perl:keyboard-select:activate
-URxvt.keysym.M-s:           perl:keyboard-select:search
-
-URxvt.tabbed.tabbar-fg: 5
-URxvt.tabbed.tabbar-bg: 0
-URxvt.tabbed.tab-bg: 0
-URxvt.tabbed.tab-fg: 3
-URxvt.tabbed.autohide: yes
-URxvt.tabbed.title: no
-!URxvt.keysym.C-t: perl:tabbed:new_tab
-!URxvt.keysym.M-l: perl:tabbedex:next_tab
-!URxvt.keysym.M-h: perl:tabbedex:prev_tab
-!URxvt.tabbed.no-tabbedex-keys: true
-
-! USE selection & mouse-2!  will fill 'primary' clipboard buffer
-URxvt.keysym.C-S-C:   perl:clipboard:copy
-URxvt.keysym.C-S-V:   perl:clipboard:paste
-!URxvt.clipboard.copycmd:  xclip -i -selection primary
-!URxvt.clipboard.pastecmd: xclip -o -selection primary
-!on OSX:
-!URxvt.clipboard.copycmd:  pbcopy
-!URxvt.clipboard.pastecmd: pbpaste
 
 ! Fix Color
 ! 0 - 7, 8 - 15: black, red, green, yellow, blue, magenta, cyan, white

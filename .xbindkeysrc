@@ -4,7 +4,7 @@
   Mod4 + c
 "~/bin/background/screenshot"
   Mod4 + a
-"termite"
+"alacritty"
   Mod4 + t
 "sleep .1; xdotool click 1"
   Mod4 + Return
