@@ -9,26 +9,31 @@ enableKWinEdges=true
 formfactor=2
 immutability=1
 isPreferredForShortcuts=false
-lastScreen=11
+lastScreen=13
 location=4
+name=
 onPrimary=true
 plugin=org.kde.latte.containment
 raiseOnActivityChange=false
 raiseOnDesktopChange=false
 settingsComplexity=4
-timerHide=400
+timerHide=300
 timerShow=200
 viewType=0
-visibility=2
+visibility=1
 wallpaperplugin=org.kde.image
 
 [Containments][1][Applets][2]
 immutability=1
 plugin=org.kde.latte.plasmoid
 
+[Containments][1][Applets][2][Configuration]
+PreloadWeight=34
+
 [Containments][1][Applets][2][Configuration][General]
 isInLatteDock=true
-launchers59=applications:org.kde.dolphin.desktop,applications:google-chrome.desktop,applications:visual-studio-code.desktop,applications:polar-bookshelf.desktop,applications:todoist.desktop,applications:spotify.desktop
+launchers59=applications:org.kde.dolphin.desktop,applications:google-chrome.desktop,applications:visual-studio-code.desktop,applications:todoist.desktop,applications:qqmusic.desktop,applications:polar-bookshelf.desktop,applications:wechat-uos.desktop
+showOnlyCurrentActivity=false
 
 [Containments][1][Applets][4]
 activityId=
@@ -40,7 +45,7 @@ plugin=org.kde.plasma.folder
 wallpaperplugin=
 
 [Containments][1][Applets][4][Configuration]
-PreloadWeight=100
+PreloadWeight=68
 activityId=
 formfactor=0
 immutability=1
@@ -65,25 +70,32 @@ immutability=1
 plugin=org.kde.latte.separator
 
 [Containments][1][Applets][5][Configuration]
-PreloadWeight=55
+PreloadWeight=39
 
 [Containments][1][ConfigDialog]
 DialogHeight=1245
 DialogWidth=539
 
+[Containments][1][Configuration]
+PreloadWeight=34
+
 [Containments][1][General]
 activeWindowFilter=FromAllScreens
 advanced=false
+alignmentUpgraded=true
 appletOrder=2;5;4
 durationTime=x1
+lastWindowsVisibilityMode=6
 panelSize=5
 panelTransparency=60
 shadowOpacity=60
 shadowSize=45
+shadowsUpgraded=true
 showGlow=false
 showOnlyCurrentActivity=false
 splitterPosition=1
 splitterPosition2=2
+tasksUpgraded=true
 zoomLevel=16
 
 [Containments][1][Indicator]
@@ -94,11 +106,19 @@ padding=0.07999999821186066
 type=org.kde.latte.default
 
 [LayoutSettings]
+activities={free-activities}
 background=
+backgroundStyle=0
 color=blue
+customBackground=
+customTextColor=
+disableBordersForMaximizedWindows=false
+icon=
 lastUsedActivity=d6d79ebb-3df6-4c64-b891-9dacd08f992a
 launchers=
+popUpMargin=-1
 preferredForShortcutsTouched=true
+schemeFile=
 showInMenu=true
 textColor=fcfcfc
 version=2

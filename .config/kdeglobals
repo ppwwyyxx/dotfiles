@@ -108,8 +108,7 @@ ForegroundPositive=39,174,96
 ForegroundVisited=127,140,141
 
 [DirSelect Dialog]
-DirSelectDialog Size=844,598
-History Items[$e]=file:$HOME/Documents/Wallpapers,file:$HOME/Documents/Wallpapers,file:///t/WhiteSur/
+DirSelectDialog Size=980,600
 
 [General]
 BrowserApplication=google-chrome.desktop
@@ -120,7 +119,7 @@ shadeSortColumn=true
 widgetStyle=Breeze
 
 [Icons]
-Theme=Mkos-Big-Sur-Night
+Theme=Mkos-Big-Sur-Transparent-Panel
 
 [KDE]
 AnimationDurationFactor=0.5
@@ -145,9 +144,13 @@ Show Speedbar=true
 Show hidden files=false
 Sort by=Name
 Sort directories first=true
-Sort reversed=true
+Sort reversed=false
 Speedbar Width=152
 View Style=DetailTree
+
+[KScreen]
+ScaleFactor=1
+ScreenScaleFactors=DVI-D-0=1;HDMI-0=1;DP-0=1;DP-1=1;DP-2=1;DP-3=1;DP-4=1;DP-5=1;
 
 [KShortcutsDialog Settings]
 Dialog Size=985,775

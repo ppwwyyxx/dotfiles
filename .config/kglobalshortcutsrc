@@ -23,8 +23,7 @@ _k_friendly_name=KDE Daemon
 display=none,Display\tMeta+P,Switch Display
 
 [khotkeys]
-_k_friendly_name=KDE Daemon
-{718898af-4799-41f4-aecc-359fee571929}=Ctrl+Alt+T,none,Launch Konsole
+_k_friendly_name=Custom Shortcuts Service
 {d03619b6-9b3c-48cc-9d9c-a2aadb485550}=,none,Search
 {e60e49c0-47f0-41bd-ad4e-819ebd886414}=Meta+N,none,MouseSwitchScreen
 
@@ -34,18 +33,13 @@ decrease_microphone_volume=Microphone Volume Down,Microphone Volume Down,Decreas
 decrease_volume=Volume Down,Volume Down,Decrease Volume
 increase_microphone_volume=Microphone Volume Up,Microphone Volume Up,Increase Microphone Volume
 increase_volume=Volume Up,Volume Up,Increase Volume
-mic_mute=Microphone Mute,Microphone Mute,Mute Microphone
+mic_mute=Microphone Mute,Microphone Mute\tMeta+Volume Mute,Mute Microphone
 mute=Volume Mute,Volume Mute,Mute
-
-[krunner.desktop]
-RunClipboard=none,Alt+Shift+F2,Run command on clipboard contents
-_k_friendly_name=KRunner
-_launch=Alt+Space\tSearch,Alt+Space\tAlt+F2\tSearch,KRunner
 
 [ksmserver]
 Halt Without Confirmation=none,none,Halt Without Confirmation
 Lock Session=Ctrl+Alt+Shift+L\tScreensaver,Meta+L\tCtrl+Alt+L\tScreensaver,Lock Session
-Log Out=none,none,Log Out
+Log Out=none,Ctrl+Alt+Del,Log Out
 Log Out Without Confirmation=none,none,Log Out Without Confirmation
 Reboot Without Confirmation=none,none,Reboot Without Confirmation
 _k_friendly_name=Session Management
@@ -126,6 +120,8 @@ SwitchToNextClient=Meta+J,none,(custom) Switch to Next Client
 SwitchToPrevClient=Meta+K,none,(custom) Switch to Previous Client
 Toggle Night Color=,none,Toggle Night Color
 Toggle Window Raise/Lower=,none,Toggle Window Raise/Lower
+ToggleMouseClick=Meta+*,Meta+*,Toggle Mouse Click Effect
+TrackMouse=Meta+Ctrl+M,none,Track mouse
 Walk Through Desktop List=,none,Walk Through Desktop List
 Walk Through Desktop List (Reverse)=,none,Walk Through Desktop List (Reverse)
 Walk Through Desktops=,none,Walk Through Desktops
@@ -152,10 +148,10 @@ Window Minimize=Alt+F9,Meta+PgDown,Minimize Window
 Window Move=,none,Move Window
 Window No Border=,none,Hide Window Border
 Window On All Desktops=,none,Keep Window on All Desktops
-Window One Desktop Down=,none,Window One Desktop Down
-Window One Desktop Up=,none,Window One Desktop Up
-Window One Desktop to the Left=,none,Window One Desktop to the Left
-Window One Desktop to the Right=,none,Window One Desktop to the Right
+Window One Desktop Down=,Meta+Ctrl+Shift+Down,Window One Desktop Down
+Window One Desktop Up=,Meta+Ctrl+Shift+Up,Window One Desktop Up
+Window One Desktop to the Left=,Meta+Ctrl+Shift+Left,Window One Desktop to the Left
+Window One Desktop to the Right=,Meta+Ctrl+Shift+Right,Window One Desktop to the Right
 Window Operations Menu=,Alt+F3,Window Operations Menu
 Window Pack Down=,none,Pack Window Down
 Window Pack Left=,none,Pack Window to the Left
@@ -195,9 +191,9 @@ Window to Desktop 7=,none,Window to Desktop 7
 Window to Desktop 8=,none,Window to Desktop 8
 Window to Desktop 9=,none,Window to Desktop 9
 Window to Next Desktop=,none,Window to Next Desktop
-Window to Next Screen=none,none,Window to Next Screen
+Window to Next Screen=none,Meta+Shift+Right,Window to Next Screen
 Window to Previous Desktop=,none,Window to Previous Desktop
-Window to Previous Screen=,none,Window to Previous Screen
+Window to Previous Screen=,Meta+Shift+Left,Window to Previous Screen
 Window to Screen 0=,none,Window to Screen 0
 Window to Screen 1=,none,Window to Screen 1
 Window to Screen 2=,none,Window to Screen 2
@@ -261,6 +257,8 @@ _k_friendly_name=Media Controller
 mediavolumedown=none,none,Media volume down
 mediavolumeup=none,none,Media volume up
 nextmedia=Media Next,Media Next,Media playback next
+pausemedia=Media Pause,Media Pause,Pause media playback
+playmedia=none,none,Play media playback
 playpausemedia=Media Play,Media Play,Play/Pause media playback
 previousmedia=Media Previous,Media Previous,Media playback previous
 stopmedia=Media Stop,Media Stop,Stop media playback
@@ -268,6 +266,11 @@ stopmedia=Media Stop,Media Stop,Stop media playback
 [org.kde.dolphin.desktop]
 _k_friendly_name=Dolphin
 _launch=Meta+E,Meta+E,Dolphin
+
+[org.kde.krunner.desktop]
+RunClipboard=Alt+Shift+F2,Alt+Shift+F2,Run command on clipboard contents
+_k_friendly_name=KRunner
+_launch=Alt+Space\tSearch,none,KRunner
 
 [org.kde.plasma.emojier.desktop]
 _k_friendly_name=Emoji Selector
@@ -287,7 +290,7 @@ Turn Off Screen=none,none,Turn Off Screen
 _k_friendly_name=Power Management
 
 [plasmashell]
-_k_friendly_name=Plasma
+_k_friendly_name=Activity switching
 activate task manager entry 1=none,Meta+1,Activate Task Manager Entry 1
 activate task manager entry 10=none,Meta+0,Activate Task Manager Entry 10
 activate task manager entry 2=none,Meta+2,Activate Task Manager Entry 2
@@ -303,13 +306,13 @@ clipboard_action=none,Ctrl+Alt+X,Enable Clipboard Actions
 cycleNextAction=none,none,Next History Item
 cyclePrevAction=none,none,Previous History Item
 edit_clipboard=none,none,Edit Contents...
-manage activities=none,Meta+Q,Activities...
+manage activities=none,Meta+Q,Show Activity Switcher
 next activity=none,Meta+Tab,Walk through activities
 previous activity=none,Meta+Shift+Tab,Walk through activities (Reverse)
 repeat_action=none,Ctrl+Alt+R,Manually Invoke Action on Current Clipboard
 show dashboard=none,Ctrl+F12,Show Desktop
 show-barcode=none,none,Show Barcode...
-show-on-mouse-pos=none,none,Open Klipper at Mouse Position
+show-on-mouse-pos=none,Meta+V,Open Klipper at Mouse Position
 stop current activity=none,Meta+S,Stop Current Activity
 switch to next activity=none,none,Switch to Next Activity
 switch to previous activity=none,none,Switch to Previous Activity

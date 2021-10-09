@@ -54,5 +54,12 @@ desktoprule=3
 wmclass=todoist
 wmclassmatch=1
 
+[8]
+Description=conky
+below=true
+belowrule=2
+wmclass=conky
+wmclassmatch=1
+
 [General]
-count=7
+count=8

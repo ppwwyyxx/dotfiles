@@ -1,8 +1,11 @@
 [$Version]
-update_info=kwin.upd:replace-scalein-with-scale,kwin.upd:port-minimizeanimation-effect-to-js,kwin.upd:port-scale-effect-to-js,kwin.upd:port-dimscreen-effect-to-js,kwin.upd:auto-bordersize,kwin.upd:animation-speed
+update_info=kwin.upd:replace-scalein-with-scale,kwin.upd:port-minimizeanimation-effect-to-js,kwin.upd:port-scale-effect-to-js,kwin.upd:port-dimscreen-effect-to-js,kwin.upd:auto-bordersize,kwin.upd:animation-speed,kwin.upd:desktop-grid-click-behavior,kwin.upd:no-swap-encourage
 
 [Compositing]
+GLCore=true
+LatencyPolicy=High
 OpenGLIsUnsafe=false
+XRenderSmoothScale=true
 
 [Desktops]
 Id_1=fc8bec63-af13-42ac-b9ca-87d057af6be3
@@ -21,6 +24,9 @@ NoiseStrength=0
 [Effect-MagicLamp]
 AnimationDuration=400
 
+[Effect-MouseClick]
+ShowText=false
+
 [Effect-PresentWindows]
 BorderActivateAll=1
 
@@ -33,6 +39,10 @@ ResizeWobble=false
 Stiffness=10
 WobblynessLevel=1
 
+[Effect-kwin4_effect_translucency]
+Inactive=96
+MoveResize=100
+
 [ElectricBorders]
 TopLeft=None
 
@@ -42,6 +52,8 @@ CommandAllKey=Meta
 
 [NightColor]
 Active=true
+LatitudeAuto=37.4043
+LongitudeAuto=-122.0748
 NightTemperature=4000
 
 [Plugins]
@@ -57,8 +69,10 @@ kwin4_effect_fadedesktopEnabled=true
 kwin4_effect_squashEnabled=false
 magiclampEnabled=true
 minimizeallEnabled=false
+mouseclickEnabled=true
 movewindowandfocustodesktopEnabled=true
 slideEnabled=false
+slidebackEnabled=true
 synchronizeskipswitcherEnabled=false
 videowallEnabled=false
 wobblywindowsEnabled=true

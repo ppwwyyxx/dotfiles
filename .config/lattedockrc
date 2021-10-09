@@ -1,11 +1,39 @@
-[PlasmaTransientsConfig]
-PreloadWeight=42
+[LatteSettingsDialog]
+downloadWindowSize=980,600
+windowSize=1100,750
+
+[LatteSettingsDialog][DetailsDialog]
+windowSize=560,640
+
+[LatteSettingsDialog][TabLayouts]
+columnWidths=49,508,129,104
+sortColumn=3
+sortOrder=0
+
+[LatteSettingsDialog][ViewsDialog]
+columnWidths=59,256,142,135,131
+sortColumn=2
+sortOrder=0
+windowSize=980,630
+
+[PlasmaThemeExtended]
+outlineWidth=1
+
+[ScreenConnectors]
+10=DP-5:::0,0 1920x1080
+11=DP-0:::0,0 2560x1440
+12=HDMI-0:::0,0 3840x2160
+13=DP-4:::2560,0 3840x2160
+14=DP-1:::0,0 1920x1080
 
 [UniversalSettings]
 badges3DStyle=false
 canDisableBorders=false
+contextMenuActionsAlwaysShown=
 currentLayout=My Layout
 downloadWindowSize=800,550
+inAdvancedModeForEditSettings=false
+isAvailableGeometryBroadcastedToPlasma=true
 lastNonAssignedLayout=My Layout
 launchers=
 layoutsColumnWidths=112,76,63,0
@@ -15,4 +43,5 @@ metaPressAndHoldEnabled=true
 mouseSensitivity=2
 screenTrackerInterval=2500
 showInfoWindow=true
+singleModeLayoutName=My Layout
 version=2
