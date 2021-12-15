@@ -305,7 +305,6 @@ dosbox
 diff-so-fancy
 highlight
 mesa-demos
-scrot
 fd
 fzf
 editorconfig-core-c
