@@ -9,7 +9,6 @@
 
     "workbench.editor.showTabs": false,
     "breadcrumbs.enabled": true,
-    "editor.minimap.enabled": false,
 
     "terminal.integrated.cursorStyle": "line",
     "window.menuBarVisibility": "toggle",
@@ -176,4 +175,5 @@
         "*.ipynb": "jupyter.notebook.ipynb"
     },
     "window.zoomLevel": 1,
+    "editor.minimap.enabled": false,
 }
