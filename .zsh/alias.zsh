@@ -78,14 +78,24 @@ for(j=1; j<=p; j++) {
 
 # rm moves things to trash
 unalias rm 2>/dev/null || true  # undef alias, if there is one
+function __find_disk_of_file() {
+  # https://www.cyberciti.biz/faq/linux-unix-command-findout-on-which-partition-file-directory-exits/
+  =df -T $1 | awk '/^\/dev/ {print $1}'
+}
 function rm() {
+  mkdir -p $HOME/.Trash
   for file in $@; do
     if [[ $file == -* ]]; then
       continue
     fi
-    local FILE_LOC="`readlink -f $file`"
-    if [[ $FILE_LOC == $HOME/* ]]; then
-      mkdir -p $HOME/.Trash
+    if [[ ! -e $file ]]; then
+      echo "$file: No such file or directory"
+      continue
+    fi
+    local f_disk=$(__find_disk_of_file $file)
+    # TODO custom list of trash dir in zshrc.local
+    local trash_disk=$(__find_disk_of_file $HOME/.Trash)
+    if [[ $f_disk == $trash_disk ]]; then
       mv "$file" $HOME/.Trash/ --backup=numbered -fv
     else
       =rm "$file" -rvf
@@ -252,14 +262,14 @@ alias ibus-daemon='ibus-daemon --xim'
 alias zh-CN="LC_ALL='zh_CN.UTF-8'"
 alias manzh="LC_ALL='zh_CN.UTF-8' man"
 alias free='free -hw'
-which dfc NN && alias df='dfc' || alias df='df -Th'
+which dfc NN && alias df='dfc -T -t -squashfs' || alias df='df -Th'
 alias convmv-gbk2utf8='convmv -f GBK -t UTF-8 --notest -r'
 alias window='wmctrl -a '
 alias cp2clip='xclip -i -selection clipboard'
 alias screenkey='screenkey -s small -t 0.8 --opacity 0.3'
 alias adate='for i in Asia/Shanghai US/{Eastern,Pacific}; do printf %-22s "$i ";TZ=:$i date +"%F %a %T %Z";done'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias clean-trash='=rm /ssd_home/.Trash/{.,}* -rf; =rm ~/.Trash/{.,}* -rf'
+alias clean-trash='=rm ~/.Trash/{.,}* -rf'
 function iconvcp936() {
   iconv -f cp936 -t utf-8 "$1" | sponge "$1"
 }
