@@ -15,7 +15,7 @@ fi
 [[ -d $HOME/.zsh/Completion ]] && fpath=($HOME/.zsh/Completion $fpath)
 
 # ENV f[[
-export PYTHONPATH=
+unset PYTHONPATH
 export TERMINFO=$HOME/.terminfo
 export LANG=en_US.UTF-8
 export SSH_ASKPASS=

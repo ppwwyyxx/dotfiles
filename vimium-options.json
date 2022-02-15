@@ -1,5 +1,5 @@
 {
-  "settingsVersion": "1.66",
+  "settingsVersion": "1.67",
   "exclusionRules": [
     {
       "pattern": "https?://mail.google.com/*",
@@ -19,6 +19,18 @@
     },
     {
       "pattern": "https?://zty.pe/",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://docs.google.com/*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "*notebooks*",
+      "passKeys": ""
+    },
+    {
+      "pattern": "https?://remotedesktop.google.com/*",
       "passKeys": ""
     }
   ],

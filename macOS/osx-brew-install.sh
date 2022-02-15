@@ -4,7 +4,7 @@
 
 brew install gnu-tar gnu-find
 brew install reattach-to-user-namespace tmux
-brew install wget curl cmake htop the_silver_searcher
+brew install wget curl cmake htop the_silver_searcher p7zip
 
 #brew install cocoapods
 #brew tap iina/homebrew-mpv-iina
