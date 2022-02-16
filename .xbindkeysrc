@@ -1,6 +1,6 @@
 # app keys..
 
-"google-chrome-stable --force-device-scale-factor=1.1 --no-proxy-server"
+"google-chrome-stable --profile-directory=Default"
   Mod4 + c
 "~/bin/background/screenshot"
   Mod4 + a
