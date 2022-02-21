@@ -178,9 +178,10 @@ if __name__ == '__main__':
     except OSError:
         sys.exit(0)
 
-    # if an entry with the exact basename already exist, do nothing
-    if basename in entries or effective_basename in entries :
-        sys.exit(0)
+    # if an entry with the exact basename already exist
+    if basename in entries or effective_basename in entries:
+        # the english filename might exist, but we want the chinese one.
+        pass
 
     basename_acronym = get_acronym(effective_basename).replace("\\","")
 

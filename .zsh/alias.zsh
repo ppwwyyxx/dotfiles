@@ -436,7 +436,7 @@ m_sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "/usr/share/fonts/wen
 m_avc_param="-oac mp3lame -lameopts fast:preset=medium -ovc x264 -x264encopts subq=5:8x8dct:frameref=2:bframes=3:weight_b:threads=auto"
 f_avc_param_old="-c:v libx264 -preset slow -crf 23 -c:a libmp3lame"
 #f_avc_param="-map 0 -c:v libx265 -preset medium -x265-params crf=28 -c:a aac -strict experimental -b:a 128k"
-f_avc_param="-map 0 -c:v libx265 -preset medium -x265-params crf=25 -c:a copy"
+f_avc_param="-map 0 -c:v libx265 -preset medium -x265-params crf=23 -c:a copy"
 f_avc_param_apple="$f_avc_param_old -pix_fmt yuv420p"
 function ffmpeg_compress() {
   if [[ -n $2 ]]; then

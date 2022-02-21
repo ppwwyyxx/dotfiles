@@ -1,4 +1,3 @@
-unsetopt MULTIBYTE
 bindkey -e
 bindkey -r "^G"  # C-G was bind to break in emacs
 bindkey -r "^[c"
