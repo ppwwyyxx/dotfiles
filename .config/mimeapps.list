@@ -1,8 +1,4 @@
 [Default Applications]
-x-scheme-handler/http=chromium.desktop
-x-scheme-handler/https=chromium.desktop
-x-scheme-handler/ftp=chromium.desktop
-x-scheme-handler/chrome=chromium.desktop
 x-scheme-handler/tg=telegramdesktop.desktop
 application/pdf=mupdf.desktop
 application/ppdf=mupdf.desktop
@@ -10,6 +6,5 @@ application/octet-stream=FoxitReader.desktop
 image/png=feh.desktop
 image/jpeg=feh.desktop
 image/gif=feh.desktop
-x-scheme-handler/mailto=chromium.desktop
 inode/directory=org.gnome.Nautilus.desktop;thunar.desktop;
 

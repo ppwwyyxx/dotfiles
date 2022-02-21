@@ -15,7 +15,7 @@
 # environment variables. Some entries may override variables
 # set by alacritty itself.
 env:
-  WINIT_X11_SCALE_FACTOR: "1"
+  WINIT_X11_SCALE_FACTOR: "randr"
   # TERM variable
   #
   # This value is used to set the `$TERM` environment variable for

@@ -9,7 +9,7 @@ available_layouts = {
 },
 terminal          = "urxvt",
 TMP_TERM	        = "TMP_TERMINAL",
-browser           = "chromium ",
+browser           = "xdg-open ",
 editor            = "gvim ",
 modkey            = "Mod4",
 altkey            = "Mod1",
