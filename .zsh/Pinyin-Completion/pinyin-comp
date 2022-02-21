@@ -47,6 +47,7 @@ Changelog
 import os
 import sys
 import locale
+import re
 
 import pinyin
 
@@ -83,7 +84,7 @@ FUZZY = {}
 try:
     FUZZY = eval(os.getenv("FUZZY"))
     FUZZY.keys()
-except Exception:
+except TypeError:
     FUZZY = {}
 
 def transform_double_width(uni_char):
@@ -129,37 +130,19 @@ def acronymize(uni_char):
 
 def get_acronym(text):
     "get acronym for text string"
-    text = unicodelize(text)
-
-    acronym = u""
+    acronym = ""
 
     for char in text:
         acronym += acronymize(char)
 
     return acronym
 
-def unicodelize(text):
-    "try to convert string into unicode string."
-    try:
-        text = text.decode(default_encoding)
-    except Exception:
-        pass
-
-    return text
-
-def stringlize(text):
-    "try to convert unicode string back into string"
-    if isinstance(text, unicode):
-        try:
-            return text.encode(default_encoding)
-        except UnicodeEncodeError:
-            pass
-
-    return text
-
 def expand_leading_tilda(path):
     "expand leading ~/ or ~user/"
     return os.path.expanduser(path)
+
+def escape_string(candicate):
+    return re.sub(r'([\" |\'&\[\]\(\)#;])', r'\\\1',candicate)
 
 if __name__ == '__main__':
 
@@ -171,7 +154,6 @@ if __name__ == '__main__':
 
     path = sys.argv[2].replace("\\","")
     path = expand_leading_tilda(path)
-    path = unicodelize(path)
     # support fuzzy pinyin
     path = "".join( [ fuzzynize(x) for x in path] )
 
@@ -188,7 +170,7 @@ if __name__ == '__main__':
     effective_basename = os.path.basename(effective_path)
 
     if not dirname :
-        dirname = u"./"
+        dirname = "./"
 
     # get all top-level subentries(non-recursive)
     try:
@@ -203,6 +185,7 @@ if __name__ == '__main__':
     basename_acronym = get_acronym(effective_basename).replace("\\","")
 
     reply = []
+    regex = re.compile(r"^\./")
 
     for entry in entries:
 
@@ -234,8 +217,8 @@ if __name__ == '__main__':
                 break
 
         # one match is found
-        if i == len(basename_acronym)  :
-            candicate = os.path.join(dirname, entry).replace(" ./", " ")
+        if i == len(basename_acronym):
+            candicate = regex.sub("", os.path.join(dirname, entry))
             # if the caller is only interested with folders
             if dironly == "x-d" and not os.path.isdir(candicate):
                 continue
@@ -248,27 +231,15 @@ if __name__ == '__main__':
         pass
 
     # when dealing with outer world, always use native encoding
-    #reply = [ stringlize(x) for x in reply]
     reply.sort( key=locale.strxfrm )
-
-    def filter_escape(s):
-        chars = ['\\', ' ', '(', ')', '[', ']', ';', '#', '|', '&']
-        for c in chars:
-            s = s.replace(c, '\\' + c)
-        return s
 
     if index :
         try:
-            tmp = reply[index - 1]
-            tmp = filter_escape(tmp)
-            # print tmp
+            print(escape_string(reply[index - 1]))
         except IndexError:
             # return the last candidate when index is out of range
             if reply :
-                tmp = reply[-1]
-                tmp = filter_escape(tmp)
-                # print tmp
+                print(escape_string(reply[-1]))
     else:
-        for i in range(0,len(reply)):
-            reply[i] = filter_escape(reply[i])
-        print("\n".join(reply) )
+        for c in reply:
+            print(escape_string(c))
