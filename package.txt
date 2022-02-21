@@ -78,11 +78,6 @@ evtest
 expac
 expect
 fakeroot
-fcitx-configtool
-fcitx-gtk2
-fcitx-gtk3
-fcitx-qt5
-fcitx-sunpinyin
 feh
 figlet
 filezilla
@@ -313,3 +308,10 @@ js-beautify
 qt5-styleplugins
 flameshot
 chrpath
+fcitx5
+fcitx5-qt
+fcitx5-gtk
+fcitx5-chinese-addons
+fcitx5-material-color
+fcitx5-pinyin-moegirl
+fcitx5-pinyin-zhwiki

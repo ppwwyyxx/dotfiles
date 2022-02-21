@@ -118,7 +118,6 @@ export NODE_PATH=$HOME/.local/lib/node_modules/
 [[ -s ~/.config/python/startup.py ]] && export PYTHONSTARTUP=~/.config/python/startup.py
 
 export EDITOR=vim
-export BROWSER=chromium
 export PAGER="/usr/bin/less -r"
 export LESS_TERMCAP_mb=$YELLOW
 export LESS_TERMCAP_md=$'\E[01;31m'
