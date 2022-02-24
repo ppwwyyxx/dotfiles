@@ -440,9 +440,9 @@ f_avc_param="-map 0 -c:v libx265 -preset medium -x265-params crf=23 -c:a copy"
 f_avc_param_apple="$f_avc_param_old -pix_fmt yuv420p"
 function ffmpeg_compress() {
   if [[ -n $2 ]]; then
-    ffmpeg -i "$1" `echo $f_avc_param` -vf subtitles=$2 $1.mp4
+    ffmpeg -i "$1" `echo $f_avc_param` -vf subtitles=$2 $1.mkv
   else
-    ffmpeg -i "$1" `echo $f_avc_param` -c:s copy $1.mp4
+    ffmpeg -i "$1" `echo $f_avc_param` -c:s copy $1.mkv
   fi
 }
 function mencoder_compress() { mencoder "$1" -o $1.avi `echo $m_avc_param` }

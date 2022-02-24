@@ -176,4 +176,5 @@
     },
     "window.zoomLevel": 1,
     "editor.minimap.enabled": false,
+    "editor.inlineSuggest.enabled": true,
 }
