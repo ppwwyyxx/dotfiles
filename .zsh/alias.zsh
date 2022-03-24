@@ -103,6 +103,15 @@ function rm() {
   done
 }
 
+function compress-dir() {
+  if [[ ! -d $1 ]]; then
+    echo "$1 is not a directory"
+    exit
+  fi
+  local name=$1
+  tar czvf ${name%/}.tgz $1 && rm -rf $1
+}
+
 function colorline() {
   local cols
   cols=($fg[green] $fg[white] $fg[blue] $fg[white] $fg[cyan] $fg[white]
@@ -323,9 +332,9 @@ function km() {  # only for my laptop
   xcape -e "Control_L=Escape;Hyper_L=XF86Mail"
   #xinput set-button-map $(xinput | grep -o "TouchPad.*id=[0-9]*" | grep -o "[0-9]*") 1 0 0
 }
-alias dmesg='dmesg -H || dmesg | less'
+alias dmesg='dmesg -wH || dmesg | less'
 function modulegraph() { lsmod | perl -e 'print "digraph \"lsmod\" {";<>;while(<>){@_=split/\s+/; print "\"$_[0]\" -> \"$_\"\n" for split/,/,$_[3]}print "}"' | dot -Tpng | feh -; }
-alias lsblk="lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT,LABEL,VENDOR,MODEL"
+alias lsblk="lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT,PARTLABEL,LABEL"
 alias disk-writeback='watch -n1 grep -e Dirty: -e Writeback: /proc/meminfo'
 
 function usbon () {
@@ -436,7 +445,7 @@ m_sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "/usr/share/fonts/wen
 m_avc_param="-oac mp3lame -lameopts fast:preset=medium -ovc x264 -x264encopts subq=5:8x8dct:frameref=2:bframes=3:weight_b:threads=auto"
 f_avc_param_old="-c:v libx264 -preset slow -crf 23 -c:a libmp3lame"
 #f_avc_param="-map 0 -c:v libx265 -preset medium -x265-params crf=28 -c:a aac -strict experimental -b:a 128k"
-f_avc_param="-map 0 -c:v libx265 -preset medium -x265-params crf=23 -c:a copy"
+f_avc_param="-map 0 -c:v libx265 -preset medium -x265-params crf=25 -c:a copy"
 f_avc_param_apple="$f_avc_param_old -pix_fmt yuv420p"
 function ffmpeg_compress() {
   if [[ -n $2 ]]; then
@@ -506,6 +515,21 @@ function retry() {
   esac
 }
 
+function send-event() {
+  local name=$1
+  local fname=/t/my_msg_fifo_$name
+  mkfifo $fname 2>/dev/null || true
+  bash -c "echo Done > $fname" &
+}
+
+function wait-event() {
+  local name=$1
+  local fname=/t/my_msg_fifo_$name
+  mkfifo $fname 2>/dev/null || true
+  cat $fname > /dev/null
+  =rm $fname
+}
+
 # python
 alias ipy='ipython'
 function pydbg () { ipython --pdb -c "%run $1" }
@@ -536,14 +560,14 @@ function uninstall-pt() {
 
 # package; https://github.com/icy/pacapt
 which pacman NN && {
-  alias pS='trizen -S'
+  alias pS='paru -S'
   alias pU='sudo pacman -U'
-  alias pSs='trizen -Ss'
+  alias pSs='paru -Ss'
   alias pSi='pacman -Si'
   alias pQo='pacman -Qo'
   alias pSy='sudo pacman -Syy'
   alias pR='sudo pacman -R'
-  alias pSu='trizen -Syu'
+  alias pSu='paru -Syyu'
   alias pQl='pacman -Ql'
   alias pScc='sudo pacman -Scc'
   alias paur='pacman -Qm'

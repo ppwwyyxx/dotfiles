@@ -89,11 +89,11 @@ ${voffset -2}${goto 65}${font arial black:size=10} ${time %I:%M:%S %p} ${font ar
 ${color magenta}CPU${color}${font arial black:size=8}information${color magenta} ${hr 2}$color$font
 USAGE: $font${cpu cpu0}%
 ${cpugraph cpu0 C0C0C0 C0C0C0}
-Name${goto 120} PID${goto 185} CPU${goto 225} MEM
-${color #ddaa00}${top name 1}${goto 120}${top pid 1}${goto 185}${top cpu 1}${goto 225}${top mem 1}
-${color lightgrey}${top name 2}${goto 120}${top pid 2}${goto 185}${top cpu 2}${goto 225}${top mem 2}
-${color lightgrey}${top name 3}${goto 120}${top pid 3}${goto 185}${top cpu 3}${goto 225}${top mem 3}
-${color lightgrey}${top name 4}${goto 120}${top pid 4}${goto 185}${top cpu 4}${goto 225}${top mem 4}$color$font
+Name${goto 130} PID${goto 195} CPU${goto 245} MEM
+${color #ddaa00}${top name 1}${goto 120}${top pid 1}${goto 195}${top cpu 1}${goto 245}${top mem 1}
+${color lightgrey}${top name 2}${goto 120}${top pid 2}${goto 195}${top cpu 2}${goto 245}${top mem 2}
+${color lightgrey}${top name 3}${goto 120}${top pid 3}${goto 195}${top cpu 3}${goto 245}${top mem 3}
+${color lightgrey}${top name 4}${goto 120}${top pid 4}${goto 195}${top cpu 4}${goto 245}${top mem 4}$color$font
 TEMPERATURE:$font ${hwmon 2 temp 1}°C${color}
 ${color magenta}GPU${color}${font arial black:size=8}utilization & temperature ${color magenta} ${hr 2}$color$font
 ${exec nvidia-smi --query-gpu=gpu_name,utilization.gpu,temperature.gpu --format=csv | tail -n +2}°C

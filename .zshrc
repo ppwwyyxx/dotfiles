@@ -39,6 +39,7 @@ safe_export_path $HOME/bin
 safe_export_path $HOME/.local/bin
 safe_export_path $HOME/.zsh/bin
 safe_export_path $HOME/.cabal/bin
+safe_export_path $HOME/.cargo/bin
 safe_export_path /opt/intel/bin
 safe_export_path /usr/lib/colorgcc/bin
 safe_export_path $HOME/.rvm/bin		# Add RVM to PATH for scripting
