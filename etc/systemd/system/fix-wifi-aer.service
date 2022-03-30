@@ -1,0 +1,11 @@
+[Unit]
+Description=Fix for AER's excessive logging
+After=systemd-modules-load.service
+[Service]
+Type=oneshot
+# https://gist.github.com/ppwwyyxx/9d721cc8b8d340bfb7e0acebecc704a9
+# Change your device and vendor (or bus/slot/function accordingly)
+ExecStart=/usr/bin/setpci -v -d 8086:a115 CAP_EXP+0x8.w=0x0e
+RemainAfterExit=yes
+[Install]
+WantedBy=network.target

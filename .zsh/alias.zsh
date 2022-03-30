@@ -36,7 +36,7 @@ alias lss="ls -F --color=auto --quoting-style=literal"
 alias lsf="ls -1f"  # fast ls
 alias lll='ls++'
 function ll(){
-  ls -AhlXF --color=auto --time-style="+[34m[[32m%g-%m-%d [35m%k:%M[33m][m" $@
+  ls -AhlF --color=auto --time-style="+[34m[[32m%g-%m-%d [35m%k:%M[33m][m" $@
   [[ "$*" == "$1" ]] && echo -e " $GREEN  --[$LIGHTBLUE  Dir:    $CYAN`ls -Al $@ | grep '^drw' | wc -l`$LIGHTGREEN|$YELLOW \
    File: $GREEN`ls -Al $@ | grep -v '^drw' | grep -v total | wc -l` ]-- $WHITE"
 }
