@@ -15,12 +15,15 @@ EnumerateGroupBackwardKeys=
 ActivateKeys=
 # Deactivate Input Method
 DeactivateKeys=
+# Toggle embedded preedit
+TogglePreedit=
 
 [Hotkey/TriggerKeys]
 0=Control+comma
 
 [Hotkey/AltTriggerKeys]
 0=Shift+Shift_L
+1=Shift+Shift_R
 
 [Hotkey/PrevPage]
 0=Up
@@ -35,9 +38,6 @@ DeactivateKeys=
 
 [Hotkey/NextCandidate]
 0=Tab
-
-[Hotkey/TogglePreedit]
-0=Control+Alt+P
 
 [Behavior]
 # Active By Default

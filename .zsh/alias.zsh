@@ -456,6 +456,8 @@ function ffmpeg_compress() {
 }
 function mencoder_compress() { mencoder "$1" -o $1.avi `echo $m_avc_param` }
 function ffmpeg_audio() { ffmpeg -i "$1" -vn "${1%.*}".mp3}
+# https://www.reddit.com/r/ffmpeg/comments/lokjhs/how_do_you_check_the_audio_level_inside_a_video/
+function ffmpeg_loudnorm() { ffmpeg -i "$1" -filter:a 'loudnorm=i=-24' -c:v copy -c:a aac "${1%.*}"_loudnorm.mkv}
 function colormap(){
   for i in {0..255}; do
     print -Pn "%{$reset_color%}$i: "
@@ -570,7 +572,8 @@ which pacman NN && {
   alias pSu='paru -Syyu'
   alias pQl='pacman -Ql'
   alias pScc='sudo pacman -Scc'
-  alias paur='pacman -Qm'
+  alias paur='pacman -Qem'
+  alias pQq='pacman -Q'
   #alias pacman-size="paste <(pacman -Q | awk '{ print \$1; }' | xargs pacman -Qi | grep 'Size' | awk '{ print \$4\$5; }') <(pacman -Q | awk '{print \$1; }') | sort -h | column -t"
   alias pacman-size="expac -H M '%m\t%n' | sort -h"
   function pacman-orphan() {
@@ -595,6 +598,7 @@ which apt-get NN && {
         alias pSs='apt search'
         alias pSy='sudo apt update'
         alias pSu='sudo apt update; sudo apt upgrade'
+        alias pQq='apt list --installed'
     } || {
         alias pS='sudo aptitude install'
         alias pR='sudo aptitude purge'

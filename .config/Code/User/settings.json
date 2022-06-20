@@ -131,6 +131,7 @@
     "editor.folding": false,
     "debug.showBreakpointsInOverviewRuler": true,
     "workbench.colorCustomizations": {
+
 		"sash.hoverBorder": "#3285f1",
         "statusBar.background": "#007acc",
         "statusBar.noFolderBackground": "#007acc",
@@ -177,4 +178,5 @@
     "window.zoomLevel": 1,
     "editor.minimap.enabled": false,
     "editor.inlineSuggest.enabled": true,
+    "workbench.editor.revealIfOpen": true,
 }
