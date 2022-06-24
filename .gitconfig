@@ -5,7 +5,7 @@
   autocrlf = input
   editor = vim
   excludesfile = /home/wyx/.gitignore
-	preloadindex = true
+  preloadindex = true
 [advice]
   statusHints = false
 [merge]
