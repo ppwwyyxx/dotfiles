@@ -4,7 +4,7 @@
 [core]
   autocrlf = input
   editor = vim
-  excludesfile = /home/wyx/.gitignore
+  excludesfile = ~/.gitignore
   preloadindex = true
 [advice]
   statusHints = false
@@ -116,7 +116,7 @@
 [https]
   ;proxy=http://localhost:7777
 [init]
-  templatedir = /home/wyx/.git-templates
+  templatedir = ~/.git-templates
 [tig]
   tab-size = 2
   ignore-space = some
@@ -127,3 +127,5 @@
   generic = G move-last-line
   generic = g none
   generic = gg move-first-line
+[include]
+  path = ~/.gitconfig.local
