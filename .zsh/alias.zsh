@@ -88,6 +88,10 @@ function rm() {
     if [[ $file == -* ]]; then
       continue
     fi
+    if [[ -L $file ]]; then  # link
+      =rm $file -vf
+      continue
+    fi
     if [[ ! -e $file ]]; then
       echo "$file: No such file or directory"
       continue
@@ -188,13 +192,10 @@ alias scp='scp -r'
 alias rsync='rsync -avP'
 alias speedtest='wget -O /dev/null http://speedtest-sfo2.digitalocean.com/100mb.test'
 alias m_rsync='rsync --progress --partial --delete --size-only -rlv'
-alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 
 alias chromium-socks='chromium --proxy-server=socks5://localhost:8080'
 alias chromium-http='chromium --proxy-server=localhost:7777'
 alias google-keep='chromium --profile-directory=Default --app-id=hmjkmjkepdijhoojdojkdfohbdgmmhki'
-alias gg='google -r'
-alias gl='google -o'
 alias weather='curl -s http://wttr.in/\?m | head -n-1'
 function pasteimage() {
   local url=$(curl -F "name=@$1" https://img.vim-cn.com)
@@ -267,7 +268,6 @@ which aunpack NN && alias x=aunpack
 alias gq='geeqie'
 alias strings='strings -atx'
 alias which='which -a'
-alias ibus-daemon='ibus-daemon --xim'
 alias zh-CN="LC_ALL='zh_CN.UTF-8'"
 alias manzh="LC_ALL='zh_CN.UTF-8' man"
 alias free='free -hw'
@@ -295,9 +295,6 @@ which squeue NN && {
 which docker NN && {
   alias docker-prune='docker stop $(docker ps -a -q); docker system prune -f'
 }
-
-alias win='cd; virtualbox --startvm win7 & ; cd -'
-alias osx='cd; virtualbox --startvm osx & ; cd -'
 
 alias please='sudo'
 alias umount='sudo umount'
@@ -363,7 +360,7 @@ which nvidia-smi NN && {
   } || {
     alias nvq='(echo "temp, clocks, power, util.GPU, util.MEM, freeMEM" && __nvq) | column -t -s ,'
   }
-alias __nvp="nvidia-smi | awk '/GPU.*PID/ { seen=1 }; /==========/{if (seen) pp=1; next} pp ' \
+  alias __nvp="nvidia-smi | awk '/GPU.*PID/ { seen=1 }; /==========/{if (seen) pp=1; next} pp ' \
     | head -n-1  |  awk '{print \$2, \$(NF-1), \$3 == \"N/A\" ? \$5 : \$3}' \
     | grep -v '^No' \
     | awk 'BEGIN{OFS=\"\\t\"} { cmd=(\"ps -ho '%a' \" \$3); cmd | getline v; close(cmd); \$4=v; print }'"
@@ -396,11 +393,10 @@ which matlab NN || {
   export J2D_D3D="false"
   [[ -d /usr/lib/jvm/java-8-openjdk/jre ]] && export MATLAB_JAVA=/usr/lib/jvm/java-8-openjdk/jre
 }
-alias rstudio='/opt/RStudio/lib/rstudio/bin/rstudio'
 alias maple='/opt/Maple/bin/xmaple'
 function gource() {
-local f=${1:-gource}
-=gource -s .1 -1280x720 --auto-skip-seconds .1 \
+  local f=${1:-gource}
+  =gource -s .1 -1280x720 --auto-skip-seconds .1 \
     --multi-sampling --stop-at-end \
     --key --highlight-users --file-idle-time 0 --max-files 0  \
     --background-colour 000000 --font-size 22 \
@@ -569,7 +565,7 @@ which pacman NN && {
   alias pQo='pacman -Qo'
   alias pSy='sudo pacman -Syy'
   alias pR='sudo pacman -R'
-  alias pSu='paru -Syyu'
+  alias pSu='paru -Syu'
   alias pQl='pacman -Ql'
   alias pScc='sudo pacman -Scc'
   alias paur='pacman -Qem'
@@ -647,7 +643,7 @@ function tpgrep() {
   eval $cmd
 }
 function ptgrep() {
-# a function to parse json metrics
+# A function to parse json metrics produced by detectron2
 # $1: string to grep
 # $2+: json logs
   [[ -n "$1" ]] || return 1

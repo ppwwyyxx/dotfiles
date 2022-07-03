@@ -1,0 +1,9 @@
+[Unit]
+Description=Set nvidia power limit
+After=systemd-modules-load.service
+[Service]
+Type=oneshot
+ExecStart=nvidia-smi -i 0 -pl 180
+RemainAfterExit=yes
+[Install]
+WantedBy=multi-user.target
