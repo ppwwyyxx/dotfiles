@@ -234,9 +234,6 @@ $YELLOWGREEN%$pwdlen<...<%~%<< \
 }
 # f]]
 
-# alias
-safe_source $HOME/.zsh/alias.zsh
-
 # Basic
 setopt autocd				# cd without 'cd'
 setopt braceccl				# ls {a-e.1}
@@ -251,8 +248,6 @@ setopt EXTENDED_GLOB
 #unsetopt CASE_GLOB
 setopt correctall
 zmodload zsh/mathfunc 2>/dev/null
-autoload -U zsh-mime-setup
-zsh-mime-setup
 
 autoload -U url-quote-magic		# auto add quote on url
 zle -N self-insert url-quote-magic
@@ -314,7 +309,9 @@ zstyle ':completion:*' squeeze-shlashes 'yes'
 zstyle ':completion::complete:*' '\\'
 
 # Colorful Completion
-which dircolors NN && eval $(dircolors -b)
+if [[ $commands[dircolors] ]]; then
+  eval $(dircolors -b)
+fi
 export ZLSCOLORS="${LS_COLORS}"
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 export LS_COLORS="$LS_COLORS*.f4v=01;35:*.pdf=01;35:*.djvu=01;35:"		# add custom ls_color
@@ -470,23 +467,28 @@ function command_not_found_handler() {
 }
 
 # plugins
+safe_source $HOME/.zsh/cdnav.zsh   # alt-up/left/right/i
+safe_source "$HOME/.rvm/scripts/rvm"		# Load RVM into a shell session *as a function*
+
 safe_source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
 safe_export_path $HOME/.zsh/Pinyin-Completion/bin
 
-safe_source $HOME/.zsh/extract.zsh
-# the next two have to be this order
-safe_source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-safe_source $HOME/.zsh/history-substring-search.zsh
-safe_source $HOME/.zsh/cdnav.zsh   # alt-up/left/right/i
-safe_source $HOME/.zsh/transfer.sh
-safe_source "$HOME/.rvm/scripts/rvm"		# Load RVM into a shell session *as a function*
-safe_source /usr/share/fzf/key-bindings.zsh  # available on archlinux
-safe_source /usr/share/fzf/completion.zsh  # available on archlinux
-safe_source ~/.fzf.zsh  # available by manual install
+[[ -f ~/.zsh/snap/zsh-snap/znap.zsh ]] ||
+    git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git ~/.zsh/snap/zsh-snap
+safe_source ~/.zsh/snap/zsh-snap/znap.zsh
+znap source ohmyzsh/ohmyzsh plugins/{extract,transfer}
+
+
 if [[ $commands[fzf] && $commands[fd] ]]; then
   export FZF_DEFAULT_COMMAND='fd --type f -c always'
   export FZF_DEFAULT_OPTS='--ansi --multi'
 fi
+znap source ohmyzsh/ohmyzsh plugins/fzf    # Ctrl-R, Alt-C
+# znap source ohmyzsh/ohmyzsh plugins/ssh-agent
+## The next two plugins have to be this order
+znap source zsh-users/zsh-history-substring-search   # PageUp/Dn
+znap source zsh-users/zsh-syntax-highlighting
+
 HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS="I"			# sensitive search
 
 if [ $commands[fasd] ]; then
@@ -500,6 +502,9 @@ if [ $commands[fasd] ]; then
 	unalias d
 	bindkey '^X^O' fasd-complete
 fi
+
+# aliases
+safe_source $HOME/.zsh/alias.zsh
 
 safe_source $HOME/.zshrc.local
 

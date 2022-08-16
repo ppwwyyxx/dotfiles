@@ -13,10 +13,7 @@ in_array() {
 [[ -z $_CFG_ON_MAC ]] && {
   alias open='xdg-open'
 }
-alias -s pdf jpg png gif html mhtml=xdg-open
-alias -s djvu=djview4
-alias -s obj=meshlab
-alias -s wmv mkv mp4 mp3 avi rm rmvb flv=mpv
+alias -s {pdf,PDF,JPEG,JPG,jpg,jpeg,png,PNG,gif,html,mhtml,obj,wmv,mkv,mp4,MP4,mp3,avi,rm,rmvb,flv}=xdg-open
 
 # common command
 alias cdl='cd'

@@ -1,10 +1,9 @@
 [Default Applications]
 x-scheme-handler/tg=telegramdesktop.desktop
-application/pdf=mupdf.desktop
-application/ppdf=mupdf.desktop
-application/octet-stream=FoxitReader.desktop
+application/pdf=org.gnome.Evince.desktop
+application/ppdf=org.gnome.Evince.desktop
 image/png=feh.desktop
 image/jpeg=feh.desktop
 image/gif=feh.desktop
-inode/directory=org.gnome.Nautilus.desktop;thunar.desktop;
+inode/directory=org.kde.dolphin.desktop;
 
