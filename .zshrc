@@ -13,6 +13,7 @@ fi
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
 
 [[ -d $HOME/.zsh/Completion ]] && fpath=($HOME/.zsh/Completion $fpath)
+[[ -d $HOME/.zsh/functions ]] && fpath=($HOME/.zsh/functions $fpath)
 
 # ENV f[[
 unset PYTHONPATH
@@ -249,8 +250,11 @@ setopt EXTENDED_GLOB
 setopt correctall
 zmodload zsh/mathfunc 2>/dev/null
 
-autoload -U url-quote-magic		# auto add quote on url
+autoload -Uz url-quote-magic		# auto add quote on url
 zle -N self-insert url-quote-magic
+autoload -Uz bracketed-paste-magic
+zle -N bracketed-paste bracketed-paste-magic
+
 
 # History
 setopt INC_APPEND_HISTORY
@@ -473,35 +477,37 @@ safe_source "$HOME/.rvm/scripts/rvm"		# Load RVM into a shell session *as a func
 safe_source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
 safe_export_path $HOME/.zsh/Pinyin-Completion/bin
 
-[[ -f ~/.zsh/snap/zsh-snap/znap.zsh ]] ||
-    git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git ~/.zsh/snap/zsh-snap
+# git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git ~/.zsh/snap/zsh-snap
 safe_source ~/.zsh/snap/zsh-snap/znap.zsh
 znap source ohmyzsh/ohmyzsh plugins/{extract,transfer}
 
-
 if [[ $commands[fzf] && $commands[fd] ]]; then
   export FZF_DEFAULT_COMMAND='fd --type f -c always'
-  export FZF_DEFAULT_OPTS='--ansi --multi'
 fi
+export FZF_DEFAULT_OPTS='--ansi --multi'
+znap source clvv/fasd fasd
+safe_source $HOME/.zsh/fzf-fasd.plugin.zsh  # j <TAB>
 znap source ohmyzsh/ohmyzsh plugins/fzf    # Ctrl-R, Alt-C
 # znap source ohmyzsh/ohmyzsh plugins/ssh-agent
+
 ## The next two plugins have to be this order
+HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS="I"			# sensitive search
 znap source zsh-users/zsh-history-substring-search   # PageUp/Dn
 znap source zsh-users/zsh-syntax-highlighting
 
-HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS="I"			# sensitive search
-
-if [ $commands[fasd] ]; then
-	fasd_cache="$HOME/.vimtmp/fasd-cache"
-	eval "$(fasd --init posix-alias zsh-hook zsh-wcomp zsh-wcomp-install)"
-	alias o='f -e xdg-open'
-	alias fv='f -e vim'
-	alias j='fasd_cd -d'
-	alias jj='fasd_cd -d -i'	# interactive
-	unalias s
-	unalias d
-	bindkey '^X^O' fasd-complete
-fi
+() {
+  fasd_cache="$HOME/.vimtmp/fasd-cache"
+  if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
+    # Complete 'f,<words>'
+    fasd --init posix-alias zsh-hook zsh-wcomp zsh-wcomp-install >| "$fasd_cache"
+  fi
+  source "$fasd_cache"
+  unset fasd_cache
+  alias j='fasd_cd -d'
+  alias jj='fasd_cd -d -i'	# interactive
+  unalias s d a z sf sd
+  bindkey '^X^O' fasd-complete
+}
 
 # aliases
 safe_source $HOME/.zsh/alias.zsh
