@@ -500,7 +500,8 @@ if [[ $commands[fzf] && $commands[fd] ]]; then
   export FZF_DEFAULT_COMMAND='fd --type f -c always'
 fi
 export FZF_DEFAULT_OPTS='--ansi --multi'
-znap source clvv/fasd fasd
+znap clone clvv/fasd  # source does not work probably due to aliases
+alias fasd='~/.zsh/snap/fasd/fasd'
 safe_source $HOME/.zsh/fzf-fasd.plugin.zsh  # j <TAB>
 znap source ohmyzsh/ohmyzsh plugins/fzf    # Ctrl-R, Alt-C
 # znap source ohmyzsh/ohmyzsh plugins/ssh-agent
