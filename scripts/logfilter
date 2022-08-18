@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+# Usage:
+# logfilter command-that-produce absl-logs
+
+currdir=$(dirname $0)
+
+mkfifo /tmp/stdout$$
+mkfifo /tmp/stderr$$
+script="$currdir"/absl-log-filter.py
+# NOTE: &! works in zsh and seems to be no-op in bash
+python3 -u "$script" \
+	--stdout /tmp/stdout$$ --stderr /tmp/stderr$$ &!
+unbuffer $@ > /tmp/stdout$$ 2>/tmp/stderr$$

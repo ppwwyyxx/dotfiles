@@ -12,6 +12,9 @@ fi
 # https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
 
+function safe_export_path() { [[ -d $1 ]] && export PATH=$1:$PATH }
+function safe_source() { [[ -s $1 ]] && source $1 }
+
 [[ -d $HOME/.zsh/Completion ]] && fpath=($HOME/.zsh/Completion $fpath)
 [[ -d $HOME/.zsh/functions ]] && fpath=($HOME/.zsh/functions $fpath)
 
@@ -22,8 +25,6 @@ export LANG=en_US.UTF-8
 export SSH_ASKPASS=
 # neovim#2048 suggests: infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti; tic $TERM.ti
 
-function safe_export_path() { [[ -d $1 ]] && export PATH=$1:$PATH }
-function safe_source() { [[ -s $1 ]] && source $1 }
 safe_source $HOME/.profile
 
 if [[ -n $_CFG_ON_MAC ]]; then
@@ -247,7 +248,8 @@ limit coredumpsize 0		# disable core dumps
 WORDCHARS='*?[]~!#$%^(){}<>'
 setopt EXTENDED_GLOB
 #unsetopt CASE_GLOB
-setopt correctall
+unsetopt correctall
+setopt correct
 zmodload zsh/mathfunc 2>/dev/null
 
 autoload -Uz url-quote-magic		# auto add quote on url

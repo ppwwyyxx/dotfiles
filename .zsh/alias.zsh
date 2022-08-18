@@ -22,6 +22,7 @@ alias mv='nocorrect mv -iv'
 alias mkdir='nocorrect mkdir'
 alias buck='nocorrect buck'
 alias cp='nocorrect cp -rvi'
+alias hg='nocorrect hg'
 alias cpv="rsync -pogh -e /dev/null -P --"  # cp with progress
 alias watch='watch '  # allow watching an alias
 
