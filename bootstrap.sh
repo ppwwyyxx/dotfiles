@@ -5,8 +5,8 @@ if [[ $USER == "codespace" ]]; then
     ./deploy.sh
 else
     cd
-    mkdir -p configs
-    cd configs
+    mkdir -p install
+    cd install
     git clone https://github.com/ppwwyyxx/dotfiles.git
     cd dotfiles
     ./deploy.sh

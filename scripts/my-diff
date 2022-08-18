@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#echo $@ >> ~/mydiff.log
+
+tool=diff
+if [[ -x "$(command -v difft)" ]]; then
+  tool=difft
+  f1=$1
+  f2=$2  # NOTE: not sure if this is true
+
+  if [ $(wc -c <"$f1") -ge 100000 ] || [ $(wc -c <"$f2") -ge 100000 ]; then
+    # 100k size threshold
+    tool=diff
+  fi
+fi
+
+# execute
+if [[ $tool == "diff" ]]; then
+  # fallback
+  unset GIT_EXTERNAL_DIFF
+  if [[ -x "$(command -v diff-so-fancy)" ]]; then
+    git diff $1 | diff-so-fancy
+  else
+    git diff $1
+  fi
+else
+ difft $@
+fi

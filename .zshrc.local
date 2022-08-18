@@ -20,15 +20,4 @@ export TF_NEED_TENSORRT=0
 export TF_SET_ANDROID_WORKSPACE=0
 export TF_DOWNLOAD_CLANG=0
 
-
-
-zstyle :omz:plugins:ssh-agent agent-forwarding on
-safe_source $HOME/.zsh/ssh-agent.plugin.zsh
-
-[[ -d /opt/OpenBLAS ]] && export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/OpenBLAS/lib
-
-
 export DEBUG_CXXFLAGS="-std=c++1y -Wall -Wextra -g3 -O0 -fsanitize=address,undefined"
-
-
-alias moha='echo "苟利国家生死以 \n 岂因祸福避趋之" | cowsay -f bud-frogs'

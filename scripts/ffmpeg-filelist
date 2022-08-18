@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import tempfile
+import glob
+import sys
+"""
+Example:
+
+    ffmpeg -safe 0 -f concat -i $(ffmpeg-filelist *.mp4) -c copy out.mp4
+"""
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--sort", action='store_true')
+    parser.add_argument("input", nargs='+')
+    args = parser.parse_args()
+
+    filelist = []
+
+    for k in args.input:
+        filelist.extend(glob.glob(k))
+    print(filelist, file=sys.stderr)
+
+    with tempfile.NamedTemporaryFile(
+            mode="w",
+            delete=False, prefix="ffmpeg_file_list",
+            suffix=".txt") as f:
+        for fname in filelist:
+            f.write("file " + os.path.realpath(fname) + "\n")
+    print(f.name)

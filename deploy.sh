@@ -14,6 +14,8 @@ cp .xbindkeysrc .toprc .xinitrc .Xmodmap .Xresources ~/ -rvf
 cp .conkyrc ~/ -rvf
 cp .config/compton.conf ~/.config -rvf
 
+git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git ~/.zsh/snap/zsh-snap
+
 cat << EOT >> .tmux.conf
 set -g status-bg green
 unbind C-q
@@ -26,5 +28,5 @@ cp .tmux ~/ -rvf
 chmod 755 ~/.zsh ~/.zsh/Completion
 
 # https://github.com/thestinger/termite#terminfo
-wget https://raw.githubusercontent.com/thestinger/termite/master/termite.terminfo
-tic -x termite.terminfo
+# wget https://raw.githubusercontent.com/thestinger/termite/master/termite.terminfo
+# tic -x termite.terminfo

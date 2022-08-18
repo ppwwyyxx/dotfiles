@@ -1,0 +1,4 @@
+#!/bin/bash
+
+GIT_EXTERNAL_DIFF=my-diff git diff $@
+
