@@ -398,39 +398,52 @@ function vscp() {
 compdef vscp=scp
 
 # .... path completion
-user-complete(){
+__expand_dots() {
+  # Add / after sequence of ......, if not there
+  local cur=`echo "$1" | sed 's/\( \|^\)\(\.\.\.\.*\)\([^\/\.]\|$\)/\1\2\/\3/g'`
+  while true; do  # loop to expand ...
+    local new=`echo $cur | sed 's/\.\.\./\.\.\/\.\./g'`
+    if [[ $new == $cur ]]; then
+      break
+    fi
+    cur=$new
+  done
+  BUFFER=$cur
+}
+__user_complete(){
 	if [[ -z $BUFFER ]]; then
 		return
 	fi
 	if [[ $BUFFER =~ "^\.\.\.*$" ]]; then
-	 	BUFFER=`echo "$BUFFER" |sed 's/^/cd\ /g'`
+	 	__expand_dots "$BUFFER"
 		zle end-of-line
-		user-complete
 		return
 	elif [[ $BUFFER =~ ".* \.\.\..*$" ]] ;then
-		BUFFER=`echo "$BUFFER" |sed 's/\.\.\./\.\.\/\.\./g'`
+    __expand_dots "$BUFFER"
 		zle end-of-line
-		user-complete
 		return
 	fi
 	zle expand-or-complete
 }
-zle -N user-complete
-bindkey "\t" user-complete
+zle -N __user_complete
+bindkey "\t" __user_complete
 autoload compinstall
 
 # Custom Return
-path_parse(){
-	if [[ $BUFFER = "." ]]; then
+__path_parse(){
+	if [[ $BUFFER == "." ]]; then
 		BUFFER="cd ../"
 		return
+	elif [[ $BUFFER =~ "^\.\.*" ]] ;then	# expand ...
+    __expand_dots "cd $BUFFER"
+    return
 	elif [[ $BUFFER =~ ".* \.\.\..*" ]] ;then	# expand ...
-		BUFFER=`echo "$BUFFER" |sed 's/\.\.\./\.\.\/\.\./g'`
-		path_parse
+    __expand_dots "$BUFFER"
+    return
 	elif [[ $BUFFER =~ "^\.\..*" ]]; then		# auto add cd to the beginning of ...
 		if [[ -d `echo "$BUFFER" |sed 's/\\\ /\ /g; s/l$//g; s/ls$//g'` ]]; then
 			BUFFER=`echo "$BUFFER" |sed 's/^/cd\ /g'`
-			path_parse
+			__path_parse
 		fi
 		zle accept-line
 	elif [[ $BUFFER =~ "^cd .*/ls*$" ]] ; then	# auto fix ls typo
@@ -447,13 +460,13 @@ special_command(){
 	in_array $cmd "${bg_list[@]}" && BUFFER=`echo $BUFFER |sed 's/\s\+2>\/dev\/null//g; s/[&]*\s*$/\ 2>\/dev\/null\ \&/g'`
 }
 
-user-ret(){
-	path_parse
+__user_ret(){
+	__path_parse
 	special_command
 	zle accept-line
 }
-zle -N user-ret
-bindkey "\r" user-ret
+zle -N __user_ret
+bindkey "\r" __user_ret
 
 # command not found
 function command_not_found_handler() {
