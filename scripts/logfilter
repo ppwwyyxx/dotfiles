@@ -1,12 +1,22 @@
 #!/usr/bin/env zsh
 # Usage:
-# logfilter command-that-produce absl-logs
+# Make sure `absl-log-filter.py` is at the same directory as this script.
+
+# Colorize & beautify the logs:
+#   logfilter <command-that-produce absl-logs>
+#
+# Remove all logs from *.cc files but keep test.cc
+#   LOGFILTER=-*.cc,+test.cc logfilter <command>
+#
+# Remove all logs from a specific line
+#   LOGFILTER=-test.cc:20 logfilter <command>
 
 currdir=$(dirname $0)
+script="$currdir"/absl-log-filter.py
 
 mkfifo /tmp/stdout$$
 mkfifo /tmp/stderr$$
-script="$currdir"/absl-log-filter.py
+
 # NOTE: &! works in zsh and seems to be no-op in bash
 python3 -u "$script" \
 	--stdout /tmp/stdout$$ --stderr /tmp/stderr$$ &!
