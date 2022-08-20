@@ -1,8 +1,11 @@
-# learning: A-q: push-line. c-r + c-o: accept-line-and-down-history
 # !history expansion; !:1, !$, !:1-3, !:* take word from last command
 # !-4 fourth last command; !ls, most recent command with ls; !# current buffer
 # ^foo^bar^:G  global substitution on last command, !?str?:s^foo^bar^:G, on last command containing str
 #http://lilydjwg.is-programmer.com/2012/3/19/thress-zsh-line-editor-tips.32549.html
+# To profile:
+#   ZSH_PROF=1 zsh -i -c exit
+#   /usr/bin/time zsh -c 'for i in {1..50}; do zsh -i -c exit; done'
+if [[ -n $ZSH_PROF ]]; then zmodload zsh/zprof; fi
 
 if [[ $(uname) == "Darwin" ]]; then
 	export _CFG_ON_MAC=1
@@ -473,6 +476,10 @@ function command_not_found_handler() {
 }
 
 # plugins
+autoload -Uz jump-target
+zle -N jump-target
+bindkey "^J" jump-target
+
 safe_source $HOME/.zsh/cdnav.zsh   # alt-up/left/right/i
 safe_source "$HOME/.rvm/scripts/rvm"		# Load RVM into a shell session *as a function*
 
@@ -530,3 +537,4 @@ which awk NN && {
   CPATH=$(echo -n "$CPATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
   PKG_CONFIG_PATH=$(echo -n "$PKG_CONFIG_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
 }
+if [[ -n $ZSH_PROF ]]; then zprof; fi
