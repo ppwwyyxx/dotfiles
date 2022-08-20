@@ -141,8 +141,8 @@ promptinit
 autoload colors zsh/terminfo
 colors
 for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
-	eval _$color='%{$terminfo[bold]$fg[${(L)color}]%}'
-	eval $color='$fg[${(L)color}]'
+  eval _$color='%{$terminfo[bold]$fg[${(L)color}]%}'
+  eval $color='$fg[${(L)color}]'
 done
 FINISH="%{$terminfo[sgr0]%}"
 
@@ -159,14 +159,6 @@ else
   export SUDO_PROMPT=$'[\e[31;5mYou are on %H!\e[m] password for \e[34;1m%p\e[m on\e[0;31m %H\e[m: '
 fi
 
-# Config git-prompt
-export ZSH_THEME_GIT_PROMPT_CACHE=1
-safe_source $HOME/.zsh/git-prompt/zshrc.sh
-[[ -d $HOME/.zsh/git-prompt ]] && {
-	# init git status on zsh start
-	update_current_git_vars
-} || { function  git_super_status() {} }
-
 function preexec() {
   if [[ $TERM == "xterm-termite" ]]; then
     # set win title to the command
@@ -175,64 +167,59 @@ function preexec() {
   COMMAND_TIMER=${COMMAND_TIMER:-$((SECONDS + $(date "+%N") / 1000000000.0))}
 }
 function precmd() {
-	local separator1=
+  local separator1=
   local separator2=
   local separator3=
-	local TIMECOLOR="%{%b%F{211}%}"
-	local PINK="%{%b%F{213}%}"
-	local YELLOWGREEN="%{%b%F{154}%}"
-	local YELLOWGREENB="%{%b%K{154}%F{black}%}"
-	local PURPLE="%{%b%F{171}%}"
+  local TIMECOLOR="%{%b%F{211}%}"
+  local PINK="%{%b%F{213}%}"
+  local YELLOWGREEN="%{%b%F{154}%}"
+  local YELLOWGREENB="%{%b%K{154}%F{black}%}"
+  local PURPLE="%{%b%F{171}%}"
 
-	if [[ $USER == "wyx" ]] && [[ $HOST == Keep* ]]; then
-		PROMPT_PART="" # on my laptop
-	else
-		PROMPT_PART="$GREEN [%{%F{171}%}%n@%{%F{219}%}%M$GREEN]"
-	fi
+  if [[ $USER == "wyx" ]] && [[ $HOST == Keep* ]]; then
+    PROMPT_PART="" # on my laptop
+  else
+    PROMPT_PART="$GREEN [%{%F{171}%}%n@%{%F{219}%}%M$GREEN]"
+  fi
 
-	# to calculate length
-	local git_status="$(git_super_status)"
-	local prompt_nodir="-----$(date +%H:%M)---$git_status$PROMPT_PART"
-	local zero='%([BSUbfksu]|([FB]|){*})'	# used to calculate length withou control sequence
-	local part_length=${#${(S%%)prompt_nodir//$~zero/}}
-	local pwdlen=$((${COLUMNS} - $part_length - 3))
-	local START_BOLD=$'\e[1m'		# bold on
-	local END_BOLD=$'\e[22m'		# bold off
+  # to calculate length
+  local git_status="$(gitprompt)"
+  local prompt_nodir="-----$(date +%H:%M)---$git_status$PROMPT_PART"
+  local zero='%([BSUbfksu]|([FB]|){*})'	# used to calculate length withou control sequence
+  local part_length=${#${(S%%)prompt_nodir//$~zero/}}
+  local pwdlen=$((${COLUMNS} - $part_length - 3))
+  local START_BOLD=$'\e[1m'		# bold on
+  local END_BOLD=$'\e[22m'		# bold off
 
-	local INDICATOR="\$"
-	#local INDICATOR="❱"
-	[[ -n "$VIRTUAL_ENV" ]] && VIRTUAL="(`basename $VIRTUAL_ENV`)"
-	# my magic prompt
+  local INDICATOR="\$"
+  #local INDICATOR="❱"
+  [[ -n "$VIRTUAL_ENV" ]] && VIRTUAL="(`basename $VIRTUAL_ENV`)"
+  # my magic prompt
   export PROMPT="%{$START_BOLD%}%{$CYAN%}╭─${VIRTUAL}${PROMPT_PART}\
 $TIMECOLOR [%D{%H:%M}] \
 $YELLOWGREEN%$pwdlen<...<%~%<< \
 %{$reset_color%}$git_status%{$CYAN%}
 %{$START_BOLD%}╰🐻%{$reset_color%}%{$CYAN%}%(?..%{$fg[red]%})$INDICATOR%{$reset_color%}"
-  #export PROMPT="%{$START_BOLD%}%{$CYAN%}╭─${VIRTUAL}${PROMPT_PART}\
-#$TIMECOLOR [%D{%H:%M}] \
-#$YELLOWGREEN%$pwdlen<...<%~%<< \
-#%{$reset_color%}$git_status%{$CYAN%}
-#%{$START_BOLD%}╰─%{$reset_color%}%{$CYAN%}%(?..%{$fg[red]%})$INDICATOR%{$reset_color%}"
   if [[ $TERM == "xterm-termite" ]]; then
     # set win title to pwd
     echo -ne "\033]0;$(pwd) \007"
   fi
 
-	#local return_status="%{$fg[red]%}%(?..%?⏎)%{$reset_color%}"	# return code is useless
-	local return_status="%{$fg[red]%}%(?..⏎)%{$reset_color%}"
-	RPROMPT="${return_status}"
+  #local return_status="%{$fg[red]%}%(?..%?⏎)%{$reset_color%}"	# return code is useless
+  local return_status="%{$fg[red]%}%(?..⏎)%{$reset_color%}"
+  RPROMPT="${return_status}"
     # print time for commands that run > 1s
-	if [ $COMMAND_TIMER ]; then
-		local diff=$((SECONDS + $(date "+%N") / 1000000000.0 - COMMAND_TIMER))
-		diff=`printf "%.2f" $diff`
-		if [[ $diff > 1 ]]; then
-			RPROMPT=$RPROMPT"$PINK${diff}s %{$reset_color%}"
-		fi
-		unset COMMAND_TIMER
-	fi
+  if [ $COMMAND_TIMER ]; then
+    local diff=$((SECONDS + $(date "+%N") / 1000000000.0 - COMMAND_TIMER))
+    diff=`printf "%.2f" $diff`
+    if [[ $diff > 1 ]]; then
+      RPROMPT=$RPROMPT"$PINK${diff}s %{$reset_color%}"
+    fi
+    unset COMMAND_TIMER
+  fi
 
-	PROMPT2='$BLUE($PINK%_$BLUE)$FINISH%{$reset_color%}'
-	PROMPT3='$PINK Select:'
+  PROMPT2='$BLUE($PINK%_$BLUE)$FINISH%{$reset_color%}'
+  PROMPT3='$PINK Select:'
 }
 # f]]
 
@@ -492,8 +479,15 @@ safe_source "$HOME/.rvm/scripts/rvm"		# Load RVM into a shell session *as a func
 safe_source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
 safe_export_path $HOME/.zsh/Pinyin-Completion/bin
 
-# git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git ~/.zsh/snap/zsh-snap
+## git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git ~/.zsh/snap/zsh-snap
 safe_source ~/.zsh/snap/zsh-snap/znap.zsh
+if [[ $commands[awk] ]]; then
+  # ZSH_GIT_PROMPT_NO_ASYNC=1
+  ZSH_GIT_PROMPT_FORCE_BLANK=1
+  ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg_bold[blue]%}+"
+  ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%}✓"
+  znap source woefe/git-prompt.zsh git-prompt.zsh
+fi
 znap source ohmyzsh/ohmyzsh plugins/{extract,transfer}
 
 if [[ $commands[fzf] && $commands[fd] ]]; then
@@ -502,11 +496,11 @@ fi
 export FZF_DEFAULT_OPTS='--ansi --multi'
 znap clone clvv/fasd  # source does not work probably due to aliases
 alias fasd='~/.zsh/snap/fasd/fasd'
-safe_source $HOME/.zsh/fzf-fasd.plugin.zsh  # j <TAB>
 znap source ohmyzsh/ohmyzsh plugins/fzf    # Ctrl-R, Alt-C
+safe_source $HOME/.zsh/fzf-fasd.plugin.zsh  # j <TAB>
 # znap source ohmyzsh/ohmyzsh plugins/ssh-agent
 
-## The next two plugins have to be this order
+### The next two plugins have to be this order
 HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS="I"			# sensitive search
 znap source zsh-users/zsh-history-substring-search   # PageUp/Dn
 znap source zsh-users/zsh-syntax-highlighting
@@ -525,15 +519,14 @@ znap source zsh-users/zsh-syntax-highlighting
   bindkey '^X^O' fasd-complete
 }
 
-# aliases
-safe_source $HOME/.zsh/alias.zsh
+safe_source $HOME/.zsh/alias.zsh  # aliases
 
 safe_source $HOME/.zshrc.local
 
-# dedup paths
+## dedup paths
 which awk NN && {
-	LD_LIBRARY_PATH=$(echo -n "$LD_LIBRARY_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
-	PATH=$(echo -n "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
-	CPATH=$(echo -n "$CPATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
-	PKG_CONFIG_PATH=$(echo -n "$PKG_CONFIG_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
+  LD_LIBRARY_PATH=$(echo -n "$LD_LIBRARY_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
+  PATH=$(echo -n "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
+  CPATH=$(echo -n "$CPATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
+  PKG_CONFIG_PATH=$(echo -n "$PKG_CONFIG_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
 }
