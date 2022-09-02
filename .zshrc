@@ -497,14 +497,16 @@ if [[ $commands[awk] ]]; then
 fi
 znap source ohmyzsh/ohmyzsh plugins/{extract,transfer}
 
-if [[ $commands[fzf] && $commands[fd] ]]; then
-  export FZF_DEFAULT_COMMAND='fd --type f -c always'
-fi
-export FZF_DEFAULT_OPTS='--ansi --multi'
 znap clone clvv/fasd  # source does not work probably due to aliases
 alias fasd='~/.zsh/snap/fasd/fasd'
-znap source ohmyzsh/ohmyzsh plugins/fzf    # Ctrl-R, Alt-C
-safe_source $HOME/.zsh/fzf-fasd.plugin.zsh  # j <TAB>
+if [[ $commands[fzf] ]]; then
+  if [[ $commands[fd] ]]; then
+    export FZF_DEFAULT_COMMAND='fd --type f -c always'
+  fi
+  export FZF_DEFAULT_OPTS='--ansi --multi'
+  znap source ohmyzsh/ohmyzsh plugins/fzf    # Ctrl-R, Alt-C
+  safe_source $HOME/.zsh/fzf-fasd.plugin.zsh  # j <TAB>
+fi
 # znap source ohmyzsh/ohmyzsh plugins/ssh-agent
 
 ### The next two plugins have to be this order

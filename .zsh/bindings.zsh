@@ -3,6 +3,13 @@ bindkey -r "^G"  # C-G was bind to break in emacs
 bindkey -r "^[c"
 bindkey -r "^[l"
 bindkey -r "^[u"
+bindkey -r "^D"
+_exit_zsh_if_empty() {
+  if [[ -z $BUFFER ]]; then exit; fi
+}
+zle -N _exit_zsh_if_empty
+bindkey '^D' _exit_zsh_if_empty
+
 autoload edit-command-line
 zle -N edit-command-line
 bindkey -M viins '^v' edit-command-line
