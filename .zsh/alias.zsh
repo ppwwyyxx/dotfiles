@@ -241,7 +241,7 @@ alias gdb='gdb -q'
 alias ctags='ctags -R -f .tags --c++-kinds=+p --fields=+iaS --extra=+q'
 alias valgrind='valgrind --leak-check=full --track-origins=yes --show-possibly-lost=yes'
 which colordiff NN && alias diff='colordiff'
-alias googlelink='python2 -c "import urlparse, sys; print urlparse.parse_qs(urlparse.urlparse(sys.argv[1]).query)[\"url\"][0]"'
+alias googlelink='python3 -c "import sys, urllib.parse as up; print(up.parse_qs(up.urlparse(sys.argv[1]).query)[\"url\"][0])"'
 alias disasm='objdump -d -M att -r -C'
 # cd to git repo root
 function cdp () {
@@ -538,8 +538,8 @@ function pylibinfo() {
   python -c "import $1 as X; print(X.__file__, end=' '); print(X.__version__)"
 }
 function pytwistd() { twistd web --path "$1" -p tcp:"${2:-8000}" }
-alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --user -U; pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install --user -U"
-alias unquote='python2 -c "import sys, urllib as ul; [sys.stdout.write(ul.unquote(l)) for l in sys.stdin]"'
+alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --user -U"
+alias unquote='python3 -c "import sys, urllib.parse as up; [sys.stdout.write(up.unquote(l)) for l in sys.stdin]"'
 
 # tensorflow/torch
 function tf-verbose() { export TF_CPP_MIN_LOG_LEVEL=0; export TF_CPP_MIN_VLOG_LEVEL=10 }

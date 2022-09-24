@@ -424,7 +424,7 @@ __path_parse(){
 	if [[ $BUFFER == "." ]]; then
 		BUFFER="cd ../"
 		return
-	elif [[ $BUFFER =~ "^\.\.*$" ]] ;then	# expand ...
+  elif [[ $BUFFER =~ "^\.\.\.?$" ]] ;then	# expand ...
     __expand_dots "cd $BUFFER"
     return
 	elif [[ $BUFFER =~ ".* \.\.\..*" ]] ;then	# expand ...
@@ -486,8 +486,12 @@ safe_source "$HOME/.rvm/scripts/rvm"		# Load RVM into a shell session *as a func
 safe_source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
 safe_export_path $HOME/.zsh/Pinyin-Completion/bin
 
-## git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git ~/.zsh/snap/zsh-snap
-safe_source ~/.zsh/snap/zsh-snap/znap.zsh
+_ZSH_SNAP_BASE=$HOME/.zsh/snap/
+[[ -f $_ZSH_SNAP_BASE/zsh-snap/znap.zsh ]] ||
+    git clone --depth 1 -- \
+        https://github.com/marlonrichert/zsh-snap.git $_ZSH_SNAP_BASE/zsh-snap
+source $_ZSH_SNAP_BASE/zsh-snap/znap.zsh
+unsetopt hup               # https://github.com/marlonrichert/zsh-snap/issues/193
 if [[ $commands[awk] ]]; then
   # ZSH_GIT_PROMPT_NO_ASYNC=1
   ZSH_GIT_PROMPT_FORCE_BLANK=1
@@ -498,7 +502,6 @@ fi
 znap source ohmyzsh/ohmyzsh plugins/{extract,transfer}
 
 znap clone clvv/fasd  # source does not work probably due to aliases
-alias fasd='~/.zsh/snap/fasd/fasd'
 if [[ $commands[fzf] ]]; then
   if [[ $commands[fd] ]]; then
     export FZF_DEFAULT_COMMAND='fd --type f -c always'
@@ -507,6 +510,7 @@ if [[ $commands[fzf] ]]; then
   znap source ohmyzsh/ohmyzsh plugins/fzf    # Ctrl-R, Alt-C
   safe_source $HOME/.zsh/fzf-fasd.plugin.zsh  # j <TAB>
 fi
+export PATH=$PATH:$_ZSH_SNAP_BASE/fasd
 # znap source ohmyzsh/ohmyzsh plugins/ssh-agent
 
 ### The next two plugins have to be this order
