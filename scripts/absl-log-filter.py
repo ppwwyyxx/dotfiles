@@ -136,6 +136,9 @@ def ispipe(path):
     return stat.S_ISFIFO(os.stat(path).st_mode)
 
 
+def kill_proc(proc):
+    proc.terminate()
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--stdout')
@@ -152,6 +155,8 @@ if __name__ == "__main__":
     else:
         proc1 = mp.Process(target=run, args=(args.stdout, True), daemon=True)
         proc1.start()
+
+        atexit.register(kill_proc, proc1)
 
         run(args.stderr, False)
         proc1.join()

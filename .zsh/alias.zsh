@@ -276,7 +276,7 @@ alias cp2clip='xclip -i -selection clipboard'
 alias screenkey='screenkey -s small -t 0.8 --opacity 0.3'
 alias adate='for i in Asia/Shanghai US/{Eastern,Pacific}; do printf %-22s "$i ";TZ=:$i date +"%F %a %T %Z";done'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias clean-trash='=rm ~/.Trash/{.,}* -rf'
+alias clean-trash='=rm ~/.Trash/* -rf; =rm ~/.Trash/.* -rf'
 function iconvcp936() {
   iconv -f cp936 -t utf-8 "$1" | sponge "$1"
 }
