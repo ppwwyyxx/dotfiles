@@ -28,7 +28,7 @@ function safe_source() { [[ -s $1 ]] && source $1 }
 unset PYTHONPATH
 export TERMINFO=$HOME/.terminfo
 export LANG=en_US.UTF-8
-export SSH_ASKPASS=
+# export SSH_ASKPASS=
 # neovim#2048 suggests: infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti; tic $TERM.ti
 
 safe_source $HOME/.profile
@@ -358,7 +358,6 @@ _ZSH_SNAP_BASE=$HOME/.zsh/snap/
     git clone --depth 1 -- \
         https://github.com/marlonrichert/zsh-snap.git $_ZSH_SNAP_BASE/zsh-snap
 source $_ZSH_SNAP_BASE/zsh-snap/znap.zsh
-unsetopt hup               # https://github.com/marlonrichert/zsh-snap/issues/193
 if [[ $commands[awk] ]]; then
   # ZSH_GIT_PROMPT_NO_ASYNC=1
   ZSH_GIT_PROMPT_FORCE_BLANK=1

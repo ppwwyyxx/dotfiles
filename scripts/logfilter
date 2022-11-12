@@ -18,6 +18,7 @@ mkfifo /tmp/stdout$$
 mkfifo /tmp/stderr$$
 
 # NOTE: &! works in zsh and seems to be no-op in bash
-python3 -u "$script" \
+# # TODO HACK fix hang
+timeout 1h python3 -u "$script" \
 	--stdout /tmp/stdout$$ --stderr /tmp/stderr$$ &!
 unbuffer $@ > /tmp/stdout$$ 2>/tmp/stderr$$
