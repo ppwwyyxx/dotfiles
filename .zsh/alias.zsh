@@ -180,6 +180,18 @@ function linkto() {
 
 function patch1() { patch -p1 < $1 }
 
+
+# Avoid accidental shut down
+if [[ -n $_CFG_ON_SSH ]]; then
+  alias poweroff='vboxmanage controlvm win7 savestate; sudo poweroff'
+  alias reboot='vboxmanage controlvm win7 savestate; sudo reboot'
+else
+  alias -g halt=
+  alias -g poweroff=
+  alias -g shutdown=
+  alias -g reboot=
+fi
+
 # network
 alias p='ping'
 alias meow='ping'

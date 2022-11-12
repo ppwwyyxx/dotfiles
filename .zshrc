@@ -11,6 +11,9 @@ if [[ $(uname) == "Darwin" ]]; then
 	export _CFG_ON_MAC=1
 	source /etc/profile
 fi
+if [[ -n $SSH_CLIENT || -n $SSH_TTY || -n $SSH_CONNECTION ]]; then
+  export _CFG_ON_SSH=1
+fi
 
 # https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
@@ -80,81 +83,14 @@ for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
 done
 FINISH="%{$terminfo[sgr0]%}"
 
-if [[ $HOST == Keep* ]]; then
-  alias poweroff='vboxmanage controlvm win7 savestate; sudo poweroff'
-  alias reboot='vboxmanage controlvm win7 savestate; sudo reboot'
+if [[ -n $_CFG_ON_SSH ]]; then
   export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: (meow~~) '
 else
-  # avoid shutting server down by mistake!
-  alias -g halt=
-  alias -g poweroff=
-  alias -g shutdown=
-  alias -g reboot=
   export SUDO_PROMPT=$'[\e[31;5mYou are on %H!\e[m] password for \e[34;1m%p\e[m on\e[0;31m %H\e[m: '
 fi
 
-function preexec() {
-  if [[ $TERM == "xterm-termite" ]]; then
-    # set win title to the command
-    echo -ne "\033]0;$1 \007"
-  fi
-  COMMAND_TIMER=${COMMAND_TIMER:-$((SECONDS + $(date "+%N") / 1000000000.0))}
-}
-function precmd() {
-  local separator1=
-  local separator2=
-  local separator3=
-  local TIMECOLOR="%{%b%F{211}%}"
-  local PINK="%{%b%F{213}%}"
-  local YELLOWGREEN="%{%b%F{154}%}"
-  local YELLOWGREENB="%{%b%K{154}%F{black}%}"
-  local PURPLE="%{%b%F{171}%}"
+safe_source ~/.zsh/custom_prompt.zsh
 
-  if [[ $USER == "wyx" ]] && [[ $HOST == Keep* ]]; then
-    PROMPT_PART="" # on my laptop
-  else
-    PROMPT_PART="$GREEN [%{%F{171}%}%n@%{%F{219}%}%M$GREEN]"
-  fi
-
-  # to calculate length
-  local git_status="$(gitprompt)"
-  local prompt_nodir="-----$(date +%H:%M)---$git_status$PROMPT_PART"
-  local zero='%([BSUbfksu]|([FB]|){*})'	# used to calculate length withou control sequence
-  local part_length=${#${(S%%)prompt_nodir//$~zero/}}
-  local pwdlen=$((${COLUMNS} - $part_length - 3))
-  local START_BOLD=$'\e[1m'		# bold on
-  local END_BOLD=$'\e[22m'		# bold off
-
-  local INDICATOR="\$"
-  #local INDICATOR="❱"
-  [[ -n "$VIRTUAL_ENV" ]] && VIRTUAL="(`basename $VIRTUAL_ENV`)"
-  # my magic prompt
-  export PROMPT="%{$START_BOLD%}%{$CYAN%}╭─${VIRTUAL}${PROMPT_PART}\
-$TIMECOLOR [%D{%H:%M}] \
-$YELLOWGREEN%$pwdlen<...<%~%<< \
-%{$reset_color%}$git_status%{$CYAN%}
-%{$START_BOLD%}╰🐻%{$reset_color%}%{$CYAN%}%(?..%{$fg[red]%})$INDICATOR%{$reset_color%}"
-  if [[ $TERM == "xterm-termite" ]]; then
-    # set win title to pwd
-    echo -ne "\033]0;$(pwd) \007"
-  fi
-
-  #local return_status="%{$fg[red]%}%(?..%?⏎)%{$reset_color%}"	# return code is useless
-  local return_status="%{$fg[red]%}%(?..⏎)%{$reset_color%}"
-  RPROMPT="${return_status}"
-    # print time for commands that run > 1s
-  if [ $COMMAND_TIMER ]; then
-    local diff=$((SECONDS + $(date "+%N") / 1000000000.0 - COMMAND_TIMER))
-    diff=`printf "%.2f" $diff`
-    if [[ $diff > 1 ]]; then
-      RPROMPT=$RPROMPT"$PINK${diff}s %{$reset_color%}"
-    fi
-    unset COMMAND_TIMER
-  fi
-
-  PROMPT2='$BLUE($PINK%_$BLUE)$FINISH%{$reset_color%}'
-  PROMPT3='$PINK Select:'
-}
 # f]]
 
 # Basic
