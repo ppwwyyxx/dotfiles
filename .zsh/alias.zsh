@@ -26,15 +26,15 @@ alias hg='nocorrect hg'
 alias cpv="rsync -pogh -e /dev/null -P --"  # cp with progress
 alias watch='watch '  # allow watching an alias
 
-alias l="ls -F --color=auto --quoting-style=literal"
-alias l.="ls -d .* --color=auto"
-alias ls="ls -F --color=auto --quoting-style=literal"
-alias sl="ls -F --color=auto --quoting-style=literal"
-alias lss="ls -F --color=auto --quoting-style=literal"
+alias l="ls -F --color=auto --quoting-style=literal --hyperlink=auto"
+alias l.="ls -d .* --color=auto --hyperlink=auto"
+alias ls="ls -F --color=auto --quoting-style=literal --hyperlink=auto"
+alias sl="ls -F --color=auto --quoting-style=literal --hyperlink=auto"
+alias lss="ls -F --color=auto --quoting-style=literal --hyperlink=auto"
 alias lsf="ls -1f"  # fast ls
 alias lll='ls++'
 function ll(){
-  ls -AhlF --color=auto --time-style="+[34m[[32m%g-%m-%d [35m%k:%M[33m][m" $@
+  ls -AhlF --color=auto --hyperlink=auto --time-style="+[34m[[32m%g-%m-%d [35m%k:%M[33m][m" $@
   [[ "$*" == "$1" ]] && echo -e " $GREEN  --[$LIGHTBLUE  Dir:    $CYAN`ls -Al $@ | grep '^drw' | wc -l`$LIGHTGREEN|$YELLOW \
    File: $GREEN`ls -Al $@ | grep -v '^drw' | grep -v total | wc -l` ]-- $WHITE"
 }
@@ -154,6 +154,7 @@ alias strace='strace -yy'
 alias tail='tail -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
 alias head='head -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
 alias rf='readlink -f'
+alias printurl=$'printf \'\e]8;;%s\e\\%s\e]8;;\e\\\n\''
 which fzf-tmux NN && {
   alias fzf-tmux='fzf-tmux -d 20% --multi --reverse'
 }
