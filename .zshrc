@@ -15,6 +15,14 @@ if [[ -n $SSH_CLIENT || -n $SSH_TTY || -n $SSH_CONNECTION ]]; then
   export _CFG_ON_SSH=1
 fi
 
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+
 # https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
 
@@ -75,7 +83,7 @@ export PAGER="/usr/bin/less -r"
 cdpath=(~)
 # f]]
 
-# PROMPT: f[[
+## PROMPT
 autoload -U promptinit
 promptinit
 
@@ -102,15 +110,17 @@ fi
 if [[ $HOST == Keep* ]] && [[ -z $_CFG_ON_SSH ]]; then
   typeset -g MY_PROMPT_HOST=
 fi
-safe_source ~/.zsh/custom_prompt.zsh
 
+znap source romkatv/powerlevel10k
+safe_source ~/.zsh/p10k.zsh
+#safe_source ~/.zsh/custom_prompt.zsh
 # f]]
 
 # Basic
 setopt autocd				# cd without 'cd'
 setopt braceccl				# ls {a-e.1}
 unsetopt hup				# don't close background program when exiting shell
-stty stop undef
+stty stop undef 2>/dev/null || true
 setopt NO_FLOW_CONTROL		# disable Ctrl+s
 setopt NOTIFY				# show bg jobs status immediately
 limit coredumpsize 0		# disable core dumps
@@ -177,6 +187,7 @@ zstyle ':completion:*' select-prompt '%SSelect:  lines: %L  matches: %M  [%p]'
 zstyle ':completion:*:match:*' original only
 zstyle ':completion::prefix-1:*' completer _complete
 zstyle ':completion:predict:*' completer _complete
+zstyle ':completion:*' users root $USER  # Fix lag if there are too many users.
 
 # Path Completion
 zstyle ':completion:*' expand 'yes'
@@ -331,7 +342,6 @@ safe_source "$HOME/.rvm/scripts/rvm"		# Load RVM into a shell session *as a func
 
 safe_source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
 safe_export_path $HOME/.zsh/Pinyin-Completion/bin
-
 znap source ohmyzsh/ohmyzsh plugins/{extract,transfer}
 znap clone clvv/fasd  # source does not work probably due to aliases
 if [[ $commands[fzf] ]]; then
@@ -375,4 +385,5 @@ which awk NN && {
   CPATH=$(echo -n "$CPATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
   PKG_CONFIG_PATH=$(echo -n "$PKG_CONFIG_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
 }
+
 if [[ -n $ZSH_PROF ]]; then zprof; fi
