@@ -61,5 +61,19 @@ belowrule=2
 wmclass=conky
 wmclassmatch=1
 
+[9]
+Description=zotero
+desktop=3
+desktopsrule=3
+wmclass=zotero
+wmclassmatch=1
+
+[10]
+Description=alacritty
+size=1920,1080
+sizerule=3
+wmclass=alacritty
+wmclassmatch=1
+
 [General]
 count=8
