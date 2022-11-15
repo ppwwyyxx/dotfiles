@@ -89,6 +89,15 @@ else
   export SUDO_PROMPT=$'[\e[31;5mYou are on %H!\e[m] password for \e[34;1m%p\e[m on\e[0;31m %H\e[m: '
 fi
 
+# Can be customized in local configs.
+typeset -g MY_PROMPT_HOST=$HOST
+typeset -g MY_PROMPT_USER=$USER
+if [[ $USER == "wyx" ]] || [[ $USER == yuxin* ]]; then
+  typeset -g MY_PROMPT_USER=
+fi
+if [[ $HOST == Keep* ]] && [[ -z $_CFG_ON_SSH ]]; then
+  typeset -g MY_PROMPT_HOST=
+fi
 safe_source ~/.zsh/custom_prompt.zsh
 
 # f]]

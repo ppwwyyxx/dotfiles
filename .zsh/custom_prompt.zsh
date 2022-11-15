@@ -18,10 +18,10 @@ function precmd() {
   local YELLOWGREENB="%{%b%K{154}%F{black}%}"
   local PURPLE="%{%b%F{171}%}"
 
-  if [[ $USER == "wyx" ]] && [[ $HOST == Keep* ]]; then
-    PROMPT_PART="" # on my laptop
+  if [[ -z $MY_PROMPT_USER ]] && [[ -z $MY_PROMPT_HOST ]]; then
+    PROMPT_PART=""
   else
-    PROMPT_PART="$GREEN [%{%F{171}%}%n@%{%F{219}%}%M$GREEN]"
+    PROMPT_PART="$GREEN [%{%F{171}%}$MY_PROMPT_USER@%{%F{219}%}$MY_PROMPT_HOST$GREEN]"
   fi
 
   # to calculate length
