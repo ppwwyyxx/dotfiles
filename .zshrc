@@ -24,8 +24,13 @@ function safe_source() { [[ -s $1 ]] && source $1 }
 [[ -d $HOME/.zsh/Completion ]] && fpath=($HOME/.zsh/Completion $fpath)
 [[ -d $HOME/.zsh/functions ]] && fpath=($HOME/.zsh/functions $fpath)
 
+_ZSH_SNAP_BASE=$HOME/.zsh/snap/
+[[ -f $_ZSH_SNAP_BASE/zsh-snap/znap.zsh ]] ||
+    git clone --depth 1 -- \
+        https://github.com/marlonrichert/zsh-snap.git $_ZSH_SNAP_BASE/zsh-snap
+source $_ZSH_SNAP_BASE/zsh-snap/znap.zsh
+
 # ENV f[[
-unset PYTHONPATH
 export TERMINFO=$HOME/.terminfo
 export LANG=en_US.UTF-8
 # export SSH_ASKPASS=
@@ -53,7 +58,7 @@ export LIBRARY_PATH=${LIBRARY_PATH+$LIBRARY_PATH:}$HOME/.local/lib
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$HOME/.local/lib/pkgconfig
 
 # override tmux master key under ssh
-if [[ -n "$TMUX" ]] && [[ -n "$SSH_CLIENT" ]] && [[ "$HOST" != "hawaii" ]]; then
+if [[ -n "$TMUX" ]] && [[ -n $_CFG_ON_SSH ]]; then
 	tmux set -g status-bg cyan
 	tmux unbind C-q
 	tmux set -g prefix C-a
@@ -362,20 +367,7 @@ safe_source "$HOME/.rvm/scripts/rvm"		# Load RVM into a shell session *as a func
 safe_source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
 safe_export_path $HOME/.zsh/Pinyin-Completion/bin
 
-_ZSH_SNAP_BASE=$HOME/.zsh/snap/
-[[ -f $_ZSH_SNAP_BASE/zsh-snap/znap.zsh ]] ||
-    git clone --depth 1 -- \
-        https://github.com/marlonrichert/zsh-snap.git $_ZSH_SNAP_BASE/zsh-snap
-source $_ZSH_SNAP_BASE/zsh-snap/znap.zsh
-if [[ $commands[awk] ]]; then
-  # ZSH_GIT_PROMPT_NO_ASYNC=1
-  ZSH_GIT_PROMPT_FORCE_BLANK=1
-  ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg_bold[blue]%}+"
-  ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%}✓"
-  znap source woefe/git-prompt.zsh git-prompt.zsh
-fi
 znap source ohmyzsh/ohmyzsh plugins/{extract,transfer}
-
 znap clone clvv/fasd  # source does not work probably due to aliases
 if [[ $commands[fzf] ]]; then
   if [[ $commands[fd] ]]; then

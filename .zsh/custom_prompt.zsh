@@ -63,3 +63,11 @@ $YELLOWGREEN%$pwdlen<...<%~%<< \
   PROMPT2='$BLUE($PINK%_$BLUE)$FINISH%{$reset_color%}'
   PROMPT3='$PINK Select:'
 }
+
+if [[ $commands[awk] ]]; then
+  # ZSH_GIT_PROMPT_NO_ASYNC=1
+  ZSH_GIT_PROMPT_FORCE_BLANK=1
+  ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg_bold[blue]%}+"
+  ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%}✓"
+  znap source woefe/git-prompt.zsh git-prompt.zsh
+fi
