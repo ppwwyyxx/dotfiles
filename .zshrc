@@ -86,7 +86,6 @@ for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
   eval _$color='%{$terminfo[bold]$fg[${(L)color}]%}'
   eval $color='$fg[${(L)color}]'
 done
-FINISH="%{$terminfo[sgr0]%}"
 
 if [[ -n $_CFG_ON_SSH ]]; then
   export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: (meow~~) '
@@ -112,7 +111,6 @@ setopt autocd				# cd without 'cd'
 setopt braceccl				# ls {a-e.1}
 unsetopt hup				# don't close background program when exiting shell
 stty stop undef
-setopt transient_rprompt      # clear rprompt
 setopt NO_FLOW_CONTROL		# disable Ctrl+s
 setopt NOTIFY				# show bg jobs status immediately
 limit coredumpsize 0		# disable core dumps
@@ -250,24 +248,7 @@ zstyle ':completion:*:*:cat:*:*files' ignored-patterns '*.(avi|mkv|rmvb|pyc|wmv|
 
 # f]]
 
-
-# vim edit remote file
-function vscp() {
-	if [[ -z $1 ]]; then
-		echo "usage: vscp [[user@]host1:]file1 ... [[user@]host2:]file2"
-		return
-	fi
-	declare -a targs=()
-	echo "Editing Remote Files"
-	for iarg in $@; do
-		targ="scp://$(echo $iarg | sed -e 's@:/@//@' | sed -e 's@:@/@')"
-		targs=("${targs[@]}" $targ)
-	done
-	echo ${targs[@]}
-	vim ${targs[@]}
-}
-compdef vscp=scp
-
+# Custom path expansion f[[
 # .... path completion
 __expand_dots() {
   # Add / after sequence of ......, if not there
@@ -338,25 +319,9 @@ __user_ret(){
 }
 zle -N __user_ret
 bindkey "\r" __user_ret
+# f]]
 
-# command not found
-function command_not_found_handler() {
-	local command="$1"
-	# avoid recursive command-not-found when /usr/bin/ is mistakenly lost in PATH
-	[ -x /usr/bin/fortune ] && [ -x /usr/bin/cowthink ] && {
-		/usr/bin/fortune chinese | /usr/bin/cowthink -W 70
-	}
-	[ -n "$command" ] && [ -x /usr/bin/pkgfile ] && {
-		echo -e "searching for \"$command\" in repos..."
-		local pkgs="$(/usr/bin/pkgfile -b -v -- "$command")"
-		if [ ! -z "$pkgs" ]; then
-			echo -e "\"$command\" may be found in the following packages:\n\n${pkgs}\n"
-		fi
-	}
-	return 1
-}
-
-# plugins
+# Plugins f[[
 autoload -Uz jump-target
 zle -N jump-target
 bindkey "^J" jump-target
@@ -398,6 +363,7 @@ znap source zsh-users/zsh-syntax-highlighting
   unalias s d a z sf sd
   bindkey '^X^O' fasd-complete
 }
+# f]]
 
 safe_source $HOME/.zsh/alias.zsh  # aliases
 safe_source $HOME/.zshrc.local

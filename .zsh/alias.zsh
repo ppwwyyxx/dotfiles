@@ -74,6 +74,13 @@ for(j=1; j<=p; j++) {
   print str
 }}'"
 
+rsync_watch() {  # copy A to B whenever A changes.
+  rsync --copy-links --progress --recursive "$1" "$2"
+  while inotifywait -r -e create,delete,modify "$1";
+    do rsync --copy-links --progress --recursive "$1" "$2"
+  done
+}
+
 # rm moves things to trash
 unalias rm 2>/dev/null || true  # undef alias, if there is one
 function __find_disk_of_file() {
@@ -208,10 +215,28 @@ alias chromium-socks='chromium --proxy-server=socks5://localhost:8080'
 alias chromium-http='chromium --proxy-server=localhost:7777'
 alias google-keep='chromium --profile-directory=Default --app-id=hmjkmjkepdijhoojdojkdfohbdgmmhki'
 alias weather='curl -s http://wttr.in/\?m | head -n-1'
+
+# vim edit remote file
+function vscp() {
+  if [[ -z $1 ]]; then
+    echo "usage: vscp [[user@]host1:]file1 ... [[user@]host2:]file2"
+    return
+  fi
+  declare -a targs=()
+  echo "Editing Remote Files"
+  for iarg in $@; do
+    targ="scp://$(echo $iarg | sed -e 's@:/@//@' | sed -e 's@:@/@')"
+    targs=("${targs[@]}" $targ)
+  done
+  echo ${targs[@]}
+  vim ${targs[@]}
+}
+compdef vscp=scp
+
 function pasteimage() {
   local url=$(curl -F "name=@$1" https://img.vim-cn.com)
-  echo $url
   echo $url | xclip -i -selection clipboard
+  echo "$url copied to clipboard."
 }
 
 alias ssh-reverse='ssh -R 6333:localhost:22 -ServerAliveInterval=60'
@@ -243,7 +268,6 @@ which colormake NN && {
 which ccache NN && {
   alias mk='CXX="ccache g++" make'
 } || { alias mk='make' }
-alias mr='make run'
 alias mkc='make clean'
 alias cmk='mkdir -p build; cd build; cmake ..; make; cd ..'
 alias gits='git s'
@@ -275,7 +299,6 @@ function gitdate () {
 
 
 # tools
-which aunpack NN && alias x=aunpack
 alias gq='geeqie'
 alias strings='strings -atx'
 alias which='which -a'
@@ -317,10 +340,6 @@ alias iftop='sudo iftop -B'
 alias powertop='sudo powertop'
 alias sy='sudo systemctl'
 alias dstat='dstat -dnmcl --socket --top-io -N wlp2s0'
-function agenda() {
-  gcalcli --details=length agenda '12am' $(date --date="${1:-1} day" +"%Y%m%d")
-}
-alias calw='gcalcli calw'
 function systemd-run-env() {
   # env vars that need do be passed to the process
   local names=('PATH' 'LD_LIBRARY_PATH' 'TENSORPACK_DATASET'
@@ -415,8 +434,6 @@ function gource() {
     --output-ppm-stream - --output-framerate 30 > /dev/null
     #| avconv -y -r 30 -f image2pipe -vcodec ppm -i - -b 65536K movie.mp4
 }
-export PYCHARM_JDK=/opt/java-oracle
-export IDEA_JDK=/opt/java-oracle
 
 alias wine32='WINEARCH=win32 LC_ALL=zh_CN.utf-8 WINEPREFIX=~/.wine32 wine'
 alias net9='luit -encoding gb18030 -- ssh ppwwyyxx@bbs.net9.org'
@@ -632,6 +649,27 @@ which apt-get NN && {
   alias pU='yum localinstall'
 }
 }
+}
+
+
+# Command not found
+which pkgfile NN && {
+  # Archlinux
+  function command_not_found_handler() {
+    local command="$1"
+    # avoid recursive command-not-found when /usr/bin/ is mistakenly lost in PATH
+    [ -x /usr/bin/fortune ] && [ -x /usr/bin/cowthink ] && {
+      /usr/bin/fortune chinese | /usr/bin/cowthink -W 70
+    }
+    [ -n "$command" ] && [ -x /usr/bin/pkgfile ] && {
+      echo -e "searching for \"$command\" in repos..."
+      local pkgs="$(/usr/bin/pkgfile -b -v -- "$command")"
+      if [ ! -z "$pkgs" ]; then
+        echo -e "\"$command\" may be found in the following packages:\n\n${pkgs}\n"
+      fi
+    }
+    return 1
+  }
 }
 
 

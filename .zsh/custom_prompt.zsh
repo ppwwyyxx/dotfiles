@@ -1,4 +1,5 @@
-
+setopt transient_rprompt      # clear rprompt
+_PROMPT_FINISH="%{$terminfo[sgr0]%}"
 
 function preexec() {
   if [[ $TERM == "xterm-termite" ]]; then
@@ -47,10 +48,9 @@ $YELLOWGREEN%$pwdlen<...<%~%<< \
     echo -ne "\033]0;$(pwd) \007"
   fi
 
-  #local return_status="%{$fg[red]%}%(?..%?⏎)%{$reset_color%}"	# return code is useless
   local return_status="%{$fg[red]%}%(?..⏎)%{$reset_color%}"
   RPROMPT="${return_status}"
-    # print time for commands that run > 1s
+  # print time for commands that run > 1s
   if [ $COMMAND_TIMER ]; then
     local diff=$((SECONDS + $(date "+%N") / 1000000000.0 - COMMAND_TIMER))
     diff=`printf "%.2f" $diff`
@@ -60,8 +60,7 @@ $YELLOWGREEN%$pwdlen<...<%~%<< \
     unset COMMAND_TIMER
   fi
 
-  PROMPT2='$BLUE($PINK%_$BLUE)$FINISH%{$reset_color%}'
-  PROMPT3='$PINK Select:'
+  PROMPT3="$PINK Select:"
 }
 
 if [[ $commands[awk] ]]; then
