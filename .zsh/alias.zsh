@@ -26,11 +26,16 @@ alias hg='nocorrect hg'
 alias cpv="rsync -pogh -e /dev/null -P --"  # cp with progress
 alias watch='watch '  # allow watching an alias
 
-alias l="ls -F --color=auto --quoting-style=literal --hyperlink=auto"
-alias l.="ls -d .* --color=auto --hyperlink=auto"
-alias ls="ls -F --color=auto --quoting-style=literal --hyperlink=auto"
-alias sl="ls -F --color=auto --quoting-style=literal --hyperlink=auto"
-alias lss="ls -F --color=auto --quoting-style=literal --hyperlink=auto"
+() {
+  if [[ -z $_CFG_ON_SSH ]]; then
+    _hyperlink="--hyperlink=auto"
+  fi
+  alias l="ls -F --color=auto --quoting-style=literal $_hyperlink"
+  alias l.="ls -d .* --color=auto $_hyperlink"
+  alias ls="ls -F --color=auto --quoting-style=literal $_hyperlink"
+  alias sl="ls -F --color=auto --quoting-style=literal $_hyperlink"
+  alias lss="ls -F --color=auto --quoting-style=literal $_hyperlink"
+}
 alias lsf="ls -1f"  # fast ls
 alias lll='ls++'
 function ll(){
