@@ -371,6 +371,10 @@ alias dmesg='dmesg -wH || dmesg | less'
 function modulegraph() { lsmod | perl -e 'print "digraph \"lsmod\" {";<>;while(<>){@_=split/\s+/; print "\"$_[0]\" -> \"$_\"\n" for split/,/,$_[3]}print "}"' | dot -Tpng | feh -; }
 alias lsblk="lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT,PARTLABEL,LABEL"
 alias disk-writeback='watch -n1 grep -e Dirty: -e Writeback: /proc/meminfo'
+xrandr-newmode() {
+  local line=$(gtf $@ | grep -o 'Modeline.*' | cut -d ' ' -f 2-)
+  xrandr --newmode $(echo $line)
+}
 
 function usbon () {
   id=$1
