@@ -49,6 +49,9 @@ alias C='cat'
 alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
 alias -g N='>/dev/null'
 alias -g NN='>/dev/null 2>&1'
+which batcat NN && {
+  alias cat='batcat --style=numbers,grid'
+}
 which bat NN && {
   alias cat='bat --style=numbers,grid'
 }
