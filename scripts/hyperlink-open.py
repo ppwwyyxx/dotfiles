@@ -39,5 +39,7 @@ if __name__ == "__main__":
 
     if path.startswith("b/") or path.startswith("go/") or path.startswith("cl/"):
         browser(path)
+    if path.startswith("/google3/"):
+        browser("http:/" + path)
 
     xdg_fallback(path)
