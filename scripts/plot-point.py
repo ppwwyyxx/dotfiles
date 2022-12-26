@@ -64,6 +64,9 @@ def get_args():
     parser.add_argument('--decay',
                         help='exponential decay rate to smooth Y',
                         type=str, default='0')
+    parser.add_argument('--units',
+                        help='recognize common units such as K, M, G, T',
+                        action='store_true')
 
     # Text related:
     parser.add_argument('-t', '--title',
@@ -110,6 +113,21 @@ def get_args():
         args.show = True
 
 
+def parse_val(val: str) -> float:
+    if not args.units:
+        return float(val)
+    val = val.lower()
+    if val.endswith("k"):
+        return float(val[:-1]) * 1e3
+    if val.endswith("m"):
+        return float(val[:-1]) * 1e6
+    if val.endswith("g"):
+        return float(val[:-1]) * 1e9
+    if val.endswith("t") or val.endswith("b"):
+        return float(val[:-1]) * 1e12
+    return float(val)
+
+
 def read_entire_matrix():
     headers = None
     # parse input args
@@ -137,7 +155,7 @@ Line: {}""".format(repr(args.delimeter), line)
                 continue
             else:
                 try:
-                    val = float(val)
+                    val = parse_val(val)
                 except Exception:
                     if lineno == 0:
                         # header
