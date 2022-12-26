@@ -42,6 +42,7 @@ if __name__ == "__main__":
     p.add_argument("input", help="image file")
     p.add_argument("--ttl", type=int, default=3, help="time to clear the image, if in tmux")
     p = cmds.add_parser("fallthrough", help="tmux-fallthrough for stdin. for debugging.")
+    p = cmds.add_parser("clear", help="clear kitty image")
 
     args = parser.parse_args()
 
@@ -60,3 +61,5 @@ if __name__ == "__main__":
             if args.ttl > 0:
                 time.sleep(args.ttl)
                 clear_kitty()
+    elif args.command == "clear":
+        clear_kitty()

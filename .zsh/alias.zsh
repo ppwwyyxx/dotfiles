@@ -162,17 +162,25 @@ alias sv='sudo vim'
 alias sort='LC_ALL=C sort'
 alias uniq='LC_ALL=C uniq'
 alias grep='grep -IE --color=auto --exclude=.tags --exclude-dir="node_modules" --exclude-dir=".git" --exclude-dir=".env"'
-alias tmuxa='tmux a || tmux'
-alias tmux-reset-prefix='tmux set -g status-bg colour141; tmux unbind C-a; tmux set -g prefix C-q; tmux bind C-q send-prefix'
 alias du='du -sh'
 alias strace='strace -yy'
 alias tail='tail -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
 alias head='head -n $((${LINES:-`tput lines 4>/dev/null||echo -n 12`} - 3))'
 alias rf='readlink -f'
 alias printurl=$'printf \'\e]8;;%s\e\\%s\e]8;;\e\\\n\''
+
+# Tmux-related:
+alias tmuxa='tmux a || tmux'
+alias tmux-reset-prefix='tmux set -g status-bg colour141; tmux unbind C-a; tmux set -g prefix C-q; tmux bind C-q send-prefix'
+which timg NN && {
+  which tmux-escape NN && {
+    alias timg='tmux-escape kittyimg'
+  }
+}
 which fzf-tmux NN && {
   alias fzf-tmux='fzf-tmux -d 20% --multi --reverse'
 }
+
 function sdu () {  # human-readable sorted du
   [[ "$#" -eq 1 && -d "$1" ]] && cd "$1"
   du -sh {*,.*} | sort -h
