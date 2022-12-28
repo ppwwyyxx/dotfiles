@@ -23,15 +23,21 @@ fi
 function safe_export_path() { [[ -d $1 ]] && export PATH=$1:$PATH }
 function safe_source() { [[ -s $1 ]] && source $1 }
 
+if [[ -d /dev/shm ]]; then _MY_ZSH_CACHE=/dev/shm/zsh-cache; else _MY_ZSH_CACHE=/tmp/zsh-cache; fi
+local __OLD_XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
+zmodload -F zsh/files b:zf_mkdir
+zf_mkdir -p $_MY_ZSH_CACHE
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-safe_source "/dev/shm/.cache/p10k-instant-prompt-${(%):-%n}.zsh"
+safe_source "$_MY_ZSH_CACHE/p10k-instant-prompt-${(%):-%n}.zsh"
 
 [[ -d $HOME/.zsh/Completion ]] && fpath=($HOME/.zsh/Completion $fpath)
 [[ -d $HOME/.zsh/functions ]] && fpath=($HOME/.zsh/functions $fpath)
 
 _ZSH_SNAP_BASE=$HOME/.zsh/snap/
+typeset -gH _comp_dumpfile=$_MY_ZSH_CACHE/snap-compdump
 [[ -f $_ZSH_SNAP_BASE/zsh-snap/znap.zsh ]] ||
     git clone --depth 1 -- \
         https://github.com/marlonrichert/zsh-snap.git $_ZSH_SNAP_BASE/zsh-snap
@@ -110,14 +116,13 @@ if [[ $HOST == Keep* ]] && [[ -z $_CFG_ON_SSH ]]; then
   typeset -g MY_PROMPT_HOST=
 fi
 
-local __old_xdg_home=$XDG_CACHE_HOME
-# Move p10k cache to /dev/shm. It has frequent IO.
-[[ -d "/dev/shm" ]] && export XDG_CACHE_HOME=/dev/shm/.cache
+# Move p10k cache to tmpfs. It has frequent IO.
+export XDG_CACHE_HOME=$_MY_ZSH_CACHE
 # But don't move gitstatus cache.
 export GITSTATUS_CACHE_DIR=$HOME/.cache/gitstatus
 znap source romkatv/powerlevel10k
 safe_source ~/.zsh/p10k.zsh
-export XDG_CACHE_HOME=$__old_xdg_home
+export XDG_CACHE_HOME=$__OLD_XDG_CACHE_HOME
 #safe_source ~/.zsh/custom_prompt.zsh
 # f]]
 
@@ -366,7 +371,7 @@ znap source zsh-users/zsh-history-substring-search   # PageUp/Dn
 znap source zsh-users/zsh-syntax-highlighting
 
 () {
-  fasd_cache="$HOME/.vimtmp/fasd-cache"
+  fasd_cache="$_MY_ZSH_CACHE/fasd-cache"
   if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
     # Complete 'f,<words>'
     fasd --init posix-alias zsh-hook zsh-wcomp zsh-wcomp-install >| "$fasd_cache"
