@@ -15,12 +15,6 @@ if [[ -n $SSH_CLIENT || -n $SSH_TTY || -n $SSH_CONNECTION ]]; then
   export _CFG_ON_SSH=1
 fi
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
 
 
 # https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html
@@ -28,6 +22,11 @@ fi
 
 function safe_export_path() { [[ -d $1 ]] && export PATH=$1:$PATH }
 function safe_source() { [[ -s $1 ]] && source $1 }
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+safe_source "/tmp/.cache/p10k-instant-prompt-${(%):-%n}.zsh"
 
 [[ -d $HOME/.zsh/Completion ]] && fpath=($HOME/.zsh/Completion $fpath)
 [[ -d $HOME/.zsh/functions ]] && fpath=($HOME/.zsh/functions $fpath)
@@ -111,8 +110,14 @@ if [[ $HOST == Keep* ]] && [[ -z $_CFG_ON_SSH ]]; then
   typeset -g MY_PROMPT_HOST=
 fi
 
+local __old_xdg_home=$XDG_CACHE_HOME
+# Move p10k cache to /tmp. It has frequent IO.
+[[ -d "/tmp" ]] && export XDG_CACHE_HOME=/tmp/.cache
+# But don't move gitstatus cache.
+export GITSTATUS_CACHE_DIR=$HOME/.cache/gitstatus
 znap source romkatv/powerlevel10k
 safe_source ~/.zsh/p10k.zsh
+export XDG_CACHE_HOME=$__old_xdg_home
 #safe_source ~/.zsh/custom_prompt.zsh
 # f]]
 

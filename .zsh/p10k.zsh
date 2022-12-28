@@ -67,14 +67,14 @@
     #rvm                     # ruby version from rvm (https://rvm.io)
     #aws                     # aws profile (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html)
     #azure                   # azure account name (https://docs.microsoft.com/en-us/cli/azure)
-    gcloud                  # google cloud cli account and project (https://cloud.google.com/)
-    google_app_cred         # google application credentials (https://cloud.google.com/docs/authentication/production)
-    toolbox                 # toolbox name (https://github.com/containers/toolbox)
+    #gcloud                  # google cloud cli account and project (https://cloud.google.com/)
+    #google_app_cred         # google application credentials (https://cloud.google.com/docs/authentication/production)
+    #toolbox                 # toolbox name (https://github.com/containers/toolbox)
     context                 # user@hostname
     ranger                  # ranger shell (https://github.com/ranger/ranger)
     #nnn                     # nnn shell (https://github.com/jarun/nnn)
     #xplr                    # xplr shell (https://github.com/sayanarijit/xplr)
-    vim_shell               # vim shell indicator (:sh)
+    #vim_shell               # vim shell indicator (:sh)
     #midnight_commander      # midnight commander shell (https://midnight-commander.org/)
     time                    # current time
     # =========================[ Line #2 ]=========================
@@ -754,25 +754,6 @@
   # Type `p10k help segment` for documentation and a more sophisticated example.
   function prompt_example() {
     p10k segment -f 208 -i '⭐' -t 'hello, %n'
-  }
-
-  # User-defined prompt segments may optionally provide an instant_prompt_* function. Its job
-  # is to generate the prompt segment for display in instant prompt. See
-  # https://github.com/romkatv/powerlevel10k/blob/master/README.md#instant-prompt.
-  #
-  # Powerlevel10k will call instant_prompt_* at the same time as the regular prompt_* function
-  # and will record all `p10k segment` calls it makes. When displaying instant prompt, Powerlevel10k
-  # will replay these calls without actually calling instant_prompt_*. It is imperative that
-  # instant_prompt_* always makes the same `p10k segment` calls regardless of environment. If this
-  # rule is not observed, the content of instant prompt will be incorrect.
-  #
-  # Usually, you should either not define instant_prompt_* or simply call prompt_* from it. If
-  # instant_prompt_* is not defined for a segment, the segment won't be shown in instant prompt.
-  function instant_prompt_example() {
-    # Since prompt_example always makes the same `p10k segment` calls, we can call it from
-    # instant_prompt_example. This will give us the same `example` prompt segment in the instant
-    # and regular prompts.
-    prompt_example
   }
 
   # User-defined prompt segments can be customized the same way as built-in segments.
