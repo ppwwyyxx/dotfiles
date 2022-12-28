@@ -26,7 +26,7 @@ function safe_source() { [[ -s $1 ]] && source $1 }
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-safe_source "/tmp/.cache/p10k-instant-prompt-${(%):-%n}.zsh"
+safe_source "/dev/shm/.cache/p10k-instant-prompt-${(%):-%n}.zsh"
 
 [[ -d $HOME/.zsh/Completion ]] && fpath=($HOME/.zsh/Completion $fpath)
 [[ -d $HOME/.zsh/functions ]] && fpath=($HOME/.zsh/functions $fpath)
@@ -111,8 +111,8 @@ if [[ $HOST == Keep* ]] && [[ -z $_CFG_ON_SSH ]]; then
 fi
 
 local __old_xdg_home=$XDG_CACHE_HOME
-# Move p10k cache to /tmp. It has frequent IO.
-[[ -d "/tmp" ]] && export XDG_CACHE_HOME=/tmp/.cache
+# Move p10k cache to /dev/shm. It has frequent IO.
+[[ -d "/dev/shm" ]] && export XDG_CACHE_HOME=/dev/shm/.cache
 # But don't move gitstatus cache.
 export GITSTATUS_CACHE_DIR=$HOME/.cache/gitstatus
 znap source romkatv/powerlevel10k
