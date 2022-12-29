@@ -35,6 +35,11 @@ autoload zkbd
 [[ -n ${key[Down]} ]] && bindkey "${key[Down]}" down-line-or-search
 [[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
 [[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
+# Ctrl+Left/Right
+bindkey "^[${key[Right]}" forward-word
+bindkey "^[${key[Left]}" backward-word
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
 
 
 # Move along shell argument, aka 'Big Word' (defined as separate by spaces)
