@@ -324,7 +324,11 @@ alias free='free -hw'
 which dfc NN && alias df='dfc -T -t -squashfs' || alias df='df -Th'
 alias convmv-gbk2utf8='convmv -f GBK -t UTF-8 --notest -r'
 alias window='wmctrl -a '
-alias cp2clip='xclip -i -selection clipboard'
+which yank NN && {
+  alias cp2clip=yank
+} || {
+  alias cp2clip='xclip -i -selection clipboard'
+}
 alias screenkey='screenkey -s small -t 0.8 --opacity 0.3'
 alias adate='for i in Asia/Shanghai US/{Eastern,Pacific}; do printf %-22s "$i ";TZ=:$i date +"%F %a %T %Z";done'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'

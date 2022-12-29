@@ -72,9 +72,9 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$HOME/.local/lib/pkgconfig
 
 # override tmux master key under ssh
 if [[ -n "$TMUX" ]] && [[ -n $_CFG_ON_SSH ]]; then
-	tmux set -g status-bg cyan
+	tmux set status-bg cyan
 	tmux unbind C-q
-	tmux set -g prefix C-a
+	tmux set prefix C-a
 	tmux bind C-a send-prefix
 fi
 
