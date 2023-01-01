@@ -130,6 +130,7 @@ export XDG_CACHE_HOME=$__OLD_XDG_CACHE_HOME
 setopt autocd				# cd without 'cd'
 setopt braceccl				# ls {a-e.1}
 unsetopt hup				# don't close background program when exiting shell
+unsetopt beep       # disable all builtin beep
 stty stop undef 2>/dev/null || true
 setopt NO_FLOW_CONTROL		# disable Ctrl+s
 setopt NOTIFY				# show bg jobs status immediately
@@ -163,8 +164,7 @@ alias nohistory='unset HISTFILE'
 safe_source $HOME/.zsh/bindings.zsh
 
 # Complete f[[
-autoload -U compinit
-compinit
+autoload -Uz compinit && compinit
 zmodload zsh/complist
 bindkey -M menuselect '^@' accept-and-menu-complete
 setopt AUTO_LIST
