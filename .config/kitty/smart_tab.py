@@ -20,7 +20,7 @@ def last_line_of_window(window):
 
 def is_tmux_window(window):
     last = last_line_of_window(window)
-    if "" in last:
+    if "" in last or "No next window" in last:
         logger.info("Last line of window: " + last)
         return True
     return False
