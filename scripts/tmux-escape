@@ -10,13 +10,15 @@ def write(b: bytes):
     os.write(1, b)
 
 
-def write_tmux_passthrough(b: bytes):
-    write(b'\x1bPtmux;')
-    write(b.replace(b'\x1b', b'\x1b\x1b'))
-    write(b'\x1b\\')
+def has_tmux():
+    return "TMUX" in os.environ
 
 
-def tmux_passthrough(buf: bytes):
+def tmux_passthrough(b: bytes):
+    return b'\x1bPtmux;' + b.replace(b'\x1b', b'\x1b\x1b') + b'\x1b\\'
+
+
+def tmux_passthrough_pipe(buf: bytes):
     curr = 0
     while True:
         start = buf.find(b'\x1b', curr)
@@ -26,7 +28,7 @@ def tmux_passthrough(buf: bytes):
         if end < 0:
             break
         write(buf[curr:start])
-        write_tmux_passthrough(buf[start:end + 2])
+        write(tmux_passthrough(buf[start:end + 2]))
         curr = end + 2
 
 
@@ -41,25 +43,33 @@ if __name__ == "__main__":
                         help="Show an image using kitty protocol. Works OKish in tmux.")
     p.add_argument("input", help="image file")
     p.add_argument("--ttl", type=int, default=3, help="time to clear the image, if in tmux")
-    p = cmds.add_parser("fallthrough", help="tmux-fallthrough for stdin. for debugging.")
-    p = cmds.add_parser("clear", help="clear kitty image")
+    p = cmds.add_parser("passthrough", help="tmux-passthrough for stdin. for debugging.")
+    p = cmds.add_parser("clearimg", help="clear kitty image")
+    p = cmds.add_parser("notify", help="send desktop notifications (OSC99)")
+    p.add_argument("message", help="notification message")
 
     args = parser.parse_args()
 
-    if args.command == "fallthrough":
+    if args.command == "passthrough":
         buf = sys.stdin.buffer.read()
-        tmux_passthrough(buf)
+        tmux_passthrough_pipe(buf)
     elif args.command == "kittyimg":
         fname = args.input
-        if "TMUX" not in os.environ:
+        if not has_tmux():
             cmd = f'timg -C -pk "{fname}"'
             os.system(cmd)
         else:
             cmd = f'timg -C -g x100 -pk "{fname}"'
             buf = subprocess.check_output(cmd, shell=True)
-            write_tmux_passthrough(buf)
+            write(tmux_passthrough(buf))
             if args.ttl > 0:
                 time.sleep(args.ttl)
                 clear_kitty()
-    elif args.command == "clear":
+    elif args.command == "clearimg":
         clear_kitty()
+    elif args.command == "notify":
+        payload = b'\x1b]99;;' + args.message.encode('utf-8') + b'\x1b\\'
+        if has_tmux():
+            payload = tmux_passthrough(payload)
+        write(payload)
+        write(b'\a')  # bell

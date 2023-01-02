@@ -124,6 +124,12 @@ znap source romkatv/powerlevel10k
 safe_source ~/.zsh/p10k.zsh
 export XDG_CACHE_HOME=$__OLD_XDG_CACHE_HOME
 #safe_source ~/.zsh/custom_prompt.zsh
+
+function _my_update_title_cmd() { echo -ne "\033]0;${1%% *}\007" }
+function _my_update_title_pwd() { echo -ne "\033]0;${(%):-"%~"}\007" }
+autoload -Uz add-zsh-hook
+add-zsh-hook preexec _my_update_title_cmd
+add-zsh-hook precmd _my_update_title_pwd
 # f]]
 
 # Basic

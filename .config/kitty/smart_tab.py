@@ -1,4 +1,7 @@
-# https://github.com/yurikhan/kitty-smart-tab/blob/master/smart_tab.py
+# This plugin is good for a workflow using kitty for local sessions but tmux for remote,
+# with the same set of keybindins to manipulate kitty windows/tabs & tmux panes/windows.
+# Inspired by https://github.com/yurikhan/kitty-smart-tab/blob/master/smart_tab.py
+# but with more functionalities.
 import logging
 import kitty.key_encoding as ke
 from kitty.options.utils import parse_key_action
@@ -20,14 +23,13 @@ def last_line_of_window(window):
 
 def is_tmux_window(window):
     last = last_line_of_window(window)
-    if "" in last or "No next window" in last:
+    if "" in last or "No next window" in last:  # Match my custom tmux bar
         logger.info("Last line of window: " + last)
         return True
     return False
 
 
 def send_key_to_window(window, key):
-    # Deal with ctrl+q>%
     keys = key.split(">")
     sent = b''
     for key in keys:
@@ -76,7 +78,6 @@ def handle_result(args, answer, target_window_id, boss):
                     "detach_window"]:
         w = boss.window_id_map.get(target_window_id)
         has_tmux = is_tmux_window(w)
-        logger.info("Window has_tmux=" + str(has_tmux))
         if has_tmux:
             # Detach tmux window.
             detach_window()

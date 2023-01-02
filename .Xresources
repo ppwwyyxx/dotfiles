@@ -17,7 +17,7 @@ URxvt.cursorBlink: true
 URxvt.pointerBlank: true
 URxvt.visualBell: true
 URxvt.urgentOnBell: false
-URxvt.bell-command: notify-send "Meow~~"
+! URxvt.bell-command: notify-send "Meow~~"
 
 ! Jump when receiving new line
 URxvt.scrollTtyOutput: false
@@ -49,8 +49,9 @@ Xft.lcdfilter:  lcddefault
 Xft.hintstyle:  hintfull
 Xft.hinting: 1
 Xft.antialias: 1
-Xft.dpi: 96
 Xft.rgba: rgb
+! Per-machine configuration
+Xft.dpi: 108
 
 ! Fix Color
 ! 0 - 7, 8 - 15: black, red, green, yellow, blue, magenta, cyan, white

@@ -2,10 +2,6 @@ setopt transient_rprompt      # clear rprompt
 _PROMPT_FINISH="%{$terminfo[sgr0]%}"
 
 function preexec() {
-  if [[ $TERM == "xterm-termite" ]]; then
-    # set win title to the command
-    echo -ne "\033]0;$1 \007"
-  fi
   COMMAND_TIMER=${COMMAND_TIMER:-$((SECONDS + $(date "+%N") / 1000000000.0))}
 }
 
@@ -43,10 +39,6 @@ $TIMECOLOR [%D{%H:%M}] \
 $YELLOWGREEN%$pwdlen<...<%~%<< \
 %{$reset_color%}$git_status%{$CYAN%}
 %{$START_BOLD%}╰🐻%{$reset_color%}%{$CYAN%}%(?..%{$fg[red]%})$INDICATOR%{$reset_color%}"
-  if [[ $TERM == "xterm-termite" ]]; then
-    # set win title to pwd
-    echo -ne "\033]0;$(pwd) \007"
-  fi
 
   local return_status="%{$fg[red]%}%(?..⏎)%{$reset_color%}"
   RPROMPT="${return_status}"
