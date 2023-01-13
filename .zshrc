@@ -402,4 +402,11 @@ which awk NN && {
   PKG_CONFIG_PATH=$(echo -n "$PKG_CONFIG_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
 }
 
-if [[ -n $ZSH_PROF ]]; then zprof; fi
+
+if [[ -n $ZSH_PROF ]]; then
+  zprof
+  # Show zsh latency of each cmd.
+  precmd () { start=$(date '+%s.%N') }
+  zle-line-init () { PREDISPLAY="[$(printf %.3f $(( $(date '+%s.%N') - $start )))] " }
+  zle -N zle-line-init
+fi

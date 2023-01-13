@@ -1,0 +1,5 @@
+# Local override of status bar and master key
+set status-bg green
+unbind C-q
+set prefix C-a
+bind C-a send-prefix

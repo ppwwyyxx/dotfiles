@@ -16,12 +16,6 @@ cp .config/compton.conf ~/.config -rvf
 
 git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git ~/.zsh/snap/zsh-snap
 
-cat << EOT >> .tmux.conf
-set -g status-bg green
-unbind C-q
-set -g prefix C-a
-bind C-a send-prefix
-EOT
 cp .tmux.conf ~/ -vf
 cp .tmux ~/ -rvf
 
