@@ -1,6 +1,7 @@
 [user]
   name = Yuxin Wu
   email = ppwwyyxx@users.noreply.github.com
+  signingkey = BD44C94225B1AB37
 [core]
   autocrlf = input
   editor = vim
@@ -9,6 +10,7 @@
 [advice]
   statusHints = false
 [merge]
+  guitool = meld
   tool = vimdiff
   ff = false
 [pull]
@@ -23,7 +25,8 @@
   default = simple
 [diff]
   mnemonicprefix = true
-  tool = gvimdiff
+  guitool = meld
+  tool = difft
 [diff "lisp"]
   xfuncname="^(\\((def|test).*)$"
 [diff "python"]
@@ -43,7 +46,7 @@
   new = green bold
   frag = magenta bold
 [pager]
-  diff = ([[ -x "$(command -v diff-so-fancy)" ]] && diff-so-fancy || ([[ -x "$(command -v diff-highlight)" ]] && diff-highlight || less --tab=4 -RFX))
+  ;diff = ([[ -x "$(command -v diff-so-fancy)" ]] && diff-so-fancy || diff-highlight) | less --tab=4 -RFX
 [alias]
   a   = add
   b   = branch
@@ -73,17 +76,19 @@
   c   = commit
   cv  = commit -v
   ca  = commit -a
+  caa = commit -a --amend
   cav = commit -av
 
-  l   = log --graph
+  l   = log-link
   log = log --graph
-  lc  = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
+  xl  = log --color --graph --decorate --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
   lola= log --graph --decorate --pretty=oneline --abbrev-commit --all
 
   ss  = stash
   sl  = stash list
   sa  = stash apply
 
+  # 'git submodule sync' first, then
   sbi = submodule update --init --recursive
 
   gcc = gc --aggressive --prune=now
@@ -91,6 +96,9 @@
 
   # from CIA
   aliases = !git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /' | sort
+
+  # https://www.atlassian.com/git/tutorials/git-lfs#pulling-and-checking-out
+  plfs = !git -c filter.lfs.smudge= -c filter.lfs.required=false pull && git lfs pull
 
   pulll = pull --rebase
   pullll = pull --rebase
@@ -118,6 +126,7 @@
 [init]
   templatedir = ~/.git-templates
 [tig]
+  mouse = true
   tab-size = 2
   ignore-space = some
   main-view = date author:display=full,width=11 commit-title:graph=v2,refs=true
@@ -129,3 +138,8 @@
   generic = gg move-first-line
 [include]
   path = ~/.gitconfig.local
+[filter "lfs"]
+  required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process

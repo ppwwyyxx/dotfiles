@@ -68,7 +68,7 @@ if __name__ == "__main__":
     elif args.command == "clearimg":
         clear_kitty()
     elif args.command == "notify":
-        payload = b'\x1b]99;;' + args.message.encode('utf-8') + b'\x1b\\'
+        payload = b'\x1b]9;' + args.message.encode('utf-8') + b'\x1b\\'
         if has_tmux():
             payload = tmux_passthrough(payload)
         write(payload)

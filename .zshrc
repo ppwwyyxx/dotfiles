@@ -83,7 +83,7 @@ safe_source ~/.zsh/config_libs.zsh
 export MAKEFLAGS="-j8"
 export CXXFLAGS="-Wall -Wextra"
 
-export EDITOR=vim
+(( ${+commands[nvim]} )) && export EDITOR=nvim || export EDITOR=vim
 export PAGER="/usr/bin/less -r"
 cdpath=(~)
 # f]]
@@ -125,8 +125,8 @@ safe_source ~/.zsh/p10k.zsh
 export XDG_CACHE_HOME=$__OLD_XDG_CACHE_HOME
 #safe_source ~/.zsh/custom_prompt.zsh
 
-function _my_update_title_cmd() { echo -ne "\033]0;${1%% *}\007" }
-function _my_update_title_pwd() { echo -ne "\033]0;${(%):-"%~"}\007" }
+function _my_update_title_cmd() { echo -ne "\e]0;${1%% *}\a" }
+function _my_update_title_pwd() { echo -ne "\e]0;${(%):-"%~"}\a" }
 autoload -Uz add-zsh-hook
 add-zsh-hook preexec _my_update_title_cmd
 add-zsh-hook precmd _my_update_title_pwd

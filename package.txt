@@ -318,3 +318,4 @@ fcitx5-pinyin-zhwiki
 exfatprogs
 downgrade
 mdcat
+git-filter-repo

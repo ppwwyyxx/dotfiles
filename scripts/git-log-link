@@ -1,0 +1,130 @@
+#!/usr/bin/python3
+# Reference: https://github.com/lilydjwg/git-linked
+# BSD 3-Clause License
+# Copyright (c) 2020, 依云
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+#
+# 3. Neither the name of the copyright holder nor the names of its
+#    contributors may be used to endorse or promote products derived from
+#    this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+import sys
+import subprocess
+import re
+
+import pygit2
+
+PAGER_CMD = ['less', '-rFXM']
+
+
+def linked(text: str, url: str) -> str:
+  return f'\x1b]8;;{url}\x1b\\{text}\x1b]8;;\x1b\\'
+
+
+class Transformer:
+  def __init__(self) -> None:
+    self.git_repo = repo = pygit2.Repository('.')
+    # there may be a color code at the front so no \b
+    self.git_hash = re.compile(r'[a-f0-9]{6,}\b')
+    self.gh_repo = None
+
+    gh_url = None
+    try:
+      url = repo.remotes['upstream'].url
+      if 'github.com' in url:
+        gh_url = url
+    except KeyError:
+      if urls := [r.url for r in repo.remotes if 'github.com' in r.url]:
+        gh_url = urls[0]
+
+    if gh_url:
+      if gh_url.endswith('.git'):
+        gh_url = gh_url[:-4]
+      if m := re.search(r'(?<=[:/]).*', gh_url):
+        self.gh_repo = m.group(0)
+        self.transform = self.transform_github
+
+  def transform_github(self, line: str) -> str:
+    line = self.git_hash.sub(self._link_commit, line)
+    line = re.sub(r'([-/\w]*)#(\d+)', self._link_gh_issue, line)
+    return line
+
+  def transform(self, line: str) -> str:
+    return self.git_hash.sub(self._link_commit, line)
+
+  def _link_gh_issue(self, match: re.Match) -> str:
+    text = match.group(0)
+    repo = match.group(1) or self.gh_repo
+    nr = match.group(2)
+    url = f'https://github.com/{repo}/issues/{nr}'
+    return linked(text, url)
+
+  def _link_commit(self, match: re.Match) -> str:
+    hash = match.group(0)
+    repo = self.git_repo
+    try:
+      obj = repo[hash]
+      fullhash = obj.hex
+      type = obj.type_str
+    except (KeyError, ValueError): # no such commit, ambiguous
+      return hash
+    if self.gh_repo and type == 'commit':
+      line = linked(hash, f'https://github.com/{self.gh_repo}/commit/{fullhash}')
+    return line
+
+def main():
+  args = sys.argv[1:]
+  if not args:
+      args = ["log", "--graph"]
+  if args:
+    git = subprocess.Popen(
+        ['git', '--no-pager', *args, '--color=always'],
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+    input = git.stdout
+
+  pager = subprocess.Popen(PAGER_CMD, stdin=subprocess.PIPE, text=True)
+  transformer = Transformer()
+  try:
+    for line in input:
+      line = transformer.transform(line)
+      pager.stdin.write(line)
+  except BrokenPipeError:
+    pass
+  finally:
+    if git:
+      git.stdout.close()
+      git.wait()
+
+    try:
+      pager.stdin.close()
+    except BrokenPipeError:
+      pass
+    pager.wait()
+
+
+if __name__ == '__main__':
+  main()
