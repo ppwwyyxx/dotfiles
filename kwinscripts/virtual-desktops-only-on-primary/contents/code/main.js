@@ -3,7 +3,7 @@ function bind(window) {
     window.previousScreen = window.screen;
     window.screenChanged.connect(window, update);
     window.desktopChanged.connect(window, update);
-    print("Window " + window.windowId + " has been bound");
+    //print("Window " + window.windowId + " has been bound");
 }
 
 function update(window) {

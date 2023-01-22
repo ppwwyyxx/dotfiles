@@ -46,3 +46,17 @@ function windowToNextScreen() {
 };
 
 registerShortcut("MoveToNextScreen", "(custom) Move Window to Next Screen", "", windowToNextScreen);
+
+
+var fixWechat = function() {
+    var clients = workspace.clientList();
+    for (var i=0; i<clients.length; i++) {
+        if (clients[i].caption.indexOf("WeChat") == 0 && clients[i].desktop != workspace.currentDesktop) {
+            // minimize wechat if it's not on current desktop
+            // https://github.com/vufa/deepin-wine-wechat-arch/issues/201#issuecomment-1188833005
+            clients[i].minimized = true;
+        }
+    }
+};
+workspace.currentDesktopChanged.connect(fixWechat);
+
