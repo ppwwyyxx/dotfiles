@@ -196,6 +196,7 @@ compdef _pip pip2
 compdef _pip pip3
 
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
+zstyle ':completion:*' use-cache yes
 zstyle ':completion:*' verbose yes
 zstyle ':completion:*' menu select
 zstyle ':completion:*:*:default' force-list always
@@ -247,19 +248,22 @@ zstyle ':completion:*:*:*:*:processes' force-list always
 zstyle ':completion:*:processes' command 'ps a -u $USER -o pid,tname,state,command '
 
 # buffer words completion for tmux
-tmux_buffer_completion() {
-	local expl
-	local -a w npane
-	npane=$(tmux list-panes |tail -n 1 |sed 's/:.*//g')
-	if [[ -z "$TMUX_PANE" ]]; then
-		_message "not running inside tmux!"
-		return 1
-	fi
-	for i in $(seq 0 $npane); do
-		w=$w${(u)=$(tmux capture-pane -t $i \; show-buffer \; delete-buffer)}
-	done
-	w=(  $(echo $w)  )							# why must use a echo
-	_wanted values expl 'words from pane buffer' compadd -a w
+function tmux_buffer_completion() {
+  local expl
+  local -a w npane
+  npane=$(tmux list-panes |tail -n 1 |sed 's/:.*//g')
+  if [[ -z "$TMUX_PANE" ]]; then
+    _message "not running inside tmux!"
+    return 1
+  fi
+  for i in $(seq 0 $npane); do
+    # u: unique
+    # grep: remove words length <=3
+    w=$w${(u)=$(tmux capture-pane -t $i \; show-buffer \; delete-buffer | \
+      sed 's/ /\n/g' | \grep -E '([a-zA-Z0-9_].*){4}'  | tr '\n' ' ')}
+  done
+  w=(  $(echo $w)  )							# why must use a echo
+  _wanted values expl 'words from pane buffer' compadd -a w
 }
 zle -C tmux-pane-words-prefix   complete-word _generic
 zle -C tmux-pane-words-anywhere complete-word _generic
@@ -290,19 +294,19 @@ __expand_dots() {
   BUFFER=$cur
 }
 __user_complete(){
-	if [[ -z $BUFFER ]]; then
-		return
-	fi
-	if [[ $BUFFER =~ "^\.\.\.*$" ]]; then
-	 	__expand_dots "$BUFFER"
-		zle end-of-line
-		return
-	elif [[ $BUFFER =~ ".* \.\.\..*$" ]] ;then
+  if [[ -z $BUFFER ]]; then
+    return
+  fi
+  if [[ $BUFFER =~ "^\.\.\.*$" ]]; then
     __expand_dots "$BUFFER"
-		zle end-of-line
-		return
-	fi
-	zle expand-or-complete
+    zle end-of-line
+    return
+  elif [[ $BUFFER =~ ".* \.\.\..*$" ]] ;then
+    __expand_dots "$BUFFER"
+    zle end-of-line
+    return
+  fi
+  zle expand-or-complete
 }
 zle -N __user_complete
 bindkey "\t" __user_complete
@@ -310,25 +314,25 @@ autoload compinstall
 
 # Custom Return
 __path_parse(){
-	if [[ $BUFFER == "." ]]; then
-		BUFFER="cd ../"
-		return
-  elif [[ $BUFFER =~ "^\.\.\.?$" ]] ;then	# expand ...
+  if [[ $BUFFER == "." ]]; then
+    BUFFER="cd ../"
+    return
+  elif [[ $BUFFER =~ "^\.\.\.?$" ]] ;then  # expand ...
     __expand_dots "cd $BUFFER"
     return
-	elif [[ $BUFFER =~ ".* \.\.\..*" ]] ;then	# expand ...
+  elif [[ $BUFFER =~ ".* \.\.\..*" ]] ;then  # expand ...
     __expand_dots "$BUFFER"
     return
-	elif [[ $BUFFER =~ "^\.\..*" ]]; then		# auto add cd to the beginning of ...
-		if [[ -d `echo "$BUFFER" |sed 's/\\\ /\ /g; s/l$//g; s/ls$//g'` ]]; then
-			BUFFER=`echo "$BUFFER" |sed 's/^/cd\ /g'`
-			__path_parse
-		fi
-		zle accept-line
-	elif [[ $BUFFER =~ "^cd .*/ls*$" ]] ; then	# auto fix ls typo
-		BUFFER=`echo "$BUFFER" |sed 's/l[^\/]*$/;ls/g' `
-		zle end-of-line
-	fi
+  elif [[ $BUFFER =~ "^\.\..*" ]]; then    # auto add cd to the beginning of ...
+    if [[ -d `echo "$BUFFER" |sed 's/\\\ /\ /g; s/l$//g; s/ls$//g'` ]]; then
+      BUFFER=`echo "$BUFFER" |sed 's/^/cd\ /g'`
+      __path_parse
+    fi
+    zle accept-line
+  elif [[ $BUFFER =~ "^cd .*/ls*$" ]] ; then  # auto fix ls typo
+    BUFFER=`echo "$BUFFER" |sed 's/l[^\/]*$/;ls/g' `
+    zle end-of-line
+  fi
 }
 
 # commands which should always be executed in background
@@ -340,9 +344,14 @@ special_command(){
 }
 
 __user_ret(){
-	__path_parse
-	special_command
-	zle accept-line
+  if [[ $BUFFER == "j" && $commands[fzf] ]]; then
+    BUFFER=""
+    zle fzf-cd-widget
+    return
+  fi
+  __path_parse
+  special_command
+  zle accept-line
 }
 zle -N __user_ret
 bindkey "\r" __user_ret
@@ -359,14 +368,27 @@ safe_source "$HOME/.rvm/scripts/rvm"		# Load RVM into a shell session *as a func
 safe_source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
 safe_export_path $HOME/.zsh/Pinyin-Completion/bin
 znap source ohmyzsh/ohmyzsh plugins/{extract,transfer}
+export _FASD_MAX=4000
 znap clone clvv/fasd  # source does not work probably due to aliases
 if [[ $commands[fzf] ]]; then
   if [[ $commands[fd] ]]; then
     export FZF_DEFAULT_COMMAND='fd --type f -c always'
   fi
   export FZF_DEFAULT_OPTS='--ansi --multi'
-  znap source ohmyzsh/ohmyzsh plugins/fzf    # Ctrl-R, Alt-C
+  export FZF_CTRL_T_COMMAND="sort ~/.fasd -t '|' -k 2 -n | cut -d '|' -f 1"
+  export FZF_ALT_C_COMMAND="sort ~/.fasd -t '|' -k 2 -n | cut -d '|' -f 1"
+  znap source ohmyzsh/ohmyzsh plugins/fzf    # Ctrl-R
+  bindkey -r '\ec'  # Alt-c is triggered by 'j'
+  bindkey -r '^T'
+  bindkey '^X^F' fzf-file-widget  # Find recent file.
+
   safe_source $HOME/.zsh/fzf-fasd.plugin.zsh  # j <TAB>
+
+  if [[ $commands[rg] ]]; then
+    znap source ppwwyyxx/fzf-complete-flags fzf-complete-flags.zsh
+    bindkey -r '^Q'
+    bindkey '^X^R' fzf-flag-widget  # Find recent flag, aka complete from history.
+  fi
 fi
 export PATH=$PATH:$_ZSH_SNAP_BASE/fasd
 # znap source ohmyzsh/ohmyzsh plugins/ssh-agent
@@ -386,7 +408,7 @@ znap source zsh-users/zsh-syntax-highlighting
   unset fasd_cache
   alias j='fasd_cd -d'
   alias jj='fasd_cd -d -i'	# interactive
-  unalias s d a z sf sd
+  unalias s d a z sf sd f zz
   bindkey '^X^O' fasd-complete
 }
 # f]]
@@ -395,12 +417,12 @@ safe_source $HOME/.zsh/alias.zsh  # aliases
 safe_source $HOME/.zshrc.local
 
 ## dedup paths
-which awk NN && {
+if [[ $commands[awk] ]]; then
   LD_LIBRARY_PATH=$(echo -n "$LD_LIBRARY_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
   PATH=$(echo -n "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
   CPATH=$(echo -n "$CPATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
   PKG_CONFIG_PATH=$(echo -n "$PKG_CONFIG_PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++' | head -c-1)
-}
+fi
 
 
 if [[ -n $ZSH_PROF ]]; then

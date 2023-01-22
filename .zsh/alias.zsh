@@ -30,19 +30,21 @@ alias watch='watch '  # allow watching an alias
   if [[ -z $_CFG_ON_SSH ]]; then
     _hyperlink="--hyperlink=auto"
   fi
-  alias l="ls -F --color=auto --quoting-style=literal $_hyperlink"
-  alias l.="ls -d .* --color=auto $_hyperlink"
-  alias ls="ls -F --color=auto --quoting-style=literal $_hyperlink"
-  alias sl="ls -F --color=auto --quoting-style=literal $_hyperlink"
-  alias lss="ls -F --color=auto --quoting-style=literal $_hyperlink"
+  # Alias must not end with a space.
+  alias l="ls -F --color=auto $_hyperlink --quoting-style=literal"
+  alias l.="ls -d .* $_hyperlink --color=auto"
+  alias ls="ls -F --color=auto $_hyperlink --quoting-style=literal"
+  alias sl="ls -F --color=auto $_hyperlink --quoting-style=literal"
+  alias lss="ls -F --color=auto $_hyperlink --quoting-style=literal"
+
+  function ll(){
+    ls -AhlF --color=auto $_hyperlink --time-style="+[34m[[32m%g-%m-%d [35m%k:%M[33m][m" $@
+    [[ "$*" == "$1" ]] && echo -e " $GREEN  --[$LIGHTBLUE  Dir:    $CYAN`ls -Al $@ | grep '^drw' | wc -l`$LIGHTGREEN|$YELLOW \
+     File: $GREEN`ls -Al $@ | grep -v '^drw' | grep -v total | wc -l` ]-- $WHITE"
+  }
 }
 alias lsf="ls -1f"  # fast ls
 alias lll='ls++'
-function ll(){
-  ls -AhlF --color=auto --hyperlink=auto --time-style="+[34m[[32m%g-%m-%d [35m%k:%M[33m][m" $@
-  [[ "$*" == "$1" ]] && echo -e " $GREEN  --[$LIGHTBLUE  Dir:    $CYAN`ls -Al $@ | grep '^drw' | wc -l`$LIGHTGREEN|$YELLOW \
-   File: $GREEN`ls -Al $@ | grep -v '^drw' | grep -v total | wc -l` ]-- $WHITE"
-}
 
 alias L=less
 alias C='cat'
