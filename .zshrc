@@ -368,15 +368,15 @@ safe_source "$HOME/.rvm/scripts/rvm"		# Load RVM into a shell session *as a func
 safe_source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
 safe_export_path $HOME/.zsh/Pinyin-Completion/bin
 znap source ohmyzsh/ohmyzsh plugins/{extract,transfer}
-export _FASD_MAX=4000
+export _FASD_MAX=4000 _FASD_SINK=$HOME/.cache/fasd.log
 znap clone clvv/fasd  # source does not work probably due to aliases
 if [[ $commands[fzf] ]]; then
   if [[ $commands[fd] ]]; then
     export FZF_DEFAULT_COMMAND='fd --type f -c always'
   fi
   export FZF_DEFAULT_OPTS='--ansi --multi'
-  export FZF_CTRL_T_COMMAND="sort ~/.fasd -t '|' -k 2 -n | cut -d '|' -f 1"
-  export FZF_ALT_C_COMMAND="sort ~/.fasd -t '|' -k 2 -n | cut -d '|' -f 1"
+  export FZF_CTRL_T_COMMAND="sort ~/.fasd -t '|' -k 2 -n -r | cut -d '|' -f 1"
+  export FZF_ALT_C_COMMAND="sort ~/.fasd -t '|' -k 2 -n -r | cut -d '|' -f 1"
   znap source ohmyzsh/ohmyzsh plugins/fzf    # Ctrl-R
   bindkey -r '\ec'  # Alt-c is triggered by 'j'
   bindkey -r '^T'
@@ -402,8 +402,10 @@ znap source zsh-users/zsh-syntax-highlighting
   fasd_cache="$_MY_ZSH_CACHE/fasd-cache"
   if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
     # Complete 'f,<words>'
-    fasd --init posix-alias zsh-hook zsh-wcomp zsh-wcomp-install >| "$fasd_cache"
+    # zsh-hook is manually added later
+    fasd --init posix-alias zsh-wcomp zsh-wcomp-install >| "$fasd_cache"
   fi
+
   source "$fasd_cache"
   unset fasd_cache
   alias j='fasd_cd -d'
@@ -411,6 +413,12 @@ znap source zsh-users/zsh-syntax-highlighting
   unalias s d a z sf sd f zz
   bindkey '^X^O' fasd-complete
 }
+_fasd_preexec() {  # Customized fasd_preexec
+  if [[ "$1" = [[:space:]]* ]]; then return; fi  # ignore command starts with space
+  if [ ${#2} -ge 300 ]; then return; fi
+  { eval "fasd --proc \$(fasd --sanitize \$2)"; } >> "$_FASD_SINK" 2>&1
+}
+add-zsh-hook preexec _fasd_preexec
 # f]]
 
 safe_source $HOME/.zsh/alias.zsh  # aliases
