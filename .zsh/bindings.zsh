@@ -9,11 +9,13 @@ _exit_zsh_if_empty() {
 }
 zle -N _exit_zsh_if_empty
 bindkey '^D' _exit_zsh_if_empty
+#bindkey '^[[100;5u' _exit_zsh_if_empty
 
 autoload edit-command-line
 zle -N edit-command-line
 bindkey -M viins '^v' edit-command-line
 bindkey '^h' backward-char
+#bindkey '^[[104;5u' backward-char
 bindkey '^l' forward-char
 bindkey '^b' backward-word
 bindkey '^f' forward-word

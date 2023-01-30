@@ -47,15 +47,17 @@ alias lsf="ls -1f"  # fast ls
 alias lll='ls++'
 
 alias L=less
-alias C='cat'
 alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
 alias -g N='>/dev/null'
 alias -g NN='>/dev/null 2>&1'
+export BAT_STYLE="numbers,grid,changes"
 which batcat NN && {
-  alias cat='batcat --style=numbers,grid'
+  alias cat='batcat'
+  alias L='batcat --paging=always'
 }
 which bat NN && {
-  alias cat='bat --style=numbers,grid'
+  alias cat='bat'
+  alias L='bat --paging=always'
 }
 which rg NN && {
   alias -g G='|rg'

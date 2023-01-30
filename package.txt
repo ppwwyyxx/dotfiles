@@ -319,3 +319,6 @@ exfatprogs
 downgrade
 mdcat
 git-filter-repo
+hyperfine
+hexyl
+pastel

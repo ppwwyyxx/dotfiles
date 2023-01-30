@@ -23,6 +23,7 @@ fi
 function safe_export_path() { [[ -d $1 ]] && export PATH=$1:$PATH }
 function safe_source() { [[ -s $1 ]] && source $1 }
 
+# Fast path for cache that doesn't persist across restarts:
 if [[ -d /dev/shm ]]; then _MY_ZSH_CACHE=/dev/shm/zsh-cache; else _MY_ZSH_CACHE=/tmp/zsh-cache; fi
 local __OLD_XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
 zmodload -F zsh/files b:zf_mkdir
@@ -140,7 +141,7 @@ unsetopt beep       # disable all builtin beep
 stty stop undef 2>/dev/null || true
 setopt NO_FLOW_CONTROL		# disable Ctrl+s
 setopt NOTIFY				# show bg jobs status immediately
-limit coredumpsize 0		# disable core dumps
+limit coredumpsize 10000  # `ulimit -c unlimited` to revert this
 WORDCHARS='*?[]~!#$%^(){}<>'
 setopt EXTENDED_GLOB
 #unsetopt CASE_GLOB
@@ -215,9 +216,10 @@ zstyle ':completion::complete:*' '\\'
 if [[ $commands[dircolors] ]]; then
   eval $(dircolors -b)
 fi
+export LS_COLORS="$LS_COLORS*.f4v=00;35:*.pdf=00;35:*.djvu=00;35:"		# add custom ls_color
+export LS_COLORS=${LS_COLORS:gs/=01;/=00;/}  # Disable bold colors. Don't look nice on CJK.
 export ZLSCOLORS="${LS_COLORS}"
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-export LS_COLORS="$LS_COLORS*.f4v=01;35:*.pdf=01;35:*.djvu=01;35:"		# add custom ls_color
 
 # Fix case and typo
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
@@ -368,57 +370,15 @@ safe_source "$HOME/.rvm/scripts/rvm"		# Load RVM into a shell session *as a func
 safe_source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
 safe_export_path $HOME/.zsh/Pinyin-Completion/bin
 znap source ohmyzsh/ohmyzsh plugins/{extract,transfer}
-export _FASD_MAX=4000 _FASD_SINK=$HOME/.cache/fasd.log
-znap clone clvv/fasd  # source does not work probably due to aliases
-if [[ $commands[fzf] ]]; then
-  if [[ $commands[fd] ]]; then
-    export FZF_DEFAULT_COMMAND='fd --type f -c always'
-  fi
-  export FZF_DEFAULT_OPTS='--ansi --multi'
-  export FZF_CTRL_T_COMMAND="sort ~/.fasd -t '|' -k 2 -n -r | cut -d '|' -f 1"
-  export FZF_ALT_C_COMMAND="sort ~/.fasd -t '|' -k 2 -n -r | cut -d '|' -f 1"
-  znap source ohmyzsh/ohmyzsh plugins/fzf    # Ctrl-R
-  bindkey -r '\ec'  # Alt-c is triggered by 'j'
-  bindkey -r '^T'
-  bindkey '^X^F' fzf-file-widget  # Find recent file.
-
-  safe_source $HOME/.zsh/fzf-fasd.plugin.zsh  # j <TAB>
-
-  if [[ $commands[rg] ]]; then
-    znap source ppwwyyxx/fzf-complete-flags fzf-complete-flags.zsh
-    bindkey -r '^Q'
-    bindkey '^X^R' fzf-flag-widget  # Find recent flag, aka complete from history.
-  fi
-fi
-export PATH=$PATH:$_ZSH_SNAP_BASE/fasd
+safe_source $HOME/.zsh/fzf-fasd.zsh
 # znap source ohmyzsh/ohmyzsh plugins/ssh-agent
 
 ### The next two plugins have to be this order
 HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS="I"			# sensitive search
 znap source zsh-users/zsh-history-substring-search   # PageUp/Dn
 znap source zsh-users/zsh-syntax-highlighting
+ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=red,standout
 
-() {
-  fasd_cache="$_MY_ZSH_CACHE/fasd-cache"
-  if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
-    # Complete 'f,<words>'
-    # zsh-hook is manually added later
-    fasd --init posix-alias zsh-wcomp zsh-wcomp-install >| "$fasd_cache"
-  fi
-
-  source "$fasd_cache"
-  unset fasd_cache
-  alias j='fasd_cd -d'
-  alias jj='fasd_cd -d -i'	# interactive
-  unalias s d a z sf sd f zz
-  bindkey '^X^O' fasd-complete
-}
-_fasd_preexec() {  # Customized fasd_preexec
-  if [[ "$1" = [[:space:]]* ]]; then return; fi  # ignore command starts with space
-  if [ ${#2} -ge 300 ]; then return; fi
-  { eval "fasd --proc \$(fasd --sanitize \$2)"; } >> "$_FASD_SINK" 2>&1
-}
-add-zsh-hook preexec _fasd_preexec
 # f]]
 
 safe_source $HOME/.zsh/alias.zsh  # aliases
