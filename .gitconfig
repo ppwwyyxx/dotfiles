@@ -26,7 +26,9 @@
 [diff]
   mnemonicprefix = true
   guitool = meld
-  tool = difft
+  tool = difftastic
+[difftool "difftastic"]
+  cmd = difft "$LOCAL" "$REMOTE"
 [diff "lisp"]
   xfuncname="^(\\((def|test).*)$"
 [diff "python"]
@@ -46,7 +48,9 @@
   new = green bold
   frag = magenta bold
 [pager]
-  ;diff = ([[ -x "$(command -v diff-so-fancy)" ]] && diff-so-fancy || diff-highlight) | less --tab=4 -RFX
+  grep = ([[ -x "$(command -v delta)" ]] && delta || less -RFX)
+  diff = ([[ -x "$(command -v delta)" ]] && delta || diff-highlight) #| less --tab=4 -RFX
+  blame = ([[ -x "$(command -v delta)" ]] && delta || less -RFX)
 [alias]
   a   = add
   b   = branch
@@ -108,17 +112,6 @@
   pullllllll = pull --rebase
   pulllllllll = pull --rebase
   pullllllllll = pull --rebase
-  pulllllllllll = pull --rebase
-  pullllllllllll = pull --rebase
-  pulllllllllllll = pull --rebase
-  pullllllllllllll = pull --rebase
-  pulllllllllllllll = pull --rebase
-  pullllllllllllllll = pull --rebase
-  pulllllllllllllllll = pull --rebase
-  pullllllllllllllllll = pull --rebase
-  pulllllllllllllllllll = pull --rebase
-  pullllllllllllllllllll = pull --rebase
-  pulllllllllllllllllllll = pull --rebase
 [http]
   ;proxy=http://localhost:7777
 [https]
@@ -143,3 +136,13 @@
   clean = git-lfs clean -- %f
   smudge = git-lfs smudge -- %f
   process = git-lfs filter-process
+[delta]
+  navigate = true    # use n and N to move between diff sections
+  line-numbers = true
+  line-numbers-left-format = 
+  light = false
+  file-style = omit
+  hunk-header-decoration-style = 
+  hunk-header-style=file line-number syntax
+  hyperlinks = true
+  tabs = 2

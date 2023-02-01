@@ -89,17 +89,24 @@ export PAGER="/usr/bin/less -r"
 cdpath=(~)
 # f]]
 
-## PROMPT
-autoload -U promptinit
-promptinit
-
-# colors
+## Colors
 autoload colors zsh/terminfo
 colors
 for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
   eval _$color='%{$terminfo[bold]$fg[${(L)color}]%}'
   eval $color='$fg[${(L)color}]'
 done
+
+if [[ $commands[vivid] ]]; then
+  export LS_COLORS="$(vivid generate my-solarized)"
+elif [[ $commands[dircolors] ]]; then
+  eval $(dircolors -b)
+  export LS_COLORS=${LS_COLORS:gs/=01;/=00;/}  # Disable bold colors. Don't look nice on CJK.
+fi
+
+## PROMPT f[[
+autoload -U promptinit
+promptinit
 
 if [[ -n $_CFG_ON_SSH ]]; then
   export SUDO_PROMPT=$'[\e[31;5msudo\e[m] password for \e[34;1m%p\e[m: (meow~~) '
@@ -213,11 +220,6 @@ zstyle ':completion:*' squeeze-shlashes 'yes'
 zstyle ':completion::complete:*' '\\'
 
 # Colorful Completion
-if [[ $commands[dircolors] ]]; then
-  eval $(dircolors -b)
-fi
-export LS_COLORS="$LS_COLORS*.f4v=00;35:*.pdf=00;35:*.djvu=00;35:"		# add custom ls_color
-export LS_COLORS=${LS_COLORS:gs/=01;/=00;/}  # Disable bold colors. Don't look nice on CJK.
 export ZLSCOLORS="${LS_COLORS}"
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 

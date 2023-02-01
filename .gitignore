@@ -4,5 +4,6 @@ __pycache__
 *.~undo-tree~
 
 .zsh/snap
+.zsh/zsh-bench
 *.terminfo
 .tmux/plugins

@@ -1,0 +1,252 @@
+core:
+  normal_text: [$no]
+  regular_file: [$fi]
+  reset_to_normal: [$rs]
+  directory: [$di]
+  symlink: [$ln]
+  multi_hard_link: [$mh]
+  fifo: [$pi]
+  socket: [$so]
+  door: [$do]
+  block_device: [$bd]
+  character_device: [$cd]
+  broken_symlink: [$or]
+  missing_symlink_target: [$mi]
+  setuid: [$su]
+  setgid: [$sg]
+  file_with_capability: [$ca]
+  sticky_other_writable: [$tw]
+  other_writable: [$ow]
+  sticky: [$st]
+  executable_file: [$ex]
+
+text:
+  scaffold:
+    - COPYING
+    - COPYRIGHT
+    - LICENSE
+    - LICENSE-APACHE
+    - LICENSE-MIT
+    - CONTRIBUTORS
+    - CONTRIBUTORS.md
+    - CONTRIBUTORS.txt
+    - CODEOWNERS
+    - OWNERS
+
+  configuration:
+    - .cfg
+    - .conf
+    - .ini
+    - .json
+    - .tml
+    - .toml
+    - .yaml
+    - .yml
+    - requirements.txt
+    - MANIFEST.in
+    - setup.py
+    - package-lock.json
+    - .gemspec
+    - .flake8
+    - .clang-format
+
+  docs:
+    - .txt
+    - .markdown
+    - .md
+    - .mdown
+    - .org
+    - .rst
+    - .log
+
+programming:
+  tooling:
+    vcs:
+      git:
+        - .gitignore
+        - .gitmodules
+        - .gitattributes
+        - .gitconfig
+
+      hg:
+        - .hgrc
+        - hgrc
+
+    build:
+      - BUILD
+      - .bzl
+      - .cmake
+      - CMakeLists.txt
+      - .cmake.in
+      - Makefile
+      - Makefile.am
+      - .make
+      - configure
+      - configure.ac
+      - SConscript
+      - SConstruct
+
+media:
+  image:
+    - .bmp
+    - .eps
+    - .gif
+    - .ico
+    - .jpeg
+    - .jpg
+    - .pbm
+    - .pgm
+    - .png
+    - .ppm
+    - .psd
+    - .svg
+    - .tif
+    - .tiff
+    - .webp
+    - .xcf
+
+  audio:
+    - .aif
+    - .ape
+    - .flac
+    - .m3u
+    - .m4a
+    - .mid
+    - .mp3
+    - .ogg
+    - .opus
+    - .wav
+    - .wma
+    - .wv
+
+  video:
+    - .avi
+    - .flv
+    - .f4v
+    - .m4v
+    - .mkv
+    - .mov
+    - .mp4
+    - .mpeg
+    - .mpg
+    - .rm
+    - .rmvb
+    - .swf
+    - .vob
+    - .webm
+    - .wmv
+
+office:
+  document:
+    - .doc
+    - .docx
+    - .epub
+    - .djvu
+    - .odt
+    - .pdf
+    - .ps
+    - .rtf
+    - .sxw
+
+  spreadsheet:
+    - .xls
+    - .xlsx
+    - .ods
+    - .xlr
+
+  presentation:
+    - .ppt
+    - .pptx
+    - .odp
+    - .sxi
+    - .kex
+    - .pps
+
+  calendar:
+    - .ics
+
+archives:
+  packages:
+    - .apk
+    - .deb
+    - .rpm
+
+  images:
+    - .bin
+    - .dmg
+    - .img
+    - .iso
+    - .vcd
+
+  other:
+    - .7z
+    - .arj
+    - .bz
+    - .bz2
+    - .gz
+    - .jar
+    - .pkg
+    - .rar
+    - .tar
+    - .tbz
+    - .tbz2
+    - .tgz
+    - .xz
+    - .z
+    - .zip
+    - .zst
+
+unimportant:
+  build_artifacts:
+    cxx:
+      - .o
+      - .la
+      - .lo
+    cmake:
+      - CMakeCache.txt
+    automake:
+      - Makefile.in
+    rust:
+      - .rlib
+    python:
+      - .pyc
+      - .pyd
+      - .pyo
+    haskell:
+      - .cache
+    java:
+      - .class
+    scons:
+      - .scons_opt
+      - .sconsign.dblite
+    latex:
+      - .aux
+      - .bbl
+      - .bcf
+      - .blg
+      - .fdb_latexmk
+      - .fls
+      - .idx
+      - .ilg
+      - .ind
+      - .out
+      - .sty
+      - .synctex.gz
+      - .toc
+    llvm:
+      - .bc
+
+  macos:
+    - .CFUserTextEncoding
+    - .DS_Store
+    - .localized
+
+  other:
+    - "~"
+    - .bak
+    - .git  # only works for '.git' files (submodules)
+    - .lock
+    - .orig
+    - .pid
+    - .swp
+    - .tmp
