@@ -5,7 +5,8 @@ colors:
   # The assignment of colors to file types roughly follows `dircolors`
 
   base02  :  '073642'
-  gray :  '586e75'  # gray
+  gray    :  '555575'
+  lightgray: '8888a8'
 
   yellow  :  'b58900'
   orange  :  'ffa500'
@@ -13,7 +14,7 @@ colors:
   magenta :  'd33682'
   pink: 'ff80ff'
   #violet  :  '6c71c4'
-  blue    :  '246fce'
+  blue    :  '246fde'
   cyan    :  '2fadbe'
   green   :  '25c900'
 
@@ -86,6 +87,8 @@ text:
 programming:
   tooling: 
     foreground: 9795f5
+  unittest:
+    foreground: lightgray
 
 media:
   image:

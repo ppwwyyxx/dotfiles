@@ -73,7 +73,7 @@
   showdelete = log --diff-filter=D --summary
 
   dc  = diff --cached
-  d   = diff
+  d   = diff --diff-filter=d  # don't show deleted files
   last= diff HEAD^
   lastchange = log -p --follow -n 1
 
@@ -146,3 +146,8 @@
   hunk-header-style=file line-number syntax
   hyperlinks = true
   tabs = 2
+
+  minus-style = "syntax #630d0d"
+  minus-emph-style = syntax red
+  plus-style = syntax darkgreen
+  plus-emph-style = syntax forestgreen

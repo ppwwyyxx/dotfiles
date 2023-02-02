@@ -61,10 +61,15 @@ if __name__ == "__main__":
         else:
             cmd = f'timg -C -g x100 -pk "{fname}"'
             buf = subprocess.check_output(cmd, shell=True)
-            write(tmux_passthrough(buf))
-            if args.ttl > 0:
-                time.sleep(args.ttl)
-                clear_kitty()
+            try:
+              tmux_passthrough_pipe(buf)
+              if args.ttl > 0:
+                  time.sleep(args.ttl)
+            except KeyboardInterrupt:
+              pass
+            finally:
+              # Ctrl-C reach this as well
+              clear_kitty()
     elif args.command == "clearimg":
         clear_kitty()
     elif args.command == "notify":

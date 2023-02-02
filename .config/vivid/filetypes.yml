@@ -21,7 +21,7 @@ core:
   executable_file: [$ex]
 
 text:
-  scaffold:
+  scaffold: # unimportant
     - COPYING
     - COPYRIGHT
     - LICENSE
@@ -32,23 +32,28 @@ text:
     - CONTRIBUTORS.txt
     - CODEOWNERS
     - OWNERS
+    - METADATA
+    - .blueprint
 
   configuration:
     - .cfg
     - .conf
     - .ini
-    - .json
     - .tml
     - .toml
     - .yaml
     - .yml
-    - requirements.txt
-    - MANIFEST.in
-    - setup.py
-    - package-lock.json
-    - .gemspec
     - .flake8
     - .clang-format
+    - .borg
+    # VCS:
+    - .gitignore
+    - .gitmodules
+    - .gitattributes
+    - .gitconfig
+    - .hgrc
+    - hgrc
+
 
   docs:
     - .txt
@@ -60,21 +65,17 @@ text:
     - .log
 
 programming:
+  unittest:
+    - _test.py
+    - _test.cc
+    - _test.cpp
+
   tooling:
-    vcs:
-      git:
-        - .gitignore
-        - .gitmodules
-        - .gitattributes
-        - .gitconfig
-
-      hg:
-        - .hgrc
-        - hgrc
-
     build:
       - BUILD
+      - WORKSPACE
       - .bzl
+      - .bazel
       - .cmake
       - CMakeLists.txt
       - .cmake.in
@@ -85,6 +86,10 @@ programming:
       - configure.ac
       - SConscript
       - SConstruct
+      - bara.sky
+      - MANIFEST.in
+      - package-lock.json
+      - .gemspec
 
 media:
   image:

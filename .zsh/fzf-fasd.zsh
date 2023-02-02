@@ -10,7 +10,7 @@ fi
 if [[ $commands[fd] ]]; then
   export FZF_DEFAULT_COMMAND='fd --type f -c always'
 fi
-export FZF_DEFAULT_OPTS="--ansi  --bind 'ctrl-y:execute-silent(echo -n {2..} | yank)+abort' "
+export FZF_DEFAULT_OPTS="--ansi --bind 'ctrl-y:execute-silent(echo -n {2..} | yank)+abort' --color=dark,hl:blue,hl+:blue"
 export FZF_TMUX_HEIGHT="50%"
 
 # Configure the official fzf plugin https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh
@@ -28,14 +28,14 @@ bindkey -r '^T'
 # Like the official fzf-file-widget, but support completing partial filenames.
 fzf-file-widget() {
   local word="${LBUFFER/* /}"  # Find current word under cursor.
+  FZF_CTRL_T_OPTS="--scheme=path --tiebreak=index"
   if [[ -n "$word" ]]; then
-    FZF_CTRL_T_OPTS="-q \"$word\""  # Pre-fill fzf with the query word.
+    FZF_CTRL_T_OPTS="$FZF_CTRL_T_OPTS -q \"$word\" -0"  # Pre-fill fzf with the query word.
     local output=$(__fsel)
     if [[ -n $output ]]; then  # Replace current word with selection if anything is selected.
       LBUFFER="${LBUFFER:0:$(( ${#LBUFFER} - ${#word} ))}$output"
     fi
   else
-    FZF_CTRL_T_OPTS=""
     LBUFFER="${LBUFFER}$(__fsel)"
   fi
   local ret=$?
@@ -48,10 +48,10 @@ bindkey '^X^F' fzf-file-widget  # Complete recent files and directories.
 # Like the official fzf-cd-widget, but support completing partial filenames.
 fzf-cd-widget() {
   local word="${LBUFFER/* /}"  # Find current word under cursor.
-  local FZF_CD_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse --bind=ctrl-z:ignore,tab:down,btab:up ${FZF_DEFAULT_OPTS-}"
+  local FZF_CD_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse --bind=ctrl-z:ignore,tab:down,btab:up --scheme=path --tiebreak=index ${FZF_DEFAULT_OPTS-}"
   if [[ -n "$word" ]]; then
     # Pre-fill fzf with the query word.
-    FZF_CD_OPTS="$FZF_CD_OPTS -q \"$word\""
+    FZF_CD_OPTS="$FZF_CD_OPTS -q \"$word\" -0"
   fi
   local output=$(eval "$FZF_ALT_C_COMMAND" | FZF_DEFAULT_OPTS="$FZF_CD_OPTS" fzf +m)
   if [[ -n "$output" ]]; then

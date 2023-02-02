@@ -181,9 +181,6 @@ which timg NN && {
     alias timg='tmux-escape kittyimg'
   }
 }
-which fzf-tmux NN && {
-  alias fzf-tmux='fzf-tmux -d 20% --multi --reverse'
-}
 
 function sdu () {  # human-readable sorted du
   [[ "$#" -eq 1 && -d "$1" ]] && cd "$1"
@@ -300,14 +297,14 @@ alias valgrind='valgrind --leak-check=full --track-origins=yes --show-possibly-l
 which colordiff NN && alias diff='colordiff'
 alias googlelink='python3 -c "import sys, urllib.parse as up; print(up.parse_qs(up.urlparse(sys.argv[1]).query)[\"url\"][0])"'
 alias disasm='objdump -d -M att -r -C'
-# cd to git repo root
+# cd to git repo root or PWD
 function cdp () {
   dir=$(git rev-parse --show-toplevel 2>/dev/null)
   if [ $? -eq 0 ]; then
     CDP=$dir
     cd $dir
   else
-    echo "'$PWD' is not git repos"
+    cd "$PWD"  # Refresh in case of remounts
   fi
 }
 function gitdate () {
@@ -319,7 +316,6 @@ function gitdate () {
 
 
 # tools
-alias gq='geeqie'
 alias strings='strings -atx'
 alias which='which -a'
 alias zh-CN="LC_ALL='zh_CN.UTF-8'"
