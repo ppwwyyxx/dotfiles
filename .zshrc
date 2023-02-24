@@ -24,7 +24,7 @@ function safe_export_path() { [[ -d $1 ]] && export PATH=$1:$PATH }
 function safe_source() { [[ -s $1 ]] && source $1 }
 
 # Fast path for cache that doesn't persist across restarts:
-if [[ -d /dev/shm ]]; then _MY_ZSH_CACHE=/dev/shm/zsh-cache; else _MY_ZSH_CACHE=/tmp/zsh-cache; fi
+if [[ -d /dev/shm ]]; then _MY_ZSH_CACHE=/dev/shm/zsh-cache-$USER; else _MY_ZSH_CACHE=/tmp/zsh-cache-$USER; fi
 local __OLD_XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
 zmodload -F zsh/files b:zf_mkdir
 zf_mkdir -p $_MY_ZSH_CACHE
@@ -148,7 +148,7 @@ unsetopt beep       # disable all builtin beep
 stty stop undef 2>/dev/null || true
 setopt NO_FLOW_CONTROL		# disable Ctrl+s
 setopt NOTIFY				# show bg jobs status immediately
-limit coredumpsize 10000  # `ulimit -c unlimited` to revert this
+#limit coredumpsize 10000  # `ulimit -c unlimited` to revert this
 WORDCHARS='*?[]~!#$%^(){}<>'
 setopt EXTENDED_GLOB
 #unsetopt CASE_GLOB
