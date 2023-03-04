@@ -71,9 +71,9 @@
   dupes = !git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40
   showdelete = log --diff-filter=D --summary
 
-  dc  = diff --cached
-  d   = diff --diff-filter=d  # don't show deleted files
-  last= diff HEAD^
+  dc    = diff --cached
+  d     = diff --diff-filter=d  # don't show deleted files
+  diffl = diff HEAD^
   lastchange = log -p --follow -n 1
 
   c   = commit

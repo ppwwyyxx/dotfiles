@@ -92,7 +92,9 @@ class Transformer:
       return hash
     if self.gh_repo and type == 'commit':
       line = linked(hash, f'https://github.com/{self.gh_repo}/commit/{fullhash}')
-    return line
+      return line
+    else:
+      return hash
 
 def main():
   args = sys.argv[1:]

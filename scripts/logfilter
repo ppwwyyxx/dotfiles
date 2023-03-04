@@ -21,4 +21,10 @@ mkfifo /tmp/stderr$$
 # # TODO HACK fix hang
 timeout 1h python3 -u "$script" \
 	--stdout /tmp/stdout$$ --stderr /tmp/stderr$$ &!
-unbuffer $@ > /tmp/stdout$$ 2>/tmp/stderr$$
+
+faketty () {
+    script -qefc "$(printf "%q " "$@")" /dev/null
+}
+
+# Better than unbuffer: unbuffer does not propagate signals
+faketty stdbuf -o0 -e0  $@ > /tmp/stdout$$ 2>/tmp/stderr$$

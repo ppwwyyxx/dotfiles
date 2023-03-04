@@ -32,9 +32,13 @@ class LogRecord:
     linenum: str = field(init=False)
 
     def __post_init__(self):
-        loc = self.location.split(":")
-        self.file = loc[0]
-        self.linenum = int(loc[1])
+        if ":" in self.location:
+          loc = self.location.split(":")
+          self.file = loc[0]
+          self.linenum = loc[1]
+        else:
+          self.file = ""
+          self.linenum = ""
 
     def write_to(self, buffer):
         text = f"[{self.time} {self.location}] "
@@ -94,14 +98,24 @@ def parse_prefix(line):
     assert line[5] == ord(b' ')
     time = line[6:14].decode('utf-8')
     assert line[14] == ord(b'.') and line[21] == ord(b' ')
-    next_space = line.find(b' ', 22)  # skip threadid
+    space = 21
+    while line[space] == ord(b' '):
+      space += 1  # Skip spaces between time and threadid
+    next_space = line.find(b' ', space)  # skip threadid
     assert next_space > 0
     end_of_prefix = line.find(b']', next_space)
     assert end_of_prefix > 0
     location = line[next_space + 1:end_of_prefix].decode('utf-8')
-
+    message = line[end_of_prefix + 2:]
+    try:
+      # The message itself may be a valid logline.
+      sub_record, sub_message = parse_prefix(message)
+    except Exception:
+      pass
+    else:
+      return sub_record, sub_message
     record = LogRecord(severity, time, location)
-    return record, line[end_of_prefix + 2:]
+    return record, message
 
 
 def run(fname, is_stdout):
@@ -160,3 +174,11 @@ if __name__ == "__main__":
 
         run(args.stderr, False)
         proc1.join()
+
+
+"""Test cases: run with `python absl-log-filter.py --stdout absl-log-filter.py`
+I0315 23:43:00.377465 1165276 build.cc:344] ASDF
+W0315 23:43:00.377465 1165276 build.cc:344] ASDF
+E0315 23:43:00.377465 1165276 build.cc] ASDF
+F0315 23:43:00.377465 0 build.py:344] ASDF
+"""

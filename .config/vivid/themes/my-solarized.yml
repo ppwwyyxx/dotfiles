@@ -10,6 +10,7 @@ colors:
 
   yellow  :  'b58900'
   orange  :  'ffa500'
+  lightorange: 'dec08d'
   red     :  'dc322f'
   magenta :  'd33682'
   pink: 'ff80ff'
@@ -79,7 +80,7 @@ text:
     foreground: gray
 
   configuration:
-    foreground: dec08d
+    foreground: lightorange
 
   docs:
     foreground: 9cd988

@@ -63,6 +63,7 @@ text:
     - .org
     - .rst
     - .log
+    - README
 
 programming:
   unittest:
