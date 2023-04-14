@@ -134,7 +134,8 @@ export XDG_CACHE_HOME=$__OLD_XDG_CACHE_HOME
 #safe_source ~/.zsh/custom_prompt.zsh
 
 function _my_update_title_cmd() { echo -ne "\e]0;${1%% *}\a" }
-function _my_update_title_pwd() { echo -ne "\e]0;${(%):-"%~"}\a" }
+# %3~ to show last 3 components of the path
+function _my_update_title_pwd() { echo -ne "\e]0;${(%):-"%3~"}\a" }
 autoload -Uz add-zsh-hook
 add-zsh-hook preexec _my_update_title_cmd
 add-zsh-hook precmd _my_update_title_pwd
@@ -367,7 +368,6 @@ zle -N jump-target
 bindkey "^J" jump-target
 
 safe_source $HOME/.zsh/cdnav.zsh   # alt-up/left/right/i
-safe_source "$HOME/.rvm/scripts/rvm"		# Load RVM into a shell session *as a function*
 
 safe_source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
 safe_export_path $HOME/.zsh/Pinyin-Completion/bin

@@ -38,7 +38,7 @@ alias watch='watch '  # allow watching an alias
   alias lss="ls -F --color=auto $_hyperlink --quoting-style=literal"
 
   function ll(){
-    ls -AhlF --color=auto $_hyperlink --time-style="+[34m[[32m%g-%m-%d [35m%k:%M[33m][m" $@
+    ls -AhlFG --color=auto $_hyperlink --time-style="+[34m[[32m%g-%m-%d [35m%k:%M[33m][m" $@
     [[ "$*" == "$1" ]] && echo -e " $GREEN  --[$LIGHTBLUE  Dir:    $CYAN`ls -Al $@ | grep '^drw' | wc -l`$LIGHTGREEN|$YELLOW \
      File: $GREEN`ls -Al $@ | grep -v '^drw' | grep -v total | wc -l` ]-- $WHITE"
   }

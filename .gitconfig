@@ -4,7 +4,6 @@
   signingkey = BD44C94225B1AB37
 [core]
   autocrlf = input
-  editor = vim
   excludesfile = ~/.gitignore
   preloadindex = true
 [advice]
@@ -144,6 +143,7 @@
   file-style = omit
   hunk-header-decoration-style = 
   hunk-header-style=file line-number syntax
+  max-line-length = 1024
   hyperlinks = true
   tabs = 2
 
@@ -151,3 +151,4 @@
   minus-emph-style = syntax red
   plus-style = syntax darkgreen
   plus-emph-style = syntax forestgreen
+  pager = less -RS
