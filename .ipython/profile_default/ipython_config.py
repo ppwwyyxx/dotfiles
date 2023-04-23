@@ -1,11 +1,15 @@
 # Configuration file for ipython.
 # -*- coding: utf-8 -*-
+# type: ignore
+# flake8: noqa
 
 from IPython.terminal.prompts import Prompts, Token
 import os
 
 class MyPrompt(Prompts):
-    def in_prompt_tokens(self, cli=None):
+    def in_prompt_tokens(self, _=None):
+        if os.getenv("MY_SIMPLE_PROMPT"):
+            return [(Token.Prompt, "$ ")]
         path = os.path.sep.join(os.getcwd().split(os.path.sep)[-3:])
         begin = u'╭─ '
         end = u'\n╰─$ '
@@ -306,7 +310,7 @@ c.TerminalInteractiveShell.highlighting_style_overrides = {
 ## Set to confirm when you try to exit IPython with an EOF (Control-D in Unix,
 #  Control-Z/Enter in Windows). By typing 'exit' or 'quit', you can force a
 #  direct exit without any confirmation.
-#c.TerminalInteractiveShell.confirm_exit = True
+c.TerminalInteractiveShell.confirm_exit = False
 
 ## Options for displaying tab completions, 'column', 'multicolumn', and
 #  'readlinelike'. These options are for `prompt_toolkit`, see `prompt_toolkit`

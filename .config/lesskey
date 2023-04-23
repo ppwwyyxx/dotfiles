@@ -1,0 +1,7 @@
+#command
+
+\r quit
+\n quit
+
+J forw-scroll
+K back-scroll

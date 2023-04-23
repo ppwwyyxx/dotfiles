@@ -1,5 +1,13 @@
 [$Version]
-update_info=kwinrules.upd:replace-placement-string-to-enum
+update_info=kwinrules.upd:replace-placement-string-to-enum,kwinrules.upd:use-virtual-desktop-ids
+
+[03e191bb-4d12-4f91-b27d-dddb033734ed]
+Description=setting for zotero
+desktops=f2cf3070-a7ef-4503-bc1c-b9876bfc743d
+desktopsrule=3
+wmclass=zotero
+wmclasscomplete=true
+wmclassmatch=1
 
 [1]
 Description=Application settings for mplayer
@@ -16,16 +24,6 @@ wmclass=zeal
 wmclassmatch=1
 
 [3]
-Description=Window settings for polar-bookshelf
-desktop=3
-desktoprule=3
-types=1
-windowrole=browser-window
-windowrolematch=1
-wmclass=polar-bookshelf
-wmclassmatch=1
-
-[4]
 Description=Window settings for code
 noborder=true
 noborderrule=2
@@ -33,18 +31,27 @@ types=1
 wmclass=code
 wmclassmatch=1
 
-[5]
+[4]
 Description=Application settings for google-chrome
 noborder=true
 noborderrule=2
 wmclass=google-chrome
 wmclassmatch=1
 
+[5]
+Description=conky
+below=true
+belowrule=2
+noborder=true
+wmclass=conky
+wmclassmatch=1
+
 [6]
-Description=telegram
+Description=setting for zotero
 desktop=3
 desktoprule=3
-wmclass=telegramdesktop
+desktopsrule=3
+wmclass=zotero
 wmclassmatch=1
 
 [7]
@@ -62,18 +69,29 @@ wmclass=conky
 wmclassmatch=1
 
 [9]
-Description=zotero
+Description=setting for zotero
 desktop=3
 desktopsrule=3
 wmclass=zotero
 wmclassmatch=1
 
-[10]
-Description=alacritty
-size=1920,1080
-sizerule=3
-wmclass=alacritty
-wmclassmatch=1
+[955e9d8f-fb3d-4a0e-afc7-7ad4e4ff2167]
+Description=dingtalk upgrade
+below=true
+belowrule=3
+desktops=f2cf3070-a7ef-4503-bc1c-b9876bfc743d
+desktopsrule=3
+minimize=true
+minimizerule=3
+skipswitcher=true
+skipswitcherrule=3
+skiptaskbar=true
+skiptaskbarrule=3
+title=升级提醒
+titlematch=2
+wmclass=com.alibabainc.dingtalk
+wmclassmatch=2
 
 [General]
-count=8
+count=6
+rules=1,2,3,4,5,6

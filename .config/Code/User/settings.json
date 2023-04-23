@@ -21,7 +21,7 @@
     "editor.hideCursorInOverviewRuler": true,
     "editor.mouseWheelZoom": true,
     "editor.wordWrapColumn": 100,
-    "editor.cursorSmoothCaretAnimation": false,
+    "editor.cursorSmoothCaretAnimation": "off",
     "editor.fontFamily": "'JetBrains Mono', 'Fantasque Sans Mono', Monaco, 'Courier New', monospace",
     "editor.fontSize": 18,
     "editor.formatOnPaste": true,
@@ -79,7 +79,7 @@
     "json.format.enable": false,
 
     // vim:
-    // "vscode-neovim.neovimInitPath": "~/.config/nvim/vscode.init.vim",
+    "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.config/nvim/vscode.init.vim",
     "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
     "vscode-neovim.neovimExecutablePaths.darwin": "/Users/yuxinwu/bin/nvim",
     "vscode-neovim.useCtrlKeysForNormalMode": false,
@@ -177,6 +177,9 @@
     },
     "window.zoomLevel": 1,
     "editor.minimap.enabled": false,
+    "scm.alwaysShowActions": true,
+    "bracket-pair-colorizer-2.depreciation-notice": false,
+    "editor.guides.bracketPairs": "active",
     "editor.inlineSuggest.enabled": true,
     "workbench.editor.revealIfOpen": true,
 }

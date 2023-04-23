@@ -1,5 +1,7 @@
 #!/bin/bash -e
 # File: deploy.sh
+#
+# TODO: deploy by link; deploy lesskey, kitty, ipython
 
 # avoid mistakenly deploy on laptop
 if [[ "$HOST" == Keep* ]]; then

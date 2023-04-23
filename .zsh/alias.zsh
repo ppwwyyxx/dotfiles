@@ -153,6 +153,7 @@ which nvim NN && {
   alias vi='nvim'
   alias iv='nvim'
   alias vim='nvim'
+  alias vimdiff='nvim -d'
 } || {
   alias v='=vim'
   alias vi='=vim'
@@ -497,10 +498,9 @@ alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_r
 alias ffprobe='ffprobe -hide_banner'
 m_sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "/usr/share/fonts/wenquanyi/wqy-microhei/wqy-microhei.ttc"'
 m_avc_param="-oac mp3lame -lameopts fast:preset=medium -ovc x264 -x264encopts subq=5:8x8dct:frameref=2:bframes=3:weight_b:threads=auto"
-f_avc_param_old="-c:v libx264 -preset slow -crf 23 -c:a libmp3lame"
-#f_avc_param="-map 0 -c:v libx265 -preset medium -x265-params crf=28 -c:a aac -strict experimental -b:a 128k"
-f_avc_param="-map 0 -c:v libx265 -preset medium -x265-params crf=25 -c:a copy"
-f_avc_param_apple="$f_avc_param_old -pix_fmt yuv420p"
+f_avc_param_old="-c:v libx264 -preset slow -crf 23 -c:a libmp3lame -map_metadata 0"
+f_avc_param="-map 0 -c:v libx265 -preset medium -x265-params crf=25 -c:a copy -map_metadata 0"
+f_avc_param_apple="$f_avc_param_old -pix_fmt yuv420p -map_metadata 0"
 function ffmpeg_compress() {
   if [[ -n $2 ]]; then
     ffmpeg -i "$1" `echo $f_avc_param` -vf subtitles=$2 $1.mkv

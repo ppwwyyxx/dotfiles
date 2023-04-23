@@ -89,6 +89,16 @@ def handle_result(args, answer, target_window_id, boss):
             else:
                 full_action = " ".join(args[1:-1])
             boss.dispatch_action(parse_key_action(full_action))
+    elif action in ["scroll_up"]:
+        w = boss.window_id_map.get(target_window_id)
+        has_tmux = is_tmux_window(w)
+        if has_tmux:
+            detach_window()
+            send_key_to_window(w, "ctrl+q>K")
+        else:
+            boss.dispatch_action(parse_key_action("show_scrollback"))
+            # Active window is now different
+            send_key_to_window(tm.active_window, "u")
 
 
 handle_result.no_ui = True
