@@ -23,7 +23,7 @@ elif [ "$1" == "right" ]; then
       TEMPSTR="#[fg=red]$TEMPSTR#[fg=colour167]"
     fi
 
-    MEM=$(free -h | awk '/Mem:/{printf "%.0f", $3/$2*100}')
+    MEM=$(free --mega | awk '/Mem:/{printf "%.0f", $3/$2*100}')
     MEMSTR="🖫$MEM%"
     if (( MEM > 90 )); then
       MEMSTR="#[fg=red]$MEMSTR#[fg=colour167]"

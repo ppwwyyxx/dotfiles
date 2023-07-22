@@ -342,7 +342,7 @@ __path_parse(){
 
 # commands which should always be executed in background
 special_command(){
-	bg_list=(mupdf geeqie libreoffice word powerpoint evince matlab mathematica llpp foxitreader)
+	bg_list=(mupdf geeqie libreoffice word powerpoint evince matlab mathematica llpp foxitreader gwenview)
 	local cmd=`echo $BUFFER | awk '{print $1}'`
 	# command running in background
 	in_array $cmd "${bg_list[@]}" && BUFFER=`echo $BUFFER |sed 's/\s\+2>\/dev\/null//g; s/[&]*\s*$/\ 2>\/dev\/null\ \&/g'`

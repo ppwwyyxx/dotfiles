@@ -530,12 +530,7 @@ function pstack() { =gdb -q -nx -p $1 <<< 't a a bt' | sed -ne '/^#/p' }
   alias top="htop"
   alias topme='htop -u $USER'
 } || {
-  local top_version=$(=top -h 2>/dev/null | head -n1 | grep -o '[0-9]*$')
-  if [[ "$top_version" -ge 10 ]]; then
-    alias top='top -d 0.5 -o %CPU -c'
-  else
-    alias top='top -d 0.5 -c'
-  fi
+  alias top='top -d 0.5 -o %CPU -c'
   alias topme='top -u $USER'
 }
 alias htopme='htop -u $USER'

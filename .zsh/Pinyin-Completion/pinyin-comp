@@ -51,7 +51,7 @@ import re
 
 import pinyin
 
-_, default_encoding = locale.getdefaultlocale()
+default_encoding = locale.getencoding()
 
 
 DOUBLE_WIDTH = {
