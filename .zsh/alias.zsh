@@ -58,6 +58,9 @@ which batcat NN && {
 which bat NN && {
   alias cat='bat'
   alias L='bat --paging=always'
+  # use bat to colorize manpage. https://github.com/sharkdp/bat/issues/652#issuecomment-529032263
+  export MANROFFOPT="-c" 
+  export MANPAGER="sh -c 'col -bx | bat -plman'"
 }
 which rg NN && {
   alias -g G='|rg'
@@ -366,7 +369,11 @@ alias iotop='sudo iotop'
 alias iftop='sudo iftop -B'
 alias powertop='sudo powertop'
 alias sy='sudo systemctl'
-alias dstat='dstat -dnmcl --socket --top-io -N wlp2s0'
+which dool NN && {
+  alias dstat='dool -dnmcl --top-io --socket --bytes '
+} || {
+  alias dstat='dstat -dnmcl --top-io --socket'
+}
 function systemd-run-env() {
   # env vars that need do be passed to the process
   local names=('PATH' 'LD_LIBRARY_PATH' 'TENSORPACK_DATASET'
@@ -584,9 +591,9 @@ function wait-event() {
 # python
 alias ipy='ipython'
 function pydbg () { ipython --pdb -c "%run $1" }
-alias piu='pip install --user'
+alias piu='pip install --user --break-system-packages'
 alias piu2='pip2 install --user'
-alias piu3='pip3 install --user'
+alias piu3='pip3 install --user --break-system-packages'
 alias pyftp='python3 -m pyftpdlib'
 function pylibinfo() {
   if [[ -z "$1" ]]; then echo "Usage: pylibinfo libname"; return; fi

@@ -50,29 +50,41 @@ wmclassmatch=1
 Description=setting for zotero
 desktop=3
 desktoprule=3
+desktops=f2cf3070-a7ef-4503-bc1c-b9876bfc743d
 desktopsrule=3
 wmclass=zotero
 wmclassmatch=1
 
 [7]
-Description=todoist
+Description=Telegram
 desktop=3
 desktoprule=3
-wmclass=todoist
+desktops=f2cf3070-a7ef-4503-bc1c-b9876bfc743d
+desktopsrule=3
+wmclass=telegramdesktop
+wmclassmatch=1
+
+[76d63b88-0c23-43c6-bb01-d9823d0a631e]
+Description=DingDing
+desktops=f2cf3070-a7ef-4503-bc1c-b9876bfc743d
+desktopsrule=3
+wmclass=com.alibabainc.dingtalk
 wmclassmatch=1
 
 [8]
-Description=conky
+Description=DingDing
 below=true
-belowrule=2
-wmclass=conky
+desktops=f2cf3070-a7ef-4503-bc1c-b9876bfc743d
+desktopsrule=3
+wmclass=com.alibabainc.dingtalk
 wmclassmatch=1
 
 [9]
-Description=setting for zotero
+Description=Obsidian
 desktop=3
+desktops=b439f3d9-3a4d-4766-839e-c4f365653a7f
 desktopsrule=3
-wmclass=zotero
+wmclass=obsidian
 wmclassmatch=1
 
 [955e9d8f-fb3d-4a0e-afc7-7ad4e4ff2167]
@@ -93,5 +105,5 @@ wmclass=com.alibabainc.dingtalk
 wmclassmatch=2
 
 [General]
-count=6
-rules=1,2,3,4,5,6
+count=9
+rules=1,2,3,4,5,6,7,8,9

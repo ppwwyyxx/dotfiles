@@ -64,6 +64,7 @@
   ck  = checkout
   ckb = checkout -b
   r  = remote
+  rm-rmed = !git status -s | grep '^\\?\\?' | awk '{print $2}' | xargs rm -r
 
   t   = tag
   rc  = rebase --continue
@@ -77,6 +78,8 @@
   d     = diff --diff-filter=d  # don't show deleted files
   diffl = diff HEAD^
   lastchange = log -p --follow -n 1
+  meld  = !git difftool -t meld --dir-diff
+
 
   c   = commit
   cv  = commit -v

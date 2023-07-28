@@ -27,8 +27,8 @@ import six
 # http://jonathansoma.com/lede/data-studio/matplotlib/exporting-from-matplotlib-to-open-in-adobe-illustrator/
 matplotlib.rcParams['pdf.fonttype'] = 42
 matplotlib.rcParams['ps.fonttype'] = 42
-# matplotlib.rcParams["font.family"] = "Libre Baskerville"
-matplotlib.rcParams["font.family"] = "Arial"
+matplotlib.rcParams["font.family"] = "Libre Baskerville"
+# matplotlib.rcParams["font.family"] = "Arial"
 # rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
 # rc('font',**{'family':'sans-serif','sans-serif':['Microsoft Yahei']})
 # rc('text', usetex=True)
@@ -64,8 +64,8 @@ def get_args():
     parser.add_argument('--decay',
                         help='exponential decay rate to smooth Y',
                         type=str, default='0')
-    parser.add_argument('--units',
-                        help='recognize common units such as K, M, G, T',
+    parser.add_argument('--histogram',
+                        help='draw histogram instead. use num-xticks and xlim to define bins',
                         action='store_true')
 
     # Text related:
@@ -92,7 +92,7 @@ def get_args():
                         help='x lim', type=float, nargs=2)
     parser.add_argument('--ylim',
                         help='y lim', type=float, nargs=2)
-    parser.add_argument('--num-xtick',
+    parser.add_argument('--num-xticks',
                         help='number of x ticks', type=int, default=10)
     parser.add_argument('--xticks', nargs='+')
     parser.add_argument('--annotate-maximum',
@@ -114,8 +114,6 @@ def get_args():
 
 
 def parse_val(val: str) -> float:
-    if not args.units:
-        return float(val)
     val = val.lower()
     if val.endswith("k"):
         return float(val[:-1]) * 1e3
@@ -328,6 +326,12 @@ def do_plot(seqs):
         ax = fig.add_axes((0.1, 0.1, 0.8, 0.8))
 
     for seq in seqs:
+        if args.histogram:
+            # Draw histogram here:
+            if args.xlim:
+                seq.ys[seq.ys > args.xlim[1]] = args.xlim[1]
+            plt.hist(seq.ys, bins=args.num_xticks, **seq.plot_args)
+            continue
         curve_obj = plt.plot(seq.xs, seq.ys, label=seq.legend, **seq.plot_args)[0]
         seq.drawables.append(curve_obj)
 
@@ -358,7 +362,10 @@ def do_plot(seqs):
     if args.ylim:
         plt.ylim(args.ylim[0], args.ylim[1])
 
-    legend_obj = plt.legend(loc='best', fontsize=args.font_size_medium)
+    if args.legend:
+        legend_obj = plt.legend(loc='best', fontsize=args.font_size_medium)
+    else:
+        legend_obj = None
 
     if legend_obj is not None:  # when legend is disabled, this is None
         for legend_line, seq in zip(legend_obj.get_lines(), seqs):
@@ -382,7 +389,7 @@ def do_plot(seqs):
             [ax.get_xticklabels(), ax.get_yticklabels()]):
         label.set_fontproperties(fontm.FontProperties(size=args.font_size_small))
 
-    ax.locator_params(nbins=args.num_xtick, axis='x')
+    ax.locator_params(nbins=args.num_xticks, axis='x')
     ax.tick_params(direction='in')
 
     ax.grid(color='#dfdfdf', linestyle='dashed', axis='y')
