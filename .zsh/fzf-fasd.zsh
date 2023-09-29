@@ -10,7 +10,11 @@ fi
 if [[ $commands[fd] ]]; then
   export FZF_DEFAULT_COMMAND='fd --type f -c always'
 fi
-export FZF_DEFAULT_OPTS="--ansi --bind 'ctrl-y:execute-silent(echo -n {2..} | yank)+abort' --color=dark,hl:blue,hl+:blue"
+if [[ $(fzf --version) == "0.2"* ]]; then
+  export FZF_DEFAULT_OPTS="--ansi"
+else
+  export FZF_DEFAULT_OPTS="--ansi --bind 'ctrl-y:execute-silent(echo -n {2..} | yank)+abort' --color=dark,hl:blue,hl+:blue"
+fi
 export FZF_TMUX_HEIGHT="50%"
 
 # Configure the official fzf plugin https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh
@@ -29,6 +33,9 @@ bindkey -r '^T'
 fzf-file-widget() {
   local word="${LBUFFER/* /}"  # Find current word under cursor.
   FZF_CTRL_T_OPTS="--scheme=path --tiebreak=index"
+  if [[ $(fzf --version) == "0.2"* ]]; then
+    FZF_CTRL_T_OPTS=""
+  fi
   if [[ -n "$word" ]]; then
     FZF_CTRL_T_OPTS="$FZF_CTRL_T_OPTS -q \"$word\" -0"  # Pre-fill fzf with the query word.
     local output=$(__fsel)
