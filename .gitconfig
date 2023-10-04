@@ -91,9 +91,12 @@
   log = log --graph
   xl  = log --color --graph --decorate --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
   lola= log --graph --decorate --pretty=oneline --abbrev-commit --all
+  # branchless:
+  sl = !git branchless --color=always smartlog | sed 's/●/\\x1b[36m㊊\\x1b[0m/'
+  ;sl = branchless smartlog
+
 
   ss  = stash
-  sl  = stash list
   sa  = stash apply
 
   # 'git submodule sync' first, then
@@ -143,10 +146,10 @@
 [delta]
   navigate = true    # use n and N to move between diff sections
   line-numbers = true
-  line-numbers-left-format = 
+  line-numbers-left-format =
   light = false
   file-style = omit
-  hunk-header-decoration-style = 
+  hunk-header-decoration-style =
   hunk-header-style=file line-number syntax
   max-line-length = 1024
   hyperlinks = true

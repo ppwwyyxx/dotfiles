@@ -61,8 +61,10 @@
     "python.analysis.logLevel": "Warning",
     "python.analysis.memory.keepLibraryAst": true,
     "python.analysis.memory.keepLibraryLocalVariables": true,
-    "python.formatting.blackArgs": ["--line-length", "100"],
-    "python.languageServer": "Jedi",
+    "python.formatting.blackArgs": [
+        "--line-length",
+        "100"
+    ],
 
     "todohighlight.isEnable": true,
     "todohighlight.keywordsPattern": "from IPython.*|import pdb.*|pdb.set_trace.*|import sys; sys.*",
@@ -182,4 +184,7 @@
     "editor.guides.bracketPairs": "active",
     "editor.inlineSuggest.enabled": true,
     "workbench.editor.revealIfOpen": true,
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
 }

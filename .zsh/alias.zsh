@@ -424,17 +424,17 @@ function usbon () {
 which nvidia-smi NN && {
   alias __nvq='nvidia-smi --query-gpu=temperature.gpu,clocks.current.sm,pstate,power.draw,utilization.gpu,utilization.memory,memory.free --format=csv | tail -n+2'
   which nl NN && {
-    alias nvq='(echo "GPU,temp, clocks, pstate, power, util.GPU, util.MEM, freeMEM" && __nvq | nl -s, -w1 -v0) | column -t -s,'
+    alias nvq='(echo "GPU,temp, clocks, pstate, power, util.GPU, util.MEM, freeMEM" && __nvq | nl -s, -w1 -v0) | column -t -s, | colorline'
   } || {
-    alias nvq='(echo "temp, clocks, power, util.GPU, util.MEM, freeMEM" && __nvq) | column -t -s ,'
+    alias nvq='(echo "temp, clocks, power, util.GPU, util.MEM, freeMEM" && __nvq) | column -t -s , | colorline'
   }
   alias __nvp="nvidia-smi | awk '/GPU.*PID/ { seen=1 }; /==========/{if (seen) pp=1; next} pp ' \
     | head -n-1  |  awk '{print \$2, \$(NF-1), \$3 == \"N/A\" ? \$5 : \$3}' \
     | grep -v '^No' \
     | awk 'BEGIN{OFS=\"\\t\"} { cmd=(\"ps -ho '%a' \" \$3); cmd | getline v; close(cmd); \$4=v; print }'"
-  alias nvp="(echo \"GPU\tMEM\tPID\tCOMMAND\" && __nvp) | column -t -s $'\t' | cut -c 1-\$(tput cols)"
+  alias nvp="(echo \"GPU\tMEM\tPID\tCOMMAND\" && __nvp) | column -t -s $'\t' | cut -c 1-\$(tput cols) | colorline"
   alias nvpkill="nvp | awk '{print \$3}' | tail -n+2 | xargs -I {} sh -c 'echo Killing {}; kill {} || echo failed'"
-  alias fuser-nvidia-kill="fuser -v /dev/nvidia* 2>&1 |grep -o '$USER.*'  | awk '{print \$2}' | xargs -I {} sh -c 'echo Killing {}; kill {} || echo failed'"
+  alias fuser-nvidia-kill="fuser -v /dev/nvidia* 2>&1 | egrep -o '$USER.*[0-9]+ .*'  | awk '{print \$2}' | xargs -I {} sh -c 'echo Killing {}; kill {} || echo failed'"
 }
 alias kill-forkserver="ps aux | grep 'forkserver|spawn_main' | grep -v grep | awk '{print \$2}' | xargs -I {} sh -c 'echo Killing {}; kill {} || echo failed'"
 
@@ -505,14 +505,15 @@ alias record='ffmpeg -f alsa -ac 1 -i pulse -f x11grab -s 1366x768 -r 40 -show_r
 alias ffprobe='ffprobe -hide_banner'
 m_sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "/usr/share/fonts/wenquanyi/wqy-microhei/wqy-microhei.ttc"'
 m_avc_param="-oac mp3lame -lameopts fast:preset=medium -ovc x264 -x264encopts subq=5:8x8dct:frameref=2:bframes=3:weight_b:threads=auto"
-f_avc_param_old="-c:v libx264 -preset slow -crf 23 -c:a libmp3lame -map_metadata 0"
-f_avc_param="-map 0 -c:v libx265 -preset medium -x265-params crf=25 -c:a copy -map_metadata 0"
-f_avc_param_apple="$f_avc_param_old -pix_fmt yuv420p -map_metadata 0"
+f_avc_param_264="-c:v libx264 -preset slow -crf 23 -c:a libmp3lame -map_metadata 0"
+f_avc_param_265="-map 0 -c:v libx265 -preset medium -x265-params crf=25 -c:a copy -map_metadata 0"
+f_avc_param_av1="-map 0 -c:v libsvtav1 -crf 21 -c:a copy -map_metadata 0"
+f_avc_param_apple="$f_avc_param_264 -pix_fmt yuv420p -map_metadata 0"
 function ffmpeg_compress() {
   if [[ -n $2 ]]; then
-    ffmpeg -i "$1" `echo $f_avc_param` -vf subtitles=$2 $1.mkv
+    ffmpeg -i "$1" `echo $f_avc_param_265` -vf subtitles=$2 $1.mkv
   else
-    ffmpeg -i "$1" `echo $f_avc_param` -c:s copy $1.mkv
+    ffmpeg -i "$1" `echo $f_avc_param_265` -c:s copy $1.mkv
   fi
 }
 function mencoder_compress() { mencoder "$1" -o $1.avi `echo $m_avc_param` }

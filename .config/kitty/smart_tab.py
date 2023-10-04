@@ -73,7 +73,7 @@ def handle_result(args, answer, target_window_id, boss):
             # Otherwise, dispatch args[2] to window.
             w = boss.window_id_map.get(target_window_id)
             send_key_to_window(w, args[2])
-    elif action in ["new_tab", "vsplit", "hsplit",
+    elif action in ["new_tab", "new_tab_with_cwd", "vsplit", "hsplit",
                     "neighboring_window", "resize_window",
                     "detach_window"]:
         w = boss.window_id_map.get(target_window_id)
