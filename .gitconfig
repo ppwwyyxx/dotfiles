@@ -13,7 +13,7 @@
   tool = vimdiff
   ff = false
 [mergetool "vimdiff"]
-	cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+  cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 [pull]
   ff = only
 [branch]
@@ -24,6 +24,7 @@
   user = ppwwyyxx
 [push]
   default = simple
+  autoSetupRemote = true
 [diff]
   mnemonicprefix = true
   guitool = meld
@@ -92,6 +93,8 @@
   xl  = log --color --graph --decorate --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all
   lola= log --graph --decorate --pretty=oneline --abbrev-commit --all
   # branchless:
+  # https://stackoverflow.com/questions/204461/git-squash-fixup-earlier-commit
+  fixup = !sh -c 'REV=$(git rev-parse $1) && git commit --fixup $@ && git rebase -i --autostash --autosquash $REV^ && git restack' -
   sl = !git branchless --color=always smartlog | sed 's/●/\\x1b[36m㊊\\x1b[0m/'
   ;sl = branchless smartlog
 
@@ -160,3 +163,7 @@
   plus-style = syntax darkgreen
   plus-emph-style = syntax forestgreen
   pager = less -RS
+[branchless "navigation"]
+  autoSwitchBranches = false
+[fetch]
+  prune = true

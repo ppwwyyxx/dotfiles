@@ -153,15 +153,14 @@
     "bracket-pair-colorizer-2.colors": [
         "White", "GreenYellow", "Gold", "Orchid", "Aqua", "ForestGreen", "Tomato", "LightSkyBlue"
     ],
-    "tableformatter.common.explicitFullwidthChars": ["✅","❌"],
-
-    // git
-    "gitlens.currentLine.enabled": false,
-    "gitlens.hovers.currentLine.over": "annotation",
+    "tableformatter.common.explicitFullwidthChars": [
+        "✅",
+        "❌"
+    ],
+    "gitlens.hovers.currentLine.over": "line",
     "gitlens.hovers.enabled": true,
     "gitlens.hovers.pullRequests.enabled": true,
     "gitlens.mode.statusBar.enabled": false,
-    "gitlens.statusBar.enabled": false,
 
     "githubPullRequests.queries": [
         { "label": "All", "query": "is:open" },
@@ -177,7 +176,6 @@
     "workbench.editorAssociations": {
         "*.ipynb": "jupyter.notebook.ipynb"
     },
-    "window.zoomLevel": 1,
     "editor.minimap.enabled": false,
     "scm.alwaysShowActions": true,
     "bracket-pair-colorizer-2.depreciation-notice": false,
@@ -187,4 +185,8 @@
     "extensions.experimental.affinity": {
         "asvetliakov.vscode-neovim": 1
     },
+    "gitlens.codeLens.scopes": [
+        "document"
+    ],
+    "gitlens.statusBar.enabled": false,
 }
