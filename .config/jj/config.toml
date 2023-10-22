@@ -1,0 +1,11 @@
+[user]
+name = "Yuxin Wu"
+
+[ui]
+editor = "nvim"
+
+[aliases]
+sl = ["log", "-r", "main:: ~ (remote_branches() ~ branches())", "--no-pager", "--reversed"]
+
+[git]
+auto-local-branch = false
