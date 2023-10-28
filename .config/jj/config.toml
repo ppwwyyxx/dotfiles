@@ -5,7 +5,43 @@ name = "Yuxin Wu"
 editor = "nvim"
 
 [aliases]
-sl = ["log", "-r", "main:: ~ (remote_branches() ~ branches())", "--no-pager", "--reversed"]
+#sl = ["log", "-r", "main:: ~ (remote_branches() ~ branches())", "--no-pager", "--reversed"]
+# trunk: https://martinvonz.github.io/jj/v0.10.0/revsets/#built-in-aliases
+sl = ["log", "-r", "trunk():: ~ (remote_branches() ~ branches())", "--no-pager", "--reversed"]
 
 [git]
+# https://martinvonz.github.io/jj/v0.10.0/config/#automatic-local-branch-creation
 auto-local-branch = false
+
+
+[templates]
+log = 'my_log_compact'
+
+[template-aliases]
+my_log_compact = '''
+if(root,
+  builtin_log_root(change_id, commit_id),
+  label(if(current_working_copy, "working_copy"),
+    concat(
+      separate(" ",
+        label(
+          separate(" ", if(divergent, "divergent"), if(hidden, "hidden")),
+          separate(" ",
+            format_short_change_id(change_id) ++ if(divergent, "??"),
+            if(hidden, "hidden"))),
+        format_timestamp(committer.timestamp().ago()),
+        branches,
+        tags,
+        working_copies,
+        git_head,
+        format_short_commit_id(commit_id),
+        if(conflict, label("conflict", "conflict")),
+      ) ++ "\n",
+      separate(" ",
+        if(empty, label("empty", "(empty)")),
+        if(description, description.first_line(), description_placeholder),
+      ) ++ "\n",
+    ),
+  )
+)
+'''

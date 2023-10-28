@@ -7,7 +7,7 @@
     ],
 
 
-    "workbench.editor.showTabs": false,
+    "workbench.editor.showTabs": "single",
     "breadcrumbs.enabled": true,
 
     "terminal.integrated.cursorStyle": "line",
@@ -133,11 +133,17 @@
     "editor.folding": false,
     "debug.showBreakpointsInOverviewRuler": true,
     "workbench.colorCustomizations": {
-
 		"sash.hoverBorder": "#3285f1",
         "statusBar.background": "#007acc",
         "statusBar.noFolderBackground": "#007acc",
-        "statusBar.debuggingBackground": "#007acc"
+        "statusBar.debuggingBackground": "#007acc",
+        // Disable annoying colors
+        "editorOverviewRuler.errorForeground": "#0000",
+        "editorOverviewRuler.infoForeground": "#0000",
+        "editorOverviewRuler.warningForeground": "#0000",
+        "minimap.errorHighlight": "#0000",
+        "minimap.infoHighlight": "#0000",
+        "minimap.warningHighlight": "#0000",
     },
     "editor.glyphMargin": false,
     "[jsonc]": {
@@ -176,7 +182,6 @@
     "workbench.editorAssociations": {
         "*.ipynb": "jupyter.notebook.ipynb"
     },
-    "editor.minimap.enabled": false,
     "scm.alwaysShowActions": true,
     "bracket-pair-colorizer-2.depreciation-notice": false,
     "editor.guides.bracketPairs": "active",
@@ -189,4 +194,5 @@
         "document"
     ],
     "gitlens.statusBar.enabled": false,
+    "editor.minimap.enabled": false,
 }

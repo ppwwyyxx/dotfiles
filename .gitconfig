@@ -95,7 +95,7 @@
   # branchless:
   # https://stackoverflow.com/questions/204461/git-squash-fixup-earlier-commit
   fixup = !sh -c 'REV=$(git rev-parse $1) && git commit --fixup $@ && git rebase -i --autostash --autosquash $REV^ && git restack' -
-  sl = !git branchless --color=always smartlog | sed 's/●/\\x1b[36m㊊\\x1b[0m/'
+  sl = !git branchless --color=always smartlog | sed 's/●/🔥/'
   ;sl = branchless smartlog
 
 
@@ -126,13 +126,15 @@
   ;proxy=http://localhost:7777
 [https]
   ;proxy=http://localhost:7777
-[init]
-  templatedir = ~/.git-templates
+;[init]
+  ;templatedir = ~/.git-templates
 [tig]
   mouse = true
   tab-size = 2
   ignore-space = some
   main-view = date author:display=full,width=11 commit-title:graph=v2,refs=true
+  # https://github.com/jonas/tig/pull/1172
+	reference-format = hide:other
 [tig "bind"]
   stage = <Enter> :/^@@
   main = G none
