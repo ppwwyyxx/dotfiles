@@ -45,7 +45,7 @@ typeset -gH _comp_dumpfile=$_MY_ZSH_CACHE/snap-compdump
 source $_ZSH_SNAP_BASE/zsh-snap/znap.zsh
 
 # ENV f[[
-export TERMINFO=$HOME/.terminfo
+export TERMINFO=${TERMINFO:-$HOME/.terminfo}
 export LANG=en_US.UTF-8
 # export SSH_ASKPASS=
 # neovim#2048 suggests: infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti; tic $TERM.ti
@@ -53,14 +53,15 @@ export LANG=en_US.UTF-8
 safe_source $HOME/.profile
 
 if [[ -n $_CFG_ON_MAC ]]; then
-  safe_export_path /usr/local/opt/coreutils/libexec/gnubin
-  safe_export_path /usr/local/opt/openssh/bin
-  safe_export_path /usr/local/opt/findutils/libexec/gnubin
-  safe_export_path /usr/local/opt/gawk/libexec/gnubin
-  safe_export_path /usr/local/opt/gnu-indent/libexec/gnubin
-  safe_export_path /usr/local/opt/grep/libexec/gnubin
-  safe_export_path /usr/local/opt/gnu-sed/libexec/gnubin
-  safe_export_path /usr/local/opt/gnu-tar/libexec/gnubin
+  safe_export_path /opt/homebrew/bin
+  safe_export_path /opt/homebrew/opt/coreutils/libexec/gnubin
+  safe_export_path /opt/homebrew/opt/findutils/libexec/gnubin
+  safe_export_path /opt/homebrew/opt/gawk/libexec/gnubin
+  safe_export_path /opt/homebrew/opt/grep/libexec/gnubin
+  safe_export_path /opt/homebrew/opt/gnu-sed/libexec/gnubin
+  safe_export_path /opt/homebrew/opt/gnu-tar/libexec/gnubin
+  safe_export_path $(brew --prefix python)/libexec/bin
+  #safe_export_path /usr/local/opt/openssh/bin
 fi
 safe_export_path $HOME/bin
 safe_export_path $HOME/.local/bin

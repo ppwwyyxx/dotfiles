@@ -643,6 +643,7 @@ which pacman NN && {
 } || {
 [[ -n $_CFG_ON_MAC ]] && {
   alias pS='brew install'
+  alias pSi='brew info'
   alias pSs='brew search'
   alias pSu='brew upgrade'
   alias pR='brew uninstall'

@@ -1,0 +1,51 @@
+/* ~/Library/KeyBindings/DefaultKeyBinding.dict */
+/* The original bindings are from Mike Ferris of lorax.com as shipped
+ * with his TextExtras package.  They were further modified by Mishka Gorodnitzky
+ * (misaka@pobox.com), Patrick Linskey, and Llew Mason.
+ *
+ * Last modified by: Nilesh Kapadia (http://www.nileshk.com/)
+ *
+ * Place this file in ~/Library/KeyBindings
+ *
+ * See available codes at:
+ * http://xahlee.info/kbd/osx_keybinding_action_code.html
+ */
+{
+    "~f"      = "moveWordForward:";              /* M-f */
+    "~b"      = "moveWordBackward:";             /* M-b */
+    "~<"      = "moveToBeginningOfDocument:";    /* M-< */
+    "~>"      = "moveToEndOfDocument:";          /* M-> */
+		/*
+     *"~v"      = "pageUp:";                       [> M-v <]
+     *"^v"      = "pageDown:";                     [> C-v <]
+		 */
+    "^v" = noop:;
+    "~d"      = "deleteWordForward:";            /* M-d */
+    "^w"     = "deleteWordBackward:";
+    "~\010"   = "deleteWordBackward:";           /* M-backspace */
+    "~\177"   = "deleteWordBackward:";           /* M-delete */
+		/*
+     *"~\UF728" = "deleteWordForward:";            [> delete <]
+		 */
+    "\UF729"  = "moveToBeginningOfDocument:";    /* home */
+    "\UF72B"  = "moveToEndOfDocument:";          /* end */
+    "@\UF729" = "moveToBeginningOfParagraph:";   /* A-home */
+    "@\UF72B" = "moveToEndOfParagraph:";         /* A-end */
+    "@\UF700" = "moveToBeginningOfDocument:";    /* A-up */
+    "@\UF701" = "moveToEndOfDocument:";          /* A-down */
+    "^\UF700" = "pageUp:";                       /* C-up */
+    "^\UF701" = "pageDown:";                     /* C-down */
+    "\UF72C"  = "pageUp:";                       /* page-up */
+    "\UF72D"  = "pageDown:";                     /* page-down */
+    "^z"      = "undo:";                         /* C-z */
+    "^a"      = "moveToBeginningOfLine:";        /* C-a */
+    "^e"      = "moveToEndOfLine:";              /* C-e */
+
+    "^x" = {
+        "^x"  = "swapWithMark:";                 /* C-x C-x */
+        "^m"  = "selectToMark:";                 /* C-x C-m */
+        "^s"  = "save:";                         /* C-x C-s */
+        "^w"  = "saveAs:";                       /* C-x C-w */
+        "k"   = "performClose:";                 /* C-x C-k */
+    };
+}
