@@ -166,6 +166,6 @@
   plus-emph-style = syntax forestgreen
   pager = less -RS
 [branchless "navigation"]
-  autoSwitchBranches = false
+	autoSwitchBranches = false
 [fetch]
   prune = true

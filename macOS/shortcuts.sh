@@ -50,10 +50,10 @@ Find...;^f
 Find;^f" | tail -n+2  \
   | while read name key; do
   defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add $name $key
-  #defaults write com.google.Chrome NSUserKeyEquivalents -dict-add $name $key
   #defaults write org.zotero.zotero NSUserKeyEquivalents -dict-add $name $key
   #defaults write md.obsidian NSUserKeyEquivalents -dict-add $name $key
 done
+defaults write com.google.Chrome NSUserKeyEquivalents -dict-add "Select All" "^/"
 
 
 # Obsidian window
