@@ -2,7 +2,7 @@
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-brew install coreutils moreutils gnu-tar findutils gawk grep gnu-tar gnu-sed git
+brew install coreutils moreutils gnu-tar findutils gawk grep gnu-tar gnu-sed git git-lfs
 brew install reattach-to-user-namespace tmux neovim
 brew install watch ack tree aria2 fd fzf tig imagemagick jq mtr \
   wget curl cmake htop the_silver_searcher p7zip git-delta ncdu
@@ -22,7 +22,7 @@ brew install font-hack-nerd-font font-fantasque-sans-mono-nerd-font font-fira-co
 # Apps
 brew install --cask kitty alacritty \
   obsidian zotero visual-studio-code adobe-acrobat-reader \
-  telegram-desktop discord \
+  telegram-desktop discord feem slack \
   megasync dropbox \
   caffeine scroll-reverser alt-tab \
   tunnelblick \

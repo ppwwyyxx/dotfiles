@@ -122,10 +122,14 @@
   pullllllll = pull --rebase
   pulllllllll = pull --rebase
   pullllllllll = pull --rebase
-[http]
+;[http]
   ;proxy=http://localhost:7777
-[https]
+;[https]
   ;proxy=http://localhost:7777
+[https "https://github.com"]
+  proxy=http://localhost:7777
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
 ;[init]
   ;templatedir = ~/.git-templates
 [tig]

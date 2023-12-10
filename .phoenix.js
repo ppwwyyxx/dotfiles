@@ -1,4 +1,4 @@
-
+const YABAI_PATH = '/opt/homebrew/bin/yabai';
 
 // f[[ modal
 function showTitleModal(text, duration, icon) {
@@ -20,6 +20,25 @@ function showAt(modal, screen, widthDiv, heightDiv) {
 }
 // f]]
 
+// f[[ Screen functions:
+function get_next_screen(screen) {
+  const all_screens = Screen.all();
+  const idx = all_screens.indexOf(screen);
+  return all_screens[(idx + 1) % all_screens.length];
+}
+function get_screen_at(x, y) {
+  for (s of Screen.all()) {
+    const frame = s.flippedFrame();
+    if (frame.x <= x && frame.y <= y && 
+      x <= frame.x + frame.width && y <= frame.y + frame.height) {
+      return s;
+    }
+  }
+  console.error("Cannot find screen at ", x, y)
+}
+// f]]
+
+
 // f[[ Windows:
 function isMaximized(window) {
   const screen = window.screen().visibleFrame();
@@ -34,28 +53,90 @@ function getCurrWindow() {
   // TODO sometime this is undefined
   return App.focused().mainWindow();
 }
-function logWindows(windows) {
+function logWindows(windows) { // Print details about a list of windows
   for (k of windows) {
     console.log("Window", k.title(), "from App=", k.app().name(), ",visible=", k.isVisible());
   }
 }
 
+function move_mouse_to_window(window) {
+  const frame = window.frame();
+  const x = frame.x + frame.width / 2, y = frame.y + frame.height / 2;
+  Mouse.move({x: x, y:y});
+}
+
 // string -> Rectangle
-const windowRestoreFrame = {};
-// Toggle maximize.
-Key.on('up', ['alt'], () => {
+const _windowRestoreFrame = {};
+function _save_rel_window_frame(window) {
+  const screen = window.screen().flippedVisibleFrame();
+  const frame = window.frame();
+  const dx = (frame.x - screen.x) / screen.width,
+        dy = (frame.y - screen.y) / screen.height,
+        width = frame.width / screen.width,
+        height= frame.height / screen.height;
+  _windowRestoreFrame[window.hash()] = {x:dx, y:dy, width:width, height:height};
+}
+function _maybe_restore_rel_window_frame(window) {
+  const hash = window.hash();
+  const rect = _windowRestoreFrame[hash]
+  if (rect) {
+    const screen = window.screen().flippedVisibleFrame();
+    const width = rect.width * screen.width,
+          height = rect.height * screen.height,
+          x = rect.x * screen.width + screen.x,
+          y = rect.y * screen.height + screen.y;
+    window.setFrame({x:x, y:y, width:width, height:height});
+  }
+}
+
+Key.on('up', ['alt'], () => {   // Toggle maximize.
   const window = getCurrWindow();
   const hash = window.hash();
   // Toggle maximize.
   if (isMaximized(window)) {
-    if (windowRestoreFrame[hash]) {
-      window.setFrame(windowRestoreFrame[hash])
-    }
+    _maybe_restore_rel_window_frame(window);
   } else {
-    windowRestoreFrame[hash]= window.frame();
+    _save_rel_window_frame(window);
     Window.focused().maximize();
   }
 });
+
+Key.on('o', ['alt'], () => {  // Move window to another screen.
+  const window = getCurrWindow();
+  const screen = window.screen();
+  const next_screen = get_next_screen(screen).visibleFrame();
+  if (screen == next_screen) return;
+  const maximized = isMaximized(window);
+  if (maximized) {
+    window.setTopLeft({x: next_screen.x, y: next_screen.y}); // move
+    window.maximize();
+  } else {
+    _save_rel_window_frame(window);
+    window.setTopLeft({x: next_screen.x, y: next_screen.y}); // move
+    _maybe_restore_rel_window_frame(window);
+  }
+  move_mouse_to_window(window);
+});
+
+Key.on('n', ['alt'], () => {  // Move mouse to another screen.
+  const loc = Mouse.location();
+  const screen = get_screen_at(loc.x, loc.y);
+  const next_frame = get_next_screen(screen).flippedFrame();
+  const frame = screen.flippedFrame();
+  if (frame == next_frame) return;
+  const rx = (loc.x - frame.x) / frame.width,
+        ry = (loc.y - frame.y) / frame.height;
+  const newPoint = {x: next_frame.x + rx * next_frame.width,
+     y: next_frame.y + ry * next_frame.height};
+  Mouse.move(newPoint);
+
+  Task.run(YABAI_PATH, ['-m', 'display', '--focus', 'mouse']);
+  // Window.at is broken!
+  //const window = Window.at(newPoint);
+  //if (window) { window.raise(); window.focus(); }
+});
+
+// Snap window to left/right edge.
 Key.on('\'', ['alt'], () => {
   const window = getCurrWindow();
   const screen = window.screen().flippedVisibleFrame();
@@ -69,10 +150,10 @@ Key.on(';', ['alt'], () => {
   screen.width = screen.width / 2;
   window.setFrame(screen);
 });
-Key.on('f9', ['cmd'], () => {
+
+Key.on('f9', ['cmd'], () => {  // Minimize
   const window = getCurrWindow();
-  if (window !== undefined) 
-    window.minimize();
+  if (window !== undefined) window.minimize();
 });
 
 function cycleWindow(dir) {

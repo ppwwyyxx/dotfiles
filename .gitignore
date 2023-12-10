@@ -7,3 +7,4 @@ __pycache__
 .zsh/zsh-bench
 *.terminfo
 .tmux/plugins
+.DS_Store

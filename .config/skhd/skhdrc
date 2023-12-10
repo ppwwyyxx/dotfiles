@@ -124,6 +124,6 @@ ctrl - w [
 ]
 
 
-# Window management:
-alt - n : yabai -m display --focus recent
-alt - o : yabai -m window --display recent && sleep 0.1 && yabai -m display --focus recent
+# Implemented in phoenix instead.
+# alt - n : yabai -m config mouse_follows_focus on && yabai -m display --focus recent && yabai -m config mouse_follows_focus off
+# alt - o : yabai -m window --display recent && sleep 0.1 && yabai -m display --focus recent
