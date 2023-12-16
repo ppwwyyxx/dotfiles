@@ -151,7 +151,7 @@ stty stop undef 2>/dev/null || true
 setopt NO_FLOW_CONTROL		# disable Ctrl+s
 setopt NOTIFY				# show bg jobs status immediately
 #limit coredumpsize 10000  # `ulimit -c unlimited` to revert this
-WORDCHARS='*?[]~!#$%^(){}<>'
+WORDCHARS='*?[]~!#$%^(){}<>-'
 setopt EXTENDED_GLOB
 #unsetopt CASE_GLOB
 unsetopt correctall

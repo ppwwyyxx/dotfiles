@@ -67,8 +67,9 @@ Code;^\`" | tail -n+2  \
   defaults write md.obsidian NSUserKeyEquivalents -dict-add $name $key
 done
 
-# Undo kitty
+# Undo kitty. Otherwise it overwrites kitty's own config.
 echo "
-Close Tab;" | tail -n+2 | while read name key; do
+Close Tab;
+New Tab;" | tail -n+2 | while read name key; do
   defaults write net.kovidgoyal.kitty NSUserKeyEquivalents -dict-add $name "$key"
 done

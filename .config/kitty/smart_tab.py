@@ -23,8 +23,8 @@ def last_line_of_window(window):
 
 def is_tmux_window(window):
     last = last_line_of_window(window)
+    logger.info("Last line of window: " + last)
     if "" in last or "No next window" in last:  # Match my custom tmux bar
-        logger.info("Last line of window: " + last)
         return True
     return False
 

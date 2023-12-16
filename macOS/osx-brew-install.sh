@@ -10,7 +10,7 @@ brew install node rust go
 
 # Tools
 brew install glab glider proxychains-ng youtube-dl \
-    bat pstree tree koekeishiya/formulae/skhd ctags 
+    bat pstree tree koekeishiya/formulae/skhd ctags terminal-notifier
 
 # Deps & libs
 brew install pygit2 numpy opencv 

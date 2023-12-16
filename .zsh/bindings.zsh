@@ -9,17 +9,24 @@ _exit_zsh_if_empty() {
 }
 zle -N _exit_zsh_if_empty
 bindkey '^D' _exit_zsh_if_empty
-#bindkey '^[[100;5u' _exit_zsh_if_empty
 
 autoload edit-command-line
 zle -N edit-command-line
 bindkey -M viins '^v' edit-command-line
 bindkey '^h' backward-char
-#bindkey '^[[104;5u' backward-char
 bindkey '^l' forward-char
 bindkey '^b' backward-word
 bindkey '^f' forward-word
 bindkey '^w' backward-delete-word
+
+# Ctrl-Shift-w
+# https://unix.stackexchange.com/a/319854
+# https://unix.stackexchange.com/a/721927
+zle -N backward-kill-shell-word backward-kill-word-match
+zstyle :zle:backward-kill-shell-word word-style shell
+# The key code is probably specific to kitty.
+bindkey '^[[119;6u' backward-kill-shell-word
+
 bindkey ' ' magic-space		# history expansion + space
 autoload zkbd
 [[ -f $HOME/.zsh/zkbd/$TERM ]] && source $HOME/.zsh/zkbd/$TERM || {
