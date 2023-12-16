@@ -95,9 +95,9 @@
   # branchless:
   # https://stackoverflow.com/questions/204461/git-squash-fixup-earlier-commit
   fixup = !sh -c 'REV=$(git rev-parse $1) && git commit --fixup $@ && git rebase -i --autostash --autosquash $REV^ && git restack' -
-  sl = !git branchless --color=always smartlog | sed 's/●/🔥/'
+  gogo = !git amend && git pushstack --yes
+  sl = !git branchless --color=always smartlog | sed 's/[●◆]/🔥/'
   ;sl = branchless smartlog
-
 
   ss  = stash
   sa  = stash apply
@@ -122,11 +122,12 @@
   pullllllll = pull --rebase
   pulllllllll = pull --rebase
   pullllllllll = pull --rebase
+	branchcommit = "!f() { git checkout -b $1 && git commit -am \"$1\"; }; f"
 ;[http]
   ;proxy=http://localhost:7777
 ;[https]
   ;proxy=http://localhost:7777
-[https "https://github.com"]
+[https "https://github.com/"]
   proxy=http://localhost:7777
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
@@ -164,11 +165,17 @@
   hyperlinks = true
   tabs = 2
 
+  syntax-theme = "Monokai Extended Bright"
   minus-style = "syntax #630d0d"
   minus-emph-style = syntax red
   plus-style = syntax darkgreen
   plus-emph-style = syntax forestgreen
   pager = less -RS
+# Branchless:
+[branchless "restack"]
+	preserveTimestamps = true
+[branchless "next"]
+	interactive = true
 [branchless "navigation"]
 	autoSwitchBranches = false
 [fetch]

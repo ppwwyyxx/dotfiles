@@ -7,7 +7,7 @@ editor = "nvim"
 [aliases]
 #sl = ["log", "-r", "main:: ~ (remote_branches() ~ branches())", "--no-pager", "--reversed"]
 # trunk: https://martinvonz.github.io/jj/v0.10.0/revsets/#built-in-aliases
-sl = ["log", "-r", "trunk():: ~ (remote_branches() ~ branches())", "--no-pager", "--reversed"]
+sl = ["log", "-r", "trunk():: ~ (remote_branches() ~ branches()) | (@..branches())", "--no-pager", "--reversed"]
 
 [git]
 # https://martinvonz.github.io/jj/v0.10.0/config/#automatic-local-branch-creation
