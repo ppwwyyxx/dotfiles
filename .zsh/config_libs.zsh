@@ -15,6 +15,7 @@ export TF_NEED_S3=0
 export TF_NEED_OPENCL_SYCL=0
 export TF_NEED_COMPUTECPP=0
 export TORCH_SHOW_CPP_STACKTRACES=1
+export TORCH_DISABLE_ADDR2LINE=1  # https://github.com/pytorch/pytorch/pull/113207#issuecomment-2103309949
 
 # Config MKL / CUDA
 if [[ -d /opt/intel/mkl ]]; then
@@ -60,7 +61,9 @@ safe_export_path /opt/intel/bin
 safe_export_path /usr/lib/colorgcc/bin
 safe_export_path $HOME/.rvm/bin		# Add RVM to PATH for scripting
 
+# Python
 # https://issuetracker.google.com/issues/353554174
+# https://docs.python.org/3.11/using/cmdline.html#cmdoption-P
 # export PYTHONSAFEPATH=1
 [[ -s ~/.config/python/startup.py ]] && export PYTHONSTARTUP=~/.config/python/startup.py
 

@@ -356,12 +356,17 @@
       # Tip: To always show local branch name in full without truncation, delete the next line.
       (( $#branch > 32 )) && branch[13,-13]="…"  # <-- this line
       res+="${clean}${(g::)POWERLEVEL9K_VCS_BRANCH_ICON}${branch//\%/%%}"
+    else
+      # To support working in detached mode.
+      local branch=${(V)VCS_STATUS_COMMIT_SUMMARY}
+      (( $#branch > 40 )) && branch[15,-15]="…"
+      res+="${clean}${branch//\%/%%}"
     fi
 
     if [[ -n $VCS_STATUS_TAG
           # Show tag only if not on a branch.
           # Tip: To always show tag, delete the next line.
-          && -z $VCS_STATUS_LOCAL_BRANCH  # <-- this line
+          && -z $branch # <-- this line
         ]]; then
       local tag=${(V)VCS_STATUS_TAG}
       # If tag name is at most 32 characters long, show it in full.
@@ -373,7 +378,7 @@
 
     # Display the current Git commit if there is no branch and no tag.
     # Tip: To always display the current Git commit, delete the next line.
-    [[ -z $VCS_STATUS_LOCAL_BRANCH && -z $VCS_STATUS_TAG ]] &&  # <-- this line
+    [[ -z $branch && -z $VCS_STATUS_TAG ]] &&  # <-- this line
       res+="${meta}@${clean}${VCS_STATUS_COMMIT[1,8]}"
 
     # Show tracking branch name if it differs from local branch.
