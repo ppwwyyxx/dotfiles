@@ -5,7 +5,7 @@
 brew install coreutils moreutils gnu-tar findutils gawk grep gnu-tar gnu-sed git git-lfs
 brew install reattach-to-user-namespace tmux neovim
 brew install watch ack tree aria2 fd fzf tig imagemagick jq mtr \
-  wget curl cmake htop the_silver_searcher p7zip git-delta ncdu
+  wget curl cmake htop the_silver_searcher p7zip git-delta ncdu vivid
 brew install node rust go 
 
 # Tools

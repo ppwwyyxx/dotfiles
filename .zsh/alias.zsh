@@ -50,7 +50,6 @@ alias L=less
 alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
 alias -g N='>/dev/null'
 alias -g NN='>/dev/null 2>&1'
-export BAT_STYLE="numbers,grid,changes"
 which batcat NN && {
   alias cat='batcat'
   alias L='batcat --paging=always'
@@ -61,6 +60,9 @@ which bat NN && {
   # use bat to colorize manpage. https://github.com/sharkdp/bat/issues/652#issuecomment-529032263
   export MANROFFOPT="-c" 
   export MANPAGER="sh -c 'col -bx | bat -plman'"
+  function bathelp() {
+    "$@" --help | bat -plhelp
+  }
 }
 which rg NN && {
   alias -g G='|rg'

@@ -1,2 +1,3 @@
 --map-syntax "BUILD:Python"
-
+--style=numbers,grid,changes
+--theme="Monokai Extended Bright"

@@ -61,6 +61,7 @@ if [[ -n $_CFG_ON_MAC ]]; then
   safe_export_path /opt/homebrew/opt/gnu-sed/libexec/gnubin
   safe_export_path /opt/homebrew/opt/gnu-tar/libexec/gnubin
   safe_export_path $(brew --prefix python)/libexec/bin
+  export MANPATH=/opt/homebrew/opt/coreutils/libexec/gnuman:$MANPATH
   #safe_export_path /usr/local/opt/openssh/bin
 fi
 safe_export_path $HOME/bin
