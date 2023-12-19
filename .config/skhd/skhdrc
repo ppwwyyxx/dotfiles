@@ -105,7 +105,7 @@
 #    "qutebrowser"
 # ]
 
-alt - t : /Applications/kitty.app/Contents/MacOS/kitty --single-instance -d ~
+alt - t : open -na kitty.app --args --single-instance -d ~
 
 alt - c [
   "Google Chrome" : open -na "Google Chrome" --args --new-window
@@ -122,6 +122,16 @@ ctrl - w [
   "Zotero": osascript -e 'tell application "System Events"' -e 'tell process "Zotero"' -e 'keystroke "w" using command down' -e 'end tell' -e 'end tell'
   * ~
 ]
+
+# 1. Modify config of savePath, so that flameshot without `-p` also works.
+# 2. Launch the binary (not the app) so that it prints outputs to stderr.
+# 3. Clipboard doesn't work in non-daemonic flameshot on macOS. So use an osascript.
+alt - a : DIR=$HOME/Pictures/`date +%Y-%m`/ && \
+  sed -i "s#savePath=.*#savePath=$DIR#g" $HOME/.config/flameshot/flameshot.ini && \
+  mkdir -p $DIR && \
+  /Applications/flameshot.app/Contents/MacOS/flameshot gui -p $DIR/`date +%H-%M`.jpg 2>&1 \
+    | grep -o "$DIR.*" | xargs -I '{}' \
+      osascript -e 'set the clipboard to POSIX file "{}"'
 
 
 # Implemented in phoenix instead.

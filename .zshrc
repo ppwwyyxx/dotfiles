@@ -54,6 +54,7 @@ safe_source $HOME/.profile
 
 if [[ -n $_CFG_ON_MAC ]]; then
   safe_export_path /opt/homebrew/bin
+  safe_export_path /opt/homebrew/sbin
   safe_export_path /opt/homebrew/opt/coreutils/libexec/gnubin
   safe_export_path /opt/homebrew/opt/findutils/libexec/gnubin
   safe_export_path /opt/homebrew/opt/gawk/libexec/gnubin

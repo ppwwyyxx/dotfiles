@@ -7,12 +7,13 @@
 
 IFS=$';'
 
-# General Tabs
+# Global Shortcuts, Tabs, Windows
 echo "
 Close Tab;^w
 New Tab;^t
 Zoom In;^=
 Zoom Out;^-
+Lock Screen;^@\$l
 " | tail -n+2 | while read name key; do
   defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add $name $key
 done
@@ -31,7 +32,7 @@ Forward;@\\\\U2192" | tail -n+2  \
   defaults write com.google.Chrome NSUserKeyEquivalents -dict-add $name $key
 done
 
-# Global Copy/paste
+# Global Copy/Paste
 echo "
 Undo;^z
 撤销;^z
@@ -54,7 +55,6 @@ Find;^f" | tail -n+2  \
   #defaults write md.obsidian NSUserKeyEquivalents -dict-add $name $key
 done
 defaults write com.google.Chrome NSUserKeyEquivalents -dict-add "Select All" "^/"
-
 
 # Obsidian window
 

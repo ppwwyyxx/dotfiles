@@ -10,7 +10,7 @@ brew install node rust go
 
 # Tools
 brew install glab glider proxychains-ng youtube-dl \
-    bat pstree tree koekeishiya/formulae/skhd ctags terminal-notifier
+    bat pstree tree koekeishiya/formulae/skhd ctags terminal-notifier rar
 
 # Deps & libs
 brew install pygit2 numpy opencv 
@@ -21,11 +21,16 @@ brew install font-hack-nerd-font font-fantasque-sans-mono-nerd-font font-fira-co
 
 # Apps
 brew install --cask kitty alacritty \
-  obsidian zotero visual-studio-code adobe-acrobat-reader \
+  obsidian zotero visual-studio-code flameshot \
+  adobe-acrobat-reader wpsoffice-cn \
   telegram-desktop discord feem slack \
   megasync dropbox \
   caffeine scroll-reverser alt-tab \
   tunnelblick \
   iina qqmusic vnc-viewer
 brew install --cask --no-quarantine syntax-highlight
+
+brew tap filebrowser/tap
+brew install filebrowser
+
 # Zeal: https://github.com/zealdocs/zeal/wiki/Build-Instructions-for-macOS

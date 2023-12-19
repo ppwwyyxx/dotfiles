@@ -140,8 +140,8 @@ Key.on('n', ['alt'], () => {  // Move mouse to another screen.
 Key.on('\'', ['alt'], () => {
   const window = getCurrWindow();
   const screen = window.screen().flippedVisibleFrame();
-  screen.x = screen.width / 2;
-  screen.width = screen.width - screen.x;
+  screen.x = screen.x + screen.width / 2;
+  screen.width = screen.width / 2;
   window.setFrame(screen);
 });
 Key.on(';', ['alt'], () => {
@@ -160,14 +160,20 @@ function cycleWindow(dir) {
   const window = getCurrWindow();
   if (!window) return;
   const others = window.screen().windows({"visible": true});
-  //logWindows(others);
   if (others.length) {
+    others.sort((a, b) => {
+      const ta = a.title(), tb = b.title();
+      return ta < tb;
+    });
+    //logWindows(others);
     for (k = 0; k < others.length; ++k) {
       if (others[k].isEqual(window))
         break;
     }
     const next = (k + dir + others.length) % others.length;
-    others[next].focus();
+    const next_w = others[next];
+    // Needed, otherwise sometimes switch to another window of kitty.
+    next_w.raise(); next_w.focus(); next_w.raise(); next_w.focus();
   }
 }
 Key.on('j', ['alt'], () => { cycleWindow(1); });
