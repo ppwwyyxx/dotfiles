@@ -51,14 +51,14 @@ alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things 
 alias -g N='>/dev/null'
 alias -g NN='>/dev/null 2>&1'
 which batcat NN && {
-  alias cat='batcat'
+  alias cat='batcat -p'
   alias L='batcat --paging=always'
 }
 which bat NN && {
-  alias cat='bat'
+  alias cat='bat -p'
   alias L='bat --paging=always'
   # use bat to colorize manpage. https://github.com/sharkdp/bat/issues/652#issuecomment-529032263
-  export MANROFFOPT="-c" 
+  export MANROFFOPT="-c"
   export MANPAGER="sh -c 'col -bx | bat -plman'"
   function bathelp() {
     "$@" --help | bat -plhelp
@@ -597,13 +597,22 @@ function pydbg () { ipython --pdb -c "%run $1" }
 alias piu='pip install --user --break-system-packages'
 alias piu2='pip2 install --user'
 alias piu3='pip3 install --user --break-system-packages'
+function pip() {
+    if [[ $1 == "i" ]]; then
+        command pip install "${@:2}"
+    elif [[ $1 == "u" ]]; then
+        command pip uninstall "${@:2}"
+    else
+        command pip "$@"
+    fi
+}
+alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --user -U"
 alias pyftp='python3 -m pyftpdlib'
 function pylibinfo() {
   if [[ -z "$1" ]]; then echo "Usage: pylibinfo libname"; return; fi
   python -c "import $1 as X; print(X.__file__, end=' '); print(X.__version__)"
 }
 function pytwistd() { twistd web --path "$1" -p tcp:"${2:-8000}" }
-alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install --user -U"
 alias unquote='python3 -c "import sys, urllib.parse as up; [sys.stdout.write(up.unquote(l)) for l in sys.stdin]"'
 
 # tensorflow/torch

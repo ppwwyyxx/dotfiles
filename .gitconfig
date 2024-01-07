@@ -127,8 +127,8 @@
   ;proxy=http://localhost:7777
 ;[https]
   ;proxy=http://localhost:7777
-[https "https://github.com/"]
-  proxy=http://localhost:7777
+;[https "https://github.com/"]
+  ;proxy=http://localhost:7777
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
 ;[init]
