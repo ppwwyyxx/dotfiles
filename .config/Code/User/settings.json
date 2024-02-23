@@ -8,6 +8,8 @@
 
 
     "workbench.editor.showTabs": "single",
+    // https://github.com/microsoft/vscode/issues/115231
+    "workbench.editor.enablePreview": false,
     "breadcrumbs.enabled": true,
 
     "terminal.integrated.cursorStyle": "line",
@@ -195,4 +197,5 @@
     ],
     "gitlens.statusBar.enabled": false,
     "editor.minimap.enabled": false,
+    "vsicons.dontShowNewVersionMessage": true,
 }

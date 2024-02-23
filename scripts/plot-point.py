@@ -64,6 +64,9 @@ def get_args():
     parser.add_argument('--decay',
                         help='exponential decay rate to smooth Y',
                         type=str, default='0')
+    parser.add_argument('--avg-window', type=int,
+                        help='averaging window size to smooth Y',
+                        default='0')
     parser.add_argument('--histogram',
                         help='draw histogram instead. use num-xticks and xlim to define bins',
                         action='store_true')
@@ -207,6 +210,23 @@ class Sequence(object):
             ret[k] = now * alpha + data[k] * (1 - alpha)
             now = ret[k]
         self.ys = ret
+
+    def average_window(self, window: int):
+        half_window = window // 2
+        data = self.ys
+        smoothed_data = np.copy(data)
+        n = len(data)
+
+        for i in range(n):
+            start_index = max(i - half_window, 0)
+            end_index = min(i + half_window + 1, n)
+            window_data = data[start_index:end_index]  # Extracting y-values
+            smoothed_data[i] = np.average(window_data)
+
+        self.ys = smoothed_data
+        # Mark them as invalid data points.
+        self.ys[:half_window] = self.ys[half_window]
+        self.ys[-half_window:] = self.ys[-half_window - 1]
 
     def scale_y(self, scale):
         if scale == 1.0:
@@ -454,6 +474,7 @@ def main():
             X, Y,
             plot_args=plot_args_from_column_desc(col_desc[1:])))
 
+    assert not (args.decay and args.avg_window)
     if ',' not in args.decay:
         decay = [float(args.decay)] * len(seqs)
     else:
@@ -461,6 +482,8 @@ def main():
     for dec, s in zip(decay, seqs):
         if dec != 0:
             s.exponential_smooth(dec)
+        if args.avg_window != 0:
+            s.average_window(args.avg_window)
 
     legends = None
     if args.legend:

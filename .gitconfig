@@ -180,3 +180,7 @@
 	autoSwitchBranches = false
 [fetch]
   prune = true
+[rerere]
+	enabled = true
+[column]
+	ui = auto

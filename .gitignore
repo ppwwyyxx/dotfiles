@@ -8,3 +8,4 @@ __pycache__
 *.terminfo
 .tmux/plugins
 .DS_Store
+.gdb_history
