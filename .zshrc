@@ -376,7 +376,7 @@ safe_source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
 safe_export_path $HOME/.zsh/Pinyin-Completion/bin
 znap source ohmyzsh/ohmyzsh plugins/{extract,transfer}
 safe_source $HOME/.zsh/fzf-fasd.zsh
-# znap source ohmyzsh/ohmyzsh plugins/ssh-agent
+znap source ohmyzsh/ohmyzsh plugins/ssh-agent
 
 ### The next two plugins have to be this order
 HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS="I"			# sensitive search

@@ -5,7 +5,10 @@
     "remote.SSH.defaultExtensions": [
         "eamodio.gitlens",
     ],
-
+    "remote.extensionKind": {
+        "GitHub.copilot": ["ui"],
+        "github.copilot-chat": ["ui"]
+    },
 
     "workbench.editor.showTabs": "single",
     // https://github.com/microsoft/vscode/issues/115231
@@ -198,4 +201,5 @@
     "gitlens.statusBar.enabled": false,
     "editor.minimap.enabled": false,
     "vsicons.dontShowNewVersionMessage": true,
+    "window.confirmSaveUntitledWorkspace": false,
 }

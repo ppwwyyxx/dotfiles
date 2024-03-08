@@ -3,15 +3,16 @@
 function clientListToSwitch() {
 	var curScreen = workspace.activeScreen;
 	var curDesktop = workspace.currentDesktop;
+	var clients = workspace.windowList();
 
-	var clients = workspace.clientList();
 	var res = new Array();
 	for (var i=0; i<clients.length; i++) {
-		if (clients[i].screen != curScreen)
-			continue;
-		if (clients[i].desktop > 0 && clients[i].desktop != curDesktop)
-			continue;
-		if (clients[i].skipSwitcher || clients[i].skipPager || clients[i].skipTaskbaer || clients[i].specialWindow)
+    // API reference: https://github.com/KDE/kwin//blob/2103eb8d162340d25ee52c04951e088b1cdfd700/src/window.h#L83
+    if (!clients[i].normalWindow)
+        continue;
+		if (clients[i].output != curScreen)
+      continue;
+		if (clients[i].desktops.length > 0 && clients[i].desktops.indexOf(curDesktop) == -1)
 			continue;
 		res.push(clients[i]);
 	}
@@ -19,11 +20,15 @@ function clientListToSwitch() {
 }
 
 function switchClientRel(rel) {
-	var curClient = workspace.activeClient;
+	var curClient = workspace.activeWindow;
 	var clients = clientListToSwitch();
+  /*
+   *for (var i = 0; i < clients.length; i++)
+   *  print(clients[i].caption);
+   */
 	var curIdx = clients.indexOf(curClient);
 	var nextClient = clients[(curIdx + rel + clients.length) % clients.length];
-	workspace.activeClient = nextClient;
+	workspace.activeWindow = nextClient;
 }
 
 //clientListToSwitch();
@@ -35,9 +40,9 @@ registerShortcut("SwitchToPrevClient", "(custom) Switch to Previous Client",
 
 
 function windowToNextScreen() {
-    var oldClient = workspace.activeClient;
+    var oldClient = workspace.activeWindow;
     workspace.slotWindowToNextScreen();
-    var newClient = workspace.activeClient;
+    var newClient = workspace.activeWindow;
     if (oldClient == newClient) {
         workspace.slotWindowRaise();
         workspace.slotSwitchToNextScreen();
@@ -49,9 +54,9 @@ registerShortcut("MoveToNextScreen", "(custom) Move Window to Next Screen", "", 
 
 
 var fixWechat = function() {
-    var clients = workspace.clientList();
+    var clients = workspace.windowList();
     for (var i=0; i<clients.length; i++) {
-        if (clients[i].caption.indexOf("WeChat") == 0 && clients[i].desktop != workspace.currentDesktop) {
+        if (clients[i].caption.indexOf("WeChat") == 0 && clients[i].desktops.indexOf(workspace.currentDesktop) == -1) {
             // minimize wechat if it's not on current desktop
             // https://github.com/vufa/deepin-wine-wechat-arch/issues/201#issuecomment-1188833005
             clients[i].minimized = true;
