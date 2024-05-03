@@ -56,7 +56,8 @@ registerShortcut("MoveToNextScreen", "(custom) Move Window to Next Screen", "", 
 var fixWechat = function() {
     var clients = workspace.windowList();
     for (var i=0; i<clients.length; i++) {
-        if (clients[i].caption.indexOf("WeChat") == 0 && clients[i].desktops.indexOf(workspace.currentDesktop) == -1) {
+        if ((clients[i].caption.indexOf("WeChat") == 0 || clients[i].caption.indexOf("微信") == 0)
+            && clients[i].desktops.indexOf(workspace.currentDesktop) == -1) {
             // minimize wechat if it's not on current desktop
             // https://github.com/vufa/deepin-wine-wechat-arch/issues/201#issuecomment-1188833005
             clients[i].minimized = true;

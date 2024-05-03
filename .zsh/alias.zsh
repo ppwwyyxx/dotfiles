@@ -713,6 +713,13 @@ which pkgfile NN && {
         echo -e "\"$command\" may be found in the following packages:\n\n${pkgs}\n"
       fi
     }
+    [ -n "$command" ] && [ -x /usr/bin/apt-file ] && {
+      echo -e "searching for \"$command\" in repos..."
+      local pkgs="$(/usr/bin/apt-file search -x "bin/$command\$")"
+      if [ ! -z "$pkgs" ]; then
+        echo -e "\"$command\" may be found in the following packages:\n\n${pkgs}\n"
+      fi
+    }
     return 1
   }
 }
