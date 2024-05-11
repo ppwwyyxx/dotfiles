@@ -13,12 +13,13 @@
     "workbench.editor.showTabs": "single",
     // https://github.com/microsoft/vscode/issues/115231
     "workbench.editor.enablePreview": false,
+    // Let quickopen-Enter open in current editor instead of others.
+    "workbench.editor.enablePreviewFromQuickOpen": true,
     "breadcrumbs.enabled": true,
 
     "terminal.integrated.cursorStyle": "line",
     "window.menuBarVisibility": "toggle",
     "workbench.iconTheme": "vscode-icons",
-
     "editor.accessibilitySupport": "off",
     "editor.lineNumbers": "relative",
     "editor.scrollbar.horizontal": "hidden",
@@ -202,4 +203,12 @@
     "editor.minimap.enabled": false,
     "vsicons.dontShowNewVersionMessage": true,
     "window.confirmSaveUntitledWorkspace": false,
+    "[python]": {
+        "diffEditor.ignoreTrimWhitespace": false,
+        "gitlens.codeLens.symbolScopes": [
+            "!Module"
+        ],
+        "editor.formatOnType": true,
+        "editor.wordBasedSuggestions": "off"
+    },
 }
