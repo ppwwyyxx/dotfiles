@@ -90,7 +90,10 @@
     "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.config/nvim/vscode.init.vim",
     "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
     "vscode-neovim.neovimExecutablePaths.darwin": "/Users/yuxinwu/bin/nvim",
-    "vscode-neovim.useCtrlKeysForNormalMode": false,
+    "vscode-neovim.ctrlKeysForNormalMode": [],
+    "vscode-neovim.compositeKeys": {
+        "jj": { "command": "vscode-neovim.escape" }
+    },
     "vim.cursorStylePerMode.insert": "line",
     "vim.cursorStylePerMode.normal": "block",
     "vim.enableNeovim": true,
