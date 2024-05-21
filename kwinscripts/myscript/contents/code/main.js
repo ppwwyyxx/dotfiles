@@ -1,41 +1,43 @@
 
-
-function clientListToSwitch() {
-	var curScreen = workspace.activeScreen;
-	var curDesktop = workspace.currentDesktop;
-	var clients = workspace.windowList();
-
-	var res = new Array();
-	for (var i=0; i<clients.length; i++) {
-    // API reference: https://github.com/KDE/kwin//blob/2103eb8d162340d25ee52c04951e088b1cdfd700/src/window.h#L83
-    if (!clients[i].normalWindow)
-        continue;
-		if (clients[i].output != curScreen)
-      continue;
-		if (clients[i].desktops.length > 0 && clients[i].desktops.indexOf(curDesktop) == -1)
-			continue;
-		res.push(clients[i]);
-	}
-	return res;
-}
-
 function switchClientRel(rel) {
-	var curClient = workspace.activeWindow;
-	var clients = clientListToSwitch();
+  var curClient = workspace.activeWindow;
+  var clients = workspace.windowList();
+  var curIdx = clients.indexOf(curClient);
+  if (curIdx == -1) {
+    console.log("Could not find current client?", curClient.caption);
+    return;
+  }
+
   /*
-   *for (var i = 0; i < clients.length; i++)
-   *  print(clients[i].caption);
+   *for (var i=0; i < clients.length; i++) {
+   *  console.log(JSON.stringify(clients[i], null, 4));
+   *}
    */
-	var curIdx = clients.indexOf(curClient);
-	var nextClient = clients[(curIdx + rel + clients.length) % clients.length];
-	workspace.activeWindow = nextClient;
+
+  // Find next client on the current screen & desktop to show.
+  var curScreen = workspace.activeScreen;
+  var curDesktop = workspace.currentDesktop;
+  for (var i=0; i < clients.length; i++) {
+    var rel_index = (rel == 1) ? (rel + i) : (rel - i);
+    var nextClient = clients[(curIdx + rel_index + clients.length) % clients.length];
+
+    // Skip some weird windows. They can cause crash in set activeWindow.
+    if (!nextClient.normalWindow)
+      continue;
+    if (nextClient.output != curScreen)
+      continue;
+    if (nextClient.desktops.length > 0 && nextClient.desktops.indexOf(curDesktop) == -1)
+      continue;
+    //print("Switching to ... ", nextClient.caption, nextClient, nextClient.caption == null);
+    workspace.activeWindow = nextClient;
+    return;
+  }
 }
 
-//clientListToSwitch();
 registerShortcut("SwitchToNextClient", "(custom) Switch to Next Client",
-	"", function() { switchClientRel(1); });
+  "", function() { switchClientRel(1); });
 registerShortcut("SwitchToPrevClient", "(custom) Switch to Previous Client",
-	"", function() { switchClientRel(-1); });
+  "", function() { switchClientRel(-1); });
 
 
 
