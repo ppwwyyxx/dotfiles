@@ -106,6 +106,7 @@
 # ]
 
 alt - t : open -na kitty.app --args --single-instance -d ~
+#alt - t : /opt/homebrew/bin/kitty -d $HOME
 
 alt - c [
   "Google Chrome" : open -na "Google Chrome" --args --new-window
@@ -123,6 +124,11 @@ ctrl - w [
   * ~
 ]
 
+ctrl - t [
+  "Vivaldi": osascript -e 'tell application "Vivaldi"' -e 'make new tab at window 1' -e 'end tell'
+  * ~
+]
+
 # 1. Modify config of savePath, so that flameshot without `-p` also works.
 # 2. Launch the binary (not the app) so that it prints outputs to stderr.
 # 3. Clipboard doesn't work in non-daemonic flameshot on macOS. So use an osascript.
@@ -133,6 +139,9 @@ alt - a : DIR=$HOME/Pictures/`date +%Y-%m`/ && \
     | grep -o "$DIR.*" | xargs -I '{}' \
       osascript -e 'set the clipboard to POSIX file "{}"'
 
+shift + alt - 1: yabai -m window --space 1
+shift + alt - 2: yabai -m window --space 2
+shift + alt - 3: yabai -m window --space 3
 
 # Implemented in phoenix instead.
 # alt - n : yabai -m config mouse_follows_focus on && yabai -m display --focus recent && yabai -m config mouse_follows_focus off

@@ -8,14 +8,15 @@
 if [[ -n $ZSH_PROF ]]; then zmodload zsh/zprof; fi
 
 if [[ $(uname) == "Darwin" ]]; then
-	export _CFG_ON_MAC=1
-	source /etc/profile
+  export _CFG_ON_MAC=1
+  # /etc/profile should provide the "basic" PATHs. So we
+  # reset PATH before sourcing it.
+  export PATH=/usr/local/bin:/usr/bin:/bin
+  source /etc/profile
 fi
 if [[ -n $SSH_CLIENT || -n $SSH_TTY || -n $SSH_CONNECTION ]]; then
   export _CFG_ON_SSH=1
 fi
-
-
 
 # https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return

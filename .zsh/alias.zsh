@@ -231,7 +231,7 @@ alias port='sudo netstat -ntlpu'
 alias listen='lsof -P -i -n'
 alias scp='scp -r'
 alias rsync='rsync -avP'
-alias speedtest='wget -O /dev/null http://speedtest-sfo2.digitalocean.com/100mb.test'
+#alias speedtest='wget -O /dev/null http://speedtest-sfo2.digitalocean.com/100mb.test'
 alias m_rsync='rsync --progress --partial --delete --size-only -rlv'
 
 alias chromium-socks='chromium --proxy-server=socks5://localhost:8080'

@@ -231,7 +231,7 @@ if __name__ == '__main__':
             reply.append( candicate )
 
     try:
-        locale.setlocale(locale.LC_ALL, "")
+        locale.setlocale(locale.LC_ALL, "C.UTF-8")
     except Exception:
         pass
 

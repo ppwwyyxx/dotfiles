@@ -29,7 +29,7 @@ function get_next_screen(screen) {
 function get_screen_at(x, y) {
   for (s of Screen.all()) {
     const frame = s.flippedFrame();
-    if (frame.x <= x && frame.y <= y && 
+    if (frame.x <= x && frame.y <= y &&
       x <= frame.x + frame.width && y <= frame.y + frame.height) {
       return s;
     }
@@ -186,9 +186,11 @@ function moveToSpace(spaceId) { // spaceId: 1-based index
   const w = getCurrWindow();
   space.moveWindows([w]);
 }
-Key.on('1', ['alt', 'shift'], () => { moveToSpace(1); });
-Key.on('2', ['alt', 'shift'], () => { moveToSpace(2); });
-Key.on('3', ['alt', 'shift'], () => { moveToSpace(3); });
+/*
+ *Key.on('1', ['alt', 'shift'], () => { moveToSpace(1); });
+ *Key.on('2', ['alt', 'shift'], () => { moveToSpace(2); });
+ *Key.on('3', ['alt', 'shift'], () => { moveToSpace(3); });
+ */
 // How to switch screen
 
 function resetWindowFocus(w) { // set focus by mouse

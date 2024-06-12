@@ -6,8 +6,9 @@
  * https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/EventOverview/TextDefaultsBindings/TextDefaultsBindings.html
  */
 {
-  "^v" = "noop:";
-  "~v" = "noop:";
+  "^v" = ();
+  "^t" = ();
+  "~v" = ();
 
   "^w" = "deleteWordBackward:";
   "@f" = "moveWordForward:";
