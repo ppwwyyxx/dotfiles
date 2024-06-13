@@ -214,4 +214,5 @@
         "editor.formatOnType": true,
         "editor.wordBasedSuggestions": "off"
     },
+    "github.copilot.editor.enableAutoCompletions": true,
 }

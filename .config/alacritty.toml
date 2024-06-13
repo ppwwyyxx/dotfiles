@@ -1,0 +1,76 @@
+live_config_reload = true
+
+[colors]
+draw_bold_text_with_bright_colors = false
+
+[colors.bright]
+cyan = "#3fffff"
+magenta = "#f357d8"
+
+[colors.cursor]
+cursor = "#be5160"
+
+[colors.normal]
+blue = "#2277cc"
+cyan = "#3fcfcf"
+green = "#3fff3f"
+magenta = "#fe3fff"
+red = "#ff2200"
+white = "#eeeeee"
+yellow = "#ffd634"
+
+[colors.primary]
+background = "#0a000a"
+bright_foreground = "#ffffff"
+dim_foreground = "#e0e0e0"
+foreground = "#eeeeee"
+
+[cursor]
+thickness = 0.5
+
+[cursor.style]
+blinking = "On"
+shape = "Beam"
+
+[env]
+TERM = "xterm-256color"
+WINIT_X11_SCALE_FACTOR = "randr"
+
+[font]
+size = 18.0
+bold_italic = { family = "Fantasque Sans Mono", style = "Bold Italic" }
+italic = { family = "Fantasque Sans Mono", style = "Italic" }
+
+[[hints.enabled]]
+command = "file-hyperlink-open.py"
+hyperlinks = true
+post_processing = true
+regex = "file:/[^\u0000-\u001F\u007F-<>\"\\s{-}\\^⟨⟩`]+"
+mouse = { enabled = true, mods = "None" }
+
+[[hints.enabled]]
+command = "xdg-open"
+hyperlinks = true
+post_processing = true
+regex = "(https:|http:|ftp:)[^\u0000-\u001F\u007F-<>\"\\s{-}\\^⟨⟩`]+"
+mouse = { enabled = true, mods = "None" }
+
+[[hints.enabled]]
+command = "google-chrome"
+post_processing = true
+regex = "(b/|cl/)[0-9]+"
+mouse = { enabled = true, mods = "None" }
+
+[[hints.enabled]]
+command = "google-chrome"
+post_processing = true
+regex = "go/[^\u0000-\u001F\u007F-<>\"\\s{-}\\^⟨⟩`]+"
+mouse = { enabled = true, mods = "None" }
+
+[window]
+dynamic_title = true
+opacity = 0.9
+
+[window.padding]
+x = 5
+y = 5
