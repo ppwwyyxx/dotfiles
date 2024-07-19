@@ -60,6 +60,8 @@ safe_export_path /opt/intel/bin
 safe_export_path /usr/lib/colorgcc/bin
 safe_export_path $HOME/.rvm/bin		# Add RVM to PATH for scripting
 
+# https://issuetracker.google.com/issues/353554174
+# export PYTHONSAFEPATH=1
 [[ -s ~/.config/python/startup.py ]] && export PYTHONSTARTUP=~/.config/python/startup.py
 
 # Config Less & SDCV

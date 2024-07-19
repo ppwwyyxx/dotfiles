@@ -47,7 +47,10 @@ function windowToNextScreen() {
     var newClient = workspace.activeWindow;
     if (oldClient == newClient) {
         workspace.slotWindowRaise();
-        workspace.slotSwitchToNextScreen();
+        // The window manager is configured to consider the screen with the mouse on it as active one.
+        // Therefore it is not possible to switch to a screen explicitly.
+        // workspace.slotSwitchToNextScreen();
+
         // TODO: move mouse
     }
 };

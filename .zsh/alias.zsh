@@ -610,7 +610,7 @@ alias pipup="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pi
 alias pyftp='python3 -m pyftpdlib'
 function pylibinfo() {
   if [[ -z "$1" ]]; then echo "Usage: pylibinfo libname"; return; fi
-  python -c "import $1 as X; print(X.__file__, end=' '); print(X.__version__)"
+  python -c "import os, $1 as X; print(os.path.dirname(X.__file__), end=' '); print(X.__version__)"
 }
 function pytwistd() { twistd web --path "$1" -p tcp:"${2:-8000}" }
 alias unquote='python3 -c "import sys, urllib.parse as up; [sys.stdout.write(up.unquote(l)) for l in sys.stdin]"'
