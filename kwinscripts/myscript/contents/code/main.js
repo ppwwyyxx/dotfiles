@@ -28,6 +28,11 @@ function switchClientRel(rel) {
       continue;
     if (nextClient.desktops.length > 0 && nextClient.desktops.indexOf(curDesktop) == -1)
       continue;
+    if (nextClient.width <= 1 || nextClient.height <= 1)
+      // Some apps (zotero) start a tiny 1x1 off-screen window.
+      continue;
+    if (!nextClient.managed)
+      continue;
     //print("Switching to ... ", nextClient.caption, nextClient, nextClient.caption == null);
     workspace.activeWindow = nextClient;
     return;

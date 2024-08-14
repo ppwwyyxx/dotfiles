@@ -42,6 +42,7 @@ typeset -gH _comp_dumpfile=$_MY_ZSH_CACHE/snap-compdump
 [[ -f $_ZSH_SNAP_BASE/zsh-snap/znap.zsh ]] ||
     git clone --depth 1 -- \
         https://github.com/marlonrichert/zsh-snap.git $_ZSH_SNAP_BASE/zsh-snap
+zstyle ':znap:*' auto-compile no  # TODO support exclude?
 source $_ZSH_SNAP_BASE/zsh-snap/znap.zsh
 
 # ENV f[[
@@ -385,7 +386,6 @@ znap source zsh-users/zsh-syntax-highlighting
 ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=red,standout
 
 # f]]
-
 safe_source $HOME/.zsh/alias.zsh  # aliases
 safe_source $HOME/.zshrc.local
 

@@ -86,7 +86,10 @@ class Transformer:
     repo = self.git_repo
     try:
       obj = repo[hash]
-      fullhash = obj.hex
+      try:
+        fullhash = obj.hex
+      except AttributeError:
+        fullhash = obj.id
       type = obj.type_str
     except (KeyError, ValueError): # no such commit, ambiguous
       return hash
