@@ -29,7 +29,9 @@ text:
     - LICENSE-MIT
     - CONTRIBUTORS
     - CONTRIBUTORS.md
+    - CONTRIBUTING.md
     - CONTRIBUTORS.txt
+    - CODE_OF_CONDUCT.md
     - CODEOWNERS
     - OWNERS
     - METADATA
@@ -81,6 +83,7 @@ programming:
       - CMakeLists.txt
       - .cmake.in
       - Makefile
+      - Dockerfile
       - Makefile.am
       - .make
       - configure
@@ -153,6 +156,7 @@ office:
     - .ps
     - .rtf
     - .sxw
+    - .ipynb
 
   spreadsheet:
     - .xls
@@ -176,6 +180,7 @@ archives:
     - .apk
     - .deb
     - .rpm
+    - .whl
 
   images:
     - .bin
@@ -183,6 +188,13 @@ archives:
     - .img
     - .iso
     - .vcd
+
+  bindata:
+    - .npy
+    - .npz
+    - .pth
+    - .pkl
+    - .sqlite
 
   other:
     - .7z
@@ -241,6 +253,8 @@ unimportant:
       - .toc
     llvm:
       - .bc
+    shell:
+      - .zwc  # zsh word code
 
   macos:
     - .CFUserTextEncoding

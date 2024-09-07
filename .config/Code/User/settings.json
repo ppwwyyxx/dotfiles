@@ -20,6 +20,7 @@
     "terminal.integrated.cursorStyle": "line",
     "window.menuBarVisibility": "toggle",
     "workbench.iconTheme": "vscode-icons",
+
     "editor.accessibilitySupport": "off",
     "editor.lineNumbers": "relative",
     "editor.scrollbar.horizontal": "hidden",
@@ -67,10 +68,8 @@
     "python.analysis.logLevel": "Warning",
     "python.analysis.memory.keepLibraryAst": true,
     "python.analysis.memory.keepLibraryLocalVariables": true,
-    "python.formatting.blackArgs": [
-        "--line-length",
-        "100"
-    ],
+    "python.formatting.blackArgs": ["--line-length", "100"],
+    "python.languageServer": "Jedi",
 
     "todohighlight.isEnable": true,
     "todohighlight.keywordsPattern": "from IPython.*|import pdb.*|pdb.set_trace.*|import sys; sys.*",
@@ -90,10 +89,7 @@
     "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.config/nvim/vscode.init.vim",
     "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
     "vscode-neovim.neovimExecutablePaths.darwin": "/Users/yuxinwu/bin/nvim",
-    "vscode-neovim.ctrlKeysForNormalMode": [],
-    "vscode-neovim.compositeKeys": {
-        "jj": { "command": "vscode-neovim.escape" }
-    },
+    "vscode-neovim.useCtrlKeysForNormalMode": false,
     "vim.cursorStylePerMode.insert": "line",
     "vim.cursorStylePerMode.normal": "block",
     "vim.enableNeovim": true,
@@ -142,17 +138,11 @@
     "editor.folding": false,
     "debug.showBreakpointsInOverviewRuler": true,
     "workbench.colorCustomizations": {
+
 		"sash.hoverBorder": "#3285f1",
         "statusBar.background": "#007acc",
         "statusBar.noFolderBackground": "#007acc",
-        "statusBar.debuggingBackground": "#007acc",
-        // Disable annoying colors
-        "editorOverviewRuler.errorForeground": "#0000",
-        "editorOverviewRuler.infoForeground": "#0000",
-        "editorOverviewRuler.warningForeground": "#0000",
-        "minimap.errorHighlight": "#0000",
-        "minimap.infoHighlight": "#0000",
-        "minimap.warningHighlight": "#0000",
+        "statusBar.debuggingBackground": "#007acc"
     },
     "editor.glyphMargin": false,
     "[jsonc]": {
@@ -168,14 +158,16 @@
     "bracket-pair-colorizer-2.colors": [
         "White", "GreenYellow", "Gold", "Orchid", "Aqua", "ForestGreen", "Tomato", "LightSkyBlue"
     ],
-    "tableformatter.common.explicitFullwidthChars": [
-        "✅",
-        "❌"
-    ],
-    "gitlens.hovers.currentLine.over": "line",
+    "tableformatter.common.explicitFullwidthChars": ["✅","❌"],
+
+    // git
+    "gitlens.currentLine.enabled": false,
+    "gitlens.hovers.currentLine.over": "annotation",
     "gitlens.hovers.enabled": true,
     "gitlens.hovers.pullRequests.enabled": true,
     "gitlens.mode.statusBar.enabled": false,
+    "gitlens.statusBar.enabled": false,
+    "editor.minimap.enabled": false,
 
     "githubPullRequests.queries": [
         { "label": "All", "query": "is:open" },
@@ -195,24 +187,4 @@
     "bracket-pair-colorizer-2.depreciation-notice": false,
     "editor.guides.bracketPairs": "active",
     "editor.inlineSuggest.enabled": true,
-    "workbench.editor.revealIfOpen": true,
-    "extensions.experimental.affinity": {
-        "asvetliakov.vscode-neovim": 1
-    },
-    "gitlens.codeLens.scopes": [
-        "document"
-    ],
-    "gitlens.statusBar.enabled": false,
-    "editor.minimap.enabled": false,
-    "vsicons.dontShowNewVersionMessage": true,
-    "window.confirmSaveUntitledWorkspace": false,
-    "[python]": {
-        "diffEditor.ignoreTrimWhitespace": false,
-        "gitlens.codeLens.symbolScopes": [
-            "!Module"
-        ],
-        "editor.formatOnType": true,
-        "editor.wordBasedSuggestions": "off"
-    },
-    "github.copilot.editor.enableAutoCompletions": true,
 }

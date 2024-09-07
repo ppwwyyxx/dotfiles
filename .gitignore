@@ -1,4 +1,4 @@
-
+*.zwc
 *.pyc
 __pycache__
 *.~undo-tree~

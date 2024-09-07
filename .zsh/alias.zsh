@@ -13,7 +13,7 @@ in_array() {
 [[ -z $_CFG_ON_MAC ]] && {
   alias open='xdg-open'
 }
-alias -s {pdf,PDF,JPEG,JPG,jpg,jpeg,png,PNG,gif,html,mhtml,obj,wmv,mkv,mp4,MP4,mp3,avi,rm,rmvb,flv}=xdg-open
+alias -s {pdf,PDF,JPEG,JPG,jpg,webp,jpeg,png,PNG,gif,html,mhtml,obj,wmv,mkv,mp4,MP4,mp3,avi,rm,rmvb,flv}=xdg-open
 
 # common command
 alias cdl='cd'
@@ -514,9 +514,9 @@ f_avc_param_av1="-map 0 -c:v libsvtav1 -crf 21 -c:a copy -map_metadata 0"
 f_avc_param_apple="$f_avc_param_264 -pix_fmt yuv420p -map_metadata 0"
 function ffmpeg_compress() {
   if [[ -n $2 ]]; then
-    ffmpeg -i "$1" `echo $f_avc_param_265` -vf subtitles=$2 $1.mkv
+    ffmpeg -i "$1" `echo $f_avc_param_av1` -vf subtitles=$2 $1.mkv
   else
-    ffmpeg -i "$1" `echo $f_avc_param_265` -c:s copy $1.mkv
+    ffmpeg -i "$1" `echo $f_avc_param_av1` -c:s copy $1.mkv
   fi
 }
 function mencoder_compress() { mencoder "$1" -o $1.avi `echo $m_avc_param` }

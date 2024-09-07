@@ -20,6 +20,7 @@
 
 
     // neovim fix:
+    { "command": "vscode-neovim.compositeEscape1", "key": "j", "when": "neovim.mode == insert", "args": "j" },
     { "key": "ctrl+i", "command": "workbench.action.navigateToLastEditLocation", "when": "neovim.mode == 'normal'" },
     { "key": "ctrl+o", "command": "workbench.action.navigateBack", "when": "neovim.mode == 'normal'" },
     { "key": "ctrl+q", "command": "vscode-neovim.send", "when": "textInputFocus && neovim.mode == 'normal'", "args": "<C-q>" },

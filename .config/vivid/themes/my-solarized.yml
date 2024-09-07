@@ -86,7 +86,7 @@ text:
     foreground: 9cd988
 
 programming:
-  tooling: 
+  tooling:
     foreground: 9795f5
   unittest:
     foreground: lightgray
@@ -99,7 +99,7 @@ media:
     foreground: cyan
 
   video:
-    # also magenta
+    # close to magenta
     foreground: d933e0
 
 office:
@@ -107,6 +107,10 @@ office:
 
 archives:
   foreground: red
+
+  bindata:
+    # close to red
+    foreground: f95590
 
 unimportant:
   foreground: '767676'
