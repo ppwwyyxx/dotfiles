@@ -51,7 +51,7 @@
   frag = magenta bold
 [pager]
   grep = ([[ -x "$(command -v delta)" ]] && delta || less -RFX)
-  diff = ([[ -x "$(command -v delta)" ]] && delta || diff-highlight) #| less --tab=4 -RFX
+  diff = delta
   blame = ([[ -x "$(command -v delta)" ]] && delta || less -RFX)
 [alias]
   a   = add
@@ -96,7 +96,9 @@
   # https://stackoverflow.com/questions/204461/git-squash-fixup-earlier-commit
   fixup = !sh -c 'REV=$(git rev-parse $1) && git commit --fixup $@ && git rebase -i --autostash --autosquash $REV^ && git restack' -
   gogo = !git amend && git pushstack --yes
-  sl = !git branchless --color=always smartlog | sed 's/[●◆]/🔥/'
+  sl = !git branchless --color=always smartlog | sed -e 's/\\(●\\|◆\\)/🔥/'
+  lint = test run -c lint --jobs 0
+  fixlint = test fix -c fixlint
   ;sl = branchless smartlog
 
   ss  = stash
@@ -178,6 +180,9 @@
 	interactive = true
 [branchless "navigation"]
 	autoSwitchBranches = false
+[branchless "test.alias"]
+  lint = "bash -c 'set -o pipefail; pre-commit run --color=always --from-ref HEAD~1 --to-ref HEAD | grep -v Skipped'"
+  fixlint = pre-commit run --color=always --from-ref HEAD~1 --to-ref HEAD || pre-commit run --color=always --files $(git ls-files -m) || true
 [fetch]
   prune = true
 [rerere]

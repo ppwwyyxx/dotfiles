@@ -303,6 +303,7 @@ alias valgrind='valgrind --leak-check=full --track-origins=yes --show-possibly-l
 which colordiff NN && alias diff='colordiff'
 alias googlelink='python3 -c "import sys, urllib.parse as up; print(up.parse_qs(up.urlparse(sys.argv[1]).query)[\"url\"][0])"'
 alias disasm='objdump -d -M att -r -C'
+alias pre-commit.='pre-commit run --from-ref HEAD~1 --to-ref . | grep -v Skipped'
 # cd to git repo root or PWD
 function cdp () {
   dir=$(git rev-parse --show-toplevel 2>/dev/null)

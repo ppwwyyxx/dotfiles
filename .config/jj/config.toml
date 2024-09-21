@@ -18,18 +18,15 @@ auto-local-branch = false
 log = 'my_log_compact'
 
 [template-aliases]
+# Remove author.
 my_log_compact = '''
 if(root,
-  builtin_log_root(change_id, commit_id),
+  format_root_commit(self),
   label(if(current_working_copy, "working_copy"),
     concat(
       separate(" ",
-        label(
-          separate(" ", if(divergent, "divergent"), if(hidden, "hidden")),
-          separate(" ",
-            format_short_change_id(change_id) ++ if(divergent, "??"),
-            if(hidden, "hidden"))),
-        format_timestamp(committer.timestamp().ago()),
+        format_short_change_id_with_hidden_and_divergent_info(self),
+        format_timestamp(committer.timestamp()),
         branches,
         tags,
         working_copies,
@@ -39,7 +36,10 @@ if(root,
       ) ++ "\n",
       separate(" ",
         if(empty, label("empty", "(empty)")),
-        if(description, description.first_line(), description_placeholder),
+        if(description,
+          description.first_line(),
+          label(if(empty, "empty"), description_placeholder),
+        ),
       ) ++ "\n",
     ),
   )
