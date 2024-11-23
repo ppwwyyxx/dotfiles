@@ -13,6 +13,17 @@ function bind(window) {
     }
 }
 
+function getPrimaryScreen() {
+  for (var i = 0; i < workspace.screens.length; i++) {
+    var geo = workspace.screens[i].geometry;
+    if (geo.x == 0 && geo.y == 0) {
+      return workspace.screens[i];
+    }
+  }
+  // Weird index on wayland, primary is not 0.
+  return workspace.screens[0];
+}
+
 function update(window) {
     var window = window || this;
 
@@ -20,7 +31,7 @@ function update(window) {
         return;
     }
 
-    var primaryScreen = workspace.screens[0];
+    var primaryScreen = getPrimaryScreen();
     var currentScreen = window.output;
     var previousScreen = window._previousScreen;
     window._previousScreen = currentScreen;

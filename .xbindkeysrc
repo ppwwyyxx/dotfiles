@@ -1,10 +1,10 @@
 # app keys..
 
-"google-chrome-stable --profile-directory=Default"
+"google-chrome-stable"
   Mod4 + c
 "~/bin/background/screenshot"
   Mod4 + a
-"alacritty"
+"kitty"
   Mod4 + t
 "sleep .1; xdotool click 1"
   Mod4 + Return
@@ -21,8 +21,6 @@
 
 "zeal"
   Mod4 + z
-"google-chrome-stable --profile-directory=Default --app-id=hmjkmjkepdijhoojdojkdfohbdgmmhki"
-  Mod4 + g
 
 #"slock"
 #"gnome-screensaver-command --lock"

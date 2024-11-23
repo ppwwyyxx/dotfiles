@@ -42,3 +42,4 @@ NautilusWindow {
     border-radius: 0;
     background-color: @bg_color;
 }
+@import 'colors.css';

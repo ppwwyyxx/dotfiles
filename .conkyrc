@@ -1,14 +1,15 @@
 conky.config = {
 	update_interval = 2,
 	own_window = true,
+	out_to_wayland = true,
 	-- for compton+awesome:
 	-- own_window_type = 'override',
 	-- own_window_transparent = true,
 	-- own_window_colour = 'white',
 
 	-- for KDE:
-	own_window_type = 'dock',
-	own_window_transparent = false,
+	-- own_window_type = 'desktop',
+	own_window_transparent = true,
 	own_window_argb_visual = true,
 	own_window_argb_value = 145,
 	own_window_colour = 'black',
@@ -38,6 +39,7 @@ conky.config = {
 	override_utf8_locale = true,
 
 -- position
+	xinerama_head = 1,  -- monitor
 	alignment = 'top_left',
 	gap_x = 15,
 	gap_y = 40,
