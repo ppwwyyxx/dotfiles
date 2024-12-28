@@ -184,6 +184,9 @@ alias nohistory='unset HISTFILE'
 safe_source $HOME/.zsh/bindings.zsh
 
 # Complete f[[
+if [[ $_CFG_ON_MAC ]]; then
+  fpath+=/opt/homebrew/share/zsh/site-functions/
+fi
 autoload -Uz compinit && compinit
 zmodload zsh/complist
 bindkey -M menuselect '^@' accept-and-menu-complete

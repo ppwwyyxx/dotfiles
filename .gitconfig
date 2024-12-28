@@ -78,6 +78,7 @@
   dc    = diff --cached
   d     = diff --diff-filter=d  # don't show deleted files
   diffl = diff HEAD^
+  diffls = diff HEAD^ --name-status
   lastchange = log -p --follow -n 1
   meld  = !git difftool -t meld --dir-diff
 

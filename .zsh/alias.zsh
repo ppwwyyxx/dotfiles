@@ -214,13 +214,12 @@ function patch1() { patch -p1 < $1 }
 
 # Avoid accidental shut down
 if [[ -n $_CFG_ON_SSH ]]; then
-  alias poweroff='vboxmanage controlvm win7 savestate; sudo poweroff'
-  alias reboot='vboxmanage controlvm win7 savestate; sudo reboot'
-else
-  alias -g halt=
   alias -g poweroff=
   alias -g shutdown=
   alias -g reboot=
+fi
+if [[ -n $_CFG_ON_MAC ]]; then
+  alias logout='sudo launchctl bootout gui/$(id -u)'
 fi
 
 # network
@@ -530,6 +529,9 @@ function colormap(){
     print -P "%{%F{$i}%B%}Hello World"
   done
 }
+[[ -n $_CFG_ON_MAC ]] && {
+  which iina NN && alias mpv='iina'
+}
 
 
 # processes
@@ -661,6 +663,7 @@ which pacman NN && {
   alias pSu='brew upgrade'
   alias pR='brew uninstall'
   alias pQl='brew list'
+  alias pScc='brew cleanup'
 } || {
 which apt-get NN && {
     which apt NN && {

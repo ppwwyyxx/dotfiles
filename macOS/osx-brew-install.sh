@@ -5,12 +5,12 @@
 brew install coreutils moreutils gnu-tar findutils gawk grep gnu-tar gnu-sed git git-lfs
 brew install reattach-to-user-namespace tmux neovim
 brew install watch ack tree aria2 fd fzf tig imagemagick jq mtr \
-  wget curl cmake htop the_silver_searcher p7zip git-delta ncdu vivid
+  wget curl cmake htop the_silver_searcher p7zip git-delta ncdu vivid pv ripgrep cloc colordiff iperf3 grc direnv
 brew install node rust go
 
 # Tools
 brew install glab glider proxychains-ng youtube-dl \
-    bat pstree tree koekeishiya/formulae/skhd ctags terminal-notifier rar
+    bat pstree tree koekeishiya/formulae/skhd ctags terminal-notifier rar poppler
 
 # Deps & libs
 brew install pygit2 numpy opencv
@@ -21,13 +21,14 @@ brew install font-hack-nerd-font font-fantasque-sans-mono-nerd-font font-fira-co
 
 # Apps
 brew install --cask kitty alacritty \
-  obsidian zotero visual-studio-code flameshot soulver soulver-cli \
-  adobe-acrobat-reader wpsoffice-cn \
+  obsidian zotero visual-studio-code flameshot soulver soulver-cli devtoys \
+  adobe-acrobat-reader wpsoffice-cn db-browser-for-sqlite \
   telegram-desktop discord feem slack \
   megasync dropbox \
   caffeine scroll-reverser alt-tab \
-  tunnelblick \
-  iina qqmusic phoenix-slides vnc-viewer
+  tunnelblick tor-browser \
+  iina qqmusic phoenix-slides vnc-viewer \
+  nvidia-nsight-systems nvidia-nsight-compute
 brew install --cask --no-quarantine syntax-highlight
 
 brew tap filebrowser/tap
