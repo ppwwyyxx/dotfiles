@@ -328,7 +328,7 @@ alias which='which -a'
 alias zh-CN="LC_ALL='zh_CN.UTF-8'"
 alias manzh="LC_ALL='zh_CN.UTF-8' man"
 alias free='free -hw'
-which dfc NN && alias df='dfc -T -t -squashfs' || alias df='df -Th'
+which dfc NN && alias df='dfc -T -t -squashfs -c always | grep -v "\.service\s*$"' || alias df='df -Th'
 alias convmv-gbk2utf8='convmv -f GBK -t UTF-8 --notest -r'
 alias window='wmctrl -a '
 which yank NN && {

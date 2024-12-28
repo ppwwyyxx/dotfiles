@@ -187,4 +187,7 @@
     "bracket-pair-colorizer-2.depreciation-notice": false,
     "editor.guides.bracketPairs": "active",
     "editor.inlineSuggest.enabled": true,
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
 }
