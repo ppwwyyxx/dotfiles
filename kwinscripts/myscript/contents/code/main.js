@@ -22,11 +22,13 @@ function switchClientRel(rel) {
     var nextClient = clients[(curIdx + rel_index + clients.length) % clients.length];
 
     // Skip some weird windows. They can cause crash in set activeWindow.
-    if (!nextClient.normalWindow)
+    if (!nextClient.normalWindow || nextClient.skipTaskbar)
       continue;
-    if (nextClient.output != curScreen)
+    if (nextClient.output != curScreen) // not on current screen
       continue;
-    if (nextClient.desktops.length > 0 && nextClient.desktops.indexOf(curDesktop) == -1)
+    var desktops = nextClient.desktops;
+    // If desktops.length == 0, it means window is on all desktops.
+    if (desktops.length > 0 && nextClient.desktops.indexOf(curDesktop) == -1)
       continue;
     if (nextClient.width <= 1 || nextClient.height <= 1)
       // Some apps (zotero) start a tiny 1x1 off-screen window.

@@ -87,8 +87,9 @@
 
     // vim:
     "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.config/nvim/vscode.init.vim",
+    "vscode-neovim.neovimInitVimPaths.darwin": "$HOME/.config/nvim/vscode.init.vim",
     "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
-    "vscode-neovim.neovimExecutablePaths.darwin": "/Users/yuxinwu/bin/nvim",
+    "vscode-neovim.neovimExecutablePaths.darwin": "/Users/wyx/bin/nvim",
     "vscode-neovim.useCtrlKeysForNormalMode": false,
     "vim.cursorStylePerMode.insert": "line",
     "vim.cursorStylePerMode.normal": "block",

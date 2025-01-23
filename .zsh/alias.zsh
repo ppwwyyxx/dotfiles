@@ -544,6 +544,7 @@ function pstack() { =gdb -q -nx -p $1 <<< 't a a bt' | sed -ne '/^#/p' }
   alias top='top -d 0.5 -o %CPU -c'
   alias topme='top -u $USER'
 }
+alias pstree='pstree -a -p'
 alias htopme='htop -u $USER'
 alias psmem="ps aux|awk '{print \$4\"\\t\"\$11}'|grep -v MEM|sort -n | tail -n20"
 function memgrep() { grep VmHWM /proc/$(pgrep -d '/status /proc/' "$1")/status; }
