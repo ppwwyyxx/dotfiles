@@ -379,7 +379,7 @@ safe_source $HOME/.zsh/cdnav.zsh   # alt-up/left/right/i
 
 safe_source $HOME/.zsh/Pinyin-Completion/shell/pinyin-comp.zsh
 safe_export_path $HOME/.zsh/Pinyin-Completion/bin
-znap source ohmyzsh/ohmyzsh plugins/{extract,transfer}
+znap source ohmyzsh/ohmyzsh plugins/{extract,transfer,direnv}
 safe_source $HOME/.zsh/fzf-fasd.zsh
 
 ### The next two plugins have to be this order

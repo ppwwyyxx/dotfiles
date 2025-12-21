@@ -55,7 +55,6 @@
   blame = ([[ -x "$(command -v delta)" ]] && delta || less -RFX)
 [alias]
   a   = add
-  b   = branch
   pl  = pull --rebase
   pu  = push
   m   = merge
@@ -77,8 +76,10 @@
 
   dc    = diff --cached
   d     = diff --diff-filter=d  # don't show deleted files
+  diff- = diff HEAD^
   diffl = diff HEAD^
   diffls = diff HEAD^ --name-status
+  show- = !tig show . +10
   lastchange = log -p --follow -n 1
   meld  = !git difftool -t meld --dir-diff
 
@@ -182,7 +183,7 @@
 [branchless "navigation"]
 	autoSwitchBranches = false
 [branchless "test.alias"]
-  lint = "bash -c 'set -o pipefail; pre-commit run --color=always --from-ref HEAD~1 --to-ref HEAD | grep -v Skipped'"
+  lint = "bash -c 'set -o pipefail; pre-commit run --color=always --from-ref HEAD~1 --to-ref HEAD | (grep -v Skipped || true)'"
   fixlint = pre-commit run --color=always --from-ref HEAD~1 --to-ref HEAD || pre-commit run --color=always --files $(git ls-files -m) || true
 [fetch]
   prune = true
