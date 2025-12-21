@@ -372,7 +372,7 @@ alias iftop='sudo iftop -B'
 alias powertop='sudo powertop'
 alias sy='sudo systemctl'
 which dool NN && {
-  alias dstat='dool -dnmcl --top-io --socket --bytes '
+  alias dstat='dool -dnmcl --top-io --bytes '
 } || {
   alias dstat='dstat -dnmcl --top-io --socket'
 }
@@ -508,8 +508,8 @@ alias ffprobe='ffprobe -hide_banner'
 m_sub_param='-subcp utf-8 -subfont-text-scale 2.5 -subfont "/usr/share/fonts/wenquanyi/wqy-microhei/wqy-microhei.ttc"'
 m_avc_param="-oac mp3lame -lameopts fast:preset=medium -ovc x264 -x264encopts subq=5:8x8dct:frameref=2:bframes=3:weight_b:threads=auto"
 f_avc_param_264="-c:v libx264 -preset slow -crf 23 -c:a libmp3lame -map_metadata 0"
-f_avc_param_265="-map 0 -c:v libx265 -preset medium -x265-params crf=25 -c:a copy -map_metadata 0"
-f_avc_param_av1="-map 0 -c:v libsvtav1 -crf 21 -c:a copy -map_metadata 0"
+f_avc_param_265="-c:v libx265 -preset medium -x265-params crf=24 -c:a copy -map_metadata 0"
+f_avc_param_av1="-c:v libsvtav1 -crf 23 -c:a copy -map_metadata 0"
 f_avc_param_apple="$f_avc_param_264 -pix_fmt yuv420p -map_metadata 0"
 function ffmpeg_compress() {
   if [[ -n $2 ]]; then
@@ -518,8 +518,10 @@ function ffmpeg_compress() {
     ffmpeg -i "$1" `echo $f_avc_param_av1` -c:s copy $1.mkv
   fi
 }
+function ffmpeg_compress_audio() {
+  ffmpeg -i "$1" -c:a aac -q:a 5 ${1%.*}.aac
+}
 function mencoder_compress() { mencoder "$1" -o $1.avi `echo $m_avc_param` }
-function ffmpeg_audio() { ffmpeg -i "$1" -vn "${1%.*}".mp3}
 # https://www.reddit.com/r/ffmpeg/comments/lokjhs/how_do_you_check_the_audio_level_inside_a_video/
 function ffmpeg_loudnorm() { ffmpeg -i "$1" -filter:a 'loudnorm=i=-24' -c:v copy -c:a aac "${1%.*}"_loudnorm.mkv}
 function colormap(){

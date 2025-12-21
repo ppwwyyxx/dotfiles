@@ -96,7 +96,7 @@
   lola= log --graph --decorate --pretty=oneline --abbrev-commit --all
   # branchless:
   # https://stackoverflow.com/questions/204461/git-squash-fixup-earlier-commit
-  fixup = !sh -c 'REV=$(git rev-parse $1) && git commit --fixup $@ && git rebase -i --autostash --autosquash $REV^ && git restack' -
+  fixup = !sh -c 'REV=$(git rev-parse $1) && git commit --fixup --no-verify $@ && git rebase -i --autostash --autosquash $REV^ && git restack' -
   gogo = !git amend && git pushstack --yes
   sl = !git branchless --color=always smartlog | sed -e 's/\\(●\\|◆\\)/🔥/'
   lint = test run -c lint --jobs 0
