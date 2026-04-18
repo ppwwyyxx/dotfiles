@@ -96,5 +96,9 @@
     { "key": "ctrl+h", "command": "-extension.dash.specific", "when": "editorTextFocus" },
     { "key": "ctrl+alt+h", "command": "-extension.dash.all", "when": "editorTextFocus" },
     { "key": "alt+h", "command": "-extension.dash.customSyntax", "when": "editorTextFocus" },
-    { "key": "ctrl+shift+h", "command": "-extension.dash.emptySyntax", "when": "editorTextFocus" },
+    {
+        "key": "ctrl+shift+h",
+        "command": "-extension.dash.emptySyntax",
+        "when": "editorTextFocus"
+    }
 ]

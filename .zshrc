@@ -40,9 +40,11 @@ safe_source "$_MY_ZSH_CACHE/p10k-instant-prompt-${(%):-%n}.zsh"
 
 _ZSH_SNAP_BASE=$HOME/.zsh/snap/
 typeset -gH _comp_dumpfile=$_MY_ZSH_CACHE/snap-compdump
-[[ -f $_ZSH_SNAP_BASE/zsh-snap/znap.zsh ]] ||
+if [[ ! -f $_ZSH_SNAP_BASE/zsh-snap/znap.zsh ]]; then
     git clone --depth 1 -- \
         https://github.com/marlonrichert/zsh-snap.git $_ZSH_SNAP_BASE/zsh-snap
+    (cd $_ZSH_SNAP_BASE/zsh-snap && git fetch --depth 1 origin 909e3842dc301ad3588cdb505f8ed9003a34d2bb && git checkout 909e3842dc301ad3588cdb505f8ed9003a34d2bb)
+fi
 zstyle ':znap:*' auto-compile no  # TODO support exclude?
 source $_ZSH_SNAP_BASE/zsh-snap/znap.zsh
 

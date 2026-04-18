@@ -44,7 +44,7 @@ alias watch='watch '  # allow watching an alias
   }
 }
 alias lsf="ls -1f"  # fast ls
-alias lll='ls++'
+alias lll='eza -lbhHigUmuSa --time-style=long-iso --git --color-scale'
 
 alias L=less
 alias -g B='|sed -r "s:\x1B\[[0-9;]*[mK]::g"'       # remove color, make things boring
