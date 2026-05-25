@@ -137,17 +137,33 @@ Key.on('n', ['alt'], () => {  // Move mouse to another screen.
 });
 
 // Snap window to left/right edge.
+// On a 5120:2160 (ultrawide) screen, snap right = right 3/5, snap left = left 2/5;
+// otherwise each snaps half the screen.
+function isUltrawide(frame) {
+  // Use 1055 to account for top bar.
+  return Math.abs(frame.width / frame.height - 2560 / 1055) < 0.01;
+}
 Key.on('\'', ['alt'], () => {
   const window = getCurrWindow();
   const screen = window.screen().flippedVisibleFrame();
-  screen.x = screen.x + screen.width / 2;
-  screen.width = screen.width / 2;
+  console.log(isUltrawide(screen), screen.width, screen.height);
+  if (isUltrawide(screen)) {
+    screen.x = screen.x + screen.width * 2 / 5;
+    screen.width = screen.width * 3 / 5;
+  } else {
+    screen.x = screen.x + screen.width / 2;
+    screen.width = screen.width / 2;
+  }
   window.setFrame(screen);
 });
 Key.on(';', ['alt'], () => {
   const window = getCurrWindow();
   const screen = window.screen().flippedVisibleFrame();
-  screen.width = screen.width / 2;
+  if (isUltrawide(screen)) {
+    screen.width = screen.width * 2 / 5;
+  } else {
+    screen.width = screen.width / 2;
+  }
   window.setFrame(screen);
 });
 

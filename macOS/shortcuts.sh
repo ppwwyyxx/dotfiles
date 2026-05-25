@@ -38,23 +38,21 @@ Undo;^z
 撤销;^z
 Redo;^\$z
 重做;^\$z
-Cut;^x
-剪切;^x
-Copy;^c
-复制;^c
-Paste;^v
-粘贴;^v
-Paste and Match Style;^\$v
 Select All;^a
 全选;^a
 Find...;^f
 Find;^f" | tail -n+2  \
   | while read name key; do
   defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add $name $key
-  #defaults write org.zotero.zotero NSUserKeyEquivalents -dict-add $name $key
-  #defaults write md.obsidian NSUserKeyEquivalents -dict-add $name $key
 done
 defaults write com.google.Chrome NSUserKeyEquivalents -dict-add "Select All" "^/"
+#Cut;^x
+#剪切;^x
+#Copy;^c
+#复制;^c
+#Paste;^v
+#粘贴;^v
+#Paste and Match Style;^\$v
 
 # Obsidian window
 

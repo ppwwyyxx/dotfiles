@@ -133,8 +133,8 @@
   ;proxy=http://localhost:7777
 ;[https "https://github.com/"]
   ;proxy=http://localhost:7777
-[url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
+;[url "ssh://git@github.com/"]
+	;insteadOf = https://github.com/
 ;[init]
   ;templatedir = ~/.git-templates
 [tig]
@@ -144,6 +144,7 @@
   main-view = date author:display=full,width=11 commit-title:graph=v2,refs=true
   # https://github.com/jonas/tig/pull/1172
 	reference-format = hide:other
+  wrap-lines = true
 [tig "bind"]
   stage = <Enter> :/^@@
   main = G none

@@ -48,3 +48,4 @@ if(root,
 
 [snapshot]
 max-new-file-size = "10MiB"
+auto-track = "none()"

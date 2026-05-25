@@ -105,29 +105,31 @@
 #    "qutebrowser"
 # ]
 
-alt - t : open -na kitty.app --args --single-instance -d ~
-#alt - t : /opt/homebrew/bin/kitty -d $HOME
+#alt - t : open -na kitty.app --args --single-instance -d ~
+alt - t : open -na /Applications/kitty.app --args -d ~
 
 alt - c [
   "Google Chrome" : open -na "Google Chrome" --args --new-window
   * : open -a "Google Chrome"
 ]
 
-alt - z [
-  "Zeal" : osascript -e 'tell application "System Events" to set visible of process "Zeal" to false'
-  * : open -na "Zeal" && \
-      osascript -e 'tell application "System Events" to set visible of process "Zeal" to true'
-]
+#alt - z [
+  #"Zeal" : osascript -e 'tell application "System Events" to set visible of process "Zeal" to false'
+  #* : open -na "Zeal" && \
+      #osascript -e 'tell application "System Events" to set visible of process "Zeal" to true'
+#]
+
+alt - z : open /Applications/Dash.app/
 
 ctrl - w [
   "Zotero": osascript -e 'tell application "System Events"' -e 'tell process "Zotero"' -e 'keystroke "w" using command down' -e 'end tell' -e 'end tell'
   * ~
 ]
 
-ctrl - t [
-  "Vivaldi": osascript -e 'tell application "Vivaldi"' -e 'make new tab at window 1' -e 'end tell'
-  * ~
-]
+#ctrl - t [
+  #"Vivaldi": osascript -e 'tell application "Vivaldi"' -e 'make new tab at window 1' -e 'end tell'
+  #* ~
+#]
 
 # 1. Modify config of savePath, so that flameshot without `-p` also works.
 # 2. Launch the binary (not the app) so that it prints outputs to stderr.
