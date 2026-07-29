@@ -512,10 +512,16 @@ f_avc_param_265="-c:v libx265 -preset medium -x265-params crf=24 -c:a copy -map_
 f_avc_param_av1="-c:v libsvtav1 -crf 23 -c:a copy -map_metadata 0"
 f_avc_param_apple="$f_avc_param_264 -pix_fmt yuv420p -map_metadata 0"
 function ffmpeg_compress() {
-  if [[ -n $2 ]]; then
-    ffmpeg -i "$1" `echo $f_avc_param_av1` -vf subtitles=$2 $1.mkv
+  local out
+  if [[ $1 == *.mkv ]]; then
+    out="$1.mkv"
   else
-    ffmpeg -i "$1" `echo $f_avc_param_av1` -c:s copy $1.mkv
+    out="${1%.*}.mkv"
+  fi
+  if [[ -n $2 ]]; then
+    ffmpeg -i "$1" `echo $f_avc_param_av1` -vf subtitles=$2 "$out"
+  else
+    ffmpeg -i "$1" `echo $f_avc_param_av1` -c:s copy "$out"
   fi
 }
 function ffmpeg_compress_audio() {

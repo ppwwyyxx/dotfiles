@@ -54,7 +54,6 @@
     { "key": "shift+alt+left", "command": "-editor.action.smartSelect.shrink", "when": "editorTextFocus" },
     { "key": "ctrl+k ctrl+q", "command": "-workbench.action.navigateToLastEditLocation" },
     { "key": "ctrl+o", "command": "-workbench.action.files.openFile" },
-    { "key": "ctrl+c", "command": "-vscode-neovim.escape", "when": "editorTextFocus && neovim.init" },
     { "key": "alt+up", "command": "-editor.action.moveLinesUpAction", "when": "editorTextFocus && !editorReadonly" },
     { "key": "alt+down", "command": "-editor.action.moveLinesDownAction", "when": "editorTextFocus && !editorReadonly" },
     { "key": "ctrl+k ctrl+\\", "command": "-workbench.action.splitEditorOrthogonal" },
@@ -100,5 +99,5 @@
         "key": "ctrl+shift+h",
         "command": "-extension.dash.emptySyntax",
         "when": "editorTextFocus"
-    }
+    },
 ]

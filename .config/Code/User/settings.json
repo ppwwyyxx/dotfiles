@@ -1,6 +1,6 @@
 {
     "settingsSync.ignoredSettings": [
-        "window.zoomLevel", "editor.minimap.enabled"
+        "window.zoomLevel", "editor.minimap.enabled", "editor.fontSize"
     ],
     "remote.SSH.defaultExtensions": [
         "eamodio.gitlens",
@@ -69,7 +69,7 @@
     "python.analysis.memory.keepLibraryAst": true,
     "python.analysis.memory.keepLibraryLocalVariables": true,
     "python.formatting.blackArgs": ["--line-length", "100"],
-    "python.languageServer": "Jedi",
+    "python.languageServer": "Pylance",
 
     "todohighlight.isEnable": true,
     "todohighlight.keywordsPattern": "from IPython.*|import pdb.*|pdb.set_trace.*|import sys; sys.*",
@@ -171,9 +171,26 @@
     "editor.minimap.enabled": false,
 
     "githubPullRequests.queries": [
-        { "label": "All", "query": "is:open" },
-        { "label": "Assigned To Me", "query": "is:open assignee:${user}" },
-        { "label": "Created By Me", "query": "is:open author:${user}" }
+        {
+            "label": "Local Pull Request Branches",
+            "query": "default"
+        },
+        {
+            "label": "All",
+            "query": "repo:${owner}/${repository} is:open"
+        },
+        {
+            "label": "Assigned To Me",
+            "query": "repo:${owner}/${repository} is:open assignee:${user}"
+        },
+        {
+            "label": "Created By Me",
+            "query": "repo:${owner}/${repository} is:open author:${user}"
+        },
+        {
+            "label": "All Open",
+            "query": "default"
+        }
     ],
     "githubIssues.queries": [
         { "label": "All Issues", "query": "is:open repo:${owner}/${repository}" },
@@ -191,4 +208,17 @@
     "extensions.experimental.affinity": {
         "asvetliakov.vscode-neovim": 1
     },
+    "remote.SSH.localServerDownload": "always",
+    "python.analysis.diagnosticsSource": "Pyright",
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
+    },
+    "github.copilot.nextEditSuggestions.eagerness": "high",
+    "kimi.showThinkingExpanded": true,
+    "chat.editor.fontSize": 18,
+    "chat.fontSize": 18,
+    "terminal.integrated.fontSize": 18,
 }
