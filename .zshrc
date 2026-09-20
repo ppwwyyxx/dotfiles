@@ -229,6 +229,11 @@ zstyle ':completion:*' users root $USER  # Fix lag if there are too many users.
 zstyle ':completion:*' expand 'yes'
 zstyle ':completion:*' squeeze-shlashes 'yes'
 zstyle ':completion::complete:*' '\\'
+# Accept exactly-typed existing path components with a stat instead of
+# listing their parent dir. Otherwise completing inside a fully-typed path
+# enumerates every parent directory.
+zstyle ':completion:*:paths' accept-exact-dirs true
+zstyle ':completion:*:paths' accept-exact '*'
 
 # Colorful Completion
 export ZLSCOLORS="${LS_COLORS}"
@@ -410,3 +415,4 @@ if [[ -n $ZSH_PROF ]]; then
   zle-line-init () { PREDISPLAY="[$(printf %.3f $(( $(date '+%s.%N') - $start )))] " }
   zle -N zle-line-init
 fi
+safe_source ~/.zshrc.secrets
